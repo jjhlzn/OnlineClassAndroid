@@ -2,6 +2,7 @@ package com.jinjunhang.framework.service;
 
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.onlineclass.model.BaseModelObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/10.
  */
-public abstract class PagedServerResponse<T> extends ServerResponse {
+public abstract class PagedServerResponse<T extends BaseModelObject> extends ServerResponse {
 
     private int mTotalNumber;
     protected List<T> mResultSet;
