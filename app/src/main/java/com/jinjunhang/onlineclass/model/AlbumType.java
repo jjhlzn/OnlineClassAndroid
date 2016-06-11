@@ -1,0 +1,57 @@
+package com.jinjunhang.onlineclass.model;
+
+import com.jinjunhang.onlineclass.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by lzn on 16/6/10.
+ */
+public class AlbumType extends BaseModelObject {
+
+    private String mName;
+    private String mTypeCode;
+    private int image;
+
+    private AlbumType(String mName, String mTypeCode, int image ) {
+        this.mName = mName;
+        this.mTypeCode = mTypeCode;
+        this.image = image;
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public String getTypeCode() {
+        return mTypeCode;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public final static AlbumType LiveAlbumType = new AlbumType("直播课程！", "Live", R.drawable.albumtype_live);
+    public final static AlbumType VipAlbumType = new AlbumType("VIP课程", "Vip", R.drawable.albumtype_vip);
+    public final static AlbumType CommonAlbumType = new AlbumType("往期直播课程", "Common", R.drawable.albumtype_common);
+
+    public static List<AlbumType> getAllAlbumType() {
+        List<AlbumType> types = new ArrayList<AlbumType>();
+        types.add(LiveAlbumType);
+        types.add(VipAlbumType);
+        types.add(CommonAlbumType);
+        return types;
+    }
+
+    public static AlbumType getAlbumTypeByCode(String code) {
+        switch (code) {
+            case "Live":
+                return LiveAlbumType;
+            case "Vip":
+                return VipAlbumType;
+            default:
+                return CommonAlbumType;
+        }
+    }
+}

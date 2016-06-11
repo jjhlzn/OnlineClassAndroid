@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottomBarHome"
+        android:icon="@drawable/home"
+
+        android:title="主页"
+
+        />
+
+    <item
+        android:id="@+id/bottomBarSearch"
+        android:icon="@drawable/search_bottom_icon"
+        android:title="搜索" />
+
+
+    <item
+        android:id="@+id/bottomBarMe"
+        android:icon="@drawable/me"
+        android:title="我" />
+
+</menu>
