@@ -1,7 +1,5 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.onlineclass.controller;
 
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -11,9 +9,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.jinjunhang.onlineclass.R;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 

@@ -1,4 +1,7 @@
-package com.jinjunhang.onlineclass.service;
+package com.jinjunhang.framework.service;
+
+import com.jinjunhang.framework.service.ServerRequest;
+import com.jinjunhang.framework.service.ServerResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +33,7 @@ public abstract class PagedServerResponse<T> extends ServerResponse {
     }
 
 
-    void parse(ServerRequest request, JSONObject json) throws JSONException {
+    public void parse(ServerRequest request, JSONObject json) throws JSONException {
         if (getStatus() == ServerResponse.SUCCESS) {
             mTotalNumber = json.getInt("totalNumber");
         }

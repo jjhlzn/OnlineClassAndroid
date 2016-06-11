@@ -1,14 +1,10 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.onlineclass.controller;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,21 +16,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.jinjunhang.onlineclass.lib.DownloadImageTask;
-import com.jinjunhang.onlineclass.lib.Utils;
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
-import com.jinjunhang.onlineclass.service.BasicService;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
-import com.jinjunhang.onlineclass.service.ServerResponse;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.ui.lib.PagableController;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.Exchanger;
 
 /**
  * Created by lzn on 16/6/10.

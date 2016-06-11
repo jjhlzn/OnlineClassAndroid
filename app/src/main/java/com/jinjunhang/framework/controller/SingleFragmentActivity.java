@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.framework.controller;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.jinjunhang.onlineclass.R;
 
 
 /**

@@ -1,8 +1,7 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.onlineclass.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.AlbumType;
 
 import java.util.List;

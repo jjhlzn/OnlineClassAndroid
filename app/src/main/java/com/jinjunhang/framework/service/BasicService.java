@@ -1,16 +1,13 @@
-package com.jinjunhang.onlineclass.service;
+package com.jinjunhang.framework.service;
 
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,7 +15,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * Created by lzn on 16/3/23.

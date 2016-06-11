@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.onlineclass.controller;
 
 import android.support.v7.app.AppCompatActivity;
 

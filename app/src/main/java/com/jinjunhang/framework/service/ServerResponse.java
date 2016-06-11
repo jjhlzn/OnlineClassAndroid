@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.service;
+package com.jinjunhang.framework.service;
 import org.json.JSONException;
 import org.json.JSONObject;
 

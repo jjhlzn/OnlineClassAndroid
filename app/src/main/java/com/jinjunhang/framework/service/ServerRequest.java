@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.service;
+package com.jinjunhang.framework.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

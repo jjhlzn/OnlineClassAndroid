@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.service;
 
+import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.onlineclass.model.AlbumType;
 
 import java.util.Map;

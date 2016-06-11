@@ -1,7 +1,8 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.onlineclass.controller;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 
 /**
  * Created by lzn on 16/6/11.

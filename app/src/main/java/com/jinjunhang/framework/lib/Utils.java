@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.lib;
+package com.jinjunhang.framework.lib;
 
 import android.app.AlertDialog;
 import android.content.Context;

@@ -1,5 +1,7 @@
 package com.jinjunhang.onlineclass.service;
 
+import com.jinjunhang.framework.service.PagedServerResponse;
+import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
 
@@ -20,7 +22,7 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
     }
 
     @Override
-    void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
+    public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
         super.parse(request, jsonObject);
 
         JSONArray jsonArray = jsonObject.getJSONArray("albums");
