@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.service;
 
+import com.jinjunhang.framework.service.PagedServerRequest;
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.onlineclass.model.AlbumType;
 
@@ -8,7 +9,7 @@ import java.util.Map;
 /**
  * Created by lzn on 16/6/10.
  */
-public class GetAlbumsRequest extends ServerRequest {
+public class GetAlbumsRequest extends PagedServerRequest {
 
     private AlbumType mAlbumType;
 
@@ -32,6 +33,5 @@ public class GetAlbumsRequest extends ServerRequest {
     public Class getServerResponseClass() {
         return GetAlbumsResponse.class;
     }
-
 
 }

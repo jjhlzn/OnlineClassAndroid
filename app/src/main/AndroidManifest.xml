@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".controller.AlbumListActivity"
+        <activity android:name="com.jinjunhang.onlineclass.controller.AlbumListActivity"
                   android:screenOrientation="portrait">
         </activity>
     </application>

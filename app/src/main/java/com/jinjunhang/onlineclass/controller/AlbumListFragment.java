@@ -32,21 +32,15 @@ import java.util.List;
  *
  */
 public class AlbumListFragment extends android.support.v4.app.Fragment implements  SingleFragmentActivity.OnBackPressedListener,
-        AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener {
+        AbsListView.OnScrollListener {
     public final static String EXTRA_ALBUMTYPE = "extra_albumtype";
 
-    private final static String TAG = "AlbumListActivity";
+    private final static String TAG = "AlbumListFragment";
 
     private PagableController mPagableController;
 
     private AlbumType mAlbumType;
     private ListView mListView;
-    private AlbumListAdapter mAlbumListAdapter;
-
-    //用于load more
-    private View mFooterView;
-    private boolean mIsLoading;
-    private boolean mMoreDataAvailable;
 
     @Nullable
     @Override
@@ -57,9 +51,12 @@ public class AlbumListFragment extends android.support.v4.app.Fragment implement
 
         mAlbumType = (AlbumType)getActivity().getIntent().getSerializableExtra(EXTRA_ALBUMTYPE);
 
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+
         //设置PagableController
         mPagableController = new PagableController(getActivity(), mListView);
         AlbumListAdapter adapter = new AlbumListAdapter(mPagableController, new ArrayList<Album>());
+        mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(adapter);
         mPagableController.setPagableRequestHandler(new AlbumListHanlder());
         mPagableController.setOnScrollListener(this);
@@ -75,10 +72,6 @@ public class AlbumListFragment extends android.support.v4.app.Fragment implement
         startActivity(i);
     }
 
-    @Override
-    public void onRefresh() {
-
-    }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -94,7 +87,7 @@ public class AlbumListFragment extends android.support.v4.app.Fragment implement
     private class AlbumListHanlder implements PagableController.PagableRequestHandler {
         @Override
         public PagedServerResponse handle() {
-            GetAlbumsRequest request = new GetAlbumsRequest(AlbumType.CommonAlbumType);
+            GetAlbumsRequest request = new GetAlbumsRequest(mAlbumType);
             return new BasicService().sendRequest(request);
         }
     }

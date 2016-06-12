@@ -87,12 +87,11 @@ public class BasicService {
 
             Log.d(TAG, "get response: " + jsonString);
             JSONObject json =  new JSONObject(jsonString);
-            if (json.getInt("status") == ServerResponse.FAIL) {
-                resp.setStatus(ServerResponse.FAIL);
-                resp.setErrorMessage("Server return fail response");
+            resp.setStatus(json.getInt("status"));
+            resp.setErrorMessage(json.getString("errorMessage"));
+            if (json.getInt("status") != ServerResponse.SUCCESS) {
                 return resp;
             }
-            resp.setStatus(ServerResponse.SUCCESS);
             resp.parse(request, json);
             return resp;
 

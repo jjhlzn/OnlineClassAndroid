@@ -2,6 +2,7 @@ package com.jinjunhang.framework.controller;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,26 +21,29 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/10.
  */
-public class PagableController {
+public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
     private final static String TAG = "PagableController";
 
     private Activity mActivity;
     private ListView mListView;
     private PagableArrayAdapter mPagableArrayAdapter;
-    private PagableTask mPagableTask;
     private PagableRequestHandler mPagableRequestHandler;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     //用于load more
     private View mFooterView;
     private boolean mIsLoading;
+    private boolean mIsRefreshing;
     private boolean mMoreDataAvailable;
+    private int mPageIndex;
 
     public PagableController(Activity activity, ListView listView) {
         mActivity = activity;
         mListView = listView;
         mIsLoading = false;
         mMoreDataAvailable = true;
+        mPageIndex = 0;
     }
 
     public void setPagableArrayAdapter(PagableArrayAdapter pagableArrayAdapter) {
@@ -52,8 +56,17 @@ public class PagableController {
         mPagableRequestHandler = pagableRequestHandler;
     }
 
+    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
+        mSwipeRefreshLayout = swipeRefreshLayout;
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+    }
+
     public void setOnScrollListener(AbsListView.OnScrollListener listener) {
         mListView.setOnScrollListener(listener);
+    }
+
+    public int getPageIndex() {
+        return mPageIndex;
     }
 
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -68,6 +81,19 @@ public class PagableController {
                 Log.d(TAG, "start loading more");
                 new PagableTask(this, mPagableRequestHandler).execute();
             }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        Log.d(TAG, "onRefresh");
+        if (!mIsLoading) {
+            mIsRefreshing = true;
+            mMoreDataAvailable = true;
+            mPageIndex = 0;
+            new PagableTask(this, mPagableRequestHandler).execute();
+        } else {
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -102,6 +128,11 @@ public class PagableController {
 
         public void addMoreData(List<T> moreData) {
             mDataSet.addAll(moreData);
+            notifyDataSetChanged();
+        }
+
+        public void setDataSet(List<T> dataSet) {
+            mDataSet = dataSet;
             notifyDataSetChanged();
         }
 
@@ -142,19 +173,35 @@ public class PagableController {
         protected void onPreExecute() {
             super.onPreExecute();
             mPagableController.mIsLoading = true;
+            if (mPagableController.mIsRefreshing) {
+                mPagableController.mSwipeRefreshLayout.setRefreshing(true);
+                Log.d(TAG, "start refresh");
+            }
         }
 
         @Override
         protected void onPostExecute(PagedServerResponse resp) {
             super.onPostExecute(resp);
 
+            if (mPagableController.mIsRefreshing) {
+                mPagableController.mSwipeRefreshLayout.setRefreshing(false);
+            }
+
             if (resp.getStatus() != ServerResponse.SUCCESS) {
                 Log.e(TAG, "resp return error, status = " + resp.getStatus() + ", errorMessage = " + resp.getErrorMessage());
                 Utils.showMessage(mPagableController.mActivity, resp.getErrorMessage());
+                mPagableController.mIsRefreshing = false;
+                mPagableController.mIsLoading = false;
                 return;
             }
 
-            mPagableController.mPagableArrayAdapter.addMoreData(resp.getResultSet());
+            if (mPagableController.mIsRefreshing) {
+                Log.d(TAG, "reset dataset");
+                mPagableController.mPagableArrayAdapter.setDataSet(resp.getResultSet());
+            } else{
+                Log.d(TAG, "add more data");
+                mPagableController.mPagableArrayAdapter.addMoreData(resp.getResultSet());
+            }
 
             if (resp.getTotalNumber() <= mPagableController.mPagableArrayAdapter.getCount()) {
                 mPagableController.mMoreDataAvailable = false;
@@ -162,7 +209,10 @@ public class PagableController {
                 mPagableController.mMoreDataAvailable = true;
             }
 
+            mPagableController.mIsRefreshing = false;
+
             mPagableController.mIsLoading = false;
+            mPagableController.mPageIndex += 1;
             Log.d(TAG, "loading complete");
 
             mPagableController.resetFootView();
