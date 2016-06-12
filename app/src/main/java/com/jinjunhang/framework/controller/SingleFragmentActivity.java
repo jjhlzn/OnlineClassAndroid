@@ -32,6 +32,10 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         return "ERP系统";
     }
 
+    public void setActivityTitle(String title) {
+        ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+    }
+
     protected boolean isNeedPushDownFresh() {return false;}
 
     @Override

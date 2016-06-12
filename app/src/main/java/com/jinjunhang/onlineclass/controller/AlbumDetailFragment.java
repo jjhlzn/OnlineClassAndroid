@@ -49,7 +49,7 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
         ((TextView) v.findViewById(R.id.albumDetail_name)).setText(mAlbum.getName());
         ((TextView) v.findViewById(R.id.albumDetail_author)).setText(mAlbum.getAuthor());
 
-        getActivity().setTitle(mAlbum.getName());
+        ((SingleFragmentActivity)getActivity()).setActivityTitle(mAlbum.getName());
 
         ListView listView = (ListView)v.findViewById(R.id.listView);
 
