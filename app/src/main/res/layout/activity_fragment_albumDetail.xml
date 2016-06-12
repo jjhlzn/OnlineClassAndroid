@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="94dp"
+            android:background="#8b8b8b"
+            android:layout_gravity="center_vertical">
+            <ImageView
+                android:id="@+id/albumDtail_image"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="20dp"
+                android:gravity="center_vertical|left"
+                android:src="@drawable/albumimage_default"
+                android:layout_marginTop="17dp"
+                android:layout_marginBottom="17dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/albumDetail_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="0dp"
+
+                    android:textSize="17sp"
+                    android:gravity="center_vertical|left"
+                    android:text="Name"
+                    android:layout_marginTop="14dp"
+                    android:textColor="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/albumDetail_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="0dp"
+
+                    android:textSize="15sp"
+                    android:gravity="center_vertical|left"
+                    android:text="author"
+                    android:textColor="@android:color/secondary_text_dark"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                      android:id="@+id/swipe_refresh_layout"
+                                                      android:layout_width="match_parent"
+                                                      android:layout_height="wrap_content">
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView">
+
+            </ListView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+</FrameLayout>

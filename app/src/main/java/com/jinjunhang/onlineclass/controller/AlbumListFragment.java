@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,6 +49,17 @@ public class AlbumListFragment extends android.support.v4.app.Fragment implement
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Album album = (Album) (mPagableController.getPagableArrayAdapter().getItem(position));
+
+                Intent i = new Intent(getActivity(), AlbumDetailActivity.class);
+                i.putExtra(AlbumDetailFragment.EXTRA_ALBUM, album);
+                startActivity(i);
+            }
+        });
 
         mAlbumType = (AlbumType)getActivity().getIntent().getSerializableExtra(EXTRA_ALBUMTYPE);
 

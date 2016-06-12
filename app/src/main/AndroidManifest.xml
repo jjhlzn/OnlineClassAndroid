@@ -22,6 +22,10 @@
         <activity android:name="com.jinjunhang.onlineclass.controller.AlbumListActivity"
                   android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name="com.jinjunhang.onlineclass.controller.AlbumDetailActivity"
+                  android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

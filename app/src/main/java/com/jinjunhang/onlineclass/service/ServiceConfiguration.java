@@ -37,8 +37,12 @@ public class ServiceConfiguration {
         return port2;
     }
 
-    public  static String GetAlbumsUrl() {
+    public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";
+    }
+
+    public static String GetAlbumSongsUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/album/songs";
     }
 
 }

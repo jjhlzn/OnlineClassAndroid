@@ -65,6 +65,10 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         mListView.setOnScrollListener(listener);
     }
 
+    public PagableArrayAdapter getPagableArrayAdapter() {
+        return mPagableArrayAdapter;
+    }
+
     public int getPageIndex() {
         return mPageIndex;
     }
