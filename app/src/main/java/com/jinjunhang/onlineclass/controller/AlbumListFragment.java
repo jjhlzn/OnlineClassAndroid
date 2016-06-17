@@ -100,6 +100,7 @@ public class AlbumListFragment extends android.support.v4.app.Fragment implement
         @Override
         public PagedServerResponse handle() {
             GetAlbumsRequest request = new GetAlbumsRequest(mAlbumType);
+            request.setPageIndex(mPagableController.getPageIndex());
             return new BasicService().sendRequest(request);
         }
     }

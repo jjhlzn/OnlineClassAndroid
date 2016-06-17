@@ -1,19 +1,16 @@
 package com.jinjunhang.onlineclass.controller;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 
 /**
- * Created by lzn on 16/6/10.
+ * Created by lzn on 16/6/13.
  */
-public class AlbumDetailActivity extends BaseMusicActivity {
+public class SongActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        return new AlbumDetailFragment();
+        return new SongFragment();
     }
-
-
 }
