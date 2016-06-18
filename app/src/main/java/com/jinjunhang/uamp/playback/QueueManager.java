@@ -61,18 +61,11 @@ public class QueueManager {
         mCurrentIndex = 0;
     }
 
-    public boolean isSameBrowsingCategory(@NonNull String mediaId) {
-        String[] newBrowseHierarchy = MediaIDHelper.getHierarchy(mediaId);
-        MediaSessionCompat.QueueItem current = getCurrentMusic();
-        if (current == null) {
-            return false;
-        }
-        String[] currentBrowseHierarchy = MediaIDHelper.getHierarchy(
-                current.getDescription().getMediaId());
 
-        return Arrays.equals(newBrowseHierarchy, currentBrowseHierarchy);
-    }
-
+    /**
+     * 设置队列的当前位置
+     * @param index
+     */
     private void setCurrentQueueIndex(int index) {
         if (index >= 0 && index < mPlayingQueue.size()) {
             mCurrentIndex = index;
@@ -80,6 +73,11 @@ public class QueueManager {
         }
     }
 
+    /**
+     *
+     * @param queueId queueId是什么
+     * @return
+     */
     public boolean setCurrentQueueItem(long queueId) {
         // set the current index on queue from the queue Id:
         int index = QueueHelper.getMusicIndexOnQueue(mPlayingQueue, queueId);
@@ -87,6 +85,11 @@ public class QueueManager {
         return index >= 0;
     }
 
+    /**
+     * 根据mediaId设置队列的当前位置
+     * @param mediaId
+     * @return
+     */
     public boolean setCurrentQueueItem(String mediaId) {
         // set the current index on queue from the music Id:
         int index = QueueHelper.getMusicIndexOnQueue(mPlayingQueue, mediaId);
@@ -94,6 +97,11 @@ public class QueueManager {
         return index >= 0;
     }
 
+    /**
+     * 从队列中跳过几个位置
+     * @param amount
+     * @return
+     */
     public boolean skipQueuePosition(int amount) {
         int index = mCurrentIndex + amount;
         if (index < 0) {
@@ -104,8 +112,7 @@ public class QueueManager {
             index %= mPlayingQueue.size();
         }
         if (!QueueHelper.isIndexPlayable(index, mPlayingQueue)) {
-            LogHelper.e(TAG, "Cannot increment queue index by ", amount,
-                    ". Current=", mCurrentIndex, " queue length=", mPlayingQueue.size());
+            LogHelper.e(TAG, "Cannot increment queue index by ", amount, ". Current=", mCurrentIndex, " queue length=", mPlayingQueue.size());
             return false;
         }
         mCurrentIndex = index;
@@ -118,11 +125,17 @@ public class QueueManager {
                 QueueHelper.getPlayingQueueFromSearch(query, extras, mMusicProvider));
     }*/
 
+    /**
+     * 设置随机队列
+     */
     public void setRandomQueue() {
-        setCurrentQueue(mResources.getString(R.string.random_queue_title),
-                QueueHelper.getRandomQueue(mMusicProvider));
+        setCurrentQueue(mResources.getString(R.string.random_queue_title), QueueHelper.getRandomQueue(mMusicProvider));
     }
 
+    /**
+     * 根据mediaId设置队列的当前位置，并且更新MetaData
+     * @param mediaId
+     */
     public void setQueueFromMusic(String mediaId) {
         LogHelper.d(TAG, "setQueueFromMusic", mediaId);
 
@@ -131,16 +144,7 @@ public class QueueManager {
         // the hierarchy in MediaBrowser and the actual unique musicID. This is necessary
         // so we can build the correct playing queue, based on where the track was
         // selected from.
-        boolean canReuseQueue = false;
-        if (isSameBrowsingCategory(mediaId)) {
-            canReuseQueue = setCurrentQueueItem(mediaId);
-        }
-        if (!canReuseQueue) {
-            String queueTitle = mResources.getString(R.string.browse_musics_by_genre_subtitle,
-                    MediaIDHelper.extractBrowseCategoryValueFromMediaID(mediaId));
-            setCurrentQueue(queueTitle,
-                    QueueHelper.getPlayingQueue(mediaId, mMusicProvider), mediaId);
-        }
+        setCurrentQueueItem(mediaId);
         updateMetadata();
     }
 
@@ -158,12 +162,12 @@ public class QueueManager {
         return mPlayingQueue.size();
     }
 
+
     protected void setCurrentQueue(String title, List<MediaSessionCompat.QueueItem> newQueue) {
         setCurrentQueue(title, newQueue, null);
     }
 
-    protected void setCurrentQueue(String title, List<MediaSessionCompat.QueueItem> newQueue,
-                                   String initialMediaId) {
+    protected void setCurrentQueue(String title, List<MediaSessionCompat.QueueItem> newQueue, String initialMediaId) {
         mPlayingQueue = newQueue;
         int index = 0;
         if (initialMediaId != null) {
@@ -179,8 +183,7 @@ public class QueueManager {
             mListener.onMetadataRetrieveError();
             return;
         }
-        final String musicId = MediaIDHelper.extractMusicIDFromMediaID(
-                currentMusic.getDescription().getMediaId());
+        final String musicId = MediaIDHelper.extractMusicIDFromMediaID(currentMusic.getDescription().getMediaId());
         MediaMetadataCompat metadata = mMusicProvider.getMusic(musicId);
         if (metadata == null) {
             throw new IllegalArgumentException("Invalid musicId " + musicId);
@@ -190,8 +193,7 @@ public class QueueManager {
 
         // Set the proper album artwork on the media session, so it can be shown in the
         // locked screen and in other places.
-        if (metadata.getDescription().getIconBitmap() == null &&
-                metadata.getDescription().getIconUri() != null) {
+        if (metadata.getDescription().getIconBitmap() == null && metadata.getDescription().getIconUri() != null) {
             String albumUri = metadata.getDescription().getIconUri().toString();
             AlbumArtCache.getInstance().fetch(albumUri, new AlbumArtCache.FetchListener() {
                 @Override
@@ -203,8 +205,7 @@ public class QueueManager {
                     if (currentMusic == null) {
                         return;
                     }
-                    String currentPlayingId = MediaIDHelper.extractMusicIDFromMediaID(
-                            currentMusic.getDescription().getMediaId());
+                    String currentPlayingId = MediaIDHelper.extractMusicIDFromMediaID(currentMusic.getDescription().getMediaId());
                     if (musicId.equals(currentPlayingId)) {
                         mListener.onMetadataChanged(mMusicProvider.getMusic(currentPlayingId));
                     }

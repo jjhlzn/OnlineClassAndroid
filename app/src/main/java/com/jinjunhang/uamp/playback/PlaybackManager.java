@@ -156,17 +156,17 @@ public class PlaybackManager implements Playback.Callback {
         if (mediaId == null) {
             return;
         }
-        String musicId = MediaIDHelper.extractMusicIDFromMediaID(mediaId);
-        int favoriteIcon = mMusicProvider.isFavorite(musicId) ?
-                R.drawable.ic_star_on : R.drawable.ic_star_off;
-        LogHelper.d(TAG, "updatePlaybackState, setting Favorite custom action of music ",
-                musicId, " current favorite=", mMusicProvider.isFavorite(musicId));
-        Bundle customActionExtras = new Bundle();
+        //String musicId = MediaIDHelper.extractMusicIDFromMediaID(mediaId);
+        //int favoriteIcon = mMusicProvider.isFavorite(musicId) ?
+        //        R.drawable.ic_star_on : R.drawable.ic_star_off;
+       // LogHelper.d(TAG, "updatePlaybackState, setting Favorite custom action of music ",
+        //        musicId, " current favorite=", mMusicProvider.isFavorite(musicId));
+        //Bundle customActionExtras = new Bundle();
         //WearHelper.setShowCustomActionOnWear(customActionExtras, true);
-        stateBuilder.addCustomAction(new PlaybackStateCompat.CustomAction.Builder(
-                CUSTOM_ACTION_THUMBS_UP, mResources.getString(R.string.favorite), favoriteIcon)
-                .setExtras(customActionExtras)
-                .build());
+        //stateBuilder.addCustomAction(new PlaybackStateCompat.CustomAction.Builder(
+         //       CUSTOM_ACTION_THUMBS_UP, mResources.getString(R.string.favorite), favoriteIcon)
+         //       .setExtras(customActionExtras)
+        //        .build());
     }
 
     private long getAvailableActions() {
@@ -286,7 +286,7 @@ public class PlaybackManager implements Playback.Callback {
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             LogHelper.d(TAG, "playFromMediaId mediaId:", mediaId, "  extras=", extras);
-            //mQueueManager.setQueueFromMusic(mediaId);
+            mQueueManager.setQueueFromMusic(mediaId);
             handlePlayRequest();
         }
 
@@ -332,7 +332,7 @@ public class PlaybackManager implements Playback.Callback {
                     String mediaId = currentMusic.getDescription().getMediaId();
                     if (mediaId != null) {
                         String musicId = MediaIDHelper.extractMusicIDFromMediaID(mediaId);
-                        mMusicProvider.setFavorite(musicId, !mMusicProvider.isFavorite(musicId));
+                        //mMusicProvider.setFavorite(musicId, !mMusicProvider.isFavorite(musicId));
                     }
                 }
                 // playback state needs to be updated because the "Favorite" icon on the

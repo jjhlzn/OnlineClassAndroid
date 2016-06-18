@@ -61,7 +61,8 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                playMusic();
+                Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
+                playMusic(song.getUrl());
 
                 /*
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
@@ -86,11 +87,10 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
         return v;
     }
 
-    private void playMusic() {
+    private void playMusic(String url) {
         //LogHelper.d(TAG, "onMediaItemSelected, mediaId=" + item.getMediaId());
         //if (item.isPlayable()) {
-            getActivity().getSupportMediaController().getTransportControls()
-                    .playFromMediaId("fdsfsdf", null);
+            getActivity().getSupportMediaController().getTransportControls().playFromMediaId(url, null);
         //} else if (item.isBrowsable()) {
          //   navigateToBrowser(item.getMediaId());
         //} else {

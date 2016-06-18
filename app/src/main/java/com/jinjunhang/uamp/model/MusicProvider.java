@@ -131,18 +131,20 @@ public class MusicProvider {
      * the given query.
      *
      */
+    /*
     public Iterable<MediaMetadataCompat> searchMusicByAlbum(String query) {
         return searchMusic(MediaMetadataCompat.METADATA_KEY_ALBUM, query);
-    }
+    }*/
 
     /**
      * Very basic implementation of a search that filter music tracks with artist containing
      * the given query.
      *
      */
+    /*
     public Iterable<MediaMetadataCompat> searchMusicByArtist(String query) {
         return searchMusic(MediaMetadataCompat.METADATA_KEY_ARTIST, query);
-    }
+    }*/
 
     Iterable<MediaMetadataCompat> searchMusic(String metadataField, String query) {
         if (mCurrentState != State.INITIALIZED) {
@@ -193,6 +195,7 @@ public class MusicProvider {
         mutableMetadata.metadata = metadata;
     }
 
+    /*
     public void setFavorite(String musicId, boolean favorite) {
         if (favorite) {
             mFavoriteTracks.add(musicId);
@@ -203,7 +206,7 @@ public class MusicProvider {
 
     public boolean isFavorite(String musicId) {
         return mFavoriteTracks.contains(musicId);
-    }
+    } */
 
     /**
      * Get the list of music tracks from a server and caches the track information
