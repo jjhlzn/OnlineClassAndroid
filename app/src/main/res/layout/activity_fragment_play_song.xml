@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include layout="@layout/player_view" android:id="@+id/player_container"/>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
@@ -23,6 +24,7 @@ import com.jinjunhang.onlineclass.ui.activity.BaseMusicActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
+import com.jinjunhang.onlineclass.ui.activity.SongActivity;
 import com.jinjunhang.player.model.MusicProviderSource;
 import com.jinjunhang.player.playback.PlaybackManager;
 import com.jinjunhang.player.utils.LogHelper;
@@ -64,14 +66,9 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
                 playMusic(song.getId());
 
-                /*
-                Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
-                Intent i = new Intent(getActivity(), PlayerActivity.class)
-                        .putExtra(PlayerActivity.CONTENT_TYPE_EXTRA, Util.TYPE_OTHER)
-                        .putExtra(PlayerActivity.PROVIDER_EXTRA, "")
-                        .putExtra(PlayerActivity.CONTENT_ID_EXTRA, song.getId())
-                        .setData(Uri.parse(song.getUrl()));
-                startActivity(i);*/
+                Intent i = new Intent(getActivity(), SongActivity.class)
+                        .putExtra(SongFragment.EXTRA_SONG, song);
+                startActivity(i);
 
             }
         });
@@ -88,49 +85,11 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
     }
 
     private void playMusic(String id) {
-        //LogHelper.d(TAG, "onMediaItemSelected, mediaId=" + item.getMediaId());
-        //if (item.isPlayable()) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(PlaybackManager.EXTRA_PLAY_SONGS, (ArrayList<Song>)mAlbum.getSongs());
-        //bundle.setClassLoader(getClass().getClassLoader());
+        bundle.putSerializable(PlaybackManager.EXTRA_PLAY_SONGS, (ArrayList<Song>) mAlbum.getSongs());
         getActivity().getSupportMediaController().getTransportControls().playFromMediaId(id, bundle);
-        //} else if (item.isBrowsable()) {
-         //   navigateToBrowser(item.getMediaId());
-        //} else {
-        //    LogHelper.w(TAG, "Ignoring MediaItem that is neither browsable nor playable: ",
-         //           "mediaId=", item.getMediaId());
-        //}
     }
 
-    private ArrayList<MediaMetadataCompat> getSongs() {
-        ArrayList<MediaMetadataCompat> result = new ArrayList<>();
-        List<Song> songs = mAlbum.getSongs();
-        for (Song song : songs) {
-            result.add(buildFromSong(song));
-        }
-        return result;
-    }
-
-    private MediaMetadataCompat buildFromSong(Song song) {
-
-        // Adding the music source to the MediaMetadata (and consequently using it in the
-        // mediaSession.setMetadata) is not a good idea for a real world music app, because
-        // the session metadata can be accessed by notification listeners. This is done in this
-        // sample for convenience only.
-        //noinspection ResourceType
-        return new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.getId())
-                .putString(MusicProviderSource.CUSTOM_METADATA_TRACK_SOURCE, song.getUrl())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, song.getAlbum().getName())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.getAlbum().getAuthor())
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 0)
-                .putString(MediaMetadataCompat.METADATA_KEY_GENRE, "")
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "")
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "")
-                .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 0)
-                .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 0)
-                .build();
-    }
 
     @Override
     public void doBack() {

@@ -33,7 +33,6 @@ public class QueueHelper {
 
     private static final String TAG = LogHelper.makeLogTag(QueueHelper.class);
 
-    private static final int RANDOM_QUEUE_SIZE = 10;
 
     public static List<MediaSessionCompat.QueueItem> getSimplePlayingQueue(String mediaId, MusicProvider musicProvider) {
 
@@ -70,29 +69,6 @@ public class QueueHelper {
         return -1;
     }
 
-    private static List<MediaSessionCompat.QueueItem> convertToQueue(Iterable<MediaMetadataCompat> tracks, String... categories) {
-        List<MediaSessionCompat.QueueItem> queue = new ArrayList<>();
-        int count = 0;
-        for (MediaMetadataCompat track : tracks) {
-
-            // We create a hierarchy-aware mediaID, so we know what the queue is about by looking
-            // at the QueueItem media IDs.
-            String hierarchyAwareMediaID = MediaIDHelper.createMediaID(
-                    track.getDescription().getMediaId(), categories);
-
-            MediaMetadataCompat trackCopy = new MediaMetadataCompat.Builder(track)
-                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, hierarchyAwareMediaID)
-                    .build();
-
-            // We don't expect queues to change after created, so we use the item index as the
-            // queueId. Any other number unique in the queue would work.
-            MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(
-                    trackCopy.getDescription(), count++);
-            queue.add(item);
-        }
-        return queue;
-
-    }
 
     private static List<MediaSessionCompat.QueueItem> convertToQueue(Iterable<MediaMetadataCompat> tracks) {
         List<MediaSessionCompat.QueueItem> queue = new ArrayList<>();
