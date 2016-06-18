@@ -128,7 +128,7 @@ public class PlaybackManager implements Playback.Callback {
         PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
                 .setActions(getAvailableActions());
 
-        setCustomAction(stateBuilder);
+        //setCustomAction(stateBuilder);
         int state = mPlayback.getState();
 
         // If there is an error message, send it to the playback state:
@@ -155,28 +155,6 @@ public class PlaybackManager implements Playback.Callback {
         }
     }
 
-    private void setCustomAction(PlaybackStateCompat.Builder stateBuilder) {
-        MediaSessionCompat.QueueItem currentMusic = mQueueManager.getCurrentMusic();
-        if (currentMusic == null) {
-            return;
-        }
-        // Set appropriate "Favorite" icon on Custom action:
-        String mediaId = currentMusic.getDescription().getMediaId();
-        if (mediaId == null) {
-            return;
-        }
-        //String musicId = MediaIDHelper.extractMusicIDFromMediaID(mediaId);
-        //int favoriteIcon = mMusicProvider.isFavorite(musicId) ?
-        //        R.drawable.ic_star_on : R.drawable.ic_star_off;
-       // LogHelper.d(TAG, "updatePlaybackState, setting Favorite custom action of music ",
-        //        musicId, " current favorite=", mMusicProvider.isFavorite(musicId));
-        //Bundle customActionExtras = new Bundle();
-        //WearHelper.setShowCustomActionOnWear(customActionExtras, true);
-        //stateBuilder.addCustomAction(new PlaybackStateCompat.CustomAction.Builder(
-         //       CUSTOM_ACTION_THUMBS_UP, mResources.getString(R.string.favorite), favoriteIcon)
-         //       .setExtras(customActionExtras)
-        //        .build());
-    }
 
     private long getAvailableActions() {
         long actions =
@@ -221,50 +199,6 @@ public class PlaybackManager implements Playback.Callback {
     public void setCurrentMediaId(String mediaId) {
         LogHelper.d(TAG, "setCurrentMediaId", mediaId);
         mQueueManager.setQueueFromMusic(mediaId);
-    }
-
-
-    /**
-     * Switch to a different Playback instance, maintaining all playback state, if possible.
-     *
-     * @param playback switch to this playback
-     */
-    public void switchToPlayback(Playback playback, boolean resumePlaying) {
-        if (playback == null) {
-            throw new IllegalArgumentException("Playback cannot be null");
-        }
-        // suspend the current one.
-        int oldState = mPlayback.getState();
-        int pos = mPlayback.getCurrentStreamPosition();
-        String currentMediaId = mPlayback.getCurrentMediaId();
-        mPlayback.stop(false);
-        playback.setCallback(this);
-        playback.setCurrentStreamPosition(pos < 0 ? 0 : pos);
-        playback.setCurrentMediaId(currentMediaId);
-        playback.start();
-        // finally swap the instance
-        mPlayback = playback;
-        switch (oldState) {
-            case PlaybackStateCompat.STATE_BUFFERING:
-            case PlaybackStateCompat.STATE_CONNECTING:
-            case PlaybackStateCompat.STATE_PAUSED:
-                mPlayback.pause();
-                break;
-            case PlaybackStateCompat.STATE_PLAYING:
-                MediaSessionCompat.QueueItem currentMusic = mQueueManager.getCurrentMusic();
-                if (resumePlaying && currentMusic != null) {
-                    mPlayback.play(currentMusic);
-                } else if (!resumePlaying) {
-                    mPlayback.pause();
-                } else {
-                    mPlayback.stop(true);
-                }
-                break;
-            case PlaybackStateCompat.STATE_NONE:
-                break;
-            default:
-                LogHelper.d(TAG, "Default called. Old state is ", oldState);
-        }
     }
 
 

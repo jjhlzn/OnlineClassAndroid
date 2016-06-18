@@ -239,9 +239,18 @@ public class MusicProvider {
         }
     }
 
+    public List<MediaBrowserCompat.MediaItem> getChildren() {
+        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
+        Iterator<MediaMetadataCompat> iterator = getAllMusics().iterator();
+        while (iterator.hasNext()) {
+            mediaItems.add(createMediaItem(iterator.next()));
+        }
+        return mediaItems;
+    }
 
     public List<MediaBrowserCompat.MediaItem> getChildren(String mediaId, Resources resources) {
         List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
+
 
         if (!MediaIDHelper.isBrowseable(mediaId)) {
             return mediaItems;
@@ -297,13 +306,11 @@ public class MusicProvider {
         // when we get a onPlayFromMusicID call, so we can create the proper queue based
         // on where the music was selected from (by artist, by genre, random, etc)
         String genre = metadata.getString(MediaMetadataCompat.METADATA_KEY_GENRE);
-        String hierarchyAwareMediaID = MediaIDHelper.createMediaID(
-                metadata.getDescription().getMediaId(), MEDIA_ID_MUSICS_BY_GENRE, genre);
+        String hierarchyAwareMediaID = MediaIDHelper.createMediaID(metadata.getDescription().getMediaId(), MEDIA_ID_MUSICS_BY_GENRE, genre);
         MediaMetadataCompat copy = new MediaMetadataCompat.Builder(metadata)
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, hierarchyAwareMediaID)
                 .build();
-        return new MediaBrowserCompat.MediaItem(copy.getDescription(),
-                MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+        return new MediaBrowserCompat.MediaItem(copy.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
 
     }
 

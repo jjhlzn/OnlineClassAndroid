@@ -191,31 +191,6 @@ package com.jinjunhang.player;
      @Override
      public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid,
                                   Bundle rootHints) {
-         LogHelper.d(TAG, "OnGetRoot: clientPackageName=" + clientPackageName,
-                 "; clientUid=" + clientUid + " ; rootHints=", rootHints);
-         // To ensure you are not allowing any arbitrary app to browse your app's contents, you
-         // need to check the origin:
-         if (!mPackageValidator.isCallerAllowed(this, clientPackageName, clientUid)) {
-             // If the request comes from an untrusted package, return null. No further calls will
-             // be made to other media browsing methods.
-             LogHelper.w(TAG, "OnGetRoot: IGNORING request from untrusted package "
-                     + clientPackageName);
-             return null;
-         }
-         //noinspection StatementWithEmptyBody
-         //if (CarHelper.isValidCarPackage(clientPackageName)) {
-             // Optional: if your app needs to adapt the music library to show a different subset
-             // when connected to the car, this is where you should handle it.
-             // If you want to adapt other runtime behaviors, like tweak ads or change some behavior
-             // that should be different on cars, you should instead use the boolean flag
-             // set by the BroadcastReceiver mCarConnectionReceiver (mIsConnectedToCar).
-         //}
-         //noinspection StatementWithEmptyBody
-        // if (WearHelper.isValidWearCompanionPackage(clientPackageName)) {
-             // Optional: if your app needs to adapt the music library for when browsing from a
-             // Wear device, you should return a different MEDIA ROOT here, and then,
-             // on onLoadChildren, handle it accordingly.
-         //}
 
          return new BrowserRoot(MEDIA_ID_ROOT, null);
      }
@@ -223,8 +198,8 @@ package com.jinjunhang.player;
      @Override
      public void onLoadChildren(@NonNull final String parentMediaId,
                                 @NonNull final Result<List<MediaItem>> result) {
-         LogHelper.d(TAG, "OnLoadChildren: parentMediaId=", parentMediaId);
-         result.sendResult(mMusicProvider.getChildren(parentMediaId, getResources()));
+         //LogHelper.d(TAG, "OnLoadChildren: parentMediaId=", parentMediaId);
+         result.sendResult(mMusicProvider.getChildren());
      }
 
      /**

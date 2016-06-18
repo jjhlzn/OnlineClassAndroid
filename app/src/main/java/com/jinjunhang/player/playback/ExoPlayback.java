@@ -22,8 +22,14 @@ import com.jinjunhang.player.utils.LogHelper;
 /**
  * Created by lzn on 16/6/17.
  */
-public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeListener,
-        MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnSeekCompleteListener {
+public class ExoPlayback
+        implements
+        Playback,
+        AudioManager.OnAudioFocusChangeListener,
+        MediaPlayer.OnCompletionListener,
+        MediaPlayer.OnErrorListener,
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnSeekCompleteListener {
 
     private static final String TAG = LogHelper.makeLogTag(ExoPlayback.class);
 
