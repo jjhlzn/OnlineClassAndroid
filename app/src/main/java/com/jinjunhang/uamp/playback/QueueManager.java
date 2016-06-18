@@ -62,6 +62,7 @@ public class QueueManager {
     }
 
 
+
     /**
      * 设置队列的当前位置
      * @param index
@@ -137,18 +138,21 @@ public class QueueManager {
      * @param mediaId
      */
     public void setQueueFromMusic(String mediaId) {
-        LogHelper.d(TAG, "setQueueFromMusic", mediaId);
+        LogHelper.d(TAG, "setQueueFromMusic mediaId = ", mediaId);
 
         // The mediaId used here is not the unique musicId. This one comes from the
         // MediaBrowser, and is actually a "hierarchy-aware mediaID": a concatenation of
         // the hierarchy in MediaBrowser and the actual unique musicID. This is necessary
         // so we can build the correct playing queue, based on where the track was
         // selected from.
+        setCurrentQueue("music queue", QueueHelper.getSimplePlayingQueue(mediaId, mMusicProvider), mediaId);
         setCurrentQueueItem(mediaId);
         updateMetadata();
     }
 
     public MediaSessionCompat.QueueItem getCurrentMusic() {
+        LogHelper.d(TAG, "mCurrentIndex = " + mCurrentIndex);
+        LogHelper.d(TAG, "mPlayingQueue = " + mPlayingQueue);
         if (!QueueHelper.isIndexPlayable(mCurrentIndex, mPlayingQueue)) {
             return null;
         }
@@ -183,7 +187,7 @@ public class QueueManager {
             mListener.onMetadataRetrieveError();
             return;
         }
-        final String musicId = MediaIDHelper.extractMusicIDFromMediaID(currentMusic.getDescription().getMediaId());
+        final String musicId = currentMusic.getDescription().getMediaId();
         MediaMetadataCompat metadata = mMusicProvider.getMusic(musicId);
         if (metadata == null) {
             throw new IllegalArgumentException("Invalid musicId " + musicId);
@@ -205,7 +209,7 @@ public class QueueManager {
                     if (currentMusic == null) {
                         return;
                     }
-                    String currentPlayingId = MediaIDHelper.extractMusicIDFromMediaID(currentMusic.getDescription().getMediaId());
+                    String currentPlayingId = currentMusic.getDescription().getMediaId();
                     if (musicId.equals(currentPlayingId)) {
                         mListener.onMetadataChanged(mMusicProvider.getMusic(currentPlayingId));
                     }

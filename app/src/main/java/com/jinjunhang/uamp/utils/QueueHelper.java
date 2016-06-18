@@ -18,6 +18,7 @@ package com.jinjunhang.uamp.utils;
 
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
 
 import com.jinjunhang.uamp.model.MusicProvider;
 
@@ -36,8 +37,8 @@ public class QueueHelper {
 
     private static final int RANDOM_QUEUE_SIZE = 10;
 
-    public static List<MediaSessionCompat.QueueItem> getPlayingQueue(String mediaId,
-                                                                     MusicProvider musicProvider) {
+    /*
+    public static List<MediaSessionCompat.QueueItem> getPlayingQueue(String mediaId, MusicProvider musicProvider) {
 
         // extract the browsing hierarchy from the media ID:
         String[] hierarchy = MediaIDHelper.getHierarchy(mediaId);
@@ -65,12 +66,24 @@ public class QueueHelper {
         }
 
         return convertToQueue(tracks, hierarchy[0], hierarchy[1]);
+    }*/
+
+    public static List<MediaSessionCompat.QueueItem> getSimplePlayingQueue(String mediaId, MusicProvider musicProvider) {
+
+        Iterable<MediaMetadataCompat> tracks = musicProvider.getAllMusics();
+
+        if (tracks == null) {
+            LogHelper.e(TAG, "tracks is null");
+            return null;
+        }
+
+        return convertToQueue(tracks);
     }
 
-    public static int getMusicIndexOnQueue(Iterable<MediaSessionCompat.QueueItem> queue,
-             String mediaId) {
+    public static int getMusicIndexOnQueue(Iterable<MediaSessionCompat.QueueItem> queue, String mediaId) {
         int index = 0;
         for (MediaSessionCompat.QueueItem item : queue) {
+            LogHelper.d(TAG, "item.getDescription().getMediaId() = ", item.getDescription().getMediaId());
             if (mediaId.equals(item.getDescription().getMediaId())) {
                 return index;
             }
@@ -90,8 +103,7 @@ public class QueueHelper {
         return -1;
     }
 
-    private static List<MediaSessionCompat.QueueItem> convertToQueue(
-            Iterable<MediaMetadataCompat> tracks, String... categories) {
+    private static List<MediaSessionCompat.QueueItem> convertToQueue(Iterable<MediaMetadataCompat> tracks, String... categories) {
         List<MediaSessionCompat.QueueItem> queue = new ArrayList<>();
         int count = 0;
         for (MediaMetadataCompat track : tracks) {
@@ -109,6 +121,24 @@ public class QueueHelper {
             // queueId. Any other number unique in the queue would work.
             MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(
                     trackCopy.getDescription(), count++);
+            queue.add(item);
+        }
+        return queue;
+
+    }
+
+    private static List<MediaSessionCompat.QueueItem> convertToQueue(Iterable<MediaMetadataCompat> tracks) {
+        List<MediaSessionCompat.QueueItem> queue = new ArrayList<>();
+        int count = 0;
+        for (MediaMetadataCompat track : tracks) {
+
+            MediaMetadataCompat trackCopy = new MediaMetadataCompat.Builder(track)
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, track.getDescription().getMediaId())
+                    .build();
+
+            // We don't expect queues to change after created, so we use the item index as the
+            // queueId. Any other number unique in the queue would work.
+            MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(trackCopy.getDescription(), count++);
             queue.add(item);
         }
         return queue;

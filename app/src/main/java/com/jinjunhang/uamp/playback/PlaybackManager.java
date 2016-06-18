@@ -21,18 +21,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.media.MediaItemMetadata;
+import android.util.Log;
 
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.uamp.model.MusicProvider;
+import com.jinjunhang.uamp.model.MusicProviderSource;
 import com.jinjunhang.uamp.utils.LogHelper;
 import com.jinjunhang.uamp.utils.MediaIDHelper;
-import com.jinjunhang.onlineclass.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manage the interactions among the container service, the queue manager and the actual playback.
  */
 public class PlaybackManager implements Playback.Callback {
+
+    public static final String EXTRA_PLAY_SONGS = "EXTRA_PLAY_SONGS";
 
     private static final String TAG = LogHelper.makeLogTag(PlaybackManager.class);
     // Action to thumbs up a media item
@@ -70,11 +79,13 @@ public class PlaybackManager implements Playback.Callback {
      */
     public void handlePlayRequest() {
         LogHelper.d(TAG, "handlePlayRequest: mState=" + mPlayback.getState());
-        //MediaSessionCompat.QueueItem currentMusic = mQueueManager.getCurrentMusic();
-       // if (currentMusic != null) {
+        MediaSessionCompat.QueueItem currentMusic = mQueueManager.getCurrentMusic();
+        if (currentMusic != null) {
             mServiceCallback.onPlaybackStart();
-            mPlayback.play(null);
-        //}
+            mPlayback.play(currentMusic);
+        } else {
+            LogHelper.d(TAG, "currentMusic is null");
+        }
     }
 
     /**
@@ -286,8 +297,46 @@ public class PlaybackManager implements Playback.Callback {
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             LogHelper.d(TAG, "playFromMediaId mediaId:", mediaId, "  extras=", extras);
+            LogHelper.d(TAG, "playFromMediaId mediaId:", mediaId, "  extras[EXTRA_PLAY_SONGS]=", extras.getSerializable(EXTRA_PLAY_SONGS));
+            extras.setClassLoader (MediaMetadataCompat.class.getClassLoader());
+            List<Song> songs =  (List<Song>)extras.getSerializable(EXTRA_PLAY_SONGS);
+            if (songs != null) {
+                //更新MusicProvider中的数据源
+                mMusicProvider.getMusicSource().setSource(convertSongs(songs));
+            }
+            LogHelper.d(TAG, "mediaId = " + mediaId);
             mQueueManager.setQueueFromMusic(mediaId);
             handlePlayRequest();
+        }
+
+        private ArrayList<MediaMetadataCompat> convertSongs(List<Song> songs) {
+            ArrayList<MediaMetadataCompat> result = new ArrayList<>();
+            for (Song song : songs) {
+                LogHelper.d(TAG, "song.name = " + song.getName());
+                result.add(buildFromSong(song));
+            }
+            return result;
+        }
+
+        private MediaMetadataCompat buildFromSong(Song song) {
+
+            // Adding the music source to the MediaMetadata (and consequently using it in the
+            // mediaSession.setMetadata) is not a good idea for a real world music app, because
+            // the session metadata can be accessed by notification listeners. This is done in this
+            // sample for convenience only.
+            //noinspection ResourceType
+            return new MediaMetadataCompat.Builder()
+                    .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.getId())
+                    .putString(MusicProviderSource.CUSTOM_METADATA_TRACK_SOURCE, song.getUrl())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, song.getAlbum().getName())
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.getAlbum().getAuthor())
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 0)
+                    .putString(MediaMetadataCompat.METADATA_KEY_GENRE, "")
+                    .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "")
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "")
+                    .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 0)
+                    .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 0)
+                    .build();
         }
 
         @Override

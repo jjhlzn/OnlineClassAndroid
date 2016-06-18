@@ -17,6 +17,7 @@
 package com.jinjunhang.uamp.model;
 
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v7.media.MediaItemMetadata;
 
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.uamp.utils.LogHelper;
@@ -42,17 +43,15 @@ public class OnlineClassSource implements MusicProviderSource {
 
     private static final String TAG = LogHelper.makeLogTag(OnlineClassSource.class);
 
-    private List<MediaMetadataCompat> mSongs;
-
-    public void setSongs(List<MediaMetadataCompat> songs) {
-        mSongs = songs;
-    }
+    private List<MediaMetadataCompat> mSongs = new ArrayList<>();
 
     @Override
     public Iterator<MediaMetadataCompat> iterator() {
         return mSongs.iterator();
     }
 
-
-
+    @Override
+    public void setSource(List<MediaMetadataCompat> songs) {
+        mSongs = songs;
+    }
 }

@@ -32,6 +32,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Utility class to get a list of MusicTrack's based on a server-side JSON
@@ -153,5 +154,10 @@ public class RemoteJSONSource implements MusicProviderSource {
                 }
             }
         }
+    }
+
+    @Override
+    public void setSource(List<MediaMetadataCompat> songs) {
+
     }
 }

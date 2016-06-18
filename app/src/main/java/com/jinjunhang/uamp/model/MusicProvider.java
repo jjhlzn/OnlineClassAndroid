@@ -20,11 +20,14 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v7.media.MediaItemMetadata;
 
 
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.uamp.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -57,7 +60,6 @@ public class MusicProvider {
     private ConcurrentMap<String, List<MediaMetadataCompat>> mMusicListByGenre;
     private final ConcurrentMap<String, MutableMediaMetadata> mMusicListById;
 
-    private final Set<String> mFavoriteTracks;
 
     enum State {
         NON_INITIALIZED, INITIALIZING, INITIALIZED
@@ -70,13 +72,17 @@ public class MusicProvider {
     }
 
     public MusicProvider() {
-        this(new RemoteJSONSource());
+        this(new OnlineClassSource());
     }
     public MusicProvider(MusicProviderSource source) {
         mSource = source;
         mMusicListByGenre = new ConcurrentHashMap<>();
         mMusicListById = new ConcurrentHashMap<>();
-        mFavoriteTracks = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+        //mFavoriteTracks = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
+    }
+
+    public MusicProviderSource getMusicSource() {
+        return mSource;
     }
 
     /**
@@ -117,50 +123,15 @@ public class MusicProvider {
         return mMusicListByGenre.get(genre);
     }
 
-    /**
-     * Very basic implementation of a search that filter music tracks with title containing
-     * the given query.
-     *
-     */
-    public Iterable<MediaMetadataCompat> searchMusicBySongTitle(String query) {
-        return searchMusic(MediaMetadataCompat.METADATA_KEY_TITLE, query);
-    }
+    public Iterable<MediaMetadataCompat> getAllMusics() {
 
-    /**
-     * Very basic implementation of a search that filter music tracks with album containing
-     * the given query.
-     *
-     */
-    /*
-    public Iterable<MediaMetadataCompat> searchMusicByAlbum(String query) {
-        return searchMusic(MediaMetadataCompat.METADATA_KEY_ALBUM, query);
-    }*/
-
-    /**
-     * Very basic implementation of a search that filter music tracks with artist containing
-     * the given query.
-     *
-     */
-    /*
-    public Iterable<MediaMetadataCompat> searchMusicByArtist(String query) {
-        return searchMusic(MediaMetadataCompat.METADATA_KEY_ARTIST, query);
-    }*/
-
-    Iterable<MediaMetadataCompat> searchMusic(String metadataField, String query) {
-        if (mCurrentState != State.INITIALIZED) {
-            return Collections.emptyList();
-        }
-        ArrayList<MediaMetadataCompat> result = new ArrayList<>();
-        query = query.toLowerCase(Locale.US);
-        for (MutableMediaMetadata track : mMusicListById.values()) {
-            if (track.metadata.getString(metadataField).toLowerCase(Locale.US)
-                .contains(query)) {
-                result.add(track.metadata);
-            }
+        List<MediaMetadataCompat> result = new ArrayList<>();
+        Iterator<MediaMetadataCompat> iterator = mSource.iterator();
+        while (iterator.hasNext()) {
+            result.add(iterator.next());
         }
         return result;
     }
-
 
     /**
      * Return the MediaMetadataCompat for the given musicID.
@@ -168,7 +139,16 @@ public class MusicProvider {
      * @param musicId The unique, non-hierarchical music ID.
      */
     public MediaMetadataCompat getMusic(String musicId) {
-        return mMusicListById.containsKey(musicId) ? mMusicListById.get(musicId).metadata : null;
+        //LogHelper.d(TAG, "mMusicListById = " + mMusicListById);
+        Iterator<MediaMetadataCompat> songs = mSource.iterator();
+        while(songs.hasNext()) {
+            MediaMetadataCompat song = songs.next();
+            if (song.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID) == musicId) {
+                return song;
+            }
+        }
+        return null;
+        //return mMusicListById.containsKey(musicId) ? mMusicListById.get(musicId).metadata : null;
     }
 
     public synchronized void updateMusicArt(String musicId, Bitmap albumArt, Bitmap icon) {
@@ -194,19 +174,6 @@ public class MusicProvider {
 
         mutableMetadata.metadata = metadata;
     }
-
-    /*
-    public void setFavorite(String musicId, boolean favorite) {
-        if (favorite) {
-            mFavoriteTracks.add(musicId);
-        } else {
-            mFavoriteTracks.remove(musicId);
-        }
-    }
-
-    public boolean isFavorite(String musicId) {
-        return mFavoriteTracks.contains(musicId);
-    } */
 
     /**
      * Get the list of music tracks from a server and caches the track information

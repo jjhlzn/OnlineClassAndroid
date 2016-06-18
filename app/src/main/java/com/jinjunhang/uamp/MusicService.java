@@ -121,7 +121,7 @@ package com.jinjunhang.uamp;
                  });
 
          //LocalPlayback playback = new LocalPlayback(this, mMusicProvider);
-         ExoPlayback playback = new ExoPlayback(this);
+         ExoPlayback playback = new ExoPlayback(this, mMusicProvider);
          mPlaybackManager = new PlaybackManager(this, getResources(), mMusicProvider, queueManager, playback);
 
          // Start a new MediaSession

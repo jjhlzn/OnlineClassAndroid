@@ -32,7 +32,7 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
         for( int i = 0; i < jsonArray.length(); i++ ) {
             JSONObject json = jsonArray.getJSONObject(i);
 
-            Song song = null;
+            Song song;
             if (req.getAlbum().getAlbumType().equals(AlbumType.LiveAlbumType)) {
                 LiveSong liveSong = new LiveSong();
                 liveSong.setStartDateTime(json.getString("startTime"));
@@ -52,8 +52,12 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             songSetting.setCanComment(settingJson.getBoolean("canComment"));
             songSetting.setMaxCommentWord(settingJson.getInt("maxCommentWord"));
             song.setSettings(songSetting);
+
+
+
             mResultSet.add(song);
         }
+        req.getAlbum().setSongs(mResultSet);
 
     }
 }

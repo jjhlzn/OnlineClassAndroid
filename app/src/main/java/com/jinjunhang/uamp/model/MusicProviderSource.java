@@ -17,10 +17,13 @@
 package com.jinjunhang.uamp.model;
 
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v7.media.MediaItemMetadata;
 
 import java.util.Iterator;
+import java.util.List;
 
 public interface MusicProviderSource {
     String CUSTOM_METADATA_TRACK_SOURCE = "__SOURCE__";
     Iterator<MediaMetadataCompat> iterator();
+    void setSource(List<MediaMetadataCompat> songs);
 }

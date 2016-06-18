@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,15 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
+import com.jinjunhang.uamp.MusicService;
+import com.jinjunhang.uamp.model.MusicProviderSource;
+import com.jinjunhang.uamp.playback.Playback;
+import com.jinjunhang.uamp.playback.PlaybackManager;
 import com.jinjunhang.uamp.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +70,7 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
-                playMusic(song.getUrl());
+                playMusic(song.getId());
 
                 /*
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
@@ -87,16 +95,49 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
         return v;
     }
 
-    private void playMusic(String url) {
+    private void playMusic(String id) {
         //LogHelper.d(TAG, "onMediaItemSelected, mediaId=" + item.getMediaId());
         //if (item.isPlayable()) {
-            getActivity().getSupportMediaController().getTransportControls().playFromMediaId(url, null);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(PlaybackManager.EXTRA_PLAY_SONGS, (ArrayList<Song>)mAlbum.getSongs());
+        //bundle.setClassLoader(getClass().getClassLoader());
+        getActivity().getSupportMediaController().getTransportControls().playFromMediaId(id, bundle);
         //} else if (item.isBrowsable()) {
          //   navigateToBrowser(item.getMediaId());
         //} else {
         //    LogHelper.w(TAG, "Ignoring MediaItem that is neither browsable nor playable: ",
          //           "mediaId=", item.getMediaId());
         //}
+    }
+
+    private ArrayList<MediaMetadataCompat> getSongs() {
+        ArrayList<MediaMetadataCompat> result = new ArrayList<>();
+        List<Song> songs = mAlbum.getSongs();
+        for (Song song : songs) {
+            result.add(buildFromSong(song));
+        }
+        return result;
+    }
+
+    private MediaMetadataCompat buildFromSong(Song song) {
+
+        // Adding the music source to the MediaMetadata (and consequently using it in the
+        // mediaSession.setMetadata) is not a good idea for a real world music app, because
+        // the session metadata can be accessed by notification listeners. This is done in this
+        // sample for convenience only.
+        //noinspection ResourceType
+        return new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.getId())
+                .putString(MusicProviderSource.CUSTOM_METADATA_TRACK_SOURCE, song.getUrl())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, song.getAlbum().getName())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.getAlbum().getAuthor())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 0)
+                .putString(MediaMetadataCompat.METADATA_KEY_GENRE, "")
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "")
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "")
+                .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 0)
+                .putLong(MediaMetadataCompat.METADATA_KEY_NUM_TRACKS, 0)
+                .build();
     }
 
     @Override
