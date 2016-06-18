@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.activity;
 
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.controller.fragment.MainPageFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 

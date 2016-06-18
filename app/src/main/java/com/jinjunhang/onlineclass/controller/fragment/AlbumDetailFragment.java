@@ -1,7 +1,5 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
@@ -16,25 +14,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer.util.Util;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.controller.activity.BaseMusicActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
-import com.jinjunhang.uamp.MusicService;
 import com.jinjunhang.uamp.model.MusicProviderSource;
-import com.jinjunhang.uamp.playback.Playback;
 import com.jinjunhang.uamp.playback.PlaybackManager;
 import com.jinjunhang.uamp.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

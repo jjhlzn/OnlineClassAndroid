@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.fragment;
 
 /**
  * Created by lzn on 16/6/13.

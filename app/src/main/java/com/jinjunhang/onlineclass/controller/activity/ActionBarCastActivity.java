@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.activity;
 
 import android.app.FragmentManager;
 import android.content.res.Configuration;

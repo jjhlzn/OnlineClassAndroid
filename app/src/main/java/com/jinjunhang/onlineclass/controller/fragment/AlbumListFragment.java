@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.controller.activity.AlbumDetailActivity;
+import com.jinjunhang.onlineclass.controller.activity.MainActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.framework.service.BasicService;

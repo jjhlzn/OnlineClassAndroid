@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.MainActivity"
+        <activity android:name=".controller.activity.MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,19 +23,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.jinjunhang.onlineclass.controller.AlbumListActivity"
+        <activity android:name=".controller.activity.AlbumListActivity"
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.jinjunhang.onlineclass.controller.AlbumDetailActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.jinjunhang.onlineclass.controller.PlayerActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.jinjunhang.onlineclass.controller.MusicPlayerActivity"
+        <activity android:name=".controller.activity.AlbumDetailActivity"
                   android:screenOrientation="portrait">
         </activity>
 

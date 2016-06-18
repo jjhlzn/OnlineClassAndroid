@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.controller.activity.AlbumListActivity;
 import com.jinjunhang.onlineclass.model.AlbumType;
 
 import java.util.List;

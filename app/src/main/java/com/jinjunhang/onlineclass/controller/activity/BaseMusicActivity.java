@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

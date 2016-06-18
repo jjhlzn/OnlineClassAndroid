@@ -36,9 +36,9 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.NotificationCompat;
 
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.controller.activity.MainActivity;
 import com.jinjunhang.uamp.utils.LogHelper;
 import com.jinjunhang.uamp.utils.ResourceHelper;
-import com.jinjunhang.onlineclass.controller.MusicPlayerActivity;
 
 
 /**
@@ -205,11 +205,11 @@ public class MediaNotificationManager extends BroadcastReceiver {
     }
 
     private PendingIntent createContentIntent(MediaDescriptionCompat description) {
-        Intent openUI = new Intent(mService, MusicPlayerActivity.class);
+        Intent openUI = new Intent(mService, MainActivity.class);
         openUI.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        openUI.putExtra(MusicPlayerActivity.EXTRA_START_FULLSCREEN, true);
+        //openUI.putExtra(MainActivity.EXTRA_START_FULLSCREEN, true);
         if (description != null) {
-            openUI.putExtra(MusicPlayerActivity.EXTRA_CURRENT_MEDIA_DESCRIPTION, description);
+           // openUI.putExtra(MainActivity.EXTRA_CURRENT_MEDIA_DESCRIPTION, description);
         }
         return PendingIntent.getActivity(mService, REQUEST_CODE, openUI,
                 PendingIntent.FLAG_CANCEL_CURRENT);

@@ -37,10 +37,9 @@ package com.jinjunhang.uamp;
 
  import com.jinjunhang.onlineclass.R;
  import com.jinjunhang.uamp.model.*;
- import com.jinjunhang.uamp.*;
  import com.jinjunhang.uamp.utils.*;
  import com.jinjunhang.uamp.playback.*;
- import com.jinjunhang.onlineclass.controller.MainActivity;
+ import com.jinjunhang.onlineclass.controller.activity.MainActivity;
 
  //import com.jinjunhang.onlineclass.R;
 

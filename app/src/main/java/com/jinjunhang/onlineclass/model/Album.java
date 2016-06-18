@@ -1,5 +1,7 @@
 package com.jinjunhang.onlineclass.model;
 
+import android.support.v4.media.MediaBrowserCompat;
+
 import java.util.List;
 
 /**
@@ -79,6 +81,10 @@ public class Album extends BaseModelObject {
 
     public void setSongs(List<Song> songs) {
         mSongs = songs;
+    }
+
+    public static interface MediaBrowserProvider {
+        MediaBrowserCompat getMediaBrowser();
     }
 }
 

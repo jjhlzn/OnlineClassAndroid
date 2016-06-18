@@ -1,9 +1,8 @@
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.activity;
 
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
-import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.onlineclass.controller.fragment.AlbumDetailFragment;
 
 /**
  * Created by lzn on 16/6/10.

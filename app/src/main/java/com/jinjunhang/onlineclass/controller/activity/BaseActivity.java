@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jinjunhang.onlineclass.controller;
+package com.jinjunhang.onlineclass.controller.activity;
 
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -30,6 +30,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.jinjunhang.onlineclass.R;
 
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.uamp.MusicService;
 import com.jinjunhang.uamp.utils.LogHelper;
 import com.jinjunhang.uamp.utils.ResourceHelper;
@@ -37,7 +38,7 @@ import com.jinjunhang.uamp.utils.ResourceHelper;
 /**
  * Base activity for activities that need to show a playback control fragment when media is playing.
  */
-public abstract class BaseActivity extends ActionBarCastActivity implements MediaBrowserProvider {
+public abstract class BaseActivity extends ActionBarCastActivity implements Album.MediaBrowserProvider {
 
     private static final String TAG = LogHelper.makeLogTag(BaseActivity.class);
 
