@@ -112,7 +112,7 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
 
     @Override
     public void stop(boolean notifyListeners) {
-
+        player.release();
     }
 
     @Override
@@ -132,10 +132,14 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
 
     @Override
     public boolean isPlaying() {
+        LogHelper.d(TAG, "player = " + player);
         if (player == null) {
             return false;
         }
-        return player.getPlaybackState() == PlaybackState.STATE_PLAYING;
+        LogHelper.d(TAG, "player.getPlaybackState() = " + player.getPlaybackState());
+        return player.getPlaybackState() == PlaybackState.STATE_PLAYING
+                || player.getPlaybackState() == PlaybackState.STATE_FAST_FORWARDING
+                || player.getPlaybackState() == PlaybackState.STATE_BUFFERING;
     }
 
     @Override

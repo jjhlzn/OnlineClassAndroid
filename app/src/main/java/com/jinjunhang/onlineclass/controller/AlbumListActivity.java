@@ -7,7 +7,7 @@ import com.jinjunhang.framework.controller.SingleFragmentActivity;
 /**
  * Created by lzn on 16/6/11.
  */
-public class AlbumListActivity extends SingleFragmentActivity {
+public class AlbumListActivity extends BaseMusicActivity {
 
     @Override
     protected Fragment createFragment() {
