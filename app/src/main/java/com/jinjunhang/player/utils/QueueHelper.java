@@ -35,37 +35,6 @@ public class QueueHelper {
 
     private static final int RANDOM_QUEUE_SIZE = 10;
 
-    /*
-    public static List<MediaSessionCompat.QueueItem> getPlayingQueue(String mediaId, MusicProvider musicProvider) {
-
-        // extract the browsing hierarchy from the media ID:
-        String[] hierarchy = MediaIDHelper.getHierarchy(mediaId);
-
-        if (hierarchy.length != 2) {
-            LogHelper.e(TAG, "Could not build a playing queue for this mediaId: ", mediaId);
-            return null;
-        }
-
-        String categoryType = hierarchy[0];
-        String categoryValue = hierarchy[1];
-        LogHelper.d(TAG, "Creating playing queue for ", categoryType, ",  ", categoryValue);
-
-        Iterable<MediaMetadataCompat> tracks = null;
-        // This sample only supports genre and by_search category types.
-        if (categoryType.equals(MEDIA_ID_MUSICS_BY_GENRE)) {
-            tracks = musicProvider.getMusicsByGenre(categoryValue);
-        } else if (categoryType.equals(MEDIA_ID_MUSICS_BY_SEARCH)) {
-            tracks = musicProvider.searchMusicBySongTitle(categoryValue);
-        }
-
-        if (tracks == null) {
-            LogHelper.e(TAG, "Unrecognized category type: ", categoryType, " for media ", mediaId);
-            return null;
-        }
-
-        return convertToQueue(tracks, hierarchy[0], hierarchy[1]);
-    }*/
-
     public static List<MediaSessionCompat.QueueItem> getSimplePlayingQueue(String mediaId, MusicProvider musicProvider) {
 
         Iterable<MediaMetadataCompat> tracks = musicProvider.getAllMusics();
@@ -141,40 +110,6 @@ public class QueueHelper {
         }
         return queue;
 
-    }
-
-    /**
-     * Create a random queue with at most {@link #RANDOM_QUEUE_SIZE} elements.
-     *
-     * @param musicProvider the provider used for fetching music.
-     * @return list containing {@link MediaSessionCompat.QueueItem}'s
-     */
-    public static List<MediaSessionCompat.QueueItem> getRandomQueue(MusicProvider musicProvider) {
-        List<MediaMetadataCompat> result = new ArrayList<>(RANDOM_QUEUE_SIZE);
-        Iterable<MediaMetadataCompat> shuffled = musicProvider.getShuffledMusic();
-        for (MediaMetadataCompat metadata: shuffled) {
-            if (result.size() == RANDOM_QUEUE_SIZE) {
-                break;
-            }
-            result.add(metadata);
-        }
-        LogHelper.d(TAG, "getRandomQueue: result.size=", result.size());
-
-        return convertToQueue(result, MEDIA_ID_MUSICS_BY_SEARCH, "random");
-    }
-
-    public static List<MediaSessionCompat.QueueItem> getSequenceQueue(MusicProvider musicProvider) {
-        List<MediaMetadataCompat> result = new ArrayList<>(RANDOM_QUEUE_SIZE);
-        Iterable<MediaMetadataCompat> shuffled = musicProvider.getShuffledMusic();
-        for (MediaMetadataCompat metadata: shuffled) {
-            if (result.size() == RANDOM_QUEUE_SIZE) {
-                break;
-            }
-            result.add(metadata);
-        }
-        LogHelper.d(TAG, "getRandomQueue: result.size=", result.size());
-
-        return convertToQueue(result, MEDIA_ID_MUSICS_BY_SEARCH, "random");
     }
 
 

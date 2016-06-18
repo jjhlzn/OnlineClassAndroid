@@ -124,12 +124,6 @@ public class QueueManager {
                 QueueHelper.getPlayingQueueFromSearch(query, extras, mMusicProvider));
     }*/
 
-    /**
-     * 设置随机队列
-     */
-    public void setRandomQueue() {
-        setCurrentQueue(mResources.getString(R.string.random_queue_title), QueueHelper.getRandomQueue(mMusicProvider));
-    }
 
     /**
      * 根据mediaId设置队列的当前位置，并且更新MetaData

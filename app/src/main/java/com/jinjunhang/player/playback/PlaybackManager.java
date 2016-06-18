@@ -206,9 +206,9 @@ public class PlaybackManager implements Playback.Callback {
         @Override
         public void onPlay() {
             LogHelper.d(TAG, "play");
-            if (mQueueManager.getCurrentMusic() == null) {
-                mQueueManager.setRandomQueue();
-            }
+            //if (mQueueManager.getCurrentMusic() == null) {
+            //    mQueueManager.setRandomQueue();
+            //}
             handlePlayRequest();
         }
 
@@ -234,7 +234,7 @@ public class PlaybackManager implements Playback.Callback {
             List<Song> songs =  (List<Song>)extras.getSerializable(EXTRA_PLAY_SONGS);
             if (songs != null) {
                 //更新MusicProvider中的数据源
-                mMusicProvider.getMusicSource().setSource(convertSongs(songs));
+                mMusicProvider.updateMusicSource(convertSongs(songs));
             }
             LogHelper.d(TAG, "mediaId = " + mediaId);
             mQueueManager.setQueueFromMusic(mediaId);
