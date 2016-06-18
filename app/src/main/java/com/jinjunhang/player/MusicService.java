@@ -136,12 +136,6 @@ package com.jinjunhang.player;
                  intent, PendingIntent.FLAG_UPDATE_CURRENT);
          mSession.setSessionActivity(pi);
 
-         //mSessionExtras = new Bundle();
-         //CarHelper.setSlotReservationFlags(mSessionExtras, true, true, true);
-         //WearHelper.setSlotReservationFlags(mSessionExtras, true, true);
-         //WearHelper.setUseBackgroundFromTheme(mSessionExtras, true);
-         //mSession.setExtras(mSessionExtras);
-
          mPlaybackManager.updatePlaybackState(null);
 
          try {
@@ -149,10 +143,6 @@ package com.jinjunhang.player;
          } catch (RemoteException e) {
              throw new IllegalStateException("Could not create a MediaNotificationManager", e);
          }
-         //VideoCastManager.getInstance().addVideoCastConsumer(mCastConsumer);
-         //mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-
-         //registerCarConnectionReceiver();
      }
 
      /**

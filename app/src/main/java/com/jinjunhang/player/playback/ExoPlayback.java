@@ -7,6 +7,7 @@ import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.jinjunhang.player.model.MusicProvider;
 import com.jinjunhang.player.model.MusicProviderSource;
@@ -28,6 +29,8 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
 
     private DemoPlayer player;
     private boolean playerNeedsPrepare;
+
+    private Callback mCallback;
 
     private Context context;
     private int contentType;
@@ -117,7 +120,10 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
 
     @Override
     public int getState() {
-        return 0;
+        if (isPlaying())
+            return PlaybackStateCompat.STATE_PLAYING;
+        else
+            return PlaybackStateCompat.STATE_NONE;
     }
 
     @Override
@@ -133,6 +139,7 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
         }
         LogHelper.d(TAG, "player.getPlaybackState() = " + player.getPlaybackState());
         return player.getPlaybackState() == PlaybackState.STATE_PLAYING
+                || player.getPlaybackState() == PlaybackState.STATE_PAUSED
                 || player.getPlaybackState() == PlaybackState.STATE_FAST_FORWARDING
                 || player.getPlaybackState() == PlaybackState.STATE_BUFFERING;
     }
@@ -175,6 +182,10 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
         //contentUri = Uri.parse("http://114.215.171.93:1935/live/myStream2/playlist.m3u8");
         preparePlayer(true);
         player.setPlayWhenReady(true);
+
+        if (mCallback != null) {
+            mCallback.onPlaybackStatusChanged(PlaybackStateCompat.STATE_PLAYING);
+        }
     }
 
     @Override
@@ -199,6 +210,6 @@ public class ExoPlayback implements Playback, AudioManager.OnAudioFocusChangeLis
 
     @Override
     public void setCallback(Callback callback) {
-
+        this.mCallback = callback;
     }
 }
