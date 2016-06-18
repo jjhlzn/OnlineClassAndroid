@@ -86,11 +86,6 @@ package com.jinjunhang.player;
 
          mMusicProvider = new MusicProvider();
 
-         // To make the app more responsive, fetch and cache catalog information now.
-         // This can help improve the response time in the method
-         // {@link #onLoadChildren(String, Result<List<MediaItem>>) onLoadChildren()}.
-         //mMusicProvider.retrieveMediaAsync(null /* Callback */);
-
 
          QueueManager queueManager = new QueueManager(mMusicProvider, getResources(),
                  new QueueManager.MetadataUpdateListener() {
@@ -124,8 +119,7 @@ package com.jinjunhang.player;
          mSession = new MediaSessionCompat(this, "MusicService");
          setSessionToken(mSession.getSessionToken());
          mSession.setCallback(mPlaybackManager.getMediaSessionCallback());
-         mSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
-                 MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+         mSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
          //TODO: 这是干什么用的？？
          Context context = getApplicationContext();

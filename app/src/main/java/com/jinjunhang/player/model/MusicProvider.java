@@ -96,7 +96,6 @@ public class MusicProvider {
             }
         }
         return null;
-        //return mMusicListById.containsKey(musicId) ? mMusicListById.get(musicId).metadata : null;
     }
 
     public synchronized void updateMusicArt(String musicId, Bitmap albumArt, Bitmap icon) {

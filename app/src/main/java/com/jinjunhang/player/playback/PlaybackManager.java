@@ -260,7 +260,7 @@ public class PlaybackManager implements Playback.Callback {
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, song.getAlbum().getName())
                     .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.getAlbum().getAuthor())
                     .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 0)
-                    .putString(MediaMetadataCompat.METADATA_KEY_GENRE, "")
+                    .putString(MediaMetadataCompat.METADATA_KEY_GENRE, song.getAlbum().getAlbumType().getTypeCode())
                     .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, "")
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "")
                     .putLong(MediaMetadataCompat.METADATA_KEY_TRACK_NUMBER, 0)
@@ -305,14 +305,6 @@ public class PlaybackManager implements Playback.Callback {
         public void onCustomAction(@NonNull String action, Bundle extras) {
             if (CUSTOM_ACTION_THUMBS_UP.equals(action)) {
                 LogHelper.i(TAG, "onCustomAction: favorite for current track");
-                MediaSessionCompat.QueueItem currentMusic = mQueueManager.getCurrentMusic();
-                if (currentMusic != null) {
-                    String mediaId = currentMusic.getDescription().getMediaId();
-                    if (mediaId != null) {
-                        String musicId = MediaIDHelper.extractMusicIDFromMediaID(mediaId);
-                        //mMusicProvider.setFavorite(musicId, !mMusicProvider.isFavorite(musicId));
-                    }
-                }
                 // playback state needs to be updated because the "Favorite" icon on the
                 // custom action will change to reflect the new favorite state.
                 updatePlaybackState(null);
@@ -337,12 +329,6 @@ public class PlaybackManager implements Playback.Callback {
         @Override
         public void onPlayFromSearch(final String query, final Bundle extras) {
             LogHelper.d(TAG, "playFromSearch  query=", query, " extras=", extras);
-
-            /*
-            mPlayback.setState(PlaybackStateCompat.STATE_CONNECTING);
-            mQueueManager.setQueueFromSearch(query, extras);
-            handlePlayRequest();
-            mQueueManager.updateMetadata(); */
         }
     }
 
