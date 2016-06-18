@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.activity.MainActivity"
+        <activity android:name=".ui.activity.MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,11 +23,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".controller.activity.AlbumListActivity"
+        <activity android:name=".ui.activity.AlbumListActivity"
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".controller.activity.AlbumDetailActivity"
+        <activity android:name=".ui.activity.AlbumDetailActivity"
                   android:screenOrientation="portrait">
         </activity>
 
@@ -36,7 +36,7 @@
              consumers through MediaBrowserService and MediaSession. Consumers connect to it through
              MediaBrowser (for browsing) and MediaController (for play session control) -->
         <service
-            android:name="com.jinjunhang.uamp.MusicService"
+            android:name="com.jinjunhang.player.MusicService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
