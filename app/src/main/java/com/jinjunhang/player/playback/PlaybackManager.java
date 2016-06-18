@@ -47,7 +47,6 @@ public class PlaybackManager implements Playback.Callback {
 
     private MusicProvider mMusicProvider;
     private QueueManager mQueueManager;
-    private Resources mResources;
     private Playback mPlayback;
     private PlaybackServiceCallback mServiceCallback;
     private MediaSessionCallback mMediaSessionCallback;
@@ -57,7 +56,6 @@ public class PlaybackManager implements Playback.Callback {
                            Playback playback) {
         mMusicProvider = musicProvider;
         mServiceCallback = serviceCallback;
-        mResources = resources;
         mQueueManager = queueManager;
         mMediaSessionCallback = new MediaSessionCallback();
         mPlayback = playback;
@@ -73,7 +71,7 @@ public class PlaybackManager implements Playback.Callback {
     }
 
     /**
-     * Handle a request to play music
+     * Handle a request to play music  播放
      */
     public void handlePlayRequest() {
         LogHelper.d(TAG, "handlePlayRequest: mState=" + mPlayback.getState());
@@ -87,7 +85,7 @@ public class PlaybackManager implements Playback.Callback {
     }
 
     /**
-     * Handle a request to pause music
+     * Handle a request to pause music 暂停
      */
     public void handlePauseRequest() {
         LogHelper.d(TAG, "handlePauseRequest: mState=" + mPlayback.getState());
@@ -98,7 +96,7 @@ public class PlaybackManager implements Playback.Callback {
     }
 
     /**
-     * Handle a request to stop music
+     * Handle a request to stop music 停止
      *
      * @param withError Error message in case the stop has an unexpected cause. The error
      *                  message will be set in the PlaybackState and will be visible to
@@ -118,6 +116,7 @@ public class PlaybackManager implements Playback.Callback {
      * @param error if not null, error message to present to the user.
      */
     public void updatePlaybackState(String error) {
+        //TODO: 应该使用ExoPlayer的状态，而不是使用MediaPlayer的状态
         LogHelper.d(TAG, "updatePlaybackState, playback state=" + mPlayback.getState());
         long position = PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN;
         if (mPlayback != null && mPlayback.isConnected()) {
@@ -125,8 +124,7 @@ public class PlaybackManager implements Playback.Callback {
         }
 
         //noinspection ResourceType
-        PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
-                .setActions(getAvailableActions());
+        PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder().setActions(getAvailableActions());
 
         //setCustomAction(stateBuilder);
         int state = mPlayback.getState();
@@ -149,8 +147,7 @@ public class PlaybackManager implements Playback.Callback {
 
         mServiceCallback.onPlaybackStateUpdated(stateBuilder.build());
 
-        if (state == PlaybackStateCompat.STATE_PLAYING ||
-                state == PlaybackStateCompat.STATE_PAUSED) {
+        if (state == PlaybackStateCompat.STATE_PLAYING || state == PlaybackStateCompat.STATE_PAUSED) {
             mServiceCallback.onNotificationRequired();
         }
     }

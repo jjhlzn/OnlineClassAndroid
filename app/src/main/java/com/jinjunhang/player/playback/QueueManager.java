@@ -42,7 +42,6 @@ public class QueueManager {
 
     private MusicProvider mMusicProvider;
     private MetadataUpdateListener mListener;
-    private Resources mResources;
 
     // "Now playing" queue:
     private List<MediaSessionCompat.QueueItem> mPlayingQueue;
@@ -53,7 +52,6 @@ public class QueueManager {
                         @NonNull MetadataUpdateListener listener) {
         this.mMusicProvider = musicProvider;
         this.mListener = listener;
-        this.mResources = resources;
 
         mPlayingQueue = Collections.synchronizedList(new ArrayList<MediaSessionCompat.QueueItem>());
         mCurrentIndex = 0;
@@ -130,7 +128,7 @@ public class QueueManager {
      * @param mediaId
      */
     public void setQueueFromMusic(String mediaId) {
-        LogHelper.d(TAG, "setQueueFromMusic mediaId = ", mediaId);
+         LogHelper.d(TAG, "setQueueFromMusic mediaId = ", mediaId);
 
         // The mediaId used here is not the unique musicId. This one comes from the
         // MediaBrowser, and is actually a "hierarchy-aware mediaID": a concatenation of

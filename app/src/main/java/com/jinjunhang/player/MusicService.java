@@ -127,10 +127,10 @@ package com.jinjunhang.player;
          mSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
                  MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
+         //TODO: 这是干什么用的？？
          Context context = getApplicationContext();
          Intent intent = new Intent(context, MainActivity.class);
-         PendingIntent pi = PendingIntent.getActivity(context, 99 /*request code*/,
-                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
+         PendingIntent pi = PendingIntent.getActivity(context, 99 /*request code*/, intent, PendingIntent.FLAG_UPDATE_CURRENT);
          mSession.setSessionActivity(pi);
 
          mPlaybackManager.updatePlaybackState(null);
