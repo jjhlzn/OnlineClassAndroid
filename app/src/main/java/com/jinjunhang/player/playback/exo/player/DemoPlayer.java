@@ -174,9 +174,8 @@ public class DemoPlayer
   private static final int RENDERER_BUILDING_STATE_BUILDING = 2;
   private static final int RENDERER_BUILDING_STATE_BUILT = 3;
 
-  private final RendererBuilder rendererBuilder;
+  private RendererBuilder rendererBuilder;
   private final ExoPlayer player;
-  private final PlayerControl playerControl;
   private final Handler mainHandler;
   private final CopyOnWriteArrayList<Listener> listeners;
 
@@ -188,10 +187,8 @@ public class DemoPlayer
   private TrackRenderer videoRenderer;
   private CodecCounters codecCounters;
   private Format videoFormat;
-  private int videoTrackToRestore;
 
   private BandwidthMeter bandwidthMeter;
-  private boolean backgrounded;
 
   private CaptionListener captionListener;
   private Id3MetadataListener id3MetadataListener;
@@ -202,7 +199,6 @@ public class DemoPlayer
     this.rendererBuilder = rendererBuilder;
     player = ExoPlayer.Factory.newInstance(RENDERER_COUNT, 1000, 5000);
     player.addListener(this);
-    playerControl = new PlayerControl(player);
     mainHandler = new Handler();
     listeners = new CopyOnWriteArrayList<>();
     lastReportedPlaybackState = STATE_IDLE;
@@ -219,22 +215,24 @@ public class DemoPlayer
     player.removeListener(listener);
   }
 
-  public void blockingClearSurface() {
-    surface = null;
-    pushSurface(true);
+  public void setRendererBuilder(RendererBuilder rendererBuilder) {
+    rendererBuildingState = RENDERER_BUILDING_STATE_IDLE;
+    player.seekTo(0);
+    if (this.rendererBuilder != null) {
+      this.rendererBuilder.cancel();
+    }
+    this.rendererBuilder = rendererBuilder;
+    videoFormat = null;
+    videoRenderer = null;
+    rendererBuildingState = RENDERER_BUILDING_STATE_BUILDING;
+    maybeReportPlayerState();
+    rendererBuilder.buildRenderers(this);
   }
-
 
   public int getSelectedTrack(int type) {
     return player.getSelectedTrack(type);
   }
 
-  public void setSelectedTrack(int type, int index) {
-    player.setSelectedTrack(type, index);
-    if (type == TYPE_TEXT && index < 0 && captionListener != null) {
-      captionListener.onCues(Collections.<Cue>emptyList());
-    }
-  }
 
   public void prepare() {
     if (rendererBuildingState == RENDERER_BUILDING_STATE_BUILT) {

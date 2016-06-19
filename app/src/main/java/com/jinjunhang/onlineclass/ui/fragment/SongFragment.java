@@ -94,6 +94,7 @@ public class SongFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 updatePrevAndNextButton();
+                updatePlayButton();
                 mMusicPlayer.prev();
             }
         });
@@ -102,6 +103,7 @@ public class SongFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 updatePrevAndNextButton();
+                updatePlayButton();
                 mMusicPlayer.next();
             }
         });
@@ -187,7 +189,8 @@ public class SongFragment extends BaseFragment {
 
 
     private void updatePlayButton() {
-        if (mMusicPlayer.isPlaying()) {
+        int state = mMusicPlayer.getState();
+        if (mMusicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING)) {
             mPlayButton.setImageResource(R.drawable.icon_ios_music_pause);
         } else {
             mPlayButton.setImageResource(R.drawable.icon_ios_music_play);
