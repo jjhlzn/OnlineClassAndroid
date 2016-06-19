@@ -47,13 +47,10 @@ public class SongFragment extends BaseFragment {
             public void onClick(View v) {
                 int state = MusicPlayer.getInstance(getActivity()).getState();
                 LogHelper.d(TAG, "state = ", state);
-                if (state == ExoPlayer.STATE_READY) {
+                if (mMusicPlayer.isPlaying()) {
                     mMusicPlayer.pause();
-                    if (mMusicPlayer.isPlaying()) {
-                        mMusicPlayer.pause();
-                    } else {
-                       // mMusicPlayer.play(U);
-                    }
+                } else {
+                    mMusicPlayer.resume();
                 }
 
             }
@@ -62,14 +59,14 @@ public class SongFragment extends BaseFragment {
         mPrevButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                mMusicPlayer.prev();
             }
         });
 
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                mMusicPlayer.next();
             }
         });
 

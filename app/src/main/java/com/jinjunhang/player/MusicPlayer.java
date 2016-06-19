@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import com.google.android.exoplayer.ExoPlayer;
 import com.google.android.exoplayer.util.Util;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.playback.Playback;
@@ -76,9 +77,12 @@ public class MusicPlayer  {
 
 
     public boolean isPlaying() {
-        return false;
+        return getState() == ExoPlayer.STATE_READY && player.getPlayWhenReady();
     }
 
+    public boolean isPause() {
+        return getState() == ExoPlayer.STATE_READY && !player.getPlayWhenReady();
+    }
 
 
     public void play(List<Song> songs, int startIndex) {
@@ -98,6 +102,39 @@ public class MusicPlayer  {
 
     public void pause() {
         player.setPlayWhenReady(false);
+    }
+
+    public void resume() {
+        if (!isPause()) {
+            Song song = mSongs[currentIndex];
+            play(song);
+        }
+        player.setPlayWhenReady(true);
+    }
+
+    public boolean hasNext() {
+        return currentIndex < mSongs.length - 1;
+    }
+
+    public void next() {
+        if (hasNext()) {
+            currentIndex++;
+            Song song = mSongs[currentIndex];
+            play(song);
+        }
+    }
+
+
+    public boolean hasPrev() {
+        return currentIndex >= 1;
+    }
+    public void prev() {
+
+        if (hasPrev()) {
+            currentIndex--;
+            Song song = mSongs[currentIndex--];
+            play(song);
+        }
     }
 
 
