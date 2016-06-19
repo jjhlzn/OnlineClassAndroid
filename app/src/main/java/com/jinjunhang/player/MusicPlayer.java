@@ -3,7 +3,9 @@ package com.jinjunhang.player;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.util.Log;
 
+import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.google.android.exoplayer.util.Util;
 import com.jinjunhang.onlineclass.model.Song;
@@ -21,7 +23,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/19.
  */
-public class MusicPlayer  {
+public class MusicPlayer implements ExoPlayer.Listener {
     private static final String TAG = LogHelper.makeLogTag(MusicPlayer.class);
     private static MusicPlayer instance;
 
@@ -54,20 +56,12 @@ public class MusicPlayer  {
         }
     }
 
-
-
-    public void start() {
-
+    public void addListener(ExoPlayer.Listener listener) {
+        player.addListener(listener);
     }
 
-
-    public void stop() {
-
-    }
-
-
-    public void setState(int state) {
-
+    public void removeListener(ExoPlayer.Listener listener) {
+        player.removeListener(listener);
     }
 
 
@@ -137,11 +131,17 @@ public class MusicPlayer  {
         }
     }
 
-
-    public void seekTo(int position) {
-
+    public long getCurrentPosition() {
+        return player.getCurrentPosition();
     }
 
+    public long getDuration() {
+        return player.getDuration();
+    }
+
+    public void seekTo(long position) {
+        player.seekTo(position);
+    }
 
     public Song getCurrentPlaySong() {
         return mSongs[currentIndex];
@@ -152,6 +152,24 @@ public class MusicPlayer  {
             player.release();
         }
         player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), Util.TYPE_OTHER));
+        player.addListener(this);
     }
 
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        LogHelper.d(TAG, "onPlayerStateChanged: playbackState = " + playbackState);
+        if (playbackState == ExoPlayer.STATE_ENDED) {
+            next();
+        }
+    }
+
+    @Override
+    public void onPlayWhenReadyCommitted() {
+
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
 }

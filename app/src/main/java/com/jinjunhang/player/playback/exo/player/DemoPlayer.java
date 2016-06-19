@@ -211,19 +211,19 @@ public class DemoPlayer
     player.setSelectedTrack(TYPE_TEXT, TRACK_DISABLED);
   }
 
+  public void addListener(ExoPlayer.Listener listener) {
+    player.addListener(listener);
+  }
+
+  public void removeListener(ExoPlayer.Listener listener) {
+    player.removeListener(listener);
+  }
 
   public void blockingClearSurface() {
     surface = null;
     pushSurface(true);
   }
 
-  public int getTrackCount(int type) {
-    return player.getTrackCount(type);
-  }
-
-  public MediaFormat getTrackFormat(int type, int index) {
-    return player.getTrackFormat(type, index);
-  }
 
   public int getSelectedTrack(int type) {
     return player.getSelectedTrack(type);
@@ -233,24 +233,6 @@ public class DemoPlayer
     player.setSelectedTrack(type, index);
     if (type == TYPE_TEXT && index < 0 && captionListener != null) {
       captionListener.onCues(Collections.<Cue>emptyList());
-    }
-  }
-
-  public boolean getBackgrounded() {
-    return backgrounded;
-  }
-
-  public void setBackgrounded(boolean backgrounded) {
-    if (this.backgrounded == backgrounded) {
-      return;
-    }
-    this.backgrounded = backgrounded;
-    if (backgrounded) {
-      videoTrackToRestore = getSelectedTrack(TYPE_VIDEO);
-      setSelectedTrack(TYPE_VIDEO, TRACK_DISABLED);
-      blockingClearSurface();
-    } else {
-      setSelectedTrack(TYPE_VIDEO, videoTrackToRestore);
     }
   }
 

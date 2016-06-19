@@ -29,7 +29,7 @@
         android:gravity="center"
         >
         <TextView
-            android:id="@+id/player_startText"
+            android:id="@+id/player_playTimeText"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginStart="@dimen/text_view_margin"
@@ -40,7 +40,7 @@
             android:layout_alignParentLeft="true"
             android:text="00:00:00"/>
         <TextView
-            android:id="@+id/player_totalText"
+            android:id="@+id/player_durationText"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginEnd="@dimen/end_text_margin"
@@ -68,15 +68,40 @@
             android:background="@null"
             />
 
-        <ImageButton
-            android:id="@+id/player_play_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginRight="35dp"
             android:layout_marginLeft="35dp"
-            android:src="@drawable/icon_ios_music_play"
-            android:scaleType="fitXY"
-            android:background="@null"/>
+            >
+
+            <ImageView
+                android:id="@+id/player_buffer_image"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/buffercircle"
+                android:scaleType="fitXY"
+                android:background="@null"
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageButton
+                android:id="@+id/player_play_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_ios_music_pause"
+                android:scaleType="fitXY"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                />
+
+
+        </RelativeLayout>
+
+
+
 
         <ImageButton
             android:id="@+id/player_next_button"
