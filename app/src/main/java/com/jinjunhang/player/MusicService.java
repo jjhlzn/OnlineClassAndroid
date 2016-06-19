@@ -113,7 +113,7 @@ package com.jinjunhang.player;
 
          //LocalPlayback playback = new LocalPlayback(this, mMusicProvider);
          ExoPlayback playback = new ExoPlayback(this, mMusicProvider);
-         mPlaybackManager = new PlaybackManager(this, getResources(), mMusicProvider, queueManager, playback);
+         mPlaybackManager = new PlaybackManager(this, mMusicProvider, queueManager, playback);
 
          // Start a new MediaSession
          mSession = new MediaSessionCompat(this, "MusicService");

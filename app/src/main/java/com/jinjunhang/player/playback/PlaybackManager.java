@@ -51,7 +51,7 @@ public class PlaybackManager implements Playback.Callback {
     private PlaybackServiceCallback mServiceCallback;
     private MediaSessionCallback mMediaSessionCallback;
 
-    public PlaybackManager(PlaybackServiceCallback serviceCallback, Resources resources,
+    public PlaybackManager(PlaybackServiceCallback serviceCallback,
                            MusicProvider musicProvider, QueueManager queueManager,
                            Playback playback) {
         mMusicProvider = musicProvider;

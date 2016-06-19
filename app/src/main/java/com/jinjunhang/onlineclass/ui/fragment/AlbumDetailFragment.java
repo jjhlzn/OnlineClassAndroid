@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
@@ -25,6 +27,7 @@ import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.ui.activity.SongActivity;
+import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.model.MusicProviderSource;
 import com.jinjunhang.player.playback.PlaybackManager;
 import com.jinjunhang.player.utils.LogHelper;
@@ -64,7 +67,8 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
-                playMusic(song.getId());
+                MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
+                //playMusic(song.getId());
 
                 Intent i = new Intent(getActivity(), SongActivity.class)
                         .putExtra(SongFragment.EXTRA_SONG, song);

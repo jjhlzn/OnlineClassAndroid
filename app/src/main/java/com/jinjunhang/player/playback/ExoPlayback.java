@@ -9,6 +9,8 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
+import com.google.android.exoplayer.ExoPlaybackException;
+import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.player.model.MusicProvider;
 import com.jinjunhang.player.model.MusicProviderSource;
@@ -27,10 +29,7 @@ public class ExoPlayback
         implements
         Playback,
         AudioManager.OnAudioFocusChangeListener,
-        MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener,
-        MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnSeekCompleteListener {
+        ExoPlayer.Listener {
 
     private static final String TAG = LogHelper.makeLogTag(ExoPlayback.class);
 
@@ -40,8 +39,6 @@ public class ExoPlayback
     private Callback mCallback;
 
     private Context context;
-    //private int contentType;
-    //private Uri contentUri;
 
     private final MusicProvider mMusicProvider;
 
@@ -49,8 +46,6 @@ public class ExoPlayback
         this.context = context;
         mMusicProvider = musicProvider;
     }
-
-
 
     private void releasePlayer() {
         if (player != null) {
@@ -78,65 +73,25 @@ public class ExoPlayback
     }
 
     @Override
-    public void onCompletion(MediaPlayer mp) {
-
-    }
-
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        return false;
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
-
-    }
-
-    @Override
-    public void onSeekComplete(MediaPlayer mp) {
-
-    }
-
-    @Override
     public void start() {
 
     }
 
-    @Override
-    public void stop(boolean notifyListeners) {
-        player.release();
-    }
+
 
     @Override
     public void setState(int state) {
 
     }
 
-    @Override
-    public int getState() {
-        if (isPlaying())
-            return PlaybackStateCompat.STATE_PLAYING;
-        else
-            return PlaybackStateCompat.STATE_NONE;
-    }
+
 
     @Override
     public boolean isConnected() {
-        return false;
+        return true;
     }
 
-    @Override
-    public boolean isPlaying() {
-        LogHelper.d(TAG, "player = " + player);
-        if (player == null) {
-            return false;
-        }
-        LogHelper.d(TAG, "player.getPlaybackState() = " + player.getPlaybackState());
-        return player.getPlaybackState() == PlaybackState.STATE_PLAYING
-                || player.getPlaybackState() == PlaybackState.STATE_PAUSED
-                || player.getPlaybackState() == PlaybackState.STATE_FAST_FORWARDING
-                || player.getPlaybackState() == PlaybackState.STATE_BUFFERING;
-    }
+
 
     @Override
     public int getCurrentStreamPosition() {
@@ -171,6 +126,43 @@ public class ExoPlayback
         }
     }
 
+    @Override
+    public int getState() {
+
+        int state;
+        if (isPlaying())
+            state = PlaybackStateCompat.STATE_PLAYING;
+        else
+            state = PlaybackStateCompat.STATE_NONE;
+        LogHelper.d(TAG, "invoking getState, state = " + state);
+        return state;
+    }
+
+    @Override
+    public boolean isPlaying() {
+        LogHelper.d(TAG, "player = " + player);
+        if (player == null) {
+            return false;
+        }
+        LogHelper.d(TAG, "player.getPlaybackState() = " + player.getPlaybackState());
+        return      player.getPlaybackState() == ExoPlayer.STATE_BUFFERING
+                || (player.getPlaybackState() == ExoPlayer.STATE_READY && player.getPlayWhenReady());
+    }
+
+    private int ConvertExoStateToMediaPlayerState(int state) {
+        return PlaybackState.STATE_PLAYING;
+    }
+
+    @Override
+    public void stop(boolean notifyListeners) {
+        if (player != null)
+            player.release();
+    }
+
+    @Override
+    public void pause() {
+        player.setPlayWhenReady(false);
+    }
 
     @Override
     public void play(MediaSessionCompat.QueueItem item) {
@@ -186,6 +178,8 @@ public class ExoPlayback
         }
     }
 
+
+
     private void preparePlayer(Uri uri, int type) {
         // if (player == null) {
         player = new DemoPlayer(getRendererBuilder(uri, type));
@@ -197,10 +191,7 @@ public class ExoPlayback
         }
     }
 
-    @Override
-    public void pause() {
-        player.setPlayWhenReady(false);
-    }
+
 
     @Override
     public void seekTo(int position) {
@@ -220,5 +211,22 @@ public class ExoPlayback
     @Override
     public void setCallback(Callback callback) {
         this.mCallback = callback;
+    }
+
+
+    /***  implement ExoPlayer.Listener  ****/
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        //mCallback.onPlaybackStatusChanged();
+    }
+
+    @Override
+    public void onPlayWhenReadyCommitted() {
+
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
     }
 }
