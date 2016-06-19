@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,10 +49,14 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
     private PagableController mPagableController;
     private Album mAlbum;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_albumdetail, container, false);
+
+
         mAlbum = (Album) getActivity().getIntent().getSerializableExtra(EXTRA_ALBUM);
 
         ImageView imageView = (ImageView) v.findViewById(R.id.albumDtail_image);

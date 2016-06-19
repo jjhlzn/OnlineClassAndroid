@@ -37,6 +37,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
             LogHelper.i(TAG, "create new MusicPlayer");
             instance = new MusicPlayer();
             instance.context = context;
+            instance.player = new DemoPlayer();
         }
         return instance;
     }
@@ -66,6 +67,9 @@ public class MusicPlayer implements ExoPlayer.Listener {
 
 
     public int getState() {
+        if (player == null) {
+            return ExoPlayer.STATE_IDLE;
+        }
         return  player.getPlaybackState();
     }
 

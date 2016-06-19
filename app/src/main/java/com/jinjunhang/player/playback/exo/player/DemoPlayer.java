@@ -195,6 +195,17 @@ public class DemoPlayer
   private InternalErrorListener internalErrorListener;
   private InfoListener infoListener;
 
+  public DemoPlayer() {
+    player = ExoPlayer.Factory.newInstance(RENDERER_COUNT, 1000, 5000);
+    player.addListener(this);
+    mainHandler = new Handler();
+    listeners = new CopyOnWriteArrayList<>();
+    lastReportedPlaybackState = STATE_IDLE;
+    rendererBuildingState = RENDERER_BUILDING_STATE_IDLE;
+    // Disable text initially.
+    player.setSelectedTrack(TYPE_TEXT, TRACK_DISABLED);
+  }
+
   public DemoPlayer(RendererBuilder rendererBuilder) {
     this.rendererBuilder = rendererBuilder;
     player = ExoPlayer.Factory.newInstance(RENDERER_COUNT, 1000, 5000);

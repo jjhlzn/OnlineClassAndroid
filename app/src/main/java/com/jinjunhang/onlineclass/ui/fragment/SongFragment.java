@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -21,6 +24,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.player.utils.StatusHelper;
 import com.jinjunhang.player.utils.TimeUtil;
 
 import java.util.concurrent.Executors;
@@ -46,7 +50,7 @@ public class SongFragment extends BaseFragment {
     private TextView mPlayTimeTextView;
     private TextView mDurationTextView;
     private ImageView mBufferCircle;
-
+    private Animation mRotation;
 
     private MusicPlayer mMusicPlayer;
 
@@ -190,16 +194,22 @@ public class SongFragment extends BaseFragment {
 
     private void updatePlayButton() {
         int state = mMusicPlayer.getState();
-        if (mMusicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING)) {
+        if (StatusHelper.isPlayingForUI(mMusicPlayer) ) {
             mPlayButton.setImageResource(R.drawable.icon_ios_music_pause);
         } else {
             mPlayButton.setImageResource(R.drawable.icon_ios_music_play);
         }
 
-        if (mMusicPlayer.getState() == ExoPlayer.STATE_BUFFERING) {
+        if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {
             mBufferCircle.setVisibility(View.VISIBLE);
+            load_animations();
+
+
         } else {
+            mRotation.cancel();
+            mBufferCircle.setAnimation(null);
             mBufferCircle.setVisibility(View.INVISIBLE);
+
         }
 
     }
@@ -207,6 +217,16 @@ public class SongFragment extends BaseFragment {
     private void updatePrevAndNextButton() {
         mNextButton.setEnabled(mMusicPlayer.hasNext());
         mPrevButton.setEnabled(mMusicPlayer.hasPrev());
+    }
+
+
+    void load_animations()
+    {
+        //new AnimationUtils();
+        if (mRotation == null)
+            mRotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
+        //rotation.setAnimationListener(listener);
+        mBufferCircle.startAnimation(mRotation);
     }
 }
 

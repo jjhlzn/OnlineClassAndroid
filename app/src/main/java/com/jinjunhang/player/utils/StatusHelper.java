@@ -3,6 +3,7 @@ package com.jinjunhang.player.utils;
 import android.media.session.PlaybackState;
 
 import com.google.android.exoplayer.ExoPlayer;
+import com.jinjunhang.player.MusicPlayer;
 
 /**
  * Created by lzn on 16/6/19.
@@ -27,5 +28,10 @@ public class StatusHelper {
                 break;
         }
         return 0;
+    }
+
+    public static boolean isPlayingForUI(MusicPlayer musicPlayer) {
+        int state = musicPlayer.getState();
+        return musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
     }
 }

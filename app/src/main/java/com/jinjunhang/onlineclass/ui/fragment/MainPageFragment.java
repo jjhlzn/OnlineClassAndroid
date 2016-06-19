@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.activity.AlbumListActivity;
 import com.jinjunhang.onlineclass.model.AlbumType;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+
 
         //不能下拉刷新
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
