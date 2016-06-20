@@ -35,4 +35,9 @@ public abstract class BaseListViewCell implements ListViewCell {
     public void release() {
 
     }
+
+    @Override
+    public Object getContent() {
+        return null;
+    }
 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
  */
 public interface ListViewCell {
 
+    Object getContent();
+
     boolean isSection();
 
     ViewGroup getView();

@@ -49,4 +49,9 @@ public class AlbumTypeCell extends BaseListViewCell {
 
         return (LinearLayout)convertView.findViewById(R.id.list_item_albumtype_viewgroup);
     }
+
+    @Override
+    public Object getContent() {
+        return mAlbumType;
+    }
 }

@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Advertise;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.service.GetAdsRequest;
 import com.jinjunhang.onlineclass.service.GetAdsResponse;
+import com.jinjunhang.onlineclass.ui.activity.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionManager;
@@ -32,7 +35,6 @@ import java.util.List;
  * Created by lzn on 16/6/10.
  */
 public class MainPageFragment extends android.support.v4.app.Fragment {
-
 
     private static final String TAG = LogHelper.makeLogTag(MainPageFragment.class);
 
@@ -82,12 +84,14 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                /*
-                AlbumType albumType = mAlbumTypeAdapter.getItem(position);
+                if (position < 3) {
+                    AlbumTypeCell cell = (AlbumTypeCell)mCells.get(position);
+                    AlbumType albumType = cell.getAlbumType();
+                    Intent i = new Intent(getActivity(), AlbumListActivity.class);
+                    i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, albumType);
+                    startActivity(i); 
+                }
 
-                Intent i = new Intent(getActivity(), AlbumListActivity.class);
-                i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, albumType);
-                startActivity(i); */
             }
         });
 
