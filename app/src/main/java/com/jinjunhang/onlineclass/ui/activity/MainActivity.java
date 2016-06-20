@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements ExoPlayer.Listener {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
 
     private Animation mRotation;
     private RoundedImageView mSongImage;
@@ -67,18 +67,17 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.Listene
                 Fragment fragment = null;
                 switch (menuItemId) {
                     case R.id.bottomBarHome:
-                        title = "主页";
+                        title = "巨方助手";
                         fragment = getFragment(MainPageFragment.class);
-
                         break;
                     case R.id.bottomBarSearch:
                         title = "搜索";
-
-
                         break;
                     case R.id.bottomBarMe:
-                        title = "我";
-
+                        title = "我的";
+                        break;
+                    case R.id.bottomBarSetting:
+                        title = "设置";
                         break;
                 }
 
@@ -98,10 +97,9 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.Listene
         });
 
         mBottomBar.noTopOffset();
-        //mBottomBar.hideShadow();
 
         int selectTab = getIntent().getIntExtra(EXTRA_TAB, 0);
-        Log.d(TAG, "selectTab = " + selectTab);
+        LogHelper.d(TAG, "selectTab = " + selectTab);
         mBottomBar.selectTabAtPosition(selectTab, true);
 
 
