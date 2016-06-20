@@ -21,16 +21,15 @@ public class AdvImageCell extends BaseListViewCell {
         super(activity);
     }
 
+    public SliderLayout getSliderShow() {
+        return sliderShow;
+    }
+
     @Override
     public ViewGroup getView() {
         View view = mActivity.getLayoutInflater().inflate(R.layout.adv_image_slider, null);
 
         sliderShow = (SliderLayout)view.findViewById(R.id.adv_slider);
-
-        DefaultSliderView textSliderView = new DefaultSliderView(mActivity);
-        textSliderView.image("http://image.tianjimedia.com/uploadImages/2015/129/56/J63MI042Z4P8.jpg");
-
-        sliderShow.addSlider(textSliderView);
 
         return (LinearLayout)view.findViewById(R.id.list_item_albumtype_viewgroup);
     }

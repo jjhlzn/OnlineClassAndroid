@@ -1,15 +1,23 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.service.GetAdsRequest;
+import com.jinjunhang.onlineclass.service.GetAdsResponse;
 import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionManager;
@@ -52,9 +60,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             mCells.add(item);
         }
 
-
         mCells.add(new SectionSeparatorCell(getActivity()));
-
 
 
         int functionRowCount = mFunctionManager.getRowCount();
@@ -84,6 +90,8 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                 startActivity(i); */
             }
         });
+
+        new GetAdvImageTask().execute();
         return v;
     }
 
@@ -100,6 +108,27 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         super.onStop();
         if (mAdvImageCell != null) {
             mAdvImageCell.release();
+        }
+    }
+
+    private class GetAdvImageTask extends AsyncTask<Void, Void, GetAdsResponse> {
+        @Override
+        protected GetAdsResponse doInBackground(Void... params) {
+            GetAdsRequest req = new GetAdsRequest();
+            return new BasicService().sendRequest(req);
+        }
+
+        @Override
+        protected void onPostExecute(GetAdsResponse getAdsResponse) {
+            super.onPostExecute(getAdsResponse);
+            SliderLayout sliderShow = mAdvImageCell.getSliderShow();
+
+            for (Advertise adv : getAdsResponse.getAdvertises()) {
+                DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
+                textSliderView.image(adv.getImageUrl());
+                sliderShow.addSlider(textSliderView);
+            }
+
         }
     }
 

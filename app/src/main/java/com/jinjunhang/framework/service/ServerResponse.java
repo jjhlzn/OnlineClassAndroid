@@ -31,7 +31,7 @@ public abstract class ServerResponse {
         mErrorMessage = errorMessage;
     }
 
-    abstract void parse(ServerRequest request, JSONObject json) throws JSONException;
+    public abstract void parse(ServerRequest request, JSONObject json) throws JSONException;
 }
 
 
