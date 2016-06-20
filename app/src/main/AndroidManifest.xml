@@ -36,6 +36,11 @@
 
         </activity>
 
+        <activity android:name=".ui.activity.WebBrowserActivity"
+                  android:screenOrientation="portrait">
+
+        </activity>
+
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to
              consumers through MediaBrowserService and MediaSession. Consumers connect to it through

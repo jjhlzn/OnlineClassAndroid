@@ -2,15 +2,19 @@ package com.jinjunhang.onlineclass.ui.cell;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -25,6 +29,8 @@ public class ExtendFunctionManager {
     private final int itemCountEachRow = 4;
     private int mShowMaxRow = 100;
     private Context mContext;
+    private ClickListener mWebListener;
+    private ClickListener mNotSupportListener;
 
     private List<ExtendFunction> functions = new ArrayList<>();
 
@@ -35,15 +41,18 @@ public class ExtendFunctionManager {
     public ExtendFunctionManager(int showMaxRow, Context context) {
         mShowMaxRow = showMaxRow;
         mContext = context;
-        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡1", "", true));
-        functions.add(new ExtendFunction(R.drawable.upicon, "去刷卡2", "", true));
-        functions.add(new ExtendFunction(R.drawable.visacard, "去刷卡3", "", true));
-        functions.add(new ExtendFunction(R.drawable.cardmanager, "去刷卡4", "", true));
-        functions.add(new ExtendFunction(R.drawable.mmcsearch, "去刷卡5", "", true));
-        functions.add(new ExtendFunction(R.drawable.shopcart, "去刷卡6", "", true));
-        functions.add(new ExtendFunction(R.drawable.rmb, "去刷卡7", "", true));
-        functions.add(new ExtendFunction(R.drawable.dollar, "去刷卡8", "", true));
-        functions.add(new ExtendFunction(R.drawable.creditsearch, "去刷卡9", "", true));
+        mWebListener = new WebClickListener();
+        mNotSupportListener = new NotSupportClickListener();
+        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "http://www.baidu.com", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.upicon, "一键提额", "http://114.215.236.171:6012/Service/CreditLines", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", "http://114.215.236.171:6012/Service/FastCard", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", "http://114.215.236.171:6012/Service/CardManage", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", "http://114.215.236.171:6012/Service/Ipcrs", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", "http://114.215.236.171:6012/Service/MccSearch", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.shopcart, "商城", "", mNotSupportListener));
+        functions.add(new ExtendFunction(R.drawable.rmb, "缴费", "", mNotSupportListener));
+        functions.add(new ExtendFunction(R.drawable.dollar, "贷款", "", mNotSupportListener));
+
     }
 
     public int getRowCount() {
@@ -74,8 +83,6 @@ public class ExtendFunctionManager {
             ExtendFunction function = functions.get(index);
 
             layout.addView(createSubView(function));
-
-
         }
         layout.setEnabled(false);
         layout.setOnClickListener(null);
@@ -83,7 +90,7 @@ public class ExtendFunctionManager {
         return cell;
     }
 
-    private ViewGroup createSubView(ExtendFunction function) {
+    private ViewGroup createSubView(final ExtendFunction function) {
         LinearLayout layout = new LinearLayout(mContext);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
@@ -120,7 +127,35 @@ public class ExtendFunctionManager {
 
         layout.addView(textView);
 
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                function.listener.onClick(function);
+            }
+        });
+
         return layout;
+    }
+
+    interface ClickListener {
+        void onClick(ExtendFunction function);
+    }
+
+    class WebClickListener implements ClickListener {
+        @Override
+        public void onClick(ExtendFunction function) {
+            Intent i = new Intent(mContext, WebBrowserActivity.class)
+                    .putExtra(WebBrowserActivity.EXTRA_TITLE, function.name)
+                    .putExtra(WebBrowserActivity.EXTRA_URL, function.url);
+            mContext.startActivity(i);
+        }
+    }
+
+    class NotSupportClickListener implements ClickListener {
+        @Override
+        public void onClick(ExtendFunction function) {
+            Utils.showMessage(mContext, "敬请期待");
+        }
     }
 
 
@@ -128,14 +163,14 @@ public class ExtendFunctionManager {
         private int image;
         private String name;
         private String url;
-        private boolean isSupport;
+        private ClickListener listener;
 
         ExtendFunction() {}
-        ExtendFunction(int image, String name, String url, boolean isSupport) {
+        ExtendFunction(int image, String name, String url, ClickListener listener) {
             this.image = image;
             this.name = name;
             this.url = url;
-            this.isSupport = isSupport;
+            this.listener = listener;
         }
         //var action : Selector
     }

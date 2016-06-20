@@ -89,7 +89,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                     AlbumType albumType = cell.getAlbumType();
                     Intent i = new Intent(getActivity(), AlbumListActivity.class);
                     i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, albumType);
-                    startActivity(i); 
+                    startActivity(i);
                 }
 
             }
