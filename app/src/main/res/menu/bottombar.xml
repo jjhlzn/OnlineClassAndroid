@@ -26,7 +26,7 @@
 
     <item
         android:id="@+id/bottomBarSetting"
-        android:icon="@drawable/me"
+        android:icon="@drawable/settingsicon"
         android:title="设置" />
 
 </menu>

@@ -38,6 +38,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
             instance = new MusicPlayer();
             instance.context = context;
             instance.player = new DemoPlayer();
+            instance.player.addListener(instance);
         }
         return instance;
     }
