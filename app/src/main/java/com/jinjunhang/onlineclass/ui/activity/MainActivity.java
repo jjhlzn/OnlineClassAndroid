@@ -181,4 +181,9 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.Listene
     public void onPlayerError(ExoPlaybackException error) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }

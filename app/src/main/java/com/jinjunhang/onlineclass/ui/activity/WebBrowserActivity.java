@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,15 @@ public class WebBrowserActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
+        //设置返回按键
+        ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
+        backButton.setVisibility(View.VISIBLE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mWebView = (WebView) findViewById(R.id.webview);
 

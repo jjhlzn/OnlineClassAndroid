@@ -25,7 +25,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     private static final String TAG = "SingleFragmentActivity";
 
-
     protected abstract Fragment createFragment();
 
     protected String getActivityTitle() {
@@ -38,18 +37,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     protected boolean isNeedPushDownFresh() {return false;}
 
+
+    protected boolean hasParent() {return true;}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         setContentView(R.layout.activity_fragment_pushdownrefresh);
-        /*
-        if (isNeedPushDownFresh()) {
-            setContentView(R.layout.activity_fragement_pushdownrefresh);
-        } else{
-            setContentView(R.layout.activity_fragment);
-        }*/
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
@@ -65,7 +61,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
 
         if (hasActionBar()) {
-
             Log.d(TAG, "has action bar");
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
@@ -75,10 +70,13 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
             ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(getActivityTitle());
 
-            if (NavUtils.getParentActivityName(this) == null) {
+            //if (NavUtils.getParentActivityName(this) == null) {
+            if (!hasParent()) {
                 getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button).setVisibility(View.INVISIBLE);
             } else {
+
                 ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
+                backButton.setVisibility(View.VISIBLE);
                 backButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -94,14 +92,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     }
 
     protected OnBackPressedListener onBackPressedListener;
-    protected PreOnBackPressedListiner mPreOnBackPressedListiner;
 
     public interface OnBackPressedListener {
         void doBack();
-    }
-
-    public interface PreOnBackPressedListiner {
-        void handle();
     }
 
     public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {

@@ -1,17 +1,14 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,17 +16,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.ui.activity.BaseMusicActivity;
+import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.ui.activity.SongActivity;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.model.MusicProviderSource;
 import com.jinjunhang.player.playback.PlaybackManager;
 import com.jinjunhang.player.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -65,7 +60,7 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
         ((TextView) v.findViewById(R.id.albumDetail_name)).setText(mAlbum.getName());
         ((TextView) v.findViewById(R.id.albumDetail_author)).setText(mAlbum.getAuthor());
 
-        ((BaseMusicActivity)getActivity()).setActivityTitle(mAlbum.getName());
+        ((BaseMusicSingleFragmentActivity)getActivity()).setActivityTitle(mAlbum.getName());
 
         ListView listView = (ListView)v.findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

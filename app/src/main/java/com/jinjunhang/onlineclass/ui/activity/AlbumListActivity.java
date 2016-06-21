@@ -7,7 +7,7 @@ import com.jinjunhang.onlineclass.ui.fragment.AlbumListFragment;
 /**
  * Created by lzn on 16/6/11.
  */
-public class AlbumListActivity extends BaseMusicActivity {
+public class AlbumListActivity extends BaseMusicSingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
