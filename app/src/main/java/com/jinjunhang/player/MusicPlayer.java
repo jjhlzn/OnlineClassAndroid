@@ -160,6 +160,9 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     public Song getCurrentPlaySong() {
+        if (mSongs == null) {
+            return null;
+        }
         return mSongs[currentIndex];
     }
 

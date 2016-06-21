@@ -201,7 +201,9 @@ public class SongFragment extends BaseFragment {
 
             LogHelper.d(TAG, "start buffer circle rotate");
         } else {
-            mRotation.cancel();
+            if (mRotation != null) {
+                mRotation.cancel();
+            }
             mBufferCircle.setAnimation(null);
             mBufferCircle.setVisibility(View.INVISIBLE);
             LogHelper.d(TAG, "stop buffer circle rot ate");

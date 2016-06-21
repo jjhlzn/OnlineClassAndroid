@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.lib;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -11,6 +12,9 @@ import android.widget.ImageView;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.ui.activity.SongActivity;
+import com.jinjunhang.onlineclass.ui.fragment.SongFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -45,10 +49,26 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
         mActivity = activity;
         mMusicPlayer = MusicPlayer.getInstance(activity);
         mView = activity.getLayoutInflater().inflate(R.layout.bottom_player, null);
+
         mPlayImage = (ImageView) mView.findViewById(R.id.bottomPlayer_playImage);
         mSongImage = (RoundedImageView) mView.findViewById(R.id.bottomPlayer_imageButton);
         mSongImage.setOval(true);
         updateBottomPlayer();
+
+        mSongImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Song song = mMusicPlayer.getCurrentPlaySong();
+                if (song != null) {
+                    if (!mMusicPlayer.isPlay(song)) {
+                        mMusicPlayer.resume();
+                    }
+                    Intent i = new Intent(mActivity, SongActivity.class)
+                            .putExtra(SongFragment.EXTRA_SONG, song);
+                    mActivity.startActivity(i);
+                }
+            }
+        });
     }
 
     private View getView() {
@@ -100,8 +120,6 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
         if (mRotation == null)
             mRotation = (RotateAnimation)AnimationUtils.loadAnimation(mActivity, R.anim.rotate);
         mRotation.setDuration(10000);
-        //mRotation.set
-        //mRotation.setStartOffset(2000);
         mSongImage.startAnimation(mRotation);
         mPlayImage.setVisibility(View.INVISIBLE);
     }
@@ -115,11 +133,6 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
         mPlayImage.setVisibility(View.VISIBLE);
     }
 
-
-    private RotateAnimation createRotate() {
-        //RotateAnimation rotateAnimation = new RotateAnimation()
-        return null;
-    }
 
 
 }
