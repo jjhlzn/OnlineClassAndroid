@@ -52,6 +52,8 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         setFootView();
     }
 
+
+
     public void setPagableRequestHandler(PagableRequestHandler pagableRequestHandler) {
         mPagableRequestHandler = pagableRequestHandler;
     }

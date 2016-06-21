@@ -69,7 +69,6 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
                 MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
-                //playMusic(song.getId());
 
                 Intent i = new Intent(getActivity(), SongActivity.class)
                         .putExtra(SongFragment.EXTRA_SONG, song);
@@ -91,6 +90,8 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
     }
 
 
+
+
     @Override
     public void doBack() {
 
@@ -105,9 +106,6 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         mPagableController.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
     }
-
-
-
 
     class AlbumDetailRequestHandler implements PagableController.PagableRequestHandler {
         @Override
@@ -125,7 +123,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_song, null);
             }
@@ -135,13 +133,40 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
             imageView.setOval(true);
             Glide.with(AlbumDetailFragment.this).load(song.getAlbum().getImage()).into(imageView);
 
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
+                    if (mMusicPlayer.isPlay(song)) {
+
+                    } else {
+                        MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+
             TextView nameTextView = (TextView) convertView.findViewById(R.id.song_list_item_name);
             nameTextView.setText(song.getName());
 
             TextView descTextView = (TextView) convertView.findViewById(R.id.song_list_item_desc);
             descTextView.setText(song.getDesc());
 
+            ImageView playImageView = (ImageView) convertView.findViewById(R.id.song_list_item_playimage);
+            if (mMusicPlayer.isPlay(song)) {
+                LogHelper.d(TAG, "now player song.id = " + song.getId());
+                playImageView.setImageResource(R.drawable.smallpause);
+            } else {
+                playImageView.setImageResource(R.drawable.smallplay);
+            }
+
             return convertView;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPagableController.getPagableArrayAdapter().notifyDataSetChanged();
     }
 }

@@ -16,6 +16,7 @@ import com.jinjunhang.player.playback.exo.player.HlsRendererBuilder;
 import com.jinjunhang.player.playback.exo.player.SmoothStreamingRendererBuilder;
 import com.jinjunhang.player.playback.exo.player.SmoothStreamingTestMediaDrmCallback;
 import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.player.utils.StatusHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,16 @@ public class MusicPlayer implements ExoPlayer.Listener {
 
     public boolean isPlaying() {
         return getState() == ExoPlayer.STATE_READY && player.getPlayWhenReady();
+    }
+
+    public boolean isPlay(Song song) {
+        if (StatusHelper.isPlayingForUI(this)) {
+            //LogHelper.d(TAG, "currentid = " + getCurrentPlaySong().getId() + ", id = " + song.getId());
+            if (getCurrentPlaySong().getId().equals(song.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isPause() {
