@@ -11,16 +11,7 @@ import com.jinjunhang.player.MusicPlayer;
 /**
  * Created by lzn on 16/6/18.
  */
-public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener {
-
-    protected BottomPlayerController mPlayerController;
-    protected MusicPlayer mMusicPlayer = MusicPlayer.getInstance(getActivity());
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPlayerController = new BottomPlayerController(getActivity());
-    }
+public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener  {
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -35,19 +26,5 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
     @Override
     public void onPlayerError(ExoPlaybackException error) {
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMusicPlayer.addListener(mPlayerController);
-        mPlayerController.updateView();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMusicPlayer.removeListener(mPlayerController);
-        mPlayerController.updateView();
     }
 }

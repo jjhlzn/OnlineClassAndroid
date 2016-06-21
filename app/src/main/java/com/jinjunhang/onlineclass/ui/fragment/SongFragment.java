@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lzn on 16/6/13.
  */
-public class SongFragment extends BaseFragment {
+public class SongFragment extends BaseFragment  {
     private final static String TAG = LogHelper.makeLogTag(SongFragment.class);
     private static final long PROGRESS_UPDATE_INTERNAL = 1000;
     private static final long PROGRESS_UPDATE_INITIAL_INTERVAL = 100;

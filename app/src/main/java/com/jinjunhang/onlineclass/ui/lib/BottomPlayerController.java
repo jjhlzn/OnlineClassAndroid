@@ -5,12 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.player.MusicPlayer;
+import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -18,20 +20,30 @@ import com.makeramen.roundedimageview.RoundedImageView;
  * Created by lzn on 16/6/21.
  */
 public class BottomPlayerController implements ExoPlayer.Listener   {
+    private static final String TAG = LogHelper.makeLogTag(BottomPlayerController.class);
+
     private Activity mActivity;
     private ImageView mPlayImage;
     private RoundedImageView mSongImage;
-    private Animation mRotation;
+    private RotateAnimation mRotation;
 
     private MusicPlayer mMusicPlayer;
 
     private View mView;
 
+    private static long fromDegree = 0;
+    private static int toDegress = 0;
 
-    public BottomPlayerController(Activity activity) {
+    //private static BottomPlayerController instance;
+
+    public static BottomPlayerController getInstance(Activity activity) {
+        return new BottomPlayerController(activity);
+    }
+
+
+    private BottomPlayerController(Activity activity) {
         mActivity = activity;
         mMusicPlayer = MusicPlayer.getInstance(activity);
-        //ViewGroup layout = (ViewGroup) activity.findViewById(R.id.fragmentContainer);
         mView = activity.getLayoutInflater().inflate(R.layout.bottom_player, null);
         mPlayImage = (ImageView) mView.findViewById(R.id.bottomPlayer_playImage);
         mSongImage = (RoundedImageView) mView.findViewById(R.id.bottomPlayer_imageButton);
@@ -39,12 +51,25 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
         updateBottomPlayer();
     }
 
-    public View getView() {
+    private View getView() {
         return mView;
     }
 
     public void updateView() {
         updateBottomPlayer();
+
+    }
+
+    public void attachToView(ViewGroup parent) {
+        LogHelper.d(TAG, "attachToView called");
+        if (getView().getParent() == parent) {
+            return;
+        }
+        if (getView().getParent() != null) {
+            ((ViewGroup)getView().getParent()).removeView(getView());
+        }
+        parent.addView(getView());
+        updateView();
     }
 
     @Override
@@ -73,7 +98,10 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
     void spinSongImage()
     {
         if (mRotation == null)
-            mRotation = AnimationUtils.loadAnimation(mActivity, R.anim.rotate);
+            mRotation = (RotateAnimation)AnimationUtils.loadAnimation(mActivity, R.anim.rotate);
+        mRotation.setDuration(10000);
+        //mRotation.set
+        //mRotation.setStartOffset(2000);
         mSongImage.startAnimation(mRotation);
         mPlayImage.setVisibility(View.INVISIBLE);
     }
@@ -85,6 +113,12 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
         mRotation.cancel();
         mSongImage.setAnimation(null);
         mPlayImage.setVisibility(View.VISIBLE);
+    }
+
+
+    private RotateAnimation createRotate() {
+        //RotateAnimation rotateAnimation = new RotateAnimation()
+        return null;
     }
 
 

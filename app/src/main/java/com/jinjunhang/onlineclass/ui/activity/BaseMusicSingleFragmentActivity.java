@@ -29,7 +29,7 @@ public abstract class BaseMusicSingleFragmentActivity extends SingleFragmentActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlayerController = new BottomPlayerController(this);
+        mPlayerController = BottomPlayerController.getInstance(this);
     }
 
     @Override

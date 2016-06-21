@@ -77,7 +77,8 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
         mPagableController.setPagableRequestHandler(new AlbumListHanlder());
         mPagableController.setOnScrollListener(this);
 
-        ((FrameLayout)v.findViewById(R.id.fragmentContainer)).addView(mPlayerController.getView());
+        //((FrameLayout)v.findViewById(R.id.fragmentContainer)).addView(mPlayerController.getView());
+        mPlayerController.attachToView((FrameLayout)v.findViewById(R.id.fragmentContainer));
         return v;
     }
 

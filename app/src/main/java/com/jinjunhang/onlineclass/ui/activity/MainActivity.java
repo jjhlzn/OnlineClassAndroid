@@ -98,7 +98,7 @@ public class MainActivity extends BaseMusicActivity  {
         LogHelper.d(TAG, "selectTab = " + selectTab);
         mBottomBar.selectTabAtPosition(selectTab, true);
 
-        mBottomBar.addView(mPlayerController.getView());
+        mPlayerController.attachToView(mBottomBar);
     }
 
     private <T extends Fragment> Fragment getFragment(Class<T> fragmentClass) {
@@ -119,4 +119,16 @@ public class MainActivity extends BaseMusicActivity  {
         moveTaskToBack(true);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPlayerController.attachToView(mBottomBar);
+        mPlayerController.updateView();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mPlayerController.updateView();
+    }
 }
