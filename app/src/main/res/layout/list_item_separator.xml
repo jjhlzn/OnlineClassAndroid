@@ -7,6 +7,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:background="@color/background_gradient_end"/>
+        android:background="@color/fragment_background"/>
 
 </LinearLayout>

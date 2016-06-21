@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.cell;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.Gravity;
@@ -52,7 +53,6 @@ public class ExtendFunctionManager {
         functions.add(new ExtendFunction(R.drawable.shopcart, "商城", "", mNotSupportListener));
         functions.add(new ExtendFunction(R.drawable.rmb, "缴费", "", mNotSupportListener));
         functions.add(new ExtendFunction(R.drawable.dollar, "贷款", "", mNotSupportListener));
-
     }
 
     public int getRowCount() {
@@ -74,6 +74,7 @@ public class ExtendFunctionManager {
         // Changes the height and width to the specified *pixels*
         params.height = 200;
         layout.setLayoutParams(params);
+        layout.setBackgroundColor(Color.WHITE );
 
         for(int i = 0; i < itemCountEachRow; i++) {
             int index = startIndex + i;
@@ -172,7 +173,6 @@ public class ExtendFunctionManager {
             this.url = url;
             this.listener = listener;
         }
-        //var action : Selector
     }
 
 }

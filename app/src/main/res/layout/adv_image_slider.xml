@@ -3,7 +3,8 @@
               android:id="@+id/list_item_albumtype_viewgroup"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/white">
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/adv_slider"
         android:layout_width="match_parent"

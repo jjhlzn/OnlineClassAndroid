@@ -79,11 +79,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         //不能下拉刷新
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
 
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 if (position < 3) {
                     AlbumTypeCell cell = (AlbumTypeCell)mCells.get(position);
                     AlbumType albumType = cell.getAlbumType();
@@ -91,11 +89,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                     i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, albumType);
                     startActivity(i);
                 }
-
             }
         });
 
-        new GetAdvImageTask().execute();
         return v;
     }
 
@@ -112,27 +108,6 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         super.onStop();
         if (mAdvImageCell != null) {
             mAdvImageCell.release();
-        }
-    }
-
-    private class GetAdvImageTask extends AsyncTask<Void, Void, GetAdsResponse> {
-        @Override
-        protected GetAdsResponse doInBackground(Void... params) {
-            GetAdsRequest req = new GetAdsRequest();
-            return new BasicService().sendRequest(req);
-        }
-
-        @Override
-        protected void onPostExecute(GetAdsResponse getAdsResponse) {
-            super.onPostExecute(getAdsResponse);
-            SliderLayout sliderShow = mAdvImageCell.getSliderShow();
-
-            for (Advertise adv : getAdsResponse.getAdvertises()) {
-                DefaultSliderView textSliderView = new DefaultSliderView(getActivity());
-                textSliderView.image(adv.getImageUrl());
-                sliderShow.addSlider(textSliderView);
-            }
-
         }
     }
 
