@@ -47,6 +47,7 @@ public class MainActivity extends BaseMusicActivity  {
 
         fragmentMap = new HashMap();
 
+
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
         getSupportActionBar().setCustomView(customView);
@@ -95,6 +96,7 @@ public class MainActivity extends BaseMusicActivity  {
         });
 
         mBottomBar.noTopOffset();
+        mBottomBar.hideShadow();
 
         int selectTab = getIntent().getIntExtra(EXTRA_TAB, 0);
         LogHelper.d(TAG, "selectTab = " + selectTab);

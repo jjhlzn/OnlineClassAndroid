@@ -20,6 +20,7 @@ public class BaseMusicActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlayerController = BottomPlayerController.getInstance(this);
+        getSupportActionBar().setElevation(0);
     }
 
     @Override
