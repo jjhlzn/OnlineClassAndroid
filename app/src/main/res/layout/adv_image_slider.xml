@@ -9,5 +9,6 @@
         android:id="@+id/adv_slider"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_gravity="bottom"
         />
 </LinearLayout>

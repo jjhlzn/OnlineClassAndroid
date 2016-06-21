@@ -1,9 +1,12 @@
 package com.jinjunhang.framework.lib;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.util.Log;
+import android.view.Display;
 
 
 import java.text.SimpleDateFormat;
@@ -59,6 +62,31 @@ public class Utils {
             Log.e(TAG, ex.toString());
         }
         return 0;
+    }
+
+    public static int screenWidth = -1;
+    public static int screenHeight = -1;
+
+    public static int getScreenWidth(Context context) {
+        if (screenWidth < 0) {
+            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screenWidth = size.x;
+            screenHeight = size.y;
+        }
+        return screenWidth;
+    }
+
+    public static int getScreenHeight(Context context) {
+        if (screenWidth < 0) {
+            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screenWidth = size.x;
+            screenHeight = size.y;
+        }
+        return screenHeight;
     }
 
 

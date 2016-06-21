@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,7 +70,7 @@ public class ExtendFunctionManager {
         LinearLayout layout = new LinearLayout(mContext);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 
-        ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
         params.height = 200;
@@ -96,12 +97,7 @@ public class ExtendFunctionManager {
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
 
-        Display display = ((Activity)mContext).getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-
+        int width = Utils.getScreenWidth(mContext);
         ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
         params.width = width / 4;
