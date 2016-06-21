@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.activity.AlbumDetailActivity;
+import com.jinjunhang.onlineclass.ui.activity.BaseMusicActivity;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
@@ -34,7 +36,7 @@ import java.util.List;
  * 改Activity加载对应类型的所有的Album，需要有分页支持
  *
  */
-public class AlbumListFragment extends android.support.v4.app.Fragment implements  SingleFragmentActivity.OnBackPressedListener,
+public class AlbumListFragment extends BottomPlayerFragment implements  SingleFragmentActivity.OnBackPressedListener,
         AbsListView.OnScrollListener {
     public final static String EXTRA_ALBUMTYPE = "extra_albumtype";
 
@@ -75,6 +77,7 @@ public class AlbumListFragment extends android.support.v4.app.Fragment implement
         mPagableController.setPagableRequestHandler(new AlbumListHanlder());
         mPagableController.setOnScrollListener(this);
 
+        ((FrameLayout)v.findViewById(R.id.fragmentContainer)).addView(mPlayerController.getView());
         return v;
     }
 
