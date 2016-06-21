@@ -14,6 +14,18 @@ import com.jinjunhang.player.MusicPlayer;
 public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener  {
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MusicPlayer.getInstance(getActivity()).addListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        MusicPlayer.getInstance(getActivity()).removeListener(this);
+    }
+
+    @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
     }

@@ -83,7 +83,9 @@ public class MainActivity extends BaseMusicActivity  {
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
-                ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+
+                if (title != "")
+                    ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
             }
 
             @Override

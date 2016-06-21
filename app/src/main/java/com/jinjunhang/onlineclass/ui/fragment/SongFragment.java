@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lzn on 16/6/13.
  */
-public class SongFragment extends BaseFragment  {
+public class SongFragment extends BaseFragment {
     private final static String TAG = LogHelper.makeLogTag(SongFragment.class);
     private static final long PROGRESS_UPDATE_INTERNAL = 1000;
     private static final long PROGRESS_UPDATE_INITIAL_INTERVAL = 100;
@@ -198,11 +199,12 @@ public class SongFragment extends BaseFragment  {
             mBufferCircle.setVisibility(View.VISIBLE);
             load_animations();
 
-
+            LogHelper.d(TAG, "start buffer circle rotate");
         } else {
             mRotation.cancel();
             mBufferCircle.setAnimation(null);
             mBufferCircle.setVisibility(View.INVISIBLE);
+            LogHelper.d(TAG, "stop buffer circle rot ate");
 
         }
 
@@ -217,9 +219,12 @@ public class SongFragment extends BaseFragment  {
     void load_animations()
     {
         //new AnimationUtils();
-        if (mRotation == null)
+        if (mRotation == null) {
             mRotation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
+            mRotation.setDuration(1600);
+        }
         //rotation.setAnimationListener(listener);
+
         mBufferCircle.startAnimation(mRotation);
     }
 }

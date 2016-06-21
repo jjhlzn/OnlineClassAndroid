@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/12.
  */
-public class AlbumDetailFragment extends android.support.v4.app.Fragment implements  SingleFragmentActivity.OnBackPressedListener,
+public class AlbumDetailFragment extends BottomPlayerFragment implements  SingleFragmentActivity.OnBackPressedListener,
         AbsListView.OnScrollListener {
     private static final String TAG = LogHelper.makeLogTag(AlbumDetailFragment.class);
 
@@ -85,13 +86,8 @@ public class AlbumDetailFragment extends android.support.v4.app.Fragment impleme
         mPagableController.setPagableRequestHandler(new AlbumDetailRequestHandler());
         mPagableController.setOnScrollListener(this);
 
+        mPlayerController.attachToView((FrameLayout)v.findViewById(R.id.fragmentContainer));
         return v;
-    }
-
-    private void playMusic(String id) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(PlaybackManager.EXTRA_PLAY_SONGS, (ArrayList<Song>) mAlbum.getSongs());
-        getActivity().getSupportMediaController().getTransportControls().playFromMediaId(id, bundle);
     }
 
 
