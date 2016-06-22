@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:layout_marginTop="-55dp"
+    android:gravity="bottom"
+    android:background="@drawable/top_border">
+
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:background="@drawable/textview_bottom_border"
+           android:layout_marginTop="1dp"
+           android:layout_marginBottom="5dp"
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
+           android:gravity="bottom"
+           android:paddingBottom="5dp"
+           android:textSize="16dp"
+           android:text="我也来说两句"
+           android:textColor="#c4c1c1"
+           android:textStyle="normal" />
+   </LinearLayout>

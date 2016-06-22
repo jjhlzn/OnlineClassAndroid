@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -51,7 +54,6 @@ public class SongFragment extends BaseFragment {
 
     private MusicPlayer mMusicPlayer;
 
-
     private ListView mListView;
     private SongFragmentAdapter mAdapter;
     private PlayerCell mPlayerCell;
@@ -63,9 +65,22 @@ public class SongFragment extends BaseFragment {
         setTitle(mSong.getName());
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
 
-        View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
         //让下拉刷新失效
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
+
+        View commentTip = v.findViewById(R.id.bottom_comment_tip);
+        final View commentWindow = v.findViewById(R.id.bottom_comment);
+        final EditText editText = (EditText) v.findViewById(R.id.comment_edittext);
+        commentTip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commentWindow.setVisibility(View.VISIBLE);
+                editText.requestFocus();
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
 
         mListView = (ListView) v.findViewById(R.id.listView);
 

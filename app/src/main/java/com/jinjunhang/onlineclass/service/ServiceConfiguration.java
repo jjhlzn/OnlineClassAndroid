@@ -27,14 +27,14 @@ public class ServiceConfiguration {
         if (isUseConfig) {
             return LOCATOR_SERVERNAME;
         }
-        return serverName2;
+        return serverName1;
     }
 
     public static int port() {
         if (isUseConfig) {
             return LOCATOR_PORT;
         }
-        return port2;
+        return port1;
     }
 
     public static String GetAlbumsUrl() {
