@@ -6,9 +6,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import com.ppi.emoji.EmojiTextView;
+import com.ppi.emoji.emojiParser;
 
 /**
  * Created by lzn on 16/6/22.
@@ -16,6 +20,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 public class CommentCell extends BaseListViewCell {
 
     private Comment mComment;
+
 
     public CommentCell(Activity activity, Comment comment) {
         super(activity);
@@ -30,7 +35,10 @@ public class CommentCell extends BaseListViewCell {
 
         ((TextView)v.findViewById(R.id.comment_username)).setText(mComment.getUserId());
         ((TextView)v.findViewById(R.id.comment_date)).setText(mComment.getTime());
-        ((TextView)v.findViewById(R.id.comment_content)).setText(mComment.getContent());
+
+        EmojiTextView  contentView = (EmojiTextView)v.findViewById(R.id.comment_content);
+        contentView.setText(EmojiParser.parseEmojis(mComment.getContent()));
+
 
         return (LinearLayout)v.findViewById(R.id.list_item_albumtype_viewgroup);
     }

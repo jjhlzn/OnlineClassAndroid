@@ -13,7 +13,7 @@ public class ServiceConfiguration {
     private final static String serverName1 = "jjhaudio.hengdianworld.com";
     private final static int port1 = 80;
 
-    private final static String serverName2 = "192.168.31.146";
+    private final static String serverName2 = "192.168.1.57";
     private final static int port2 = 3000;
 
     public static String httpMethod() {
@@ -27,14 +27,14 @@ public class ServiceConfiguration {
         if (isUseConfig) {
             return LOCATOR_SERVERNAME;
         }
-        return serverName1;
+        return serverName2;
     }
 
     public static int port() {
         if (isUseConfig) {
             return LOCATOR_PORT;
         }
-        return port1;
+        return port2;
     }
 
     public static String GetAlbumsUrl() {
