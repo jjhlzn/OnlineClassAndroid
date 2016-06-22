@@ -70,8 +70,8 @@ public class SongFragment extends BaseFragment {
         mListView = (ListView) v.findViewById(R.id.listView);
 
         //去掉列表的分割线
-        //mListView.setDividerHeight(0);
-        //mListView.setDivider(null);
+        mListView.setDividerHeight(0);
+        mListView.setDivider(null);
 
         createAdapter();
         mListView.setAdapter(mAdapter);

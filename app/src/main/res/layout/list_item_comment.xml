@@ -3,7 +3,7 @@
               android:id="@+id/list_item_albumtype_viewgroup"
               android:layout_width="match_parent"
               android:layout_height="86dp"
-              android:background="@color/white"
+              android:background="@drawable/bottom_border"
               android:orientation="horizontal">
 
     <LinearLayout
