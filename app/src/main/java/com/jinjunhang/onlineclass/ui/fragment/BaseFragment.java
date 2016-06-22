@@ -7,6 +7,7 @@ import android.view.View;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.ui.lib.BottomPlayerController;
 import com.jinjunhang.player.MusicPlayer;
 
@@ -40,6 +41,10 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
     @Override
     public void onPlayerError(ExoPlaybackException error) {
 
+    }
+
+    protected void setTitle(String title) {
+        ((BaseMusicSingleFragmentActivity)getActivity()).setActivityTitle(title);
     }
 
 }

@@ -7,6 +7,7 @@ import com.jinjunhang.onlineclass.model.BaseModelObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public abstract class PagedServerResponse<T extends BaseModelObject> extends Ser
 
 
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
+        mResultSet = new ArrayList<T>();
         if (getStatus() == ServerResponse.SUCCESS) {
             mTotalNumber = json.getInt("totalNumber");
         }

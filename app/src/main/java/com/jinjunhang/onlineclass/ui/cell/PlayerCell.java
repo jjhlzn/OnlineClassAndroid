@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -45,6 +46,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
     private MusicPlayer mMusicPlayer;
     private boolean mInited;
+
+    private Song mSong;
 
 
     //更新播放进度
@@ -234,5 +237,13 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     @Override
     public void onPlayerError(ExoPlaybackException error) {
 
+    }
+
+    public Song getSong() {
+        return mSong;
+    }
+
+    public void setSong(Song song) {
+        mSong = song;
     }
 }

@@ -49,6 +49,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/getAds";
     }
 
+    public static String GetSongCommentsUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/song/comments";
+    }
+
 }
 
 
