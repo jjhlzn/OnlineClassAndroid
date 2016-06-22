@@ -21,6 +21,7 @@
             android:layout_alignParentLeft="true"
             android:src="@drawable/back"
             android:padding="10dp"
+            android:layout_marginLeft="-15dp"
             android:background="@null"
             android:visibility="invisible"
             />

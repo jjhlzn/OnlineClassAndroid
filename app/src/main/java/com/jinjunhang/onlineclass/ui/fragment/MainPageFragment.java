@@ -25,6 +25,7 @@ import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -46,12 +47,12 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     private ListView mListView;
     private AlbumTypeAdapter mAlbumTypeAdapter;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
         mListView = (ListView) v.findViewById(R.id.listView);
 
+        //去掉列表的分割线
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
 
