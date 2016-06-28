@@ -45,6 +45,18 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/logout";
     }
 
+    public static  String SingupUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/signup";
+    }
+
+    public static  String GetPhoneCheckCodeUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/getPhoneCheckCode";
+    }
+
+    public static String ForgetPasswordUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/getPassword";
+    }
+
     public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";
     }

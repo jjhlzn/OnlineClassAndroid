@@ -42,6 +42,22 @@ public class Utils {
                 .show();
     }
 
+    public static void showErrorMessage(Context context, String message) {
+
+        new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("")
+                .setContentText(message)
+                .show();
+    }
+
+    public static void showMessage(Context context, String message, DialogInterface.OnDismissListener listener) {
+        SweetAlertDialog dialog = new SweetAlertDialog(context)
+                .setTitleText(message);
+        dialog.setOnDismissListener(listener);
+        dialog.show();
+    }
+
+
     public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
         dlgAlert.setMessage(message);

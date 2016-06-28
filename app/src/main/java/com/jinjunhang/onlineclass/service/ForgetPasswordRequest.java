@@ -5,54 +5,54 @@ import com.jinjunhang.framework.service.ServerRequest;
 import java.util.Map;
 
 /**
- * Created by lzn on 16/6/27.
+ * Created by lzn on 16/6/28.
  */
-public class LoginRequest extends ServerRequest {
+public class ForgetPasswordRequest extends ServerRequest {
 
-    private String mUserName;
+    private String mCheckCode;
     private String mPassword;
-    private String mDeviceToken;
+    private String mPhoneNumber;
 
-    public String getUserName() {
-        return mUserName;
+    public String getCheckCode() {
+        return mCheckCode;
     }
 
     public String getPassword() {
         return mPassword;
     }
 
-    public String getDeviceToken() {
-        return mDeviceToken;
+    public String getPhoneNumber() {
+        return mPhoneNumber;
     }
 
-    public void setUserName(String userName) {
-        mUserName = userName;
+    public void setCheckCode(String checkCode) {
+        mCheckCode = checkCode;
     }
 
     public void setPassword(String password) {
         mPassword = password;
     }
 
-    public void setDeviceToken(String deviceToken) {
-        mDeviceToken = deviceToken;
+    public void setPhoneNumber(String phoneNumber) {
+        mPhoneNumber = phoneNumber;
     }
 
     @Override
     public String getServiceUrl() {
-        return ServiceConfiguration.LoginUrl();
+        return ServiceConfiguration.ForgetPasswordUrl();
     }
 
     @Override
     public Class getServerResponseClass() {
-        return LoginResponse.class;
+        return ForgetPasswordResponse.class;
     }
 
     @Override
     public Map<String, Object> getParams() {
         Map<String, Object> params = super.getParams();
-        params.put("userName", mUserName);
+        params.put("checkCode", mCheckCode);
         params.put("password", mPassword);
-        params.put("deviceToken", mDeviceToken);
+        params.put("phoneNumber", mPhoneNumber);
         return params;
     }
 }

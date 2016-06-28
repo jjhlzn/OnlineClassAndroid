@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">巨方助手</string>
 
+    <string name="singup_hint_message">轻触上面的"注册"按钮，即表示你同意</string>
+    <string name="signup_protocol_message">"巨方助手软件许可及服务协议"</string>
 
 
     <string name="favorite">Favorite</string>

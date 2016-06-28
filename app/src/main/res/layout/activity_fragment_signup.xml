@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="25dp"
+            android:weightSum="1"
+            >
+
+
+            <EditText
+                android:id="@+id/signup_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:background="@drawable/edit_text_border"
+                android:textCursorDrawable="@null"
+                android:hint="手机号"
+                android:textColorHint="@color/hint_color"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:lines="1"
+                android:textSize="15dp"
+                android:inputType="number"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="1"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/signup_checkcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/edit_text_border"
+                    android:textCursorDrawable="@null"
+                    android:hint="验证码"
+                    android:textColorHint="@color/hint_color"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:lines="1"
+                    android:textSize="15dp"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:text="获取验证码"
+                    android:textSize="13dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginRight="18dp"
+                    android:background="@null"
+                    android:id="@+id/get_checkcode_button"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="59秒后重新获取"
+                    android:textSize="13dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginRight="27dp"
+                    android:paddingBottom="10dp"
+                    android:background="@null"
+                    android:gravity="bottom"
+                    android:visibility="invisible"
+                    android:id="@+id/get_checkcode_message"/>
+
+            </RelativeLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="1"
+            >
+
+
+            <EditText
+                android:id="@+id/signup_invitePhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:background="@drawable/edit_text_border"
+                android:textCursorDrawable="@null"
+                android:hint="邀请人手机号 (可不填)"
+                android:textColorHint="@color/hint_color"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:lines="1"
+                android:textSize="15dp"
+                android:inputType="number"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="1"
+            >
+
+
+            <EditText
+                android:id="@+id/signup_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:background="@drawable/edit_text_border"
+                android:textCursorDrawable="@null"
+                android:hint="密    码 (不少于6位)"
+                android:textColorHint="@color/hint_color"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:lines="1"
+                android:textSize="15dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/singup_button"
+                android:text="注     册"
+                style="@style/button"/>
+        </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="14dp"
+                android:layout_above="@+id/protocol_message"
+                android:text="@string/singup_hint_message"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:layout_marginTop="1dp"
+                android:textSize="12dp"
+                android:layout_alignParentBottom = "true"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/protocol_message"
+                android:text="@string/signup_protocol_message"/>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

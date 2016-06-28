@@ -69,6 +69,24 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                 new LoginTask().execute(req);
             }
         });
+
+        Button signupButton = (Button) findViewById(R.id.signup_button);
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(i);
+            }
+        });
+
+        Button forgetPasswordButton = (Button) findViewById(R.id.forget_password_button);
+        forgetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 
