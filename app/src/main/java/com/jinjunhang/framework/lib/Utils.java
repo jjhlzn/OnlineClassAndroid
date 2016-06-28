@@ -7,10 +7,22 @@ import android.content.DialogInterface;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+
+import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.player.utils.LogHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by lzn on 16/4/3.
@@ -24,10 +36,10 @@ public class Utils {
     public final static long UPDATE_TIME_DELTA = 1000 * 60 * 5;
 
     public static void showMessage(Context context, String message) {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-        dlgAlert.setMessage(message);
-        dlgAlert.setPositiveButton("确定", null);
-        dlgAlert.create().show();
+
+        new SweetAlertDialog(context)
+                .setTitleText(message)
+                .show();
     }
 
     public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
@@ -89,6 +101,54 @@ public class Utils {
         return screenHeight;
     }
 
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
 
+    public static void setupUI4HideKeybaord(View view, final Activity activity) {
+
+        //Set up touch listener for non-text box views to hide keyboard.
+        LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
+        if (view.getId() == R.id.bottom_comment) {
+            return;
+        }
+        if(!(view instanceof EditText)) {
+            LogHelper.d(TAG, "register onTouchListener for id = " + view.getId());
+            view.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    LogHelper.d(TAG, "onTouch called");
+                    Utils.hideSoftKeyboard(activity);
+                    return false;
+                }
+
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+
+                View innerView = ((ViewGroup) view).getChildAt(i);
+
+                setupUI4HideKeybaord(innerView, activity);
+            }
+        }
+    }
+
+    /*
+    public static LoginUser getLoginUser() {
+        Iterator<LoginUser> users = LoginUser.findAll(LoginUser.class);
+        if (users.hasNext()) {
+            return users.next();
+        }
+        return null;
+    }
+
+    public static void removeLoginUser() {
+        LoginUser.delete(LoginUser.class);
+    } */
 
 }

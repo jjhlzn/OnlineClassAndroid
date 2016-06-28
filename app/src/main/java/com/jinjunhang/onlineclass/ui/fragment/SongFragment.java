@@ -20,6 +20,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.exoplayer.ExoPlayer;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
@@ -35,6 +36,8 @@ import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.jinjunhang.player.utils.TimeUtil;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +94,20 @@ public class SongFragment extends BaseFragment {
         createAdapter();
         mListView.setAdapter(mAdapter);
 
+        //设置发送按钮
+        TextView sendButton = (TextView)v.findViewById(R.id.send_button);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogHelper.d(TAG, "send button pressed");
+            }
+        });
+
+        //设置emoji切换按钮
+
         new GetSongCommentsTask().execute();
+
+        Utils.setupUI4HideKeybaord(v, getActivity());
         return v;
     }
 

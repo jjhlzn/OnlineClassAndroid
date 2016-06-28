@@ -37,6 +37,14 @@ public class ServiceConfiguration {
         return port1;
     }
 
+    public static String LoginUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/login";
+    }
+
+    public static  String LogoutUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/logout";
+    }
+
     public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";
     }

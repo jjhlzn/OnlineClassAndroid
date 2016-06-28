@@ -41,4 +41,12 @@
         <item name="android:paddingRight">12dp</item>
     </style>
 
+
+
+    <style name="button">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

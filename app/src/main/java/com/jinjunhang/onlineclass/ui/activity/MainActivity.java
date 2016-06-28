@@ -17,8 +17,12 @@ import android.widget.TextView;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.lib.BottomPlayerController;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
@@ -40,10 +44,18 @@ public class MainActivity extends BaseMusicActivity  {
 
     public final static String EXTRA_TAB = "selecttab";
 
+    private LoginUserDao mLoginUserDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLoginUserDao = LoginUserDao.getInstance(this);
+
+        LoginUser loginUser = mLoginUserDao.get();
+        LogHelper.d(TAG, "loginuser = " + loginUser);
+
         setContentView(R.layout.activity_main);
+
 
         fragmentMap = new HashMap();
 
@@ -75,6 +87,7 @@ public class MainActivity extends BaseMusicActivity  {
                         break;
                     case R.id.bottomBarSetting:
                         title = "设置";
+                        fragment = getFragment(SettingsFragment.class);
                         break;
                 }
 
