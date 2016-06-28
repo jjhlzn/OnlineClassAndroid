@@ -65,7 +65,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                 AlbumTypeCell item = new AlbumTypeCell(getActivity(), albumType);
                 mCells.add(item);
             }
-            
+
             mCells.add(new SectionSeparatorCell(getActivity()));
 
 

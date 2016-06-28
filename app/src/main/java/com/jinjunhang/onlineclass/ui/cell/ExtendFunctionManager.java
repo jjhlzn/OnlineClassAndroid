@@ -104,8 +104,8 @@ public class ExtendFunctionManager {
         layout.setLayoutParams(params);
 
         ViewGroup.LayoutParams imageParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        imageParams.width = (int)(width / 4 * 0.5);
-        imageParams.height = (int)(width / 4 * 0.5);
+        imageParams.width = (int)(width / 4 * 0.45);
+        imageParams.height = (int)(width / 4 * 0.45);
         ImageView imageView = new ImageView(mContext);
         imageView.setPadding(0, 20, 0, 0);
         imageView.setLayoutParams(imageParams);
