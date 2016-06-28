@@ -58,21 +58,26 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         mFunctionManager = new ExtendFunctionManager(getActivity());
 
-        for (AlbumType albumType : mAlbumTypes) {
-            AlbumTypeCell item = new AlbumTypeCell(getActivity(), albumType);
-            mCells.add(item);
+
+
+        if (mCells.size() == 0) {
+            for (AlbumType albumType : mAlbumTypes) {
+                AlbumTypeCell item = new AlbumTypeCell(getActivity(), albumType);
+                mCells.add(item);
+            }
+            
+            mCells.add(new SectionSeparatorCell(getActivity()));
+
+
+            int functionRowCount = mFunctionManager.getRowCount();
+            for (int i = 0; i < functionRowCount; i++) {
+                mCells.add(mFunctionManager.getCell(i));
+            }
+
+            mAdvImageCell = new AdvImageCell(getActivity());
+            mCells.add(mAdvImageCell);
         }
 
-        mCells.add(new SectionSeparatorCell(getActivity()));
-
-
-        int functionRowCount = mFunctionManager.getRowCount();
-        for(int i = 0; i < functionRowCount; i++) {
-            mCells.add(mFunctionManager.getCell(i));
-        }
-
-        mAdvImageCell = new AdvImageCell(getActivity());
-        mCells.add(mAdvImageCell);
 
         mAlbumTypeAdapter = new AlbumTypeAdapter(mCells);
         mListView.setAdapter(mAlbumTypeAdapter);
