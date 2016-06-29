@@ -40,4 +40,9 @@ public abstract class BaseListViewCell implements ListViewCell {
     public Object getContent() {
         return null;
     }
+
+    @Override
+    public void onClick() {
+
+    }
 }

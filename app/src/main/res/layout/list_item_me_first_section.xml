@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/root_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:layout_height="135dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="42dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/song_list_item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/avril"
+            app:riv_oval="true"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.65"
+        android:orientation="vertical"
+        android:layout_marginBottom="42dp">
+        <TextView
+            android:id="@+id/user_image"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textAlignment="textStart"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:text="JinJunHang (jjh)"/>
+
+        <TextView
+            android:id="@+id/level_label"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:textAlignment="textStart"
+            android:textSize="14dp"
+            android:textColor="@color/white"
+            android:text="等级: VIP级别"/>
+
+        <TextView
+            android:id="@+id/boss_label"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:textAlignment="textStart"
+            android:textSize="14dp"
+            android:textColor="@color/white"
+            android:text="上级: 张三"/>
+    </LinearLayout>
+
+</LinearLayout>

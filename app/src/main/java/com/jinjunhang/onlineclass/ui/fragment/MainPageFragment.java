@@ -1,31 +1,21 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.Advertise;
-import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
-import com.jinjunhang.onlineclass.service.GetAdsRequest;
-import com.jinjunhang.onlineclass.service.GetAdsResponse;
 import com.jinjunhang.onlineclass.ui.activity.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -118,21 +108,21 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     }
 
     private class AlbumTypeAdapter extends ArrayAdapter<ListViewCell> {
-        private List<ListViewCell> mAlbumTypes;
+        private List<ListViewCell> mViewCells;
 
         public AlbumTypeAdapter(List<ListViewCell> albumTypes) {
             super(getActivity(), 0, albumTypes);
-            mAlbumTypes = albumTypes;
+            mViewCells = albumTypes;
         }
 
         @Override
         public int getCount() {
-            return mAlbumTypes.size();
+            return mViewCells.size();
         }
 
         @Override
         public ListViewCell getItem(int position) {
-            return mAlbumTypes.get(position);
+            return mViewCells.get(position);
         }
 
         @Override

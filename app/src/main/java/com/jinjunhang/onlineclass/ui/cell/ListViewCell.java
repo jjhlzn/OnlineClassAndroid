@@ -18,4 +18,6 @@ public interface ListViewCell {
 
     void release();
 
+    void onClick();
+
 }

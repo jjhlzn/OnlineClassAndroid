@@ -22,6 +22,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SearchFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.lib.BottomPlayerController;
@@ -80,7 +81,8 @@ public class MainActivity extends BaseMusicActivity  {
                         setSearchActionBar();
                         break;
                     case R.id.bottomBarMe:
-                        title = "我的";
+                        title = "";
+                        fragment = getFragment(MeFragment.class);
                         setCommonActionBar();
                         break;
                     case R.id.bottomBarSetting:
@@ -97,7 +99,7 @@ public class MainActivity extends BaseMusicActivity  {
                     transaction.commit();
                 }
 
-                if (title != "" && menuItemId != R.id.bottomBarSearch)
+                if (menuItemId != R.id.bottomBarSearch)
                     ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
             }
 
@@ -118,6 +120,7 @@ public class MainActivity extends BaseMusicActivity  {
     }
 
     private void setCommonActionBar() {
+        getSupportActionBar().show();
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
         getSupportActionBar().setCustomView(customView);
@@ -126,11 +129,22 @@ public class MainActivity extends BaseMusicActivity  {
     }
 
     private void setSearchActionBar() {
+        getSupportActionBar().show();
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customView = getLayoutInflater().inflate(R.layout.actionbar_search, null);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
+    }
+
+    private void setMeActionBar() {
+        getSupportActionBar().hide();
+        /*
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        View customView = getLayoutInflater().inflate(R.layout.actionbar_search, null);
+        getSupportActionBar().setCustomView(customView);
+        Toolbar parent =(Toolbar) customView.getParent();
+        parent.setContentInsetsAbsolute(0, 0); */
     }
 
     private <T extends Fragment> Fragment getFragment(Class<T> fragmentClass) {
