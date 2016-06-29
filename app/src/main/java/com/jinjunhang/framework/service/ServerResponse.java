@@ -32,6 +32,10 @@ public abstract class ServerResponse {
     }
 
     public abstract void parse(ServerRequest request, JSONObject json) throws JSONException;
+
+    public boolean isSuccess() {
+        return getStatus() == SUCCESS;
+    }
 }
 
 

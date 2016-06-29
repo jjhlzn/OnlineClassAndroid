@@ -52,7 +52,9 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         setFootView();
     }
 
-
+    public Activity getActivity() {
+        return mActivity;
+    }
 
     public void setPagableRequestHandler(PagableRequestHandler pagableRequestHandler) {
         mPagableRequestHandler = pagableRequestHandler;
@@ -88,6 +90,24 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
                 new PagableTask(this, mPagableRequestHandler).execute();
             }
         }
+    }
+
+    public void load() {
+        if (!mMoreDataAvailable)
+            return;
+
+        if (!mIsLoading) {
+                Log.d(TAG, "start loading more");
+                new PagableTask(this, mPagableRequestHandler).execute();
+        }
+    }
+
+    public void reset() {
+        mPagableArrayAdapter.clear();
+        mPageIndex = 0;
+        mMoreDataAvailable = true;
+        mIsRefreshing = false;
+        mIsLoading = false;
     }
 
     @Override

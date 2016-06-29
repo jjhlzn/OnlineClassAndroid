@@ -22,6 +22,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.SearchFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.lib.BottomPlayerController;
 import com.jinjunhang.player.MusicPlayer;
@@ -56,16 +57,9 @@ public class MainActivity extends BaseMusicActivity  {
 
         setContentView(R.layout.activity_main);
 
+        setCommonActionBar();
 
         fragmentMap = new HashMap();
-
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
-        getSupportActionBar().setCustomView(customView);
-        Toolbar parent =(Toolbar) customView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setMaxFixedTabs(5);
         mBottomBar.setItemsFromMenu(R.menu.bottombar, new OnMenuTabClickListener() {
@@ -78,15 +72,20 @@ public class MainActivity extends BaseMusicActivity  {
                     case R.id.bottomBarHome:
                         title = "巨方助手";
                         fragment = getFragment(MainPageFragment.class);
+                        setCommonActionBar();
                         break;
                     case R.id.bottomBarSearch:
                         title = "搜索";
+                        fragment = getFragment(SearchFragment.class);
+                        setSearchActionBar();
                         break;
                     case R.id.bottomBarMe:
                         title = "我的";
+                        setCommonActionBar();
                         break;
                     case R.id.bottomBarSetting:
                         title = "设置";
+                        setCommonActionBar();
                         fragment = getFragment(SettingsFragment.class);
                         break;
                 }
@@ -98,7 +97,7 @@ public class MainActivity extends BaseMusicActivity  {
                     transaction.commit();
                 }
 
-                if (title != "")
+                if (title != "" && menuItemId != R.id.bottomBarSearch)
                     ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
             }
 
@@ -116,6 +115,22 @@ public class MainActivity extends BaseMusicActivity  {
         mBottomBar.selectTabAtPosition(selectTab, true);
 
         mPlayerController.attachToView(mBottomBar);
+    }
+
+    private void setCommonActionBar() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        getSupportActionBar().setCustomView(customView);
+        Toolbar parent =(Toolbar) customView.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
+    }
+
+    private void setSearchActionBar() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        View customView = getLayoutInflater().inflate(R.layout.actionbar_search, null);
+        getSupportActionBar().setCustomView(customView);
+        Toolbar parent =(Toolbar) customView.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
     }
 
     private <T extends Fragment> Fragment getFragment(Class<T> fragmentClass) {

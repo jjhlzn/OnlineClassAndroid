@@ -61,6 +61,14 @@ public class ServiceConfiguration {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";
     }
 
+    public static String GetHotSearchWordsUrl() {
+        return httpMethod() + "://"+ serverName() + ":" + port() +"/album/getHotSearchWords";
+    }
+
+    public static String SearchCourseUrl() {
+        return httpMethod() + "://"+ serverName() + ":" + port() +"/album/search";
+    }
+
     public static String GetAlbumSongsUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/album/songs";
     }

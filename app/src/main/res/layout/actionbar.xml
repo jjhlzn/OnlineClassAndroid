@@ -4,15 +4,12 @@
               android:layout_height="wrap_content"
               android:gravity="center">
 
-
-
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/statusbar_background"
-        >
+        android:background="@color/statusbar_background">
 
         <ImageButton
             android:id="@+id/actionbar_back_button"
