@@ -1,25 +1,18 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -32,19 +25,12 @@ import com.jinjunhang.onlineclass.ui.cell.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
+import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
-import com.jinjunhang.player.utils.StatusHelper;
-import com.jinjunhang.player.utils.TimeUtil;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lzn on 16/6/13.

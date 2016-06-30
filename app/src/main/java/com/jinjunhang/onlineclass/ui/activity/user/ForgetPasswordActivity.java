@@ -1,9 +1,9 @@
-package com.jinjunhang.onlineclass.ui.activity;
+package com.jinjunhang.onlineclass.ui.activity.user;
 
 import android.support.v4.app.Fragment;
 
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
-import com.jinjunhang.onlineclass.ui.fragment.ForgetPasswordFragment;
+import com.jinjunhang.onlineclass.ui.fragment.user.ForgetPasswordFragment;
 
 /**
  * Created by lzn on 16/6/28.

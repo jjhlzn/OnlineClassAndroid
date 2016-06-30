@@ -1,14 +1,11 @@
-package com.jinjunhang.onlineclass.ui.activity;
+package com.jinjunhang.onlineclass.ui.activity.album;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
-import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.ui.fragment.AlbumListFragment;
+import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
+import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
 
 /**
  * Created by lzn on 16/6/11.

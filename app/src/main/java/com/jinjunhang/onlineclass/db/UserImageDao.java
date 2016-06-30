@@ -3,9 +3,11 @@ package com.jinjunhang.onlineclass.db;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -14,30 +16,44 @@ import java.io.IOException;
  */
 public class UserImageDao {
 
-    public void get() {
+    private static UserImageDao instance = null;
+    private Context mContext;
 
+    private UserImageDao(Context context) {
+        mContext = context;
     }
 
-    public void saveOrUpdate(Context context, Image image) {
+    public synchronized static UserImageDao getInstance(Context ctx) {
+        if (null == instance) {
+            instance = new UserImageDao(ctx);
+        }
+        return instance;
+    }
 
-        /*
-        ContextWrapper cw = new ContextWrapper(context);
-        // path to /data/data/yourapp/app_data/imageDir
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath=new File(directory,"profile.jpg");
 
-        FileOutputStream fos = null;
+    public Bitmap get() {
+        String name = "userprofile.png";
+        try{
+            FileInputStream fis = mContext.openFileInput(name);
+            Bitmap b = BitmapFactory.decodeStream(fis);
+            fis.close();
+            return b;
+        }
+        catch(Exception e){
+        }
+        return null;
+    }
+
+    public void saveOrUpdate(Bitmap image) {
+        String name = "userprofile.png";
+        FileOutputStream out;
         try {
-            fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            out = mContext.openFileOutput(name, Context.MODE_PRIVATE);
+            image.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            fos.close();
         }
-        return directory.getAbsolutePath(); */
     }
 
 }

@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,9 +24,9 @@ import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
-import com.jinjunhang.onlineclass.ui.activity.SongActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
+import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.playback.PlaybackManager;
 import com.jinjunhang.player.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 

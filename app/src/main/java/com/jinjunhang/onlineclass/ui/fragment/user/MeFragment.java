@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.user;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -25,6 +25,7 @@ import com.jinjunhang.onlineclass.ui.cell.me.CommonCell;
 import com.jinjunhang.onlineclass.ui.cell.me.FirstSectionCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.cell.me.SecondSectionCell;
+import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.player.utils.LogHelper;
 

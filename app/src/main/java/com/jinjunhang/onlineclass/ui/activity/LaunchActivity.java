@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 
 /**
  * Created by lzn on 16/6/19.

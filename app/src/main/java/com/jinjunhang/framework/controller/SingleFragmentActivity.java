@@ -1,16 +1,13 @@
 package com.jinjunhang.framework.controller;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -33,6 +30,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     public void setActivityTitle(String title) {
         ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+    }
+
+    protected void createActionBar() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        getSupportActionBar().setCustomView(customView);
+        Toolbar parent = (Toolbar) customView.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
+
     }
 
     protected boolean isNeedPushDownFresh() {return false;}
@@ -62,14 +68,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         if (hasActionBar()) {
             Log.d(TAG, "has action bar");
-            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
-            getSupportActionBar().setCustomView(customView);
-            Toolbar parent = (Toolbar) customView.getParent();
-            parent.setContentInsetsAbsolute(0, 0);
-
+            createActionBar();
             ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(getActivityTitle());
-
             //if (NavUtils.getParentActivityName(this) == null) {
             if (!hasParent()) {
                 getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button).setVisibility(View.INVISIBLE);

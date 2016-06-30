@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.activity;
+package com.jinjunhang.onlineclass.ui.activity.user;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +17,7 @@ import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.LoginRequest;
 import com.jinjunhang.onlineclass.service.LoginResponse;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.player.utils.LogHelper;
 
 /**

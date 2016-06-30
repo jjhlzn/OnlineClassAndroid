@@ -1,45 +1,34 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.search;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
-import com.jinjunhang.framework.controller.PagableController;
-import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.service.GetHotSearchWordsRequest;
 import com.jinjunhang.onlineclass.service.GetHotSearchWordsResponse;
-import com.jinjunhang.onlineclass.service.SearchCourseRequest;
-import com.jinjunhang.onlineclass.service.SearchCourseResponse;
-import com.jinjunhang.onlineclass.ui.activity.AlbumDetailActivity;
-import com.jinjunhang.onlineclass.ui.activity.SearchResultActivity;
+import com.jinjunhang.onlineclass.ui.activity.search.SearchResultActivity;
+import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.utils.LogHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by lzn on 16/6/28.
  */
-public class SearchFragment extends BaseFragment  {
+public class SearchFragment extends BaseFragment {
 
     private static final String TAG = LogHelper.makeLogTag(SearchFragment.class);
     private LinearLayout mKeywordsContainer;

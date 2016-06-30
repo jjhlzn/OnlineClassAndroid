@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +22,8 @@ import com.jinjunhang.onlineclass.service.GetCheckCodeRequest;
 import com.jinjunhang.onlineclass.service.GetCheckCodeResponse;
 import com.jinjunhang.onlineclass.service.SignupRequest;
 import com.jinjunhang.onlineclass.service.SignupResponse;
-import com.jinjunhang.onlineclass.ui.activity.LoginActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
+import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

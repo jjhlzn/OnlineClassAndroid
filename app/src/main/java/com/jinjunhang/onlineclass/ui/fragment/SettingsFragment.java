@@ -17,7 +17,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.service.LogoutRequest;
 import com.jinjunhang.onlineclass.service.LogoutResponse;
-import com.jinjunhang.onlineclass.ui.activity.LoginActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 
 /**
  * Created by lzn on 16/6/28.

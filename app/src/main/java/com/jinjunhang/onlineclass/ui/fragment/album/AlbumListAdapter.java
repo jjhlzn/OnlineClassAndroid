@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.app.Activity;
 import android.view.View;
