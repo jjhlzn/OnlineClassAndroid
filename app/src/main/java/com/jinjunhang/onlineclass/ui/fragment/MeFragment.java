@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,12 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.ui.activity.AlbumListActivity;
+import com.jinjunhang.onlineclass.service.GetUserStatDataRequest;
+import com.jinjunhang.onlineclass.service.GetUserStatDataResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
 import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
@@ -23,6 +25,8 @@ import com.jinjunhang.onlineclass.ui.cell.me.CommonCell;
 import com.jinjunhang.onlineclass.ui.cell.me.FirstSectionCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.cell.me.SecondSectionCell;
+import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
+import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +36,14 @@ import java.util.List;
  */
 public class MeFragment extends BaseFragment {
 
+    private final static String TAG = LogHelper.makeLogTag(MeFragment.class);
+
+    private Boolean inited = false;
     private List<ListViewCell> mCells = new ArrayList<>();
     private ListView mListView;
     private MeAdapter mMeAdapter;
+
+    private KeyValueDao mKeyValueDao;
 
     private List<LineRecord> mThirdSections = new ArrayList<LineRecord>();
     private List<LineRecord> mFourthSections = new ArrayList<>();
@@ -44,19 +53,19 @@ public class MeFragment extends BaseFragment {
 
     private void initSections() {
         if (mThirdSections.size() == 0) {
-            mThirdSections.add(new LineRecord(R.drawable.log, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl()));
-            mThirdSections.add(new LineRecord(R.drawable.log, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl()));
-            mThirdSections.add(new LineRecord(R.drawable.log, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl()));
-            mThirdSections.add(new LineRecord(R.drawable.log, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl()));
+            mThirdSections.add(new LineRecord(R.drawable.log, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
+            mThirdSections.add(new LineRecord(R.drawable.log, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
+            mThirdSections.add(new LineRecord(R.drawable.log, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
+            mThirdSections.add(new LineRecord(R.drawable.log, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
         }
 
         if (mFourthSections.size() == 0) {
-            mFourthSections.add(new LineRecord(R.drawable.log, "我的资料", dummyClickListener, ""));
-            mFourthSections.add(new LineRecord(R.drawable.log, "我的二维码", dummyClickListener, ""));
+            mFourthSections.add(new LineRecord(R.drawable.log, "我的资料", dummyClickListener, "", ""));
+            mFourthSections.add(new LineRecord(R.drawable.log, "我的二维码", dummyClickListener, "", ""));
         }
 
         if (mFifthSections.size() == 0) {
-            mFifthSections.add(new LineRecord(R.drawable.log, "申请代理", webBroserClickListener, ServiceLinkManager.MyAgentUrl()));
+            mFifthSections.add(new LineRecord(R.drawable.log, "申请代理", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
         }
     }
 
@@ -64,6 +73,7 @@ public class MeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        mKeyValueDao = KeyValueDao.getInstance(getActivity());
         initSections();
         mListView = (ListView) v.findViewById(R.id.listView);
 
@@ -75,6 +85,10 @@ public class MeFragment extends BaseFragment {
             FirstSectionCell item = new FirstSectionCell(getActivity());
             mCells.add(item);
 
+            SecondSectionCell secondSectionCell = new SecondSectionCell(getActivity());
+            secondSectionCell.setJiFen(mKeyValueDao.getValue(KeyValueDao.KEY_USER_JIFEN, "0"));
+            secondSectionCell.setChaiFu(mKeyValueDao.getValue(KeyValueDao.KEY_USER_CAFIFU, "0"));
+            secondSectionCell.setTeamPeople(mKeyValueDao.getValue(KeyValueDao.KEY_USER_TEAMPEOPLE, "0人"));
             mCells.add(new SecondSectionCell(getActivity()));
             mCells.add(new SectionSeparatorCell(getActivity()));
 
@@ -105,12 +119,19 @@ public class MeFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 3) {
+                if (position > 2) {
+                    BaseListViewOnItemClickListener.onItemClickEffect(parent, view, position, id);
                     ListViewCell cell = mMeAdapter.getItem(position);
                     cell.onClick();
                 }
             }
         });
+
+        if (!inited) {
+            inited = true;
+            new GetUserStatDataTask().execute();
+        }
+
         return v;
     }
 
@@ -143,10 +164,10 @@ public class MeFragment extends BaseFragment {
         @Override
         public void onClick(ListViewCell cell) {
             CommonCell commonCell = (CommonCell)cell;
-            LineRecord record = commonCell.getmRecord();
+            LineRecord record = commonCell.getRecord();
             Intent i = new Intent(getActivity(), WebBrowserActivity.class)
-                    .putExtra(WebBrowserActivity.EXTRA_URL, record.getmUrl())
-                    .putExtra(WebBrowserActivity.EXTRA_TITLE, record.getmTitle());
+                    .putExtra(WebBrowserActivity.EXTRA_URL, record.getUrl())
+                    .putExtra(WebBrowserActivity.EXTRA_TITLE, record.getTitle());
             startActivity(i);
         }
     }
@@ -154,6 +175,43 @@ public class MeFragment extends BaseFragment {
     private class DummyClickListener implements CellClickListener {
         @Override
         public void onClick(ListViewCell cell) {
+
+        }
+    }
+
+    private class GetUserStatDataTask extends AsyncTask<Void, Void, GetUserStatDataResponse> {
+        @Override
+        protected GetUserStatDataResponse doInBackground(Void... params) {
+            return new BasicService().sendRequest(new GetUserStatDataRequest());
+        }
+
+        @Override
+        protected void onPostExecute(GetUserStatDataResponse resp) {
+            if (!resp.isSuccess()) {
+                LogHelper.e(TAG, resp.getErrorMessage());
+                return;
+            }
+
+            SecondSectionCell cell = (SecondSectionCell) mCells.get(1);
+            cell.setJiFen(resp.getJifen());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_JIFEN, resp.getJifen());
+            cell.setChaiFu(resp.getChaiFu());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_CAFIFU, resp.getChaiFu());
+            cell.setTeamPeople(resp.getTeamPeople());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_TEAMPEOPLE, resp.getTeamPeople());
+            cell.updateView();
+
+            CommonCell cell0  = (CommonCell)mCells.get(3);
+            CommonCell cell1 = (CommonCell)mCells.get(4);
+            CommonCell cell2 = (CommonCell)mCells.get(5);
+            cell0.getRecord().setOtherInfo(resp.getTuiJianPeople());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_TUIJIAN, resp.getTuiJianPeople());
+            cell0.updateView();
+            cell1.getRecord().setOtherInfo(resp.getOrderCount());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_ORDER, resp.getOrderCount());
+            cell1.updateView();
+            cell2.getRecord().setOtherInfo(resp.getTeamPeople());
+            cell2.updateView();
 
         }
     }

@@ -25,18 +25,6 @@ public class LoginUserDao {
         return instance;
     }
 
-    /*
-
-     "M_LEVEL nvarchar(1000)," +
-                "M_CODE_IMAGE_URL nvarchar(1000), " +
-                "M_BOSS nvarchar(1000)," +
-                "M_SEX nvarchar(1000)," +
-                "M_USER_NAME nvarchar(1000)," +
-                "M_PASSWORD nvarchar(1000)," +
-                "M_NAME nvarchar(1000)," +
-                "M_NICK_NAME nvarchar(1000)," +
-                "M_TOKEN nvarchar(1000))");
-     */
     public void save(LoginUser user) {
 
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();

@@ -15,10 +15,9 @@
         android:layout_marginBottom="42dp">
 
         <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/song_list_item_image"
+            android:id="@+id/user_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/avril"
             app:riv_oval="true"
             />
     </RelativeLayout>
@@ -30,7 +29,7 @@
         android:orientation="vertical"
         android:layout_marginBottom="42dp">
         <TextView
-            android:id="@+id/user_image"
+            android:id="@+id/name_label"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:textAlignment="textStart"
@@ -44,7 +43,7 @@
             android:layout_height="20dp"
             android:layout_marginTop="5dp"
             android:textAlignment="textStart"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:textColor="@color/white"
             android:text="等级: VIP级别"/>
 
@@ -52,9 +51,9 @@
             android:id="@+id/boss_label"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:textAlignment="textStart"
-            android:textSize="14dp"
+            android:textSize="13dp"
             android:textColor="@color/white"
             android:text="上级: 张三"/>
     </LinearLayout>

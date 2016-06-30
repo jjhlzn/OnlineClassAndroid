@@ -7,6 +7,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -26,6 +28,7 @@ import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
 import com.jinjunhang.framework.controller.PagableController;
+import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +56,12 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new BaseListViewOnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                super.onItemClick(parent, view, position, id);
 
                 Album album = (Album) (mPagableController.getPagableArrayAdapter().getItem(position));
-
                 Intent i = new Intent(getActivity(), AlbumDetailActivity.class);
                 i.putExtra(AlbumDetailFragment.EXTRA_ALBUM, album);
                 startActivity(i);

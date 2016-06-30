@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 
 /**
@@ -17,6 +16,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
  */
 public class CommonCell extends BaseListViewCell {
     private LineRecord mRecord;
+    private TextView mOtherInfoLable;
     public CommonCell(Activity activity, LineRecord record) {
         super(activity);
         mRecord = record;
@@ -26,23 +26,27 @@ public class CommonCell extends BaseListViewCell {
     public ViewGroup getView() {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_me_common_section, null);
         TextView title = (TextView) v.findViewById(R.id.title_label);
-        title.setText(mRecord.getmTitle());
+        title.setText(mRecord.getTitle());
 
-        TextView otherInfo = (TextView) v.findViewById(R.id.otherInfo_label);
-        otherInfo.setText(mRecord.getmOtherInfo());
+        mOtherInfoLable = (TextView) v.findViewById(R.id.otherInfo_label);
+        updateView();
 
         ImageView image = (ImageView) v.findViewById(R.id.icon_image);
-        image.setImageResource(mRecord.getmImage()
+        image.setImageResource(mRecord.getImage()
         );
         return (LinearLayout)v.findViewById(R.id.root_container);
     }
 
     @Override
     public void onClick() {
-        mRecord.getmListener().onClick(this);
+        mRecord.getListener().onClick(this);
     }
 
-    public LineRecord getmRecord() {
+    public LineRecord getRecord() {
         return mRecord;
+    }
+
+    public void updateView() {
+        mOtherInfoLable.setText(mRecord.getOtherInfo());
     }
 }

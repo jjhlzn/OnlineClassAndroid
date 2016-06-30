@@ -37,6 +37,7 @@ public class ServiceConfiguration {
         return port1;
     }
 
+    //用户
     public static String LoginUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/login";
     }
@@ -57,6 +58,15 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/getPassword";
     }
 
+    public static String GetUserStatData() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/getstatdata";
+    }
+
+    public static String GetUserProfileImage(String userid) {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/getprofileimage?userid="+userid;
+    }
+
+    //课程
     public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";
     }

@@ -35,7 +35,6 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
         ImageView imageView = (ImageView) convertView.findViewById(R.id.album_list_item_image);
         Glide.with(mActivity).load(album.getImage()).into(imageView);
 
-
         TextView nameTextView = (TextView) convertView.findViewById(R.id.album_list_item_name);
         nameTextView.setText(album.getName());
 

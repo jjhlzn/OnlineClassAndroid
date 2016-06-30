@@ -23,6 +23,10 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                 "M_NAME nvarchar(1000)," +
                 "M_NICK_NAME nvarchar(1000)," +
                 "M_TOKEN nvarchar(1000))");
+
+        db.execSQL("CREATE TABLE KEY_VALUE (ID integer primary key autoincrement," +
+                "M_KEY nvarchar(1000)," +
+                "M_VALUE nvarchar(5000))");
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
+import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -79,6 +80,8 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < 3) {
+                    LogHelper.d(TAG, "on item click");
+                    BaseListViewOnItemClickListener.onItemClickEffect(parent, view, position, id);
                     AlbumTypeCell cell = (AlbumTypeCell)mCells.get(position);
                     AlbumType albumType = cell.getAlbumType();
                     Intent i = new Intent(getActivity(), AlbumListActivity.class);

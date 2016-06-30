@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass;
+package com.jinjunhang.onlineclass.ui.lib;
 
 import com.orm.SugarApp;
 import com.orm.SugarContext;

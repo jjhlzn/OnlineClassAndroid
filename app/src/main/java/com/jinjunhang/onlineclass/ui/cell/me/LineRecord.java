@@ -14,51 +14,52 @@ public class LineRecord {
     private String mUrl;
     private CellClickListener mListener;
 
-    public LineRecord(int mImage, String mTitle, CellClickListener listener, String url) {
+    public LineRecord(int mImage, String mTitle, CellClickListener listener, String url, String otherInfo) {
         this.mImage = mImage;
         this.mTitle = mTitle;
         this.mListener = listener;
         this.mUrl = url;
+        this.mOtherInfo = otherInfo;
     }
 
-    public int getmImage() {
+    public int getImage() {
         return mImage;
     }
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setmImage(int mImage) {
+    public void setImage(int mImage) {
         this.mImage = mImage;
     }
 
-    public void setmTitle(String mTitle) {
+    public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 
-    public String getmOtherInfo() {
+    public String getOtherInfo() {
         return mOtherInfo;
     }
 
-    public void setmOtherInfo(String mOtherInfo) {
+    public void setOtherInfo(String mOtherInfo) {
         this.mOtherInfo = mOtherInfo;
     }
 
-    public String getmUrl() {
+    public String getUrl() {
         return mUrl;
     }
 
 
-    public void setmUrl(String mUrl) {
+    public void setUrl(String mUrl) {
         this.mUrl = mUrl;
     }
 
-    public CellClickListener getmListener() {
+    public CellClickListener getListener() {
         return mListener;
     }
 
-    public void setmListener(CellClickListener mListener) {
+    public void setListener(CellClickListener mListener) {
         this.mListener = mListener;
     }
 }
