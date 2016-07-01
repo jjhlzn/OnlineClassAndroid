@@ -53,6 +53,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fragment_pushdownrefresh);
 
+        if (!isNeedPushDownFresh()) {
+            View fresh = findViewById(R.id.swipe_refresh_layout);
+            fresh.setEnabled(false);
+            fresh.setVisibility(View.GONE);
+        }
+
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
 

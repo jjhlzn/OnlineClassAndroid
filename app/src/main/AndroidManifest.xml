@@ -79,7 +79,15 @@
 
         </activity>
 
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.activity.user.QRImageActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".ui.activity.user.PersonalInfoActivity"
+            android:screenOrientation="portrait" />
+
 
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to

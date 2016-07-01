@@ -28,6 +28,7 @@ import java.util.Map;
 public class MainActivity extends BaseMusicActivity  {
 
     public static final int REQUEST_ME_UPDATE_USER_IAMGE = 1;
+    public static final int REQUEST_ME_UPDATE_PERSONAL_INFO = 2;
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
 
@@ -172,6 +173,8 @@ public class MainActivity extends BaseMusicActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_ME_UPDATE_USER_IAMGE) {
+            getFragment(MeFragment.class).onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == REQUEST_ME_UPDATE_PERSONAL_INFO) {
             getFragment(MeFragment.class).onActivityResult(requestCode, resultCode, data);
         }
     }

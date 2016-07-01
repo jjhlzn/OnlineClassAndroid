@@ -22,6 +22,12 @@ public class LineRecord {
         this.mOtherInfo = otherInfo;
     }
 
+    public LineRecord(String title, String otherInfo, CellClickListener listener) {
+        this.mTitle = title;
+        this.mOtherInfo = otherInfo;
+        this.mListener = listener;
+    }
+
     public int getImage() {
         return mImage;
     }

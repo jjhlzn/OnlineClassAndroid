@@ -19,6 +19,8 @@ import com.jinjunhang.onlineclass.service.GetUserStatDataRequest;
 import com.jinjunhang.onlineclass.service.GetUserStatDataResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.PersonalInfoActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
 import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
@@ -53,7 +55,6 @@ public class MeFragment extends BaseFragment {
     private List<LineRecord> mFourthSections = new ArrayList<>();
     private List<LineRecord> mFifthSections = new ArrayList<>();
     private WebBroserClickListener webBroserClickListener = new WebBroserClickListener();
-    private DummyClickListener dummyClickListener = new DummyClickListener();
 
     private void initSections() {
         if (mThirdSections.size() == 0) {
@@ -64,8 +65,20 @@ public class MeFragment extends BaseFragment {
         }
 
         if (mFourthSections.size() == 0) {
-            mFourthSections.add(new LineRecord(R.drawable.log, "我的资料", dummyClickListener, "", ""));
-            mFourthSections.add(new LineRecord(R.drawable.log, "我的二维码", dummyClickListener, "", ""));
+            mFourthSections.add(new LineRecord(R.drawable.log, "我的资料", new CellClickListener() {
+                @Override
+                public void onClick(ListViewCell cell) {
+                    Intent i = new Intent(getActivity(), PersonalInfoActivity.class);
+                    getActivity().startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_PERSONAL_INFO);
+                }
+            }, "", ""));
+            mFourthSections.add(new LineRecord(R.drawable.log, "我的二维码", new CellClickListener() {
+                @Override
+                public void onClick(ListViewCell cell) {
+                    Intent i = new Intent(getActivity(), QRImageActivity.class);
+                    startActivity(i);
+                }
+            }, "", ""));
         }
 
         if (mFifthSections.size() == 0) {
@@ -142,7 +155,7 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MainActivity.REQUEST_ME_UPDATE_USER_IAMGE) {
+        if (requestCode == MainActivity.REQUEST_ME_UPDATE_USER_IAMGE || requestCode == MainActivity.REQUEST_ME_UPDATE_PERSONAL_INFO) {
             ((FirstSectionCell)mCells.get(0)).update();
         }
     }
@@ -175,8 +188,6 @@ public class MeFragment extends BaseFragment {
     }
 
 
-
-
     private class WebBroserClickListener implements CellClickListener {
         @Override
         public void onClick(ListViewCell cell) {
@@ -188,14 +199,6 @@ public class MeFragment extends BaseFragment {
             startActivity(i);
         }
     }
-
-    private class DummyClickListener implements CellClickListener {
-        @Override
-        public void onClick(ListViewCell cell) {
-
-        }
-    }
-
 
 
     private class GetUserStatDataTask extends AsyncTask<Void, Void, GetUserStatDataResponse> {
