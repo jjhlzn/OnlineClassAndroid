@@ -66,6 +66,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/getprofileimage?userid="+userid;
     }
 
+    public static String UploadProfileImageUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/uploadprofileimage";
+    }
+
     //课程
     public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";

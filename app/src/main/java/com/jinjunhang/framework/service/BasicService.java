@@ -1,20 +1,26 @@
 package com.jinjunhang.framework.service;
 
+import android.app.Application;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.google.gson.Gson;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 
 /**
  * Created by lzn on 16/3/23.
@@ -74,8 +80,6 @@ public class BasicService {
     }
 
 
-
-
     public <T extends ServerResponse> T sendRequest(ServerRequest request) {
         T resp = null;
         try {
@@ -114,6 +118,36 @@ public class BasicService {
         }
     }
 
+
+
+    public ServerResponse upload(String url, File file) {
+        ServerResponse resp = new ServerResponse() {
+            @Override
+            public void parse(ServerRequest request, JSONObject json) throws JSONException {
+
+            }
+        };
+        try {
+            LoginUserDao loginUserDao = LoginUserDao.getInstance(CustomApplication.get());
+            LoginUser user = loginUserDao.get();
+            RequestBody formBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("userimage", "userimage", RequestBody.create(MediaType.parse("image/png"), file))
+                    .addFormDataPart("userid", user.getUserName())
+                    .addFormDataPart("token", user.getToken())
+                    .build();
+            Request request = new Request.Builder().url(url).post(formBody).build();
+            Response response = this.client.newCall(request).execute();
+            String jsonString = response.body().string();
+            JSONObject json =  new JSONObject(jsonString);
+            resp.setStatus(json.getInt("status"));
+            resp.setErrorMessage(json.getString("errorMessage"));
+        }catch (Exception ex) {
+            resp.setStatus(ServerResponse.FAIL);
+            resp.setErrorMessage("服务器出错");
+        }
+        return resp;
+    }
 
 }
 

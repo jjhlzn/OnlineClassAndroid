@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.activity.user;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -15,9 +16,12 @@ import com.jinjunhang.onlineclass.ui.fragment.user.UserProfilePhotoFragment;
  */
 public class UserProfilePhotoActivity extends BaseMusicSingleFragmentActivity {
 
+    private UserProfilePhotoFragment mFragment;
+
     @Override
     protected Fragment createFragment() {
-        return new UserProfilePhotoFragment();
+        mFragment = new UserProfilePhotoFragment();
+        return mFragment;
     }
 
     @Override
@@ -31,5 +35,11 @@ public class UserProfilePhotoActivity extends BaseMusicSingleFragmentActivity {
         ImageButton button = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
         button.setVisibility(View.VISIBLE);
         button.setImageResource(R.drawable.back);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

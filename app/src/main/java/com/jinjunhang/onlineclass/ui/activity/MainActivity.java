@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -25,6 +26,8 @@ import java.util.Map;
 
 
 public class MainActivity extends BaseMusicActivity  {
+
+    public static final int REQUEST_ME_UPDATE_USER_IAMGE = 1;
 
     private static final String TAG = LogHelper.makeLogTag(MainActivity.class);
 
@@ -163,5 +166,13 @@ public class MainActivity extends BaseMusicActivity  {
     protected void onStop() {
         super.onStop();
         mPlayerController.updateView();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ME_UPDATE_USER_IAMGE) {
+            getFragment(MeFragment.class).onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

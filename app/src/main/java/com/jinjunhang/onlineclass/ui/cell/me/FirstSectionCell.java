@@ -21,6 +21,7 @@ import com.jinjunhang.onlineclass.db.UserImageDao;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.UserProfilePhotoActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.CommentCell;
@@ -60,7 +61,7 @@ public class FirstSectionCell extends BaseListViewCell {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mActivity, UserProfilePhotoActivity.class);
-                mActivity.startActivity(i);
+                mActivity.startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_USER_IAMGE);
             }
         });
 
@@ -68,6 +69,11 @@ public class FirstSectionCell extends BaseListViewCell {
         mLevelLabel = (TextView) v.findViewById(R.id.level_label);
         mBossLabel = (TextView) v.findViewById(R.id.boss_label);
 
+        update();
+        return (LinearLayout)v.findViewById(R.id.root_container);
+    }
+
+    public void update() {
         LoginUser loginUser = mLoginUserDao.get();
         if (loginUser != null) {
             mNameLabel.setText(loginUser.getName() + "("+loginUser.getNickName()+")");
@@ -103,6 +109,5 @@ public class FirstSectionCell extends BaseListViewCell {
                 });
             }
         }
-        return (LinearLayout)v.findViewById(R.id.root_container);
     }
 }

@@ -17,6 +17,7 @@ import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.GetUserStatDataRequest;
 import com.jinjunhang.onlineclass.service.GetUserStatDataResponse;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
@@ -36,6 +37,8 @@ import java.util.List;
  * Created by jjh on 2016-6-29.
  */
 public class MeFragment extends BaseFragment {
+
+
 
     private final static String TAG = LogHelper.makeLogTag(MeFragment.class);
 
@@ -136,6 +139,14 @@ public class MeFragment extends BaseFragment {
         return v;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MainActivity.REQUEST_ME_UPDATE_USER_IAMGE) {
+            ((FirstSectionCell)mCells.get(0)).update();
+        }
+    }
+
     private class MeAdapter extends ArrayAdapter<ListViewCell> {
         private List<ListViewCell> mViewCells;
 
@@ -159,7 +170,12 @@ public class MeFragment extends BaseFragment {
             ListViewCell item = getItem(position);
             return item.getView();
         }
+
+
     }
+
+
+
 
     private class WebBroserClickListener implements CellClickListener {
         @Override
@@ -179,6 +195,8 @@ public class MeFragment extends BaseFragment {
 
         }
     }
+
+
 
     private class GetUserStatDataTask extends AsyncTask<Void, Void, GetUserStatDataResponse> {
         @Override

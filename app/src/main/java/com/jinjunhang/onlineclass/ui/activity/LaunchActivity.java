@@ -20,6 +20,8 @@ public class LaunchActivity extends Activity {
 
         mLoginUserDao = LoginUserDao.getInstance(this);
 
+
+
         Intent i;
         if (mLoginUserDao.get() == null) {
             i = new Intent(this, LoginActivity.class);
