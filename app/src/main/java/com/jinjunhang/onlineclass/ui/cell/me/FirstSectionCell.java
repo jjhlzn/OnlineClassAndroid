@@ -77,8 +77,8 @@ public class FirstSectionCell extends BaseListViewCell {
         LoginUser loginUser = mLoginUserDao.get();
         if (loginUser != null) {
             mNameLabel.setText(loginUser.getName() + "("+loginUser.getNickName()+")");
-            mLevelLabel.setText(loginUser.getLevel());
-            mBossLabel.setText(loginUser.getBoss());
+            mLevelLabel.setText("等级:   "+loginUser.getLevel());
+             mBossLabel.setText("上级:   "+loginUser.getBoss());
             String url = ServiceConfiguration.GetUserProfileImage(loginUser.getUserName());
             //Glide.with(mActivity).load(url).asBitmap().into(mUserImage);
             //mUserImage.setImageResource(R.drawable.log);

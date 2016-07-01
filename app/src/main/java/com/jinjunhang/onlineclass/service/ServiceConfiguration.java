@@ -74,6 +74,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/setName";
     }
 
+    public static String SetNickNameUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/setnickname";
+    }
+
     //课程
     public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";

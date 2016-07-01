@@ -16,6 +16,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.ui.activity.user.SetNameActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.SetNickNameActivity;
 import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
@@ -50,7 +51,8 @@ public class PersonalInfoFragment extends BaseFragment {
         mItems.add(new LineRecord("昵称", loginUser.getNickName(), new CellClickListener() {
             @Override
             public void onClick(ListViewCell cell) {
-
+                Intent i = new Intent(getActivity(), SetNickNameActivity.class);
+                startActivity(i);
             }
         }));
         mItems.add(new LineRecord("性别", loginUser.getSex(), new CellClickListener() {
