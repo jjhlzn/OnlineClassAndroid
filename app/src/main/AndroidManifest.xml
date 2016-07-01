@@ -88,6 +88,9 @@
         <activity android:name=".ui.activity.user.PersonalInfoActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".ui.activity.user.SetNameActivity"
+            android:screenOrientation="portrait" />
+
 
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to

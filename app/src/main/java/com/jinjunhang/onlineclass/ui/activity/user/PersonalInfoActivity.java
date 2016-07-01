@@ -19,4 +19,6 @@ public class PersonalInfoActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         return new PersonalInfoFragment();
     }
+
+
 }

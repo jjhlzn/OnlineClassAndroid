@@ -70,6 +70,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/uploadprofileimage";
     }
 
+    public static String SetNameUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/setName";
+    }
+
     //课程
     public static String GetAlbumsUrl() {
         return httpMethod() + "://"+ serverName() + ":" + port() +"/albums";
