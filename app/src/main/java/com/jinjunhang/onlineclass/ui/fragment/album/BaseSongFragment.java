@@ -1,7 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,16 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
-import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.Song;
-import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
-import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
-import com.jinjunhang.onlineclass.ui.cell.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.PlayerCell;
+import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.MusicPlayer;
@@ -33,19 +26,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by lzn on 16/6/13.
+ * Created by jjh on 2016-7-2.
  */
-public class SongFragment extends BaseFragment {
-    private final static String TAG = LogHelper.makeLogTag(SongFragment.class);
+public abstract class BaseSongFragment  extends BaseFragment {
+    private final static String TAG = LogHelper.makeLogTag(BaseSongFragment.class);
     public final static String EXTRA_SONG = "SongFragement_song";
 
-    private Song mSong;
+    protected Song mSong;
+    protected MusicPlayer mMusicPlayer;
 
-    private MusicPlayer mMusicPlayer;
+    protected ListView mListView;
+    protected SongFragmentAdapter mAdapter;
+    protected PlayerCell mPlayerCell;
 
-    private ListView mListView;
-    private SongFragmentAdapter mAdapter;
-    private PlayerCell mPlayerCell;
+    abstract protected  PlayerCell createPlayerCell();
 
     @Nullable
     @Override
@@ -55,8 +49,6 @@ public class SongFragment extends BaseFragment {
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
 
         View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
-        //让下拉刷新失效
-        v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
 
         View commentTip = v.findViewById(R.id.bottom_comment_tip);
         final View commentWindow = v.findViewById(R.id.bottom_comment);
@@ -91,24 +83,19 @@ public class SongFragment extends BaseFragment {
 
         //设置emoji切换按钮
 
-        new GetSongCommentsTask().execute();
-
         Utils.setupUI4HideKeybaord(v, getActivity());
         return v;
     }
 
-
     private void createAdapter() {
         List<ListViewCell> cells = new ArrayList<>();
-        mPlayerCell = new PlayerCell(getActivity());
+        mPlayerCell = createPlayerCell();
         mPlayerCell.setSong(mSong);
         cells.add(mPlayerCell);
-
         cells.add(new SectionSeparatorCell(getActivity()));
 
         mAdapter = new SongFragmentAdapter(cells);
     }
-
 
     @Override
     public void onResume() {
@@ -122,7 +109,7 @@ public class SongFragment extends BaseFragment {
         mMusicPlayer.removeListener(mPlayerCell);
     }
 
-    private class SongFragmentAdapter extends ArrayAdapter<ListViewCell> {
+    protected class SongFragmentAdapter extends ArrayAdapter<ListViewCell> {
         private List<ListViewCell> mCells;
 
         public SongFragmentAdapter(List<ListViewCell> cells) {
@@ -151,47 +138,5 @@ public class SongFragment extends BaseFragment {
             return item.getView();
         }
     }
-
-    private class GetSongCommentsTask extends AsyncTask<Void, Void, GetSongCommentsResponse> {
-        @Override
-        protected GetSongCommentsResponse doInBackground(Void... params) {
-            GetSongCommentsRequest req = new GetSongCommentsRequest();
-            req.setSong(mPlayerCell.getSong());
-            return new BasicService().sendRequest(req);
-        }
-
-        @Override
-        protected void onPostExecute(GetSongCommentsResponse resp) {
-            if (resp.getStatus() != ServerResponse.SUCCESS) {
-                return;
-            }
-
-            List<Comment> comments = getTop5(resp.getResultSet());
-
-            updateListViewData(comments);
-        }
-    }
-
-    private List<Comment> getTop5(List<Comment> comments) {
-        if (comments.size() <= 5) {
-            return comments;
-        }
-        List<Comment> top5 = new ArrayList<>();
-        for (int i = 0; i < 5; i ++) {
-            top5.add(comments.get(i));
-        }
-        return top5;
-    }
-
-    private void updateListViewData(List<Comment> comments) {
-        List<ListViewCell> cells = new ArrayList<>();
-        cells.add(mPlayerCell);
-        cells.add(new SectionSeparatorCell(getActivity()));
-        for (Comment comment : comments) {
-            cells.add(new CommentCell(getActivity(), comment));
-        }
-        this.mAdapter.setCells(cells);
-    }
 }
-
 

@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.cell;
+package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
 import android.os.Handler;
@@ -16,6 +16,7 @@ import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -206,15 +207,11 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     }
 
     private void updateProgress() {
-        //LogHelper.d(TAG, "updateProgress called, isPlaying = " + mMusicPlayer.isPlaying()
-        //       + ", duration = " + mMusicPlayer.getDuration()
-        //        + ", curretnPosition = " + mMusicPlayer.getCurrentPosition());
         if (!mMusicPlayer.isPlaying()) {
             return;
         }
         long currentPosition = mMusicPlayer.getCurrentPosition();
         int progress = (int) ((double)currentPosition / mMusicPlayer.getDuration() * 1000);
-        //LogHelper.d(TAG, "progress = " + progress);
         mSeekbar.setProgress(progress );
 
         long playTimeInSec = currentPosition / 1000;
@@ -246,4 +243,5 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     public void setSong(Song song) {
         mSong = song;
     }
+
 }
