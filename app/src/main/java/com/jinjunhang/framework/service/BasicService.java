@@ -1,7 +1,12 @@
 package com.jinjunhang.framework.service;
 
 import android.app.Application;
+import android.graphics.Point;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -18,6 +24,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import com.google.gson.Gson;
+import com.jinjunhang.onlineclass.BuildConfig;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
@@ -31,12 +38,59 @@ public class BasicService {
 
     private OkHttpClient client = new OkHttpClient();
 
+    private Map<String ,Object> getUserInfo() {
+        Map<String, Object> userInfo = new LinkedHashMap<>();
+        LoginUser loginUser = LoginUserDao.getInstance(CustomApplication.get()).get();
+        if (loginUser == null) {
+            loginUser = new LoginUser();
+        }
+        userInfo.put("userid", loginUser.getUserName());
+        userInfo.put("token", loginUser.getPassword());
+        return userInfo;
+    }
+
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        return manufacturer + " " + model;
+    }
+
+
+    private Map<String, Object> getDeviceInfo() {
+        Map<String, Object> deviceInfo = new LinkedHashMap<>();
+        deviceInfo.put("platform", "android");
+        deviceInfo.put("model",  getDeviceName());
+        deviceInfo.put("osversion", getAndroidVersion());
+
+        DisplayMetrics metrics = CustomApplication.get().getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        deviceInfo.put("screensize", width+"*"+height);
+        deviceInfo.put("appversion",  BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
+        return deviceInfo;
+    }
+
+    public String getAndroidVersion() {
+        String release = Build.VERSION.RELEASE;
+        int sdkVersion = Build.VERSION.SDK_INT;
+        return "Android SDK: " + sdkVersion + " (" + release +")";
+    }
+    private Map<String, Object> addUserAndDeviceInfo(Map<String, Object> params) {
+        Map<String, Object> newParams = new LinkedHashMap<>();
+        newParams.put("request", params);
+        newParams.put("client", getDeviceInfo());
+        newParams.put("userInfo", getUserInfo());
+        return newParams;
+
+    }
+
     private String send(ServerRequest request) throws IOException {
         String method = "POST";
         Map<String, Object> params = addMoreRequestInfo(request.getParams());
 
         Gson gson = new Gson();
 
+        params = addUserAndDeviceInfo(params);
         String paramsString = gson.toJson(params);
         Log.d(TAG, "paramsString = " + paramsString);
 
