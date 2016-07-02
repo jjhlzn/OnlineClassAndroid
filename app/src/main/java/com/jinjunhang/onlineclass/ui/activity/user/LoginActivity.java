@@ -18,6 +18,7 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.LoginRequest;
 import com.jinjunhang.onlineclass.service.LoginResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
+import com.jinjunhang.onlineclass.ui.activity.other.ConfigurationActivity;
 import com.jinjunhang.player.utils.LogHelper;
 
 /**
@@ -68,6 +69,15 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                 //TODO: mock device token
                 req.setDeviceToken("");
                 new LoginTask().execute(req);
+            }
+        });
+
+        Button configButton = (Button)findViewById(R.id.login_configButton);
+        configButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, ConfigurationActivity.class);
+                startActivity(i);
             }
         });
 

@@ -1,12 +1,19 @@
 package com.jinjunhang.onlineclass.service;
 
+import com.jinjunhang.onlineclass.db.KeyValueDao;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+
 /**
  * Created by lzn on 16/3/23.
  */
 public class ServiceConfiguration {
     //public final static String serverName = "192.168.1.50";
 
-    private final static boolean isUseConfig = false;
+    public static final String DEFAULT_HTTP = "http";
+    public static final String DEFAULT_HOST = "jjhaudio.hengdianworld.com";
+    public static final String DEFAULT_PORT = "80";
+
+    private final static boolean isUseConfig = true;
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
@@ -15,6 +22,17 @@ public class ServiceConfiguration {
 
     private final static String serverName2 = "192.168.1.57";
     private final static int port2 = 3000;
+
+    static {
+        KeyValueDao keyValueDao = KeyValueDao.getInstance(CustomApplication.get());
+        LOCATOR_HTTP = keyValueDao.getValue(KeyValueDao.SERVER_HTTP, ServiceConfiguration.DEFAULT_HTTP);
+        LOCATOR_SERVERNAME = keyValueDao.getValue(KeyValueDao.SERVER_HOST, ServiceConfiguration.DEFAULT_HOST);
+        try {
+            LOCATOR_PORT = Integer.parseInt(keyValueDao.getValue(KeyValueDao.SERVER_PORT, ServiceConfiguration.DEFAULT_PORT));
+        } catch (Exception ex) {
+            LOCATOR_PORT = 80;
+        }
+    }
 
     public static String httpMethod() {
         if (isUseConfig) {

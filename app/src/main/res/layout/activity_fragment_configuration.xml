@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="@color/white"
+    >
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="25dp"
+        android:weightSum="1"
+        style="@style/loginRow">
+
+
+        <EditText
+            android:id="@+id/config_http"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:textCursorDrawable="@null"
+            android:background="@drawable/edit_text_border"
+            android:hint="http"
+
+            android:drawablePadding="10dp"
+            android:lines="1"
+            android:textSize="18dp"
+            android:inputType="text"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="25dp"
+        android:weightSum="1"
+        style="@style/loginRow"
+        >
+
+
+        <EditText
+            android:id="@+id/config_serverName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:textCursorDrawable="@null"
+            android:background="@drawable/edit_text_border"
+            android:hint="IP或域名"
+
+
+            android:drawablePadding="10dp"
+            android:lines="1"
+            android:textSize="18dp"
+            android:inputType="text"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="25dp"
+        android:weightSum="1"
+        style="@style/loginRow"
+        >
+
+
+        <EditText
+            android:id="@+id/config_port"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_border"
+            android:paddingBottom="5dp"
+            android:textCursorDrawable="@null"
+            android:hint="端口"
+
+
+            android:drawablePadding="10dp"
+            android:lines="1"
+            android:textSize="18dp"
+            android:inputType="text"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+        <Button
+            android:id="@+id/config_saveButton"
+
+            android:text="保存"
+            style="@style/buttonStyle"
+            android:background="@color/colorPrimary"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -20,6 +20,10 @@ public class KeyValueDao {
     public static final String KEY_USER_MY_ORDER = "USER_MY_ORDER";
     public static final String KEY_USER_MY_TEAM = "USER_MY_TEAM";
 
+    public static final String SERVER_HTTP = "SERVER_HTTP";
+    public static final String SERVER_HOST = "SERVER_HOST";
+    public static final String SERVER_PORT = "SERVER_PORT";
+
     private DBOpenHelper dbOpenHelper;
     private static KeyValueDao instance = null;
 
