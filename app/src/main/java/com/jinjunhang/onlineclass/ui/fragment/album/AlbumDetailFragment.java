@@ -21,6 +21,7 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
@@ -128,11 +129,18 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
+            Song song = getItem(position);
+
             if (convertView == null) {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_song, null);
+                if (song.isLive()) {
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_song_live, null);
+                    ((TextView)convertView.findViewById(R.id.listen_people_label)).setText(((LiveSong)song).getListenPeople());
+                } else {
+                    convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_song, null);
+                }
             }
 
-            Song song = getItem(position);
+
             RoundedImageView imageView = (RoundedImageView) convertView.findViewById(R.id.song_list_item_image);
             imageView.setOval(true);
             Glide.with(AlbumDetailFragment.this).load(song.getAlbum().getImage()).into(imageView);

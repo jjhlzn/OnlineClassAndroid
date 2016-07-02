@@ -68,4 +68,8 @@ public class Song extends BaseModelObject {
     public void setAlbum(Album album) {
         this.album = album;
     }
+
+    public boolean isLive() {
+        return album.isLive();
+    }
 }

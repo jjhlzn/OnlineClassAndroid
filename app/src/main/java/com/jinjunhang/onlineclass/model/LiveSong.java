@@ -5,6 +5,8 @@ package com.jinjunhang.onlineclass.model;
  */
 public class LiveSong extends Song {
 
+    private String mImageUrl;
+    private String mListenPeople;
     private String mStartDateTime;
     private String mEndDateTime;
 
@@ -22,5 +24,21 @@ public class LiveSong extends Song {
 
     public void setEndDateTime(String endDateTime) {
         mEndDateTime = endDateTime;
+    }
+
+    public String getImageUrl() {
+        return mImageUrl;
+    }
+
+    public String getListenPeople() {
+        return mListenPeople;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        mImageUrl = imageUrl;
+    }
+
+    public void setListenPeople(String listenPeople) {
+        mListenPeople = listenPeople;
     }
 }
