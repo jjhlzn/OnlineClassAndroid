@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,16 +39,18 @@ import java.util.List;
 /**
  * Created by jjh on 2016-6-29.
  */
-public class MeFragment extends BaseFragment {
+public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRefreshListener {
 
 
 
     private final static String TAG = LogHelper.makeLogTag(MeFragment.class);
 
     private Boolean inited = false;
+    private Boolean isLoading = false;
     private List<ListViewCell> mCells = new ArrayList<>();
     private ListView mListView;
     private MeAdapter mMeAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private KeyValueDao mKeyValueDao;
 
@@ -86,6 +89,15 @@ public class MeFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onRefresh() {
+        if (isLoading) {
+            return;
+        }
+        isLoading = true;
+        new GetUserStatDataTask().execute();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,7 +118,7 @@ public class MeFragment extends BaseFragment {
             secondSectionCell.setJiFen(mKeyValueDao.getValue(KeyValueDao.KEY_USER_JIFEN, "0"));
             secondSectionCell.setChaiFu(mKeyValueDao.getValue(KeyValueDao.KEY_USER_CAFIFU, "0"));
             secondSectionCell.setTeamPeople(mKeyValueDao.getValue(KeyValueDao.KEY_USER_TEAMPEOPLE, "0人"));
-            mCells.add(new SecondSectionCell(getActivity()));
+            mCells.add(secondSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
             for(int i = 0; i < mThirdSections.size(); i++) {
@@ -128,10 +140,11 @@ public class MeFragment extends BaseFragment {
             mCells.add(new SectionSeparatorCell(getActivity()));
         }
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mMeAdapter = new MeAdapter(mCells);
         mListView.setAdapter(mMeAdapter);
-
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -146,7 +159,7 @@ public class MeFragment extends BaseFragment {
 
         if (!inited) {
             inited = true;
-            new GetUserStatDataTask().execute();
+           new GetUserStatDataTask().execute();
         }
 
         return v;
@@ -235,6 +248,8 @@ public class MeFragment extends BaseFragment {
             cell2.getRecord().setOtherInfo(resp.getTeamPeople());
             cell2.updateView();
 
+            mSwipeRefreshLayout.setRefreshing(false);
+            isLoading = false;
         }
     }
 

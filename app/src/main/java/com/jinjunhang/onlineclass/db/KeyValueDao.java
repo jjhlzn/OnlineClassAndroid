@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,6 +50,22 @@ public class KeyValueDao {
 
     public void saveOrUpdate(String key, String value) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.execSQL("UPDATE KEY_VALUE SET M_VALUE = '"+ value+"' WHERE M_KEY = '" + key + "'" );
+        ContentValues values = new ContentValues();
+        values.put("M_KEY", key);
+        values.put("M_VALUE", value);
+
+        Cursor cursor = db.rawQuery("select M_KEY, M_VALUE from KEY_VALUE WHERE M_KEY = '" + key + "'" , null);
+
+        try{
+            if (cursor.getCount() == 0) {
+                db.insert("KEY_VALUE", null, values);
+
+            } else {
+                db.update("KEY_VALUE", values, "", new String[]{});
+            }
+        } finally {
+            cursor.close();
+        }
+
     }
 }

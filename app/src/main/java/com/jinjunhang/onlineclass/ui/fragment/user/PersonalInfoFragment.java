@@ -55,12 +55,13 @@ public class PersonalInfoFragment extends BaseFragment {
                 startActivity(i);
             }
         }));
+        /*
         mItems.add(new LineRecord("性别", loginUser.getSex(), new CellClickListener() {
             @Override
             public void onClick(ListViewCell cell) {
 
             }
-        }));
+        }));*/
     }
 
     @Override
@@ -71,7 +72,7 @@ public class PersonalInfoFragment extends BaseFragment {
         LoginUser loginUser = LoginUserDao.getInstance(getActivity()).get();
         mItems.get(0).setOtherInfo(loginUser.getName());
         mItems.get(1).setOtherInfo(loginUser.getNickName());
-        mItems.get(2).setOtherInfo(loginUser.getSex());
+        //mItems.get(2).setOtherInfo(loginUser.getSex());
     }
 
     @Nullable
