@@ -24,6 +24,7 @@ import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
+import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
 
@@ -64,10 +65,16 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
         mAlbumType = (AlbumType)getActivity().getIntent().getSerializableExtra(EXTRA_ALBUMTYPE);
 
+
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
 
         //设置PagableController
         mPagableController = new PagableController(getActivity(), mListView);
+        LogHelper.d(TAG, "mAlbumType = " + mAlbumType.getName());
+        if (mAlbumType.getName().equals(AlbumType.LiveAlbumType.getName()) || mAlbumType.getName().equals(AlbumType.VipAlbumType.getName())) {
+            mPagableController.setShowLoadCompleteTip(false);
+        }
+        LogHelper.d(TAG, "isShowLoadCompleteTip = " + mPagableController.isShowLoadCompleteTip());
         AlbumListAdapter adapter = new AlbumListAdapter(mPagableController, new ArrayList<Album>());
         mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(adapter);

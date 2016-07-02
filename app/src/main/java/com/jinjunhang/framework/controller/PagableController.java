@@ -15,6 +15,7 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     private boolean mIsRefreshing;
     private boolean mMoreDataAvailable;
     private int mPageIndex;
+    private boolean mIsShowLoadCompleteTip = true;
 
     public PagableController(Activity activity, ListView listView) {
         mActivity = activity;
@@ -67,6 +69,14 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
     public void setOnScrollListener(AbsListView.OnScrollListener listener) {
         mListView.setOnScrollListener(listener);
+    }
+
+    public void setShowLoadCompleteTip(boolean showLoadCompleteTip) {
+        mIsShowLoadCompleteTip = showLoadCompleteTip;
+    }
+
+    public boolean isShowLoadCompleteTip() {
+        return mIsShowLoadCompleteTip;
     }
 
     public PagableArrayAdapter getPagableArrayAdapter() {
@@ -135,8 +145,14 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     private void resetFootView() {
         if (!mMoreDataAvailable) {
             mFooterView.findViewById(R.id.loading_progressbar).setVisibility(View.GONE);
-            if (mPagableArrayAdapter.getCount() > 0)
-                ((TextView)mFooterView.findViewById(R.id.loading_message)).setText("已加载全部数据");
+            if (mPagableArrayAdapter.getCount() > 0) {
+                LogHelper.d(TAG, "mIsShowLoadCompleteTip = " + mIsShowLoadCompleteTip);
+                if (mIsShowLoadCompleteTip) {
+                    ((TextView) mFooterView.findViewById(R.id.loading_message)).setText("已加载全部数据");
+                } else  {
+                    ((TextView) mFooterView.findViewById(R.id.loading_message)).setText("");
+                }
+            }
             else {
                 ((TextView) mFooterView.findViewById(R.id.loading_message)).setText("没有找到任何数据");
                 ((TextView) mFooterView.findViewById(R.id.loading_message)).setTextSize(15);

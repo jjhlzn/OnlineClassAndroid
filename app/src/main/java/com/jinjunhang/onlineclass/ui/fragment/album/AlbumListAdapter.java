@@ -27,22 +27,31 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Album album = getItem(position);
+
         if (convertView == null) {
-            convertView =  mActivity.getLayoutInflater().inflate(R.layout.list_item_album, null);
+            if (album.isLive()) {
+                convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_album_live, null);
+                ((TextView)convertView.findViewById(R.id.listen_people_label)).setText(album.getListenCount());
+                ((TextView)convertView.findViewById(R.id.album_list_item_desc)).setText(album.getDesc());
+
+            } else {
+                convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_album, null);
+                TextView authorTextView = (TextView) convertView.findViewById(R.id.album_list_item_author);
+                authorTextView.setText(album.getAuthor());
+
+                TextView listenTextView = (TextView) convertView.findViewById(R.id.album_list_item_listernCountAndCount);
+                listenTextView.setText(album.getListenCount()+ ", " + album.getCount() + "集");
+            }
         }
 
-        Album album = getItem(position);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.album_list_item_image);
         Glide.with(mActivity).load(album.getImage()).into(imageView);
 
         TextView nameTextView = (TextView) convertView.findViewById(R.id.album_list_item_name);
         nameTextView.setText(album.getName());
 
-        TextView authorTextView = (TextView) convertView.findViewById(R.id.album_list_item_author);
-        authorTextView.setText(album.getAuthor());
 
-        TextView listenTextView = (TextView) convertView.findViewById(R.id.album_list_item_listernCountAndCount);
-        listenTextView.setText(album.getListenCount()+ ", " + album.getCount() + "集");
 
         return convertView;
     }

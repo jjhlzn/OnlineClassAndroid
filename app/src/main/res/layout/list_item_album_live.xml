@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="74dp"
-              android:orientation="horizontal"
-              android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="74dp"
+    android:orientation="horizontal"
+    android:background="@color/white">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.65"
+            android:layout_weight="0.62"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -41,20 +41,10 @@
                     android:layout_marginTop="2dp"
                     android:textColor="@android:color/black"/>
 
-                <TextView
-                    android:id="@+id/album_list_item_author"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="0dp"
 
-                    android:textSize="12sp"
-                    android:gravity="center_vertical|left"
-                    android:text="author"
-                    android:textColor="@android:color/darker_gray"/>
 
                 <TextView
-                    android:id="@+id/album_list_item_listernCountAndCount"
+                    android:id="@+id/album_list_item_desc"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.3"
@@ -64,7 +54,7 @@
                     android:gravity="center_vertical|left"
                     android:text="desc"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_marginBottom="3dp"/>
+                    android:layout_marginBottom="10dp"/>
 
 
 
@@ -75,18 +65,28 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.1"
-            android:layout_height="match_parent">
+            android:layout_weight="0.16"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical|center_horizontal">
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
-                    android:src="@drawable/morethan"
+                    android:src="@drawable/listenpeopleicon"
                     />
+
+                <TextView
+                    android:id="@+id/listen_people_label"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="20dp"
+                    android:textAlignment="center"
+                    android:text="1000"
+                    android:textSize="12sp"/>
         </LinearLayout>
 
 </LinearLayout>

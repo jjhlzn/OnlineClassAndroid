@@ -20,6 +20,7 @@ import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
@@ -80,6 +81,9 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
 
         mPagableController = new PagableController(getActivity(), listView);
+        if (mAlbum.isLive()) {
+            mPagableController.setShowLoadCompleteTip(false);
+        }
         mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(new AlbumDetailAdapter(mPagableController, new ArrayList<Song>()));
         mPagableController.setPagableRequestHandler(new AlbumDetailRequestHandler());

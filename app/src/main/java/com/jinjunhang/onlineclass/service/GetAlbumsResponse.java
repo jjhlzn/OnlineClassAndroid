@@ -33,6 +33,7 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
             album.setId(json.getString("id"));
             album.setName(json.getString("name"));
             album.setAuthor(json.getString("author"));
+            album.setDesc(json.getString("desc"));
             album.setCount(json.getInt("count"));
             album.setImage(json.getString("image"));
             album.setListenCount(json.getString("listenCount"));

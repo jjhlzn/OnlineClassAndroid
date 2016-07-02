@@ -11,6 +11,7 @@ public class Album extends BaseModelObject {
 
     private String mId;
     private String mName;
+    private String mDesc;
     private String mAuthor;
     private String mImage;
     private int mCount;
@@ -83,8 +84,20 @@ public class Album extends BaseModelObject {
         mSongs = songs;
     }
 
+    public String getDesc() {
+        return mDesc;
+    }
+
+    public void setDesc(String desc) {
+        mDesc = desc;
+    }
+
     public static interface MediaBrowserProvider {
         MediaBrowserCompat getMediaBrowser();
+    }
+
+    public boolean isLive() {
+        return this.getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName()) || getAlbumType().getName().equals(AlbumType.VipAlbumType.getName());
     }
 }
 

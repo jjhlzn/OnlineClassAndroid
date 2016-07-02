@@ -77,7 +77,7 @@ public class BasicService {
     }
     private Map<String, Object> addUserAndDeviceInfo(Map<String, Object> params) {
         Map<String, Object> newParams = new LinkedHashMap<>();
-        newParams.put("request", params);
+        newParams.put("request", params.get("request"));
         newParams.put("client", getDeviceInfo());
         newParams.put("userInfo", getUserInfo());
         return newParams;
