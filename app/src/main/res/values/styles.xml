@@ -69,4 +69,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="emojiKey">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
 </resources>

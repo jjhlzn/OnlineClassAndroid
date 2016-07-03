@@ -1,11 +1,9 @@
-package com.jinjunhang.onlineclass.ui.cell;
+package com.jinjunhang.onlineclass.ui.lib;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,7 @@ import android.widget.TextView;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class ExtendFunctionManager {
     }
 
 
-    public ExtendFunctionCell  getCell(int row) {
+    public ExtendFunctionCell getCell(int row) {
         ExtendFunctionCell cell = new ExtendFunctionCell((Activity) mContext);
 
         int startIndex = row * itemCountEachRow;

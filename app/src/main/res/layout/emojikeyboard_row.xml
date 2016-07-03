@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/root_container"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+             >
+
+   <TextView
+       android:id="@+id/key0"
+    android:layout_width="0dp"
+    android:layout_weight="0.142"
+    android:layout_height="40dp"
+    android:text="11"
+       style="@style/emojiKey"
+    android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/key1"
+        android:layout_width="0dp"
+        android:layout_weight="0.142"
+        android:layout_height="40dp"
+        android:text="11"
+        style="@style/emojiKey"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/key2"
+        android:layout_width="0dp"
+        android:layout_weight="0.142"
+        android:layout_height="40dp"
+        android:text="11"
+        style="@style/emojiKey"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/key3"
+        android:layout_width="0dp"
+        android:layout_weight="0.142"
+        android:layout_height="40dp"
+        android:text="11"
+        style="@style/emojiKey"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/key4"
+        android:layout_width="0dp"
+        android:layout_weight="0.142"
+        android:layout_height="40dp"
+        android:text="11"
+        style="@style/emojiKey"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/key5"
+        android:layout_width="0dp"
+        android:layout_weight="0.142"
+        android:layout_height="40dp"
+        android:text="11"
+        style="@style/emojiKey"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/key6"
+        android:layout_width="0dp"
+        android:layout_weight="0.142"
+        android:layout_height="40dp"
+        android:text="11"
+        style="@style/emojiKey"
+        android:gravity="center"/>
+
+</LinearLayout>

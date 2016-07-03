@@ -35,7 +35,6 @@ public class EmojiTextView extends android.widget.TextView {
 		super(context, attrs, defStyle);
 	}
     
-    
     private void init(){
     	// Initialize filter
     	filter = new InputFilter() {

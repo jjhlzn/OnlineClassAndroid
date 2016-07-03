@@ -124,10 +124,10 @@ public class Utils {
             View v = activity.getCurrentFocus();
             v.clearFocus();
             LogHelper.d(TAG, "lose focus");
-
         }
 
     }
+
 
     public static void setupUI4HideKeybaord(View view, final Activity activity) {
         //Set up touch listener for non-text box views to hide keyboard.

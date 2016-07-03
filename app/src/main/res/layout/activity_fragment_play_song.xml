@@ -31,8 +31,18 @@
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"/>
 
-    <include layout="@layout/bottom_comment" android:id="@+id/bottom_comment"  android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_alignParentBottom="true"/>
+    <include layout="@layout/emojikeyboard" android:id="@+id/emojikeyboard"
+             android:layout_width="match_parent"
+             android:layout_height="213dp"
+             android:visibility="gone"
+             android:layout_alignParentBottom="true"/>
+
+    <include layout="@layout/bottom_comment" android:id="@+id/bottom_comment"
+             android:layout_width="match_parent"
+             android:layout_height="55dp"
+             android:layout_alignParentBottom="true"
+             android:layout_above="@+id/emojikeyboard"
+
+             android:visibility="gone"
+        />
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -186,6 +187,7 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
             mAdapter.notifyDataSetChanged();
         }
     }
+
 }
 
 

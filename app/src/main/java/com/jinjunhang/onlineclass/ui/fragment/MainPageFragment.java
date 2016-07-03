@@ -14,7 +14,7 @@ import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
-import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionManager;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;

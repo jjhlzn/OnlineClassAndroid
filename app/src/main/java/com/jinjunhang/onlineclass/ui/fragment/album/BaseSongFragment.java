@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
@@ -22,6 +25,7 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -81,8 +85,25 @@ public abstract class BaseSongFragment  extends BaseFragment {
         TextView sendButton = (TextView)v.findViewById(R.id.send_button);
         sendButton.setOnClickListener(createSendOnClickListener());
 
-        ListView mListView = (ListView) v.findViewById(R.id.listView);
+        final ViewGroup emojiKeyBoardView = (ViewGroup)  v.findViewById(R.id.emojikeyboard);
+        final View emojiKeyboard  = new EmojiKeyboard(getActivity()).getView();
+        emojiKeyBoardView.addView(emojiKeyboard);
 
+        //设置emoji切换按钮
+        ImageButton keyboardSwitchButton = (ImageButton) v.findViewById(R.id.emojikeyboard_switch_button);
+        keyboardSwitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.hideSoftKeyboard(getActivity());
+                LogHelper.d(TAG, "emojiboard will show");
+                emojiKeyBoardView.setVisibility(View.VISIBLE);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
+                params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                //params.
+            }
+        });
+
+        ListView mListView = (ListView) v.findViewById(R.id.listView);
         //去掉列表的分割线
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
@@ -90,7 +111,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
         createAdapter();
         mListView.setAdapter(mAdapter);
 
-        //设置emoji切换按钮
+
 
         setupUI4HideKeybaord(v, getActivity());
         return v;
@@ -153,6 +174,8 @@ public abstract class BaseSongFragment  extends BaseFragment {
         super.onStop();
         mMusicPlayer.removeListener(mPlayerCell);
     }
+
+
 
 }
 
