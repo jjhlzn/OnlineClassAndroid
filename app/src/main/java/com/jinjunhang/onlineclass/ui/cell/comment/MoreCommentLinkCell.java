@@ -1,13 +1,17 @@
 package com.jinjunhang.onlineclass.ui.cell.comment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.ui.activity.album.CommentListActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.fragment.album.CommentListFragment;
+import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
 /**
@@ -44,7 +48,10 @@ public class MoreCommentLinkCell extends BaseListViewCell {
         mMoreCommentLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogHelper.d(TAG, "more button clicked");
+                //LogHelper.d(TAG, "more button clicked");
+                Intent i = new Intent(mActivity, CommentListActivity.class);
+                i.putExtra(CommentListFragment.EXTRA_SONG, MusicPlayer.getInstance(mActivity).getCurrentPlaySong());
+                mActivity.startActivity(i);
             }
         });
         update();

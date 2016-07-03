@@ -29,7 +29,7 @@ public class GetSongCommentsResponse extends PagedServerResponse {
             comment.setContent(json.getString("content"));
             comment.setTime(json.getString("time"));
             comment.setUserId(json.getString("userId"));
-
+            comment.setNickName(json.getString("name"));
             mResultSet.add(comment);
         }
 

@@ -16,6 +16,7 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
@@ -37,7 +38,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
     protected MusicPlayer mMusicPlayer;
 
     protected ListView mListView;
-    protected SongFragmentAdapter mAdapter;
+    protected ListViewCellAdapter mAdapter;
     List<ListViewCell> mCells;
     protected PlayerCell mPlayerCell;
 
@@ -97,7 +98,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
         mCells.add(mPlayerCell);
         mCells.add(new WideSectionSeparatorCell(getActivity()));
 
-        mAdapter = new SongFragmentAdapter(mCells);
+        mAdapter = new ListViewCellAdapter(getActivity(), mCells);
     }
 
     @Override
@@ -112,34 +113,5 @@ public abstract class BaseSongFragment  extends BaseFragment {
         mMusicPlayer.removeListener(mPlayerCell);
     }
 
-    protected class SongFragmentAdapter extends ArrayAdapter<ListViewCell> {
-        private List<ListViewCell> mCells;
-
-        public SongFragmentAdapter(List<ListViewCell> cells) {
-            super(getActivity(), 0, cells);
-            mCells = cells;
-        }
-
-        public void setCells(List<ListViewCell> cells) {
-            mCells = cells;
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return mCells.size();
-        }
-
-        @Override
-        public ListViewCell getItem(int position) {
-            return mCells.get(position);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ListViewCell item = getItem(position);
-            return item.getView();
-        }
-    }
 }
 

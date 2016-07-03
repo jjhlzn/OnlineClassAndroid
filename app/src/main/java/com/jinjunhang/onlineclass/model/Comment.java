@@ -8,6 +8,7 @@ public class Comment extends BaseModelObject {
     private String mId;
     private Song mSong;
     private String mUserId;
+    private String mNickName;
     private String mTime;
     private String mContent;
 
@@ -49,5 +50,13 @@ public class Comment extends BaseModelObject {
 
     public void setContent(String content) {
         mContent = content;
+    }
+
+    public String getNickName() {
+        return mNickName;
+    }
+
+    public void setNickName(String nickName) {
+        mNickName = nickName;
     }
 }

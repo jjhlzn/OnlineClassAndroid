@@ -6,9 +6,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -32,9 +34,12 @@ public class CommentCell extends BaseListViewCell {
     public ViewGroup getView() {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_comment, null);
 
-        ((RoundedImageView)v.findViewById(R.id.comment_user_image)).setOval(true);
+        RoundedImageView image = ((RoundedImageView)v.findViewById(R.id.comment_user_image));
+        image.setOval(true);
 
-        ((TextView)v.findViewById(R.id.comment_username)).setText(mComment.getUserId());
+        Glide.with(mActivity).load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId())).into(image);
+
+        ((TextView)v.findViewById(R.id.comment_username)).setText(mComment.getNickName());
         ((TextView)v.findViewById(R.id.comment_date)).setText(mComment.getTime());
 
         EmojiTextView  contentView = (EmojiTextView)v.findViewById(R.id.comment_content);
