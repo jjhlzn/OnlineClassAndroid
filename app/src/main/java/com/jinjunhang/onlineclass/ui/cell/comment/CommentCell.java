@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.cell;
+package com.jinjunhang.onlineclass.ui.cell.comment;
 
 import android.app.Activity;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import com.ppi.emoji.EmojiTextView;

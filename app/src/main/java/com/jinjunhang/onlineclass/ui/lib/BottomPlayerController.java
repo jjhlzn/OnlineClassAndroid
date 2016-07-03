@@ -13,7 +13,7 @@ import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
-import com.jinjunhang.onlineclass.ui.fragment.album.SongFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -63,7 +63,7 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
                         mMusicPlayer.resume();
                     }
                     Intent i = new Intent(mActivity, SongActivity.class)
-                            .putExtra(SongFragment.EXTRA_SONG, song);
+                            .putExtra(BaseSongFragment.EXTRA_SONG, song);
                     mActivity.startActivity(i);
                 }
             }

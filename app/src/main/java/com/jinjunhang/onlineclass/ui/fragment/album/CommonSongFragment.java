@@ -12,8 +12,11 @@ import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
-import com.jinjunhang.onlineclass.ui.cell.CommentCell;
+import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
+import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
+import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.player.utils.LogHelper;
@@ -26,6 +29,7 @@ import java.util.List;
  */
 public class CommonSongFragment extends BaseSongFragment {
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
+    private CommentHeaderCell mCommentHeaderCell;
     @Override
     protected PlayerCell createPlayerCell() {
         return new PlayerCell(getActivity());
@@ -35,9 +39,15 @@ public class CommonSongFragment extends BaseSongFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
+
+        mCommentHeaderCell = new CommentHeaderCell(getActivity());
+        mCommentHeaderCell.setTotalCount(0);
+        //mCells.add(mCommentHeaderCell);
+
         new GetSongCommentsTask().execute();
         return v;
     }
+
 
     private class GetSongCommentsTask extends AsyncTask<Void, Void, GetSongCommentsResponse> {
         @Override
@@ -52,10 +62,9 @@ public class CommonSongFragment extends BaseSongFragment {
             if (resp.getStatus() != ServerResponse.SUCCESS) {
                 return;
             }
-
             List<Comment> comments = getTop5(resp.getResultSet());
 
-            updateListViewData(comments);
+            reCreateListViewCells(comments, resp.getTotalNumber());
         }
     }
 
@@ -70,12 +79,19 @@ public class CommonSongFragment extends BaseSongFragment {
         return top5;
     }
 
-    private void updateListViewData(List<Comment> comments) {
+    private void reCreateListViewCells(List<Comment> comments, int totalCommentCount) {
         List<ListViewCell> cells = new ArrayList<>();
         cells.add(mPlayerCell);
-        cells.add(new SectionSeparatorCell(getActivity()));
-        for (Comment comment : comments) {
-            cells.add(new CommentCell(getActivity(), comment));
+        cells.add(new WideSectionSeparatorCell(getActivity()));
+        cells.add(mCommentHeaderCell);
+        mCommentHeaderCell.setTotalCount(totalCommentCount);
+
+        if (totalCommentCount == 0) {
+            cells.add(new NoCommentCell(getActivity()));
+        } else {
+            for (Comment comment : comments) {
+                cells.add(new CommentCell(getActivity(), comment));
+            }
         }
         this.mAdapter.setCells(cells);
     }

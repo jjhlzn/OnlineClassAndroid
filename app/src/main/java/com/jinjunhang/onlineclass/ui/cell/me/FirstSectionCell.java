@@ -3,31 +3,24 @@ package com.jinjunhang.onlineclass.ui.cell.me;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.db.UserImageDao;
-import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.UserProfilePhotoActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.CommentCell;
 import com.jinjunhang.player.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.ppi.emoji.EmojiTextView;
 
 /**
  * Created by jjh on 2016-6-29.

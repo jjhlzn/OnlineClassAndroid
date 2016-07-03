@@ -73,7 +73,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
                 MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
 
                 Intent i = new Intent(getActivity(), SongActivity.class)
-                        .putExtra(SongFragment.EXTRA_SONG, song);
+                        .putExtra(BaseSongFragment.EXTRA_SONG, song);
                 startActivity(i);
 
             }

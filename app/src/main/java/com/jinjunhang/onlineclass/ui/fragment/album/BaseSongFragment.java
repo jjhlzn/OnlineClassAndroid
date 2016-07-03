@@ -16,6 +16,7 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
@@ -37,6 +38,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
 
     protected ListView mListView;
     protected SongFragmentAdapter mAdapter;
+    List<ListViewCell> mCells;
     protected PlayerCell mPlayerCell;
 
     abstract protected  PlayerCell createPlayerCell();
@@ -88,13 +90,13 @@ public abstract class BaseSongFragment  extends BaseFragment {
     }
 
     private void createAdapter() {
-        List<ListViewCell> cells = new ArrayList<>();
+        mCells = new ArrayList<>();
         mPlayerCell = createPlayerCell();
         mPlayerCell.setSong(mSong);
-        cells.add(mPlayerCell);
-        cells.add(new SectionSeparatorCell(getActivity()));
+        mCells.add(mPlayerCell);
+        mCells.add(new WideSectionSeparatorCell(getActivity()));
 
-        mAdapter = new SongFragmentAdapter(cells);
+        mAdapter = new SongFragmentAdapter(mCells);
     }
 
     @Override
