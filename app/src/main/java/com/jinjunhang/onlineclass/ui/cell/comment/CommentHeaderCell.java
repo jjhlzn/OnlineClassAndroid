@@ -29,6 +29,11 @@ public class CommentHeaderCell  extends BaseListViewCell {
         super(activity);
     }
 
+    public CommentHeaderCell(Activity activity, int totalCount) {
+        super(activity);
+        setTotalCount(totalCount);
+    }
+
     @Override
     public ViewGroup getView() {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_comment_header, null);

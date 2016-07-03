@@ -50,7 +50,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
     private Song mSong;
 
-
     //更新播放进度
     private final Handler mHandler = new Handler();
     private ScheduledFuture<?> mScheduleFuture;
@@ -61,6 +60,12 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             updateProgress();
         }
     };
+
+    protected void reset() {
+        mPlayTimeTextView.setText("00:00");
+        mDurationTextView.setText("00:00");
+        mSeekbar.setProgress(0);
+    }
 
     @Override
     public ViewGroup getView() {
@@ -91,6 +96,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             public void onClick(View v) {
                 updatePrevAndNextButton();
                 updatePlayButton();
+                reset();
                 mMusicPlayer.prev();
             }
         });
@@ -100,6 +106,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             public void onClick(View v) {
                 updatePrevAndNextButton();
                 updatePlayButton();
+                reset();
                 mMusicPlayer.next();
             }
         });
@@ -243,5 +250,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     public void setSong(Song song) {
         mSong = song;
     }
+
+
 
 }

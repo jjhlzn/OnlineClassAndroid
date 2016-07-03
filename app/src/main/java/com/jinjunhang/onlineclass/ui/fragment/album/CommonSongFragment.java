@@ -16,9 +16,11 @@ import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
+import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
+import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/13.
  */
-public class CommonSongFragment extends BaseSongFragment {
+public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.MusicPlayerControlListener {
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
     private CommentHeaderCell mCommentHeaderCell;
     @Override
@@ -42,18 +44,28 @@ public class CommonSongFragment extends BaseSongFragment {
 
         mCommentHeaderCell = new CommentHeaderCell(getActivity());
         mCommentHeaderCell.setTotalCount(0);
-        //mCells.add(mCommentHeaderCell);
 
         new GetSongCommentsTask().execute();
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMusicPlayer.addMusicPlayerControlListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mMusicPlayer.removeMusicPlayerControlListener();
+    }
 
     private class GetSongCommentsTask extends AsyncTask<Void, Void, GetSongCommentsResponse> {
         @Override
         protected GetSongCommentsResponse doInBackground(Void... params) {
             GetSongCommentsRequest req = new GetSongCommentsRequest();
-            req.setSong(mPlayerCell.getSong());
+            req.setSong(mMusicPlayer.getCurrentPlaySong());
             return new BasicService().sendRequest(req);
         }
 
@@ -93,7 +105,24 @@ public class CommonSongFragment extends BaseSongFragment {
                 cells.add(new CommentCell(getActivity(), comment));
             }
         }
+
+        if (totalCommentCount > 5) {
+            MoreCommentLinkCell moreCell = new MoreCommentLinkCell(getActivity(), totalCommentCount);
+            cells.add(moreCell);
+        }
+
         this.mAdapter.setCells(cells);
+        LogHelper.d(TAG, "reCreateListViewCells called");
+    }
+
+    @Override
+    public void onClickNext() {
+        new GetSongCommentsTask().execute();
+    }
+
+    @Override
+    public void onClickPrev() {
+        new GetSongCommentsTask().execute();
     }
 }
 

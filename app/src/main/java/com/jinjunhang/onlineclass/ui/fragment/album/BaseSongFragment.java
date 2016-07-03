@@ -46,9 +46,10 @@ public abstract class BaseSongFragment  extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mSong = (Song)getActivity().getIntent().getSerializableExtra(EXTRA_SONG);
-        setTitle(mSong.getName());
+
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
+        mSong = mMusicPlayer.getCurrentPlaySong();
+        setTitle(mSong.getName());
 
         View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
 
@@ -92,7 +93,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
     private void createAdapter() {
         mCells = new ArrayList<>();
         mPlayerCell = createPlayerCell();
-        mPlayerCell.setSong(mSong);
+        mPlayerCell.setSong(mMusicPlayer.getCurrentPlaySong());
         mCells.add(mPlayerCell);
         mCells.add(new WideSectionSeparatorCell(getActivity()));
 

@@ -2,14 +2,11 @@ package com.jinjunhang.player;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.util.Log;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.google.android.exoplayer.util.Util;
 import com.jinjunhang.onlineclass.model.Song;
-import com.jinjunhang.player.playback.Playback;
 import com.jinjunhang.player.playback.exo.player.DemoPlayer;
 import com.jinjunhang.player.playback.exo.player.ExtractorRendererBuilder;
 import com.jinjunhang.player.playback.exo.player.HlsRendererBuilder;
@@ -18,7 +15,6 @@ import com.jinjunhang.player.playback.exo.player.SmoothStreamingTestMediaDrmCall
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +28,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
     private DemoPlayer player;
     private Song[] mSongs;
     private int currentIndex = -1;
+    private MusicPlayerControlListener mControlListener;
 
     public static MusicPlayer getInstance(Context context) {
         if (instance == null) {
@@ -42,6 +39,14 @@ public class MusicPlayer implements ExoPlayer.Listener {
             instance.player.addListener(instance);
         }
         return instance;
+    }
+
+    public void addMusicPlayerControlListener(MusicPlayerControlListener listener) {
+        mControlListener = listener;
+    }
+
+    public void removeMusicPlayerControlListener() {
+        mControlListener = null;
     }
 
 
@@ -82,7 +87,6 @@ public class MusicPlayer implements ExoPlayer.Listener {
 
     public boolean isPlay(Song song) {
         if (StatusHelper.isPlayingForUI(this)) {
-            //LogHelper.d(TAG, "currentid = " + getCurrentPlaySong().getId() + ", id = " + song.getId());
             if (getCurrentPlaySong().getId().equals(song.getId())) {
                 return true;
             }
@@ -93,7 +97,6 @@ public class MusicPlayer implements ExoPlayer.Listener {
     public boolean isPause() {
         return getState() == ExoPlayer.STATE_READY && !player.getPlayWhenReady();
     }
-
 
     public void play(List<Song> songs, int startIndex) {
         mSongs = new Song[songs.size()];
@@ -131,6 +134,9 @@ public class MusicPlayer implements ExoPlayer.Listener {
             currentIndex++;
             Song song = mSongs[currentIndex];
             play(song);
+            if (mControlListener != null) {
+                mControlListener.onClickNext();
+            }
         }
     }
 
@@ -144,8 +150,12 @@ public class MusicPlayer implements ExoPlayer.Listener {
             currentIndex--;
             Song song = mSongs[currentIndex--];
             play(song);
+            if (mControlListener != null){
+                mControlListener.onClickPrev();
+            }
         }
     }
+
 
     public long getCurrentPosition() {
         return player.getCurrentPosition();
@@ -194,4 +204,10 @@ public class MusicPlayer implements ExoPlayer.Listener {
     public void onPlayerError(ExoPlaybackException error) {
 
     }
+
+    public static interface MusicPlayerControlListener {
+        void onClickNext();
+        void onClickPrev();
+    }
 }
+
