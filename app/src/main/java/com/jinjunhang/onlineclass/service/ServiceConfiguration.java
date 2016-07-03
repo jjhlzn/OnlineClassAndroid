@@ -131,6 +131,11 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/comment/add";
     }
 
+    public static String GetLiveCommentsUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/song/livecomments";
+    }
+
+
 }
 
 
