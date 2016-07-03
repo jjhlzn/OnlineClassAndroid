@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,9 +18,11 @@ import com.ppi.emoji.emojiParser;
  */
 public class EmojiKeyboard {
     private Activity mContext;
+    private EditText mEditText;
 
-    public EmojiKeyboard(Activity context) {
+    public EmojiKeyboard(Activity context, EditText editText) {
         mContext = context;
+        mEditText = editText;
     }
 
     private String[] emojiKeys = new String[]{
@@ -45,9 +48,16 @@ public class EmojiKeyboard {
             LinearLayout rowView = createRow();
             for(int j = 0; j < 7; j++) {
                 TextView textView = (TextView) rowView.findViewById(getEmojiTextViewId(rowView, j));
-               // textView.setText(emojiParser.demojizedText(emojiKeys[index]));
                 textView.setText(EmojiParser.parseEmojis(emojiKeys[index]));
                 index++;
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView my = (TextView)v;
+                        mEditText.setText(mEditText.getText().toString() + my.getText());
+                        mEditText.setSelection(mEditText.getText().length());
+                    }
+                });
             }
             layout.addView(rowView);
         }

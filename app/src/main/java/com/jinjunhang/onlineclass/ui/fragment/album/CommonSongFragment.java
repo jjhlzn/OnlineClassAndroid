@@ -29,6 +29,7 @@ import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+import com.jinjunhang.onlineclass.ui.lib.LinearLayoutThatDetectsSoftKeyboard;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -155,6 +156,8 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
             }
         };
     }
+
+
 
     private class SendCommentTask extends AsyncTask<SendCommentRequest, Void, SendCommentResponse> {
         private SendCommentRequest mRequest;

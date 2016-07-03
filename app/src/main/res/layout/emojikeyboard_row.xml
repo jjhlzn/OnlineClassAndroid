@@ -33,7 +33,8 @@
         style="@style/emojiKey"
         android:gravity="center"/>
 
-    <TextView
+
+ <TextView
         android:id="@+id/key3"
         android:layout_width="0dp"
         android:layout_weight="0.142"
