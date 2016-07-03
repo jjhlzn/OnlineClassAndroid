@@ -1,9 +1,11 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -42,7 +44,21 @@ public abstract class BaseSongFragment  extends BaseFragment {
     List<ListViewCell> mCells;
     protected PlayerCell mPlayerCell;
 
+    protected View mCommentTip;
+    protected View mCommentWindow;
+    protected View mCommentEditText;
+
     abstract protected  PlayerCell createPlayerCell();
+
+    /*
+    void toggleCommentWindow() {
+        if (mCommentWindow.getVisibility() == View.INVISIBLE) {
+            mCommentWindow.setVisibility(View.INVISIBLE);
+        } else {
+            mCommentWindow.setVisibility(View.VISIBLE);
+            mCommentEditText.requestFocus();
+        }
+    }*/
 
     @Nullable
     @Override
@@ -54,18 +70,22 @@ public abstract class BaseSongFragment  extends BaseFragment {
 
         View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
 
-        View commentTip = v.findViewById(R.id.bottom_comment_tip);
-        final View commentWindow = v.findViewById(R.id.bottom_comment);
-        final EditText editText = (EditText) v.findViewById(R.id.comment_edittext);
-        commentTip.setOnClickListener(new View.OnClickListener() {
+        //control comment editor
+        mCommentTip = v.findViewById(R.id.bottom_comment_tip);
+        mCommentTip.setVisibility(View.VISIBLE);
+        mCommentWindow = v.findViewById(R.id.bottom_comment);
+        mCommentEditText = (EditText) v.findViewById(R.id.comment_edittext);
+        mCommentTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentWindow.setVisibility(View.VISIBLE);
-                editText.requestFocus();
+                mCommentWindow.setVisibility(View.VISIBLE);
+                mCommentEditText.requestFocus();
                 InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
             }
         });
+        
+
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
@@ -87,8 +107,37 @@ public abstract class BaseSongFragment  extends BaseFragment {
 
         //设置emoji切换按钮
 
-        Utils.setupUI4HideKeybaord(v, getActivity());
+        setupUI4HideKeybaord(v, getActivity());
         return v;
+    }
+
+    public void setupUI4HideKeybaord(View view, final Activity activity) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
+        if (view.getId() == R.id.bottom_comment) {
+            return;
+        }
+        if(!(view instanceof EditText)) {
+            LogHelper.d(TAG, "register onTouchListener for id = " + view.getId());
+            view.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    LogHelper.d(TAG, "onTouch called");
+                    Utils.hideSoftKeyboard(activity);
+                    mCommentWindow.setVisibility(View.INVISIBLE);
+                    return false;
+                }
+
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI4HideKeybaord(innerView, activity);
+            }
+        }
     }
 
     private void createAdapter() {

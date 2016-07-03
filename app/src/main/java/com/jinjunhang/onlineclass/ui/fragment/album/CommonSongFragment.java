@@ -44,7 +44,6 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
 
         mCommentHeaderCell = new CommentHeaderCell(getActivity());
         mCommentHeaderCell.setTotalCount(0);
-
         new GetSongCommentsTask().execute();
         return v;
     }

@@ -130,7 +130,6 @@ public class Utils {
     }
 
     public static void setupUI4HideKeybaord(View view, final Activity activity) {
-
         //Set up touch listener for non-text box views to hide keyboard.
         LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
         if (view.getId() == R.id.bottom_comment) {
@@ -151,11 +150,8 @@ public class Utils {
 
         //If a layout container, iterate over children and seed recursion.
         if (view instanceof ViewGroup) {
-
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-
                 View innerView = ((ViewGroup) view).getChildAt(i);
-
                 setupUI4HideKeybaord(innerView, activity);
             }
         }
