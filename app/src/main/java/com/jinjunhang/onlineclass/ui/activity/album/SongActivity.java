@@ -16,6 +16,8 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
         Song song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
+       // return new SongFragment();
+
         if (song.isLive()) {
             return new LiveSongFragment();
         } else {

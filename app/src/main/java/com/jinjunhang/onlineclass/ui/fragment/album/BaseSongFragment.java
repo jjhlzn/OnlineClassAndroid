@@ -20,6 +20,7 @@ import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
+import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
@@ -37,16 +38,16 @@ public abstract class BaseSongFragment  extends BaseFragment {
     protected Song mSong;
     protected MusicPlayer mMusicPlayer;
 
-    protected ListView mListView;
+
     protected ListViewCellAdapter mAdapter;
 
-    protected WebBrowserActivity.PlayerCell mPlayerCell;
+    protected PlayerCell mPlayerCell;
 
     protected View mCommentTip;
     protected View mCommentWindow;
     protected EditText mCommentEditText;
 
-    abstract protected WebBrowserActivity.PlayerCell createPlayerCell();
+    abstract protected PlayerCell createPlayerCell();
     abstract protected  View.OnClickListener createSendOnClickListener();
 
 
@@ -59,6 +60,8 @@ public abstract class BaseSongFragment  extends BaseFragment {
         setTitle(mSong.getName());
 
         View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
+
+        v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
 
         //control comment editor
         mCommentTip = v.findViewById(R.id.bottom_comment_tip);
@@ -78,7 +81,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
         TextView sendButton = (TextView)v.findViewById(R.id.send_button);
         sendButton.setOnClickListener(createSendOnClickListener());
 
-        mListView = (ListView) v.findViewById(R.id.listView);
+        ListView mListView = (ListView) v.findViewById(R.id.listView);
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);

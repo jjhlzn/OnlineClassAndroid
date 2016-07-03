@@ -24,6 +24,7 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
+import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -38,8 +39,8 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
     private CommentHeaderCell mCommentHeaderCell;
     @Override
-    protected WebBrowserActivity.PlayerCell createPlayerCell() {
-        return new WebBrowserActivity.PlayerCell(getActivity());
+    protected PlayerCell createPlayerCell() {
+        return new PlayerCell(getActivity());
     }
 
     @Nullable

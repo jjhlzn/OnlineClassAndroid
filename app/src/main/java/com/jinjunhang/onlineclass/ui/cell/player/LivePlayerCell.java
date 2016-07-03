@@ -7,7 +7,7 @@ import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 /**
  * Created by jjh on 2016-7-2.
  */
-public class LivePlayerCell extends WebBrowserActivity.PlayerCell {
+public class LivePlayerCell extends PlayerCell {
 
     public LivePlayerCell(Activity activity) {
         super(activity);

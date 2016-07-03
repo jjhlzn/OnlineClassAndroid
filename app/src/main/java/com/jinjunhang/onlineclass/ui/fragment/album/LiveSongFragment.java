@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
+import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -11,7 +12,7 @@ import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 public class LiveSongFragment extends BaseSongFragment {
 
     @Override
-    protected WebBrowserActivity.PlayerCell createPlayerCell() {
+    protected PlayerCell createPlayerCell() {
         return new LivePlayerCell(getActivity());
     }
 

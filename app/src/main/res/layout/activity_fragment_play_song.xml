@@ -7,7 +7,15 @@
     android:background="@color/fragment_background"
     android:orientation="vertical">
 
-        <ListView
+    <!-- 这个SwipeRefreshLayout不能删除，一旦删除，会造成PlayerCell无法进行单独刷新 -->
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                  android:id="@+id/swipe_refresh_layout"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="wrap_content"
+                                                  android:saveEnabled="false"
+                                                  android:background="@color/fragment_background">
+
+    <ListView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listView"
@@ -15,6 +23,8 @@
             android:background="@color/fragment_background">
 
         </ListView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <include layout="@layout/bottom_comment_tip" android:id="@+id/bottom_comment_tip"
         android:layout_width="match_parent"
