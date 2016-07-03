@@ -23,6 +23,10 @@ public class ListViewCellAdapter extends ArrayAdapter<ListViewCell> {
         notifyDataSetChanged();
     }
 
+    public List<ListViewCell> getCells() {
+        return mCells;
+    }
+
     @Override
     public int getCount() {
         return mCells.size();

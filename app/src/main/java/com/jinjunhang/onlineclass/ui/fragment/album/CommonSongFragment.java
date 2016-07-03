@@ -11,7 +11,9 @@ import android.widget.Toast;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
@@ -25,6 +27,7 @@ import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -136,22 +139,29 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
             @Override
             public void onClick(View v) {
                 String comment =  mCommentEditText.getText().toString();
+
+                if (comment.trim().length() == 0)  {
+                    Utils.showErrorMessage(getActivity(), "不能发送空评论");
+                    return;
+                }
+
                 Song song = mMusicPlayer.getCurrentPlaySong();
                 SendCommentRequest request = new SendCommentRequest();
                 request.setComment(comment);
                 request.setSong(song);
-
+                closeCommentWindow();
                 new SendCommentTask().execute(request);
             }
         };
     }
 
     private class SendCommentTask extends AsyncTask<SendCommentRequest, Void, SendCommentResponse> {
+        private SendCommentRequest mRequest;
 
         @Override
         protected SendCommentResponse doInBackground(SendCommentRequest... params) {
-            SendCommentRequest request = params[0];
-            return new BasicService().sendRequest(request);
+            mRequest = params[0];
+            return new BasicService().sendRequest(mRequest);
         }
 
         @Override
@@ -163,7 +173,17 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
             }
 
             Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
-            closeCommentWindow();
+            mCommentEditText.setText("");
+            Comment comment = new Comment();
+            comment.setTime("刚刚");
+            comment.setContent(mRequest.getComment());
+
+            LoginUser loginUser = LoginUserDao.getInstance(CustomApplication.get()).get();
+            comment.setUserId(loginUser.getUserName());
+            comment.setNickName(loginUser.getNickName());
+            CommentCell cell = new CommentCell(getActivity(), comment);
+            mAdapter.getCells().add(3, cell);
+            mAdapter.notifyDataSetChanged();
         }
     }
 }
