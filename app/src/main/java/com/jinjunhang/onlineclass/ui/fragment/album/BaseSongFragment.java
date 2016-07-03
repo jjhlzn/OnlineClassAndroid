@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,11 +16,10 @@ import android.widget.TextView;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
-import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
-import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
@@ -41,24 +39,16 @@ public abstract class BaseSongFragment  extends BaseFragment {
 
     protected ListView mListView;
     protected ListViewCellAdapter mAdapter;
-    List<ListViewCell> mCells;
-    protected PlayerCell mPlayerCell;
+
+    protected WebBrowserActivity.PlayerCell mPlayerCell;
 
     protected View mCommentTip;
     protected View mCommentWindow;
-    protected View mCommentEditText;
+    protected EditText mCommentEditText;
 
-    abstract protected  PlayerCell createPlayerCell();
+    abstract protected WebBrowserActivity.PlayerCell createPlayerCell();
+    abstract protected  View.OnClickListener createSendOnClickListener();
 
-    /*
-    void toggleCommentWindow() {
-        if (mCommentWindow.getVisibility() == View.INVISIBLE) {
-            mCommentWindow.setVisibility(View.INVISIBLE);
-        } else {
-            mCommentWindow.setVisibility(View.VISIBLE);
-            mCommentEditText.requestFocus();
-        }
-    }*/
 
     @Nullable
     @Override
@@ -84,8 +74,9 @@ public abstract class BaseSongFragment  extends BaseFragment {
                 imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
             }
         });
-        
 
+        TextView sendButton = (TextView)v.findViewById(R.id.send_button);
+        sendButton.setOnClickListener(createSendOnClickListener());
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
@@ -96,19 +87,16 @@ public abstract class BaseSongFragment  extends BaseFragment {
         createAdapter();
         mListView.setAdapter(mAdapter);
 
-        //设置发送按钮
-        TextView sendButton = (TextView)v.findViewById(R.id.send_button);
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogHelper.d(TAG, "send button pressed");
-            }
-        });
-
         //设置emoji切换按钮
 
         setupUI4HideKeybaord(v, getActivity());
         return v;
+    }
+
+
+    protected void closeCommentWindow() {
+        Utils.hideSoftKeyboard(getActivity());
+        mCommentWindow.setVisibility(View.INVISIBLE);
     }
 
     public void setupUI4HideKeybaord(View view, final Activity activity) {
@@ -123,8 +111,7 @@ public abstract class BaseSongFragment  extends BaseFragment {
 
                 public boolean onTouch(View v, MotionEvent event) {
                     LogHelper.d(TAG, "onTouch called");
-                    Utils.hideSoftKeyboard(activity);
-                    mCommentWindow.setVisibility(View.INVISIBLE);
+                   closeCommentWindow();
                     return false;
                 }
 
@@ -141,13 +128,15 @@ public abstract class BaseSongFragment  extends BaseFragment {
     }
 
     private void createAdapter() {
-        mCells = new ArrayList<>();
+        ArrayList<ListViewCell> viewCells = new ArrayList<>();
         mPlayerCell = createPlayerCell();
         mPlayerCell.setSong(mMusicPlayer.getCurrentPlaySong());
-        mCells.add(mPlayerCell);
-        mCells.add(new WideSectionSeparatorCell(getActivity()));
+        viewCells.add(mPlayerCell);
 
-        mAdapter = new ListViewCellAdapter(getActivity(), mCells);
+        viewCells.add(new WideSectionSeparatorCell(getActivity()));
+
+        mAdapter = new ListViewCellAdapter(getActivity(), viewCells);
+        mPlayerCell.setAdapter(mAdapter);
     }
 
     @Override

@@ -1,14 +1,18 @@
 package com.jinjunhang.player.utils;
 
 import android.media.session.PlaybackState;
+import android.util.Log;
 
 import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.gms.common.api.Status;
 import com.jinjunhang.player.MusicPlayer;
 
 /**
  * Created by lzn on 16/6/19.
  */
 public class StatusHelper {
+
+    private static final String TAG = LogHelper.makeLogTag(StatusHelper.class);
 
     public static int convertExo2Media(int state, int playWhenReady) {
         int resultState;
@@ -32,6 +36,8 @@ public class StatusHelper {
 
     public static boolean isPlayingForUI(MusicPlayer musicPlayer) {
         int state = musicPlayer.getState();
-        return musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
+        boolean isPlayingForUI = musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
+        LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
+        return isPlayingForUI;
     }
 }

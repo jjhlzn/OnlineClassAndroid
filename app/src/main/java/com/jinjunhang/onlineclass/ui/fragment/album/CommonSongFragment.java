@@ -6,20 +6,24 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
+import com.jinjunhang.onlineclass.service.SendCommentRequest;
+import com.jinjunhang.onlineclass.service.SendCommentResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
-import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
-import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -30,11 +34,12 @@ import java.util.List;
  * Created by lzn on 16/6/13.
  */
 public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.MusicPlayerControlListener {
+
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
     private CommentHeaderCell mCommentHeaderCell;
     @Override
-    protected PlayerCell createPlayerCell() {
-        return new PlayerCell(getActivity());
+    protected WebBrowserActivity.PlayerCell createPlayerCell() {
+        return new WebBrowserActivity.PlayerCell(getActivity());
     }
 
     @Nullable
@@ -122,6 +127,43 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
     @Override
     public void onClickPrev() {
         new GetSongCommentsTask().execute();
+    }
+
+    @Override
+    protected View.OnClickListener createSendOnClickListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String comment =  mCommentEditText.getText().toString();
+                Song song = mMusicPlayer.getCurrentPlaySong();
+                SendCommentRequest request = new SendCommentRequest();
+                request.setComment(comment);
+                request.setSong(song);
+
+                new SendCommentTask().execute(request);
+            }
+        };
+    }
+
+    private class SendCommentTask extends AsyncTask<SendCommentRequest, Void, SendCommentResponse> {
+
+        @Override
+        protected SendCommentResponse doInBackground(SendCommentRequest... params) {
+            SendCommentRequest request = params[0];
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(SendCommentResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
+                return;
+            }
+
+            Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
+            closeCommentWindow();
+        }
     }
 }
 

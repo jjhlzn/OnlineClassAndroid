@@ -126,6 +126,11 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/song/comments";
     }
 
+    //Comment
+    public static String SendCommentUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/comment/add";
+    }
+
 }
 
 
