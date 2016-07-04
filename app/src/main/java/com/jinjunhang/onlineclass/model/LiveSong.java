@@ -1,12 +1,19 @@
 package com.jinjunhang.onlineclass.model;
 
+import com.jinjunhang.player.utils.LogHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by lzn on 16/6/12.
  */
 public class LiveSong extends Song {
+    private static String TAG = LogHelper.makeLogTag(LiveSong.class);
 
     private String mImageUrl;
     private String mListenPeople;
+
     private String mStartDateTime;
     private String mEndDateTime;
 
@@ -16,6 +23,10 @@ public class LiveSong extends Song {
 
     public String getEndDateTime() {
         return mEndDateTime;
+    }
+
+    public String getEndTimeString() {
+        return mEndDateTime.substring(11);
     }
 
     public void setStartDateTime(String startDateTime) {
@@ -40,5 +51,34 @@ public class LiveSong extends Song {
 
     public void setListenPeople(String listenPeople) {
         mListenPeople = listenPeople;
+    }
+
+    public long getTotalTimeInSec() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date startTime = sdf.parse(mStartDateTime);
+            Date endTime = sdf.parse(mEndDateTime);
+            return (endTime.getTime() - startTime.getTime()) / 1000;
+        }
+        catch (Exception ex) {
+            LogHelper.e(TAG, ex);
+            return 1;
+        }
+    }
+
+    public long getTimeLeftInSec() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date endTime = sdf.parse(mEndDateTime);
+            return (endTime.getTime() - new Date().getTime()) / 1000;
+        }
+        catch (Exception ex) {
+            LogHelper.e(TAG, ex);
+            return 1;
+        }
+    }
+
+    public long getPlayedTimeInSec() {
+        return getTotalTimeInSec() - getTimeLeftInSec();
     }
 }

@@ -157,8 +157,6 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
         };
     }
 
-
-
     private class SendCommentTask extends AsyncTask<SendCommentRequest, Void, SendCommentResponse> {
         private SendCommentRequest mRequest;
 
@@ -176,7 +174,7 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
                 return;
             }
 
-            Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
+            Toast.makeText(getActivity(), "评论成功", Toast.LENGTH_SHORT).show();
             mCommentEditText.setText("");
             Comment comment = new Comment();
             comment.setTime("刚刚");

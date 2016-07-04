@@ -23,6 +23,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
+import com.jinjunhang.onlineclass.ui.cell.SongListVieCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
@@ -46,7 +47,7 @@ public abstract class BaseSongFragment  extends BaseFragment{
     protected MusicPlayer mMusicPlayer;
 
 
-    protected ListViewCellAdapter mAdapter;
+    protected SongListVieCellAdapter mAdapter;
 
     protected PlayerCell mPlayerCell;
 
@@ -195,12 +196,12 @@ public abstract class BaseSongFragment  extends BaseFragment{
     private void createAdapter() {
         ArrayList<ListViewCell> viewCells = new ArrayList<>();
         mPlayerCell = createPlayerCell();
-        mPlayerCell.setSong(mMusicPlayer.getCurrentPlaySong());
+        //mPlayerCell.setSong(mMusicPlayer.getCurrentPlaySong());
         viewCells.add(mPlayerCell);
 
         viewCells.add(new WideSectionSeparatorCell(getActivity()));
 
-        mAdapter = new ListViewCellAdapter(getActivity(), viewCells);
+        mAdapter = new SongListVieCellAdapter(getActivity(), viewCells);
         mPlayerCell.setAdapter(mAdapter);
     }
 
@@ -217,6 +218,10 @@ public abstract class BaseSongFragment  extends BaseFragment{
     }
 
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPlayerCell.release();
+    }
 }
 

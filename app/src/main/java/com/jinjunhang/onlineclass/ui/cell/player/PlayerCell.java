@@ -39,19 +39,19 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     private static final long PROGRESS_UPDATE_INTERNAL = 1000;
     private static final long PROGRESS_UPDATE_INITIAL_INTERVAL = 100;
 
-    private ImageButton mPlayButton;
-    private ImageButton mPrevButton;
-    private ImageButton mNextButton;
-    private SeekBar mSeekbar;
-    private TextView mPlayTimeTextView;
-    private TextView mDurationTextView;
-    private ImageView mBufferCircle;
-    private Animation mRotation;
+    protected ImageButton mPlayButton;
+    protected ImageButton mPrevButton;
+    protected ImageButton mNextButton;
+    protected SeekBar mSeekbar;
+    protected TextView mPlayTimeTextView;
+    protected TextView mDurationTextView;
+    protected ImageView mBufferCircle;
+    protected Animation mRotation;
 
-    private MusicPlayer mMusicPlayer;
+    protected MusicPlayer mMusicPlayer;
     private boolean mInited;
 
-    private Song mSong;
+    //private Song mSong;
 
     //更新播放进度
     private final Handler mHandler = new Handler();
@@ -76,11 +76,32 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
     @Override
     public ViewGroup getView() {
+        Song song = mMusicPlayer.getCurrentPlaySong();
+        int playerView;
+        if (song.isLive()) {
+            playerView = R.layout.player_view_live;
+        } else {
+            playerView = R.layout.player_view;
+        }
 
-        View v = mActivity.getLayoutInflater().inflate(R.layout.player_view, null);
+        View v = mActivity.getLayoutInflater().inflate(playerView, null);
+        setPlayButtons(v);
+        setSeekbar(v);
+
+        mInited = true;
+
+        LogHelper.d(TAG, "playerCell make view");
+        return (LinearLayout)v.findViewById(R.id.list_item_albumtype_viewgroup);
+    }
+
+    protected void setPlayButtons(View v) {
         mPlayButton = (ImageButton) v.findViewById(R.id.player_play_button);
         mPrevButton = (ImageButton) v.findViewById(R.id.player_prev_button);
         mNextButton = (ImageButton) v.findViewById(R.id.player_next_button);
+
+        mBufferCircle = (ImageView) v.findViewById(R.id.player_buffer_image);
+        mPlayTimeTextView = (TextView) v.findViewById(R.id.player_playTimeText);
+        mDurationTextView = (TextView) v.findViewById(R.id.player_durationText);
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,9 +138,10 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             }
         });
 
-        mBufferCircle = (ImageView) v.findViewById(R.id.player_buffer_image);
-        mPlayTimeTextView = (TextView) v.findViewById(R.id.player_playTimeText);
-        mDurationTextView = (TextView) v.findViewById(R.id.player_durationText);
+        updatePlayButton();
+    }
+
+    protected void setSeekbar(View v) {
         mSeekbar = (SeekBar) v.findViewById(R.id.player_seekbar);
         mSeekbar.setMax(0);
         mSeekbar.setMax(1000);
@@ -145,15 +167,10 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         });
 
         scheduleSeekbarUpdate();
-        updatePlayButton();
-        mInited = true;
-
-        LogHelper.d(TAG, "playerCell make view");
-        return (LinearLayout)v.findViewById(R.id.list_item_albumtype_viewgroup);
     }
 
 
-    private void scheduleSeekbarUpdate() {
+    protected void scheduleSeekbarUpdate() {
         stopSeekbarUpdate();
         if (!mExecutorService.isShutdown()) {
             mScheduleFuture = mExecutorService.scheduleAtFixedRate(
@@ -165,6 +182,19 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
                     }, PROGRESS_UPDATE_INITIAL_INTERVAL,
                     PROGRESS_UPDATE_INTERNAL, TimeUnit.MILLISECONDS);
         }
+    }
+
+    protected void updateProgress() {
+        //LogHelper.d(TAG, "updateProgress called");
+        if (!mMusicPlayer.isPlaying()) {
+            return;
+        }
+        long currentPosition = mMusicPlayer.getCurrentPosition();
+        int progress = (int) ((double)currentPosition / mMusicPlayer.getDuration() * 1000);
+        mSeekbar.setProgress(progress );
+
+        long playTimeInSec = currentPosition / 1000;
+        mPlayTimeTextView.setText(TimeUtil.secondsToString(playTimeInSec));
     }
 
     private void stopSeekbarUpdate() {
@@ -219,18 +249,12 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mBufferCircle.startAnimation(mRotation);
     }
 
-    private void updateProgress() {
-        //LogHelper.d(TAG, "updateProgress called");
-        if (!mMusicPlayer.isPlaying()) {
-            return;
-        }
-        long currentPosition = mMusicPlayer.getCurrentPosition();
-        int progress = (int) ((double)currentPosition / mMusicPlayer.getDuration() * 1000);
-        mSeekbar.setProgress(progress );
-
-        long playTimeInSec = currentPosition / 1000;
-        mPlayTimeTextView.setText(TimeUtil.secondsToString(playTimeInSec));
+    @Override
+    public void release() {
+        super.release();
+        stopSeekbarUpdate();
     }
+
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -249,14 +273,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     @Override
     public void onPlayerError(ExoPlaybackException error) {
 
-    }
-
-    public Song getSong() {
-        return mSong;
-    }
-
-    public void setSong(Song song) {
-        mSong = song;
     }
 
 

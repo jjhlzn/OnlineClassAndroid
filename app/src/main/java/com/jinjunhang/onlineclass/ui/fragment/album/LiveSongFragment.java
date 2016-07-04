@@ -17,17 +17,16 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsResponse;
-import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
-import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
 import com.jinjunhang.onlineclass.service.SendCommentRequest;
 import com.jinjunhang.onlineclass.service.SendCommentResponse;
+import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
+import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
-import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.LiveCommentHeaderCell;
-import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
+import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.MusicPlayer;
@@ -41,12 +40,15 @@ import java.util.List;
  */
 public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.MusicPlayerControlListener {
 
+    public final static int MAX_COMMENT_COUNT = 200;
+
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
     private LiveCommentHeaderCell mCommentHeaderCell;
     private String mLastCommentId = "-1";
+    private int commentCount = 0;
     @Override
     protected PlayerCell createPlayerCell() {
-        return new PlayerCell(getActivity());
+        return new LivePlayerCell(getActivity());
     }
 
     @Nullable
@@ -71,24 +73,6 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
         mMusicPlayer.removeMusicPlayerControlListener();
     }
 
-    private class GetLiveSongCommentsTask extends AsyncTask<Void, Void, GetLiveCommentsResponse> {
-        @Override
-        protected GetLiveCommentsResponse doInBackground(Void... params) {
-            GetLiveCommentsRequest req = new GetLiveCommentsRequest();
-            req.setSong(mMusicPlayer.getCurrentPlaySong());
-            req.setLastId(mLastCommentId);
-            return new BasicService().sendRequest(req);
-        }
-
-        @Override
-        protected void onPostExecute(GetLiveCommentsResponse resp) {
-            if (resp.getStatus() != ServerResponse.SUCCESS) {
-                return;
-            }
-            List<Comment> comments = resp.getCommentList();
-            reCreateListViewCells(comments, comments.size());
-        }
-    }
 
     private void reCreateListViewCells(List<Comment> comments, int totalCommentCount) {
         List<ListViewCell> cells = new ArrayList<>();
@@ -102,6 +86,19 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
             for (Comment comment : comments) {
                 cells.add(new CommentCell(getActivity(), comment));
             }
+        }
+
+        List<ListViewCell> oldComments = mAdapter.getCells();
+        LogHelper.d(TAG, "oldComment.count = " + oldComments.size());
+
+        if (oldComments.size() > 2) {
+            oldComments.remove(0);
+            oldComments.remove(0);
+            oldComments.remove(0);
+            if (commentCount == 0) {
+                oldComments.remove(0);
+            }
+            cells.addAll(oldComments);
         }
 
         this.mAdapter.setCells(cells);
@@ -131,44 +128,74 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
                 }
 
                 Song song = mMusicPlayer.getCurrentPlaySong();
-                SendCommentRequest request = new SendCommentRequest();
+                SendLiveCommentRequest request = new SendLiveCommentRequest();
                 request.setComment(comment);
                 request.setSong(song);
+                request.setLastId(mLastCommentId);
                 closeCommentWindow();
-                new SendCommentTask().execute(request);
+                new SendLiveCommentTask().execute(request);
             }
         };
     }
 
 
-    private class SendCommentTask extends AsyncTask<SendCommentRequest, Void, SendCommentResponse> {
-        private SendCommentRequest mRequest;
+    /***
+     * Get Live Comments Task
+     */
+    private class GetLiveSongCommentsTask extends AsyncTask<Void, Void, GetLiveCommentsResponse> {
+        @Override
+        protected GetLiveCommentsResponse doInBackground(Void... params) {
+            GetLiveCommentsRequest req = new GetLiveCommentsRequest();
+            req.setSong(mMusicPlayer.getCurrentPlaySong());
+            req.setLastId(mLastCommentId);
+            return new BasicService().sendRequest(req);
+        }
 
         @Override
-        protected SendCommentResponse doInBackground(SendCommentRequest... params) {
+        protected void onPostExecute(GetLiveCommentsResponse resp) {
+            if (resp.getStatus() != ServerResponse.SUCCESS) {
+                return;
+            }
+            commentCount += resp.getCommentList().size();
+            List<Comment> comments = resp.getCommentList();
+            reCreateListViewCells(comments, comments.size());
+
+            if (resp.getCommentList().size() > 0) {
+                mLastCommentId = resp.getCommentList().get(0).getId() + "";
+            }
+        }
+    }
+
+    /***
+     * Send Live Comment Task
+     */
+    private class SendLiveCommentTask extends AsyncTask<SendLiveCommentRequest, Void, SendLiveCommentResponse> {
+        private SendLiveCommentRequest mRequest;
+
+        @Override
+        protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
             mRequest = params[0];
             return new BasicService().sendRequest(mRequest);
         }
 
         @Override
-        protected void onPostExecute(SendCommentResponse resp) {
+        protected void onPostExecute(SendLiveCommentResponse resp) {
             super.onPostExecute(resp);
             if (!resp.isSuccess()) {
                 Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
                 return;
             }
+            commentCount += resp.getCommentList().size();
+            if (resp.getCommentList().size() > 0) {
+                mLastCommentId = resp.getCommentList().get(0).getId() + "";
+            }
 
-            Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
+            List<Comment> newComments =  resp.getCommentList();
+            reCreateListViewCells(newComments, newComments.size());
+
+            Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
             mCommentEditText.setText("");
-            Comment comment = new Comment();
-            comment.setTime("刚刚");
-            comment.setContent(mRequest.getComment());
 
-            LoginUser loginUser = LoginUserDao.getInstance(CustomApplication.get()).get();
-            comment.setUserId(loginUser.getUserName());
-            comment.setNickName(loginUser.getNickName());
-            CommentCell cell = new CommentCell(getActivity(), comment);
-            mAdapter.getCells().add(3, cell);
             mAdapter.notifyDataSetChanged();
         }
     }
