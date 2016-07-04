@@ -86,7 +86,6 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
                 return;
             }
             List<Comment> comments = resp.getCommentList();
-
             reCreateListViewCells(comments, comments.size());
         }
     }

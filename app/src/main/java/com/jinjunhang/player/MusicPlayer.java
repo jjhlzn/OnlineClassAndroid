@@ -177,14 +177,16 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     private void createPlayer(Song song) {
+        int type = Util.TYPE_OTHER;
+        if (song.isLive()) {
+            type = Util.TYPE_HLS;
+        }
         if (player == null) {
-            player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), Util.TYPE_OTHER));
+            player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
             player.addListener(this);
         } else {
-            player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), Util.TYPE_OTHER));
+            player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type            ));
         }
-
-
     }
 
     @Override

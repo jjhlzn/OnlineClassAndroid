@@ -163,17 +163,17 @@ public abstract class BaseSongFragment  extends BaseFragment{
 
     public void setupUI4HideKeybaord(View view, final Activity activity) {
         //Set up touch listener for non-text box views to hide keyboard.
-        LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
+        //LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
         if (view.getId() == R.id.bottom_comment) {
             return;
         }
 
         if(view instanceof ListView) {
-            LogHelper.d(TAG, "register onTouchListener for id = " + view.getId());
+            //LogHelper.d(TAG, "register onTouchListener for id = " + view.getId());
             view.setOnTouchListener(new View.OnTouchListener() {
 
                 public boolean onTouch(View v, MotionEvent event) {
-                    LogHelper.d(TAG, "onTouch called");
+                   // LogHelper.d(TAG, "onTouch called");
                     closeCommentWindow();
 
                     return false;

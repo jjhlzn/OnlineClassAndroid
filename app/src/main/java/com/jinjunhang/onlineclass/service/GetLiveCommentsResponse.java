@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class GetLiveCommentsResponse extends ServerResponse {
 
-    public GetLiveCommentsResponse(List<Comment> commentList) {
-        mCommentList = commentList;
+    public GetLiveCommentsResponse() {
+        mCommentList = new ArrayList<>();
     }
 
     private List<Comment> mCommentList;
@@ -26,7 +27,7 @@ public class GetLiveCommentsResponse extends ServerResponse {
     }
     @Override
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
-        GetSongCommentsRequest req = (GetSongCommentsRequest)request;
+        GetLiveCommentsRequest req = (GetLiveCommentsRequest)request;
         JSONArray jsonArray = jsonObject.getJSONArray("comments");
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.getJSONObject(i);
@@ -38,7 +39,7 @@ public class GetLiveCommentsResponse extends ServerResponse {
             comment.setTime(json.getString("time"));
             comment.setUserId(json.getString("userId"));
             comment.setNickName(json.getString("name"));
-            comment.setManager(json.getBoolean("isManager"));
+            //comment.setManager(json.getBoolean("isManager"));
             mCommentList.add(comment);
         }
     }

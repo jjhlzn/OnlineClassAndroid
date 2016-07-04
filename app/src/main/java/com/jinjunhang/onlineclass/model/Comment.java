@@ -11,7 +11,7 @@ public class Comment extends BaseModelObject {
     private String mNickName;
     private String mTime;
     private String mContent;
-    private boolean mIsManager;
+    //private boolean mIsManager;
 
     public String getId() {
         return mId;
@@ -61,11 +61,12 @@ public class Comment extends BaseModelObject {
         mNickName = nickName;
     }
 
+    /*
     public boolean isManager() {
         return mIsManager;
     }
 
     public void setManager(boolean manager) {
         mIsManager = manager;
-    }
+    }*/
 }

@@ -45,7 +45,6 @@ public class CommentCell extends BaseListViewCell {
         EmojiTextView  contentView = (EmojiTextView)v.findViewById(R.id.comment_content);
         contentView.setText(EmojiParser.parseEmojis(mComment.getContent()));
 
-
         return (LinearLayout)v.findViewById(R.id.list_item_albumtype_viewgroup);
     }
 }

@@ -123,7 +123,7 @@ public class Utils {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
             View v = activity.getCurrentFocus();
             v.clearFocus();
-            LogHelper.d(TAG, "lose focus");
+           // LogHelper.d(TAG, "lose focus");
         }
 
     }
@@ -140,7 +140,7 @@ public class Utils {
             view.setOnTouchListener(new View.OnTouchListener() {
 
                 public boolean onTouch(View v, MotionEvent event) {
-                    LogHelper.d(TAG, "onTouch called");
+                   // LogHelper.d(TAG, "onTouch called");
                     Utils.hideSoftKeyboard(activity);
                     return false;
                 }
