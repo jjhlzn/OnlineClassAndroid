@@ -47,6 +47,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     protected TextView mDurationTextView;
     protected ImageView mBufferCircle;
     protected Animation mRotation;
+    protected TextView mListenerCountLabel;
 
     protected MusicPlayer mMusicPlayer;
     private boolean mInited;
@@ -74,17 +75,24 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mAdapter = adapter;
     }
 
+    public TextView getListenerCountLabel() {
+        return mListenerCountLabel;
+    }
+
     @Override
     public ViewGroup getView() {
         Song song = mMusicPlayer.getCurrentPlaySong();
         int playerView;
+        View v;
         if (song.isLive()) {
             playerView = R.layout.player_view_live;
+            v = mActivity.getLayoutInflater().inflate(playerView, null);
+            mListenerCountLabel = (TextView) v.findViewById(R.id.listen_people_label);
         } else {
             playerView = R.layout.player_view;
+            v = mActivity.getLayoutInflater().inflate(playerView, null);
         }
 
-        View v = mActivity.getLayoutInflater().inflate(playerView, null);
         setPlayButtons(v);
         setSeekbar(v);
 

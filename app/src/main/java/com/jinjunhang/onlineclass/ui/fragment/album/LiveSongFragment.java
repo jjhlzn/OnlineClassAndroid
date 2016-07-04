@@ -7,20 +7,21 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
-import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
-import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsResponse;
-import com.jinjunhang.onlineclass.service.SendCommentRequest;
-import com.jinjunhang.onlineclass.service.SendCommentResponse;
+import com.jinjunhang.onlineclass.service.GetLiveListenerRequest;
+import com.jinjunhang.onlineclass.service.GetLiveListenerResponse;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
@@ -30,7 +31,6 @@ import com.jinjunhang.onlineclass.ui.cell.comment.LiveCommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
-import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -53,7 +53,10 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
     private String mLastCommentId = "-1";
     private int commentCount = 0;
 
+
+
     private boolean isUpdatingChat = false;
+    private int mUpdateChatCount = 0;
 
     //定时获取评论、回复播放
     private final Handler mHandler = new Handler();
@@ -68,9 +71,12 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
     private static final long CHAT_UPDATE_INTERNAL = 5000;
     private static final long CHAT_UPDATE_INITIAL_INTERVAL = 2000;
 
+
     private void updateChat() {
         if (isUpdatingChat)
             return;
+
+        mUpdateChatCount++;
 
         int state = mMusicPlayer.getState();
         LogHelper.d(TAG, "musicPlayer.state = " + state + ", currentIndex = " + mMusicPlayer.getCurrentPlaySongIndex());
@@ -79,6 +85,10 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
         }
 
         new GetLiveSongCommentsTask().execute();
+
+        if (mUpdateChatCount % 15 == 0) {
+            new GetLiveListenerTask().execute();
+        }
     }
 
     private void stopChatUpdate() {
@@ -110,6 +120,8 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
+
+
 
         mCommentHeaderCell = new LiveCommentHeaderCell(getActivity());
         new GetLiveSongCommentsTask().execute();
@@ -269,6 +281,24 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
         }
     }
 
-    private  class Get
+    private  class GetLiveListenerTask extends AsyncTask<Void ,Void, GetLiveListenerResponse> {
+        @Override
+        protected GetLiveListenerResponse doInBackground(Void... params) {
+            GetLiveListenerRequest request = new GetLiveListenerRequest();
+            request.setSong(mMusicPlayer.getCurrentPlaySong());
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetLiveListenerResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                return;
+            }
+
+            int listenerCount = resp.getListernerCount();
+            mPlayerCell.getListenerCountLabel().setText(listenerCount+"人");
+        }
+    }
 
 }

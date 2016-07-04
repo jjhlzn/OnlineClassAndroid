@@ -28,6 +28,7 @@
             android:src="@drawable/audio_user_icon"/>
 
         <TextView
+            android:id="@+id/listen_people_label"
             android:layout_width="72dp"
             android:layout_height="30dp"
             android:text="1000人"

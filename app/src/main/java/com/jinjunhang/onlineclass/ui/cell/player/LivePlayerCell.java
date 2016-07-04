@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LiveSong;
@@ -27,7 +28,11 @@ public class LivePlayerCell extends PlayerCell {
 
     @Override
     public ViewGroup getView() {
-        return super.getView();
+        ViewGroup v = super.getView();
+        String listenerCount = ((LiveSong)mMusicPlayer.getCurrentPlaySong()).getListenPeople();
+        LogHelper.d(TAG, "listenPeopleCount = " + listenerCount);
+        mListenerCountLabel.setText(listenerCount);
+        return v;
     }
 
     @Override
@@ -66,4 +71,6 @@ public class LivePlayerCell extends PlayerCell {
         //mSeekbar.setProgress(50);
         scheduleSeekbarUpdate();
     }
+
+
 }
