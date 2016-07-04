@@ -15,6 +15,7 @@ import com.jinjunhang.player.playback.exo.player.SmoothStreamingTestMediaDrmCall
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +40,13 @@ public class MusicPlayer implements ExoPlayer.Listener {
             instance.player.addListener(instance);
         }
         return instance;
+    }
+
+    public List<Song> getSongs() {
+        ArrayList<Song> result = new ArrayList<Song>();
+        for(Song song : mSongs)
+            result.add(song);
+        return result;
     }
 
     public void addMusicPlayerControlListener(MusicPlayerControlListener listener) {
@@ -174,6 +182,13 @@ public class MusicPlayer implements ExoPlayer.Listener {
             return null;
         }
         return mSongs[currentIndex];
+    }
+
+    public int getCurrentPlaySongIndex() {
+        if (mSongs == null) {
+            return -1;
+        }
+        return currentIndex;
     }
 
     private void createPlayer(Song song) {

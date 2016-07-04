@@ -2,12 +2,14 @@ package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -34,6 +36,10 @@ import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -46,6 +52,55 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
     private LiveCommentHeaderCell mCommentHeaderCell;
     private String mLastCommentId = "-1";
     private int commentCount = 0;
+
+    private boolean isUpdatingChat = false;
+
+    //定时获取评论、回复播放
+    private final Handler mHandler = new Handler();
+    private ScheduledFuture<?> mScheduleFuture;
+    private final ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final Runnable mUpdateChatTask = new Runnable() {
+        @Override
+        public void run() {
+            updateChat();
+        }
+    };
+    private static final long CHAT_UPDATE_INTERNAL = 5000;
+    private static final long CHAT_UPDATE_INITIAL_INTERVAL = 2000;
+
+    private void updateChat() {
+        if (isUpdatingChat)
+            return;
+
+        int state = mMusicPlayer.getState();
+        LogHelper.d(TAG, "musicPlayer.state = " + state + ", currentIndex = " + mMusicPlayer.getCurrentPlaySongIndex());
+        if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_IDLE ) {
+            mMusicPlayer.play(mMusicPlayer.getSongs(),  mMusicPlayer.getCurrentPlaySongIndex());
+        }
+
+        new GetLiveSongCommentsTask().execute();
+    }
+
+    private void stopChatUpdate() {
+        if (mScheduleFuture != null) {
+            mScheduleFuture.cancel(false);
+        }
+    }
+
+    protected void scheduleChatUpdate() {
+        stopChatUpdate();
+        if (!mExecutorService.isShutdown()) {
+            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mHandler.post(mUpdateChatTask);
+                        }
+                    }, CHAT_UPDATE_INITIAL_INTERVAL,
+                    CHAT_UPDATE_INTERNAL, TimeUnit.MILLISECONDS);
+        }
+    }
+
     @Override
     protected PlayerCell createPlayerCell() {
         return new LivePlayerCell(getActivity());
@@ -58,6 +113,7 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
 
         mCommentHeaderCell = new LiveCommentHeaderCell(getActivity());
         new GetLiveSongCommentsTask().execute();
+        scheduleChatUpdate();
         return v;
     }
 
@@ -73,6 +129,11 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
         mMusicPlayer.removeMusicPlayerControlListener();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopChatUpdate();
+    }
 
     private void reCreateListViewCells(List<Comment> comments, int totalCommentCount) {
         List<ListViewCell> cells = new ArrayList<>();
@@ -144,6 +205,12 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
      */
     private class GetLiveSongCommentsTask extends AsyncTask<Void, Void, GetLiveCommentsResponse> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            isUpdatingChat = true;
+        }
+
+        @Override
         protected GetLiveCommentsResponse doInBackground(Void... params) {
             GetLiveCommentsRequest req = new GetLiveCommentsRequest();
             req.setSong(mMusicPlayer.getCurrentPlaySong());
@@ -154,6 +221,7 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
         @Override
         protected void onPostExecute(GetLiveCommentsResponse resp) {
             if (resp.getStatus() != ServerResponse.SUCCESS) {
+                isUpdatingChat = false;
                 return;
             }
             commentCount += resp.getCommentList().size();
@@ -163,6 +231,7 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
             if (resp.getCommentList().size() > 0) {
                 mLastCommentId = resp.getCommentList().get(0).getId() + "";
             }
+            isUpdatingChat = false;
         }
     }
 
@@ -199,5 +268,7 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
             mAdapter.notifyDataSetChanged();
         }
     }
+
+    private  class Get
 
 }

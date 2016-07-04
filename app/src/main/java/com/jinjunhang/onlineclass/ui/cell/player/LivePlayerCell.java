@@ -38,8 +38,8 @@ public class LivePlayerCell extends PlayerCell {
         }
         LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
         int progress = (int)((double)song.getPlayedTimeInSec() / song.getTotalTimeInSec() * 1000);
-        LogHelper.d(TAG, "palyedTime = " + song.getPlayedTimeInSec() + ", totalTime = " + song.getTotalTimeInSec());
-        LogHelper.d(TAG, "progress = " + progress / 10);
+       // LogHelper.d(TAG, "palyedTime = " + song.getPlayedTimeInSec() + ", totalTime = " + song.getTotalTimeInSec());
+        //LogHelper.d(TAG, "progress = " + progress / 10);
         mSeekbar.setProgress(progress );
         mPlayTimeTextView.setText(getNowTimeString());
 
