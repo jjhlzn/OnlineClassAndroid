@@ -1,7 +1,9 @@
 package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -23,6 +25,7 @@ import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.jinjunhang.player.utils.TimeUtil;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -48,9 +51,13 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     protected ImageView mBufferCircle;
     protected Animation mRotation;
     protected TextView mListenerCountLabel;
+    protected ImageButton mPlayListButton;
 
     protected MusicPlayer mMusicPlayer;
     private boolean mInited;
+
+    private ViewGroup mPlayerListView;
+    private Activity mActivity;
 
     //private Song mSong;
 
@@ -69,6 +76,10 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mPlayTimeTextView.setText("00:00");
         mDurationTextView.setText("00:00");
         mSeekbar.setProgress(0);
+    }
+
+    public void setPlayerListView(ViewGroup playerListView) {
+        mPlayerListView = playerListView;
     }
 
     public void setAdapter(ArrayAdapter adapter) {
@@ -110,6 +121,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mBufferCircle = (ImageView) v.findViewById(R.id.player_buffer_image);
         mPlayTimeTextView = (TextView) v.findViewById(R.id.player_playTimeText);
         mDurationTextView = (TextView) v.findViewById(R.id.player_durationText);
+        mPlayListButton = (ImageButton) v.findViewById(R.id.player_list_button);
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +158,15 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             }
         });
 
+        mPlayListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         updatePlayButton();
+        updatePrevAndNextButton();
     }
 
     protected void setSeekbar(View v) {
@@ -176,7 +196,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
         scheduleSeekbarUpdate();
     }
-
 
     protected void scheduleSeekbarUpdate() {
         stopSeekbarUpdate();
@@ -243,9 +262,23 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     }
 
     private void updatePrevAndNextButton() {
-        mNextButton.setEnabled(mMusicPlayer.hasNext());
-        mPrevButton.setEnabled(mMusicPlayer.hasPrev());
+        LogHelper.d(TAG, "updatePrevAndNextButton");
+        LogHelper.d(TAG, "hasPrev = " + mMusicPlayer.hasPrev());
+        if (mMusicPlayer.hasNext()) {
+            mNextButton.setAlpha(1f);
+            mNextButton.setClickable(true);
+        } else {
+            mNextButton.setAlpha(.5f);
+            mNextButton.setClickable(false);
+        }
 
+        if (mMusicPlayer.hasPrev()) {
+            mPrevButton.setAlpha(1f);
+            mPrevButton.setClickable(true);
+        } else {
+            mPrevButton.setAlpha(.5f);
+            mPrevButton.setClickable(false);
+        }
     }
 
 
@@ -281,6 +314,44 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     @Override
     public void onPlayerError(ExoPlaybackException error) {
 
+    }
+
+    private class PlayerListAdapter extends  ArrayAdapter<Song> {
+        private  List<Song> mSongs;
+
+        public PlayerListAdapter(Activity activity, List<Song> songs) {
+            super(activity, 0, songs);
+            mSongs = songs;
+        }
+
+        public void setSongs(List<Song> songs) {
+            mSongs = songs;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return mSongs.size();
+        }
+
+        @Override
+        public Song getItem(int position) {
+            return mSongs.get(position);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Song song = getItem(position);
+            View v;
+            if (mMusicPlayer.isPlay(song)) {
+                v = mActivity.getLayoutInflater().inflate(R.layout.play_list_item_playing, null);
+            } else {
+                v = mActivity.getLayoutInflater().inflate(R.layout.play_list_item, null);
+            }
+            TextView titleLabel = (TextView) v.findViewById(R.id.title_label);
+            titleLabel.setText(song.getName());
+            return v;
+        }
     }
 
 

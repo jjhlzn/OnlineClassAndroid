@@ -33,6 +33,11 @@
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"/>
 
+    <include layout="@layout/play_list_view" android:id="@+id/emojikeyboard"
+             android:layout_width="match_parent"
+             android:layout_height="320dp"
+             android:layout_alignParentBottom="true"/>
+
     <include layout="@layout/emojikeyboard" android:id="@+id/emojikeyboard"
              android:layout_width="match_parent"
              android:layout_height="213dp"
@@ -47,4 +52,6 @@
 
              android:visibility="gone"
         />
+
+
 </RelativeLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="320dp"
+              android:background="@color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="播放列表"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:background="@color/fragment_background"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="240dp">
+    </ListView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="关闭"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
+        android:background="@color/fragment_background"/>
+
+</LinearLayout>

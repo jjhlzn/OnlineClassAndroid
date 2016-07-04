@@ -50,7 +50,7 @@ public class LoginRequest extends ServerRequest {
     @Override
     public Map<String, Object> getParams() {
         Map<String, Object> params = super.getParams();
-        params.put("userName", mUserName);
+        params.put("username", mUserName);
         params.put("password", mPassword);
         params.put("deviceToken", mDeviceToken);
         return params;
