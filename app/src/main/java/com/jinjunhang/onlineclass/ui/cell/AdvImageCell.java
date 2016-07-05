@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;

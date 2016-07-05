@@ -61,21 +61,21 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
     private void initSections() {
         if (mThirdSections.size() == 0) {
-            mThirdSections.add(new LineRecord(R.drawable.log, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
-            mThirdSections.add(new LineRecord(R.drawable.log, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
-            mThirdSections.add(new LineRecord(R.drawable.log, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
-            mThirdSections.add(new LineRecord(R.drawable.log, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
+            mThirdSections.add(new LineRecord(R.drawable.me_tuijian, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
+            mThirdSections.add(new LineRecord(R.drawable.me_order, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
+            mThirdSections.add(new LineRecord(R.drawable.me_team, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
+            mThirdSections.add(new LineRecord(R.drawable.me_tixian, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
         }
 
         if (mFourthSections.size() == 0) {
-            mFourthSections.add(new LineRecord(R.drawable.log, "我的资料", new CellClickListener() {
+            mFourthSections.add(new LineRecord(R.drawable.me_ziliao, "我的资料", new CellClickListener() {
                 @Override
                 public void onClick(ListViewCell cell) {
                     Intent i = new Intent(getActivity(), PersonalInfoActivity.class);
                     getActivity().startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_PERSONAL_INFO);
                 }
             }, "", ""));
-            mFourthSections.add(new LineRecord(R.drawable.log, "我的二维码", new CellClickListener() {
+            mFourthSections.add(new LineRecord(R.drawable.me_qrcode, "我的二维码", new CellClickListener() {
                 @Override
                 public void onClick(ListViewCell cell) {
                     Intent i = new Intent(getActivity(), QRImageActivity.class);
@@ -85,7 +85,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
 
         if (mFifthSections.size() == 0) {
-            mFifthSections.add(new LineRecord(R.drawable.log, "申请代理", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
+            mFifthSections.add(new LineRecord(R.drawable.me_agent, "我要申请", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
         }
     }
 
