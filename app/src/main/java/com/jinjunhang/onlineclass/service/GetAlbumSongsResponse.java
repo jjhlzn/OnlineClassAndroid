@@ -37,8 +37,8 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             JSONObject json = jsonArray.getJSONObject(i);
 
             Song song;
-            LogHelper.d(TAG, "req.getAlbum().getAlbumType().getName() = " + req.getAlbum().getAlbumType().getName());
-            LogHelper.d(TAG, "AlbumType.LiveAlbumType.getName() = " + AlbumType.LiveAlbumType.getName());
+            //LogHelper.d(TAG, "req.getAlbum().getAlbumType().getName() = " + req.getAlbum().getAlbumType().getName());
+            //LogHelper.d(TAG, "AlbumType.LiveAlbumType.getName() = " + AlbumType.LiveAlbumType.getName());
             if (req.getAlbum().getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName())) {
                 LiveSong liveSong = new LiveSong();
                 liveSong.setStartDateTime(json.getString("startTime"));

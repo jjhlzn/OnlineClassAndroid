@@ -79,6 +79,9 @@ public abstract class BaseSongFragment  extends BaseFragment{
 
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
 
+
+
+
         //设置emoji切换按钮
         final ImageButton keyboardSwitchButton = (ImageButton) v.findViewById(R.id.emojikeyboard_switch_button);
 
@@ -153,7 +156,7 @@ public abstract class BaseSongFragment  extends BaseFragment{
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
 
-        createAdapter();
+        createAdapter(v);
         mListView.setAdapter(mAdapter);
 
 
@@ -193,9 +196,11 @@ public abstract class BaseSongFragment  extends BaseFragment{
         }
     }
 
-    private void createAdapter() {
+    private void createAdapter(View container) {
         ArrayList<ListViewCell> viewCells = new ArrayList<>();
+        View playListView = container.findViewById(R.id.play_list_view);
         mPlayerCell = createPlayerCell();
+        mPlayerCell.setPlayerListView(playListView);
         //mPlayerCell.setSong(mMusicPlayer.getCurrentPlaySong());
         viewCells.add(mPlayerCell);
 

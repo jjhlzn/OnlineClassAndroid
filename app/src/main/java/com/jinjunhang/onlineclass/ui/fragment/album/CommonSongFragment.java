@@ -43,6 +43,7 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
 
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
     private CommentHeaderCell mCommentHeaderCell;
+
     @Override
     protected PlayerCell createPlayerCell() {
         return new PlayerCell(getActivity());

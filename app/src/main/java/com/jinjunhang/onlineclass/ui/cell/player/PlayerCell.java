@@ -1,17 +1,18 @@
 package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -56,8 +57,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     protected MusicPlayer mMusicPlayer;
     private boolean mInited;
 
-    private ViewGroup mPlayerListView;
-    private Activity mActivity;
+    private View mPlayerListView;
+    private PlayListAdapter mPlayListAdapter;
 
     //private Song mSong;
 
@@ -78,13 +79,22 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mSeekbar.setProgress(0);
     }
 
-    public void setPlayerListView(ViewGroup playerListView) {
+
+    public PlayerCell(Activity activity) {
+        super(activity);
+        mMusicPlayer = MusicPlayer.getInstance(activity);
+        mInited = false;
+    }
+
+    public void setPlayerListView(View playerListView) {
         mPlayerListView = playerListView;
+        setupPlayList();
     }
 
     public void setAdapter(ArrayAdapter adapter) {
         mAdapter = adapter;
     }
+
 
     public TextView getListenerCountLabel() {
         return mListenerCountLabel;
@@ -161,12 +171,15 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mPlayListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogHelper.d(TAG,  "mPlayListButton clicked");
+                showPlayList();
 
             }
         });
 
         updatePlayButton();
         updatePrevAndNextButton();
+
     }
 
     protected void setSeekbar(View v) {
@@ -230,12 +243,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         }
     }
 
-
-    public PlayerCell(Activity activity) {
-        super(activity);
-        mMusicPlayer = MusicPlayer.getInstance(activity);
-        mInited = false;
-    }
 
     private void updatePlayButton() {
         int state = mMusicPlayer.getState();
@@ -316,10 +323,44 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
     }
 
-    private class PlayerListAdapter extends  ArrayAdapter<Song> {
+    private void setupPlayList() {
+
+        mPlayListAdapter = new PlayListAdapter(mActivity, mMusicPlayer.getSongs());
+        ListView playListView = (ListView) mPlayerListView.findViewById(R.id.play_list_listView);
+        playListView.setAdapter(mPlayListAdapter);
+
+        Button closeButton = (Button) mPlayerListView.findViewById(R.id.close_button);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hidePlayList();
+            }
+        });
+
+        playListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mMusicPlayer.play(mMusicPlayer.getSongs(), position);
+                mPlayListAdapter.notifyDataSetChanged();
+            }
+        });
+
+    }
+
+    private void showPlayList() {
+        LogHelper.d(TAG, "showPlayList");
+        mPlayerListView.setVisibility(View.VISIBLE);
+    }
+
+    private void hidePlayList() {
+        LogHelper.d(TAG, "hidePlayList");
+        mPlayerListView.setVisibility(View.GONE);
+    }
+
+    private class PlayListAdapter extends  ArrayAdapter<Song> {
         private  List<Song> mSongs;
 
-        public PlayerListAdapter(Activity activity, List<Song> songs) {
+        public PlayListAdapter(Activity activity, List<Song> songs) {
             super(activity, 0, songs);
             mSongs = songs;
         }

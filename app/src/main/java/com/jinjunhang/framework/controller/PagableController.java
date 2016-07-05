@@ -122,7 +122,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
     public void onRefresh() {
-        Log.d(TAG, "onRefresh");
+       // Log.d(TAG, "onRefresh");
         if (!mIsLoading) {
             mIsRefreshing = true;
             mMoreDataAvailable = true;
@@ -146,7 +146,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         if (!mMoreDataAvailable) {
             mFooterView.findViewById(R.id.loading_progressbar).setVisibility(View.GONE);
             if (mPagableArrayAdapter.getCount() > 0) {
-                LogHelper.d(TAG, "mIsShowLoadCompleteTip = " + mIsShowLoadCompleteTip);
+                //LogHelper.d(TAG, "mIsShowLoadCompleteTip = " + mIsShowLoadCompleteTip);
                 if (mIsShowLoadCompleteTip) {
                     ((TextView) mFooterView.findViewById(R.id.loading_message)).setText("已加载全部数据");
                 } else  {
@@ -206,7 +206,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
         @Override
         protected PagedServerResponse doInBackground(Void... params) {
-            Log.d(TAG, "doInBackground");
+            //Log.d(TAG, "doInBackground");
             return mPagableHandler.handle();
             //return execute();
         }

@@ -33,10 +33,7 @@
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"/>
 
-    <include layout="@layout/play_list_view" android:id="@+id/emojikeyboard"
-             android:layout_width="match_parent"
-             android:layout_height="320dp"
-             android:layout_alignParentBottom="true"/>
+
 
     <include layout="@layout/emojikeyboard" android:id="@+id/emojikeyboard"
              android:layout_width="match_parent"
@@ -52,6 +49,22 @@
 
              android:visibility="gone"
         />
+
+    <RelativeLayout
+        android:id="@+id/play_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/background_shadow">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <include layout="@layout/play_list_view"
+                 android:layout_width="match_parent"
+                 android:layout_height="400dp"
+
+                 android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 
 
 </RelativeLayout>

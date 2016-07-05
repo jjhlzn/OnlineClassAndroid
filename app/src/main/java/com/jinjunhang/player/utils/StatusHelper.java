@@ -37,7 +37,7 @@ public class StatusHelper {
     public static boolean isPlayingForUI(MusicPlayer musicPlayer) {
         int state = musicPlayer.getState();
         boolean isPlayingForUI = musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
-        LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
+       // LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
         return isPlayingForUI;
     }
 }
