@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.player.utils.LogHelper;
 
@@ -36,16 +37,22 @@ public class ExtendFunctionManager {
     private List<ExtendFunction> functions = new ArrayList<>();
 
     public ExtendFunctionManager(Context context) {
-        this(100, context);
+        this(100, context, true);
     }
 
-    public ExtendFunctionManager(int showMaxRow, Context context) {
+    public ExtendFunctionManager(Context context, boolean isNeedMore) {
+        this(100, context, isNeedMore);
+    }
+
+    private ExtendFunction moreFunction;
+
+    public ExtendFunctionManager(int showMaxRow, final Context context, boolean isNeedMore) {
         mShowMaxRow = showMaxRow;
         mContext = context;
         mWebListener = new WebClickListener();
         mNotSupportListener = new NotSupportClickListener();
         functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "http://www.baidu.com", mWebListener));
-        functions.add(new ExtendFunction(R.drawable.upicon, "一键提额", "http://114.215.236.171:6012/Service/CreditLines", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", "http://114.215.236.171:6012/Service/CreditLines", mWebListener));
         functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", "http://114.215.236.171:6012/Service/FastCard", mWebListener));
         functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", "http://114.215.236.171:6012/Service/CardManage", mWebListener));
         functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", "http://114.215.236.171:6012/Service/Ipcrs", mWebListener));
@@ -53,13 +60,29 @@ public class ExtendFunctionManager {
         functions.add(new ExtendFunction(R.drawable.shopcart, "商城", "", mNotSupportListener));
         functions.add(new ExtendFunction(R.drawable.rmb, "缴费", "", mNotSupportListener));
         functions.add(new ExtendFunction(R.drawable.dollar, "贷款", "", mNotSupportListener));
+        functions.add(new ExtendFunction(R.drawable.car, " 汽车分期", "", mNotSupportListener));
+        functions.add(new ExtendFunction(R.drawable.customerservice, "客服", "", mNotSupportListener));
+
+        moreFunction =  new ExtendFunction(R.drawable.morefunction, "更多", "http://www.baidu.com", new ClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                Intent i = new Intent(context, ExtendFunctionActivity.class);
+                context.startActivity(i);
+            }
+        });
+        if (isNeedMore) {
+            functions.add(moreFunction);
+        }
     }
 
     public int getRowCount() {
-        int rows = (functions.size() + (itemCountEachRow - 1)) / itemCountEachRow;
+        int rows = (getFunctionCount() + (itemCountEachRow - 1)) / itemCountEachRow;
         return rows > mShowMaxRow ? mShowMaxRow : rows;
     }
 
+    private int getFunctionCount() {
+        return functions.size();
+    }
 
     public ExtendFunctionCell getCell(int row) {
         ExtendFunctionCell cell = new ExtendFunctionCell((Activity) mContext);

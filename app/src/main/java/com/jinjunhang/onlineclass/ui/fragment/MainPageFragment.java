@@ -95,14 +95,6 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         return v;
     }
 
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-    }
-
     @Override
     public void onStop() {
         super.onStop();

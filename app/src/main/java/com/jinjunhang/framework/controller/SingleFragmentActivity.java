@@ -41,6 +41,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     }
 
+    //没有用了
     protected boolean isNeedPushDownFresh() {return false;}
 
 
@@ -51,13 +52,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setElevation(0);
 
-        setContentView(R.layout.activity_fragment_pushdownrefresh);
-
-        if (!isNeedPushDownFresh()) {
-            View fresh = findViewById(R.id.swipe_refresh_layout);
-            fresh.setEnabled(false);
-            fresh.setVisibility(View.GONE);
-        }
+        setContentView(R.layout.activity_fragment);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);

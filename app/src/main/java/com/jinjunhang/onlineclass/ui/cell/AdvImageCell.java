@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.cell;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.jinjunhang.framework.lib.Utils;
@@ -17,6 +19,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.service.GetAdsRequest;
 import com.jinjunhang.onlineclass.service.GetAdsResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.List;
@@ -52,9 +55,17 @@ public class AdvImageCell extends BaseListViewCell {
         if (mAdvertiseList == null) {
             new GetAdvImageTask().execute();
         } else {
-            for (Advertise adv : mAdvertiseList) {
+            for (final Advertise adv : mAdvertiseList) {
                 DefaultSliderView textSliderView = new DefaultSliderView(mActivity);
-                textSliderView.image(adv.getImageUrl());
+                textSliderView.image(adv.getImageUrl()).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(BaseSliderView slider) {
+                        Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                                .putExtra(WebBrowserActivity.EXTRA_TITLE, adv.getTitle())
+                                .putExtra(WebBrowserActivity.EXTRA_URL, adv.getClickUrl());
+                        mActivity.startActivity(i);
+                    }
+                });
                 sliderShow.addSlider(textSliderView);
             }
         }
@@ -90,12 +101,22 @@ public class AdvImageCell extends BaseListViewCell {
             SliderLayout sliderShow = getSliderShow();
 
             mAdvertiseList = getAdsResponse.getAdvertises();
-            for (Advertise adv : getAdsResponse.getAdvertises()) {
+            for (final Advertise adv : getAdsResponse.getAdvertises()) {
                 DefaultSliderView textSliderView = new DefaultSliderView(mActivity);
-                textSliderView.image(adv.getImageUrl());
+                textSliderView.image(adv.getImageUrl()).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(BaseSliderView slider) {
+                        Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                                .putExtra(WebBrowserActivity.EXTRA_TITLE, adv.getTitle())
+                                .putExtra(WebBrowserActivity.EXTRA_URL, adv.getClickUrl());
+                        mActivity.startActivity(i);
+                    }
+                });
                 sliderShow.addSlider(textSliderView);
             }
 
         }
     }
+
+
 }

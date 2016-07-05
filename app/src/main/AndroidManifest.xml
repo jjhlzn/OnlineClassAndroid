@@ -104,6 +104,9 @@
         <activity android:name=".ui.activity.album.CommentListActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".ui.activity.other.ExtendFunctionActivity"
+                  android:screenOrientation="portrait" />
+
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to
              consumers through MediaBrowserService and MediaSession. Consumers connect to it through
