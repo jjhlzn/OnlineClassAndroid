@@ -59,10 +59,15 @@ public class ExtendFunctionManager {
                 LogHelper.d(TAG, "shua ka clicked");
                 PackageManager packageManager = mContext.getPackageManager();
                 Intent intent = packageManager.getLaunchIntentForPackage("com.jinjunhang.contract");
-                if(intent==null){
-                    System.out.println("APP not found!");
+                if(intent == null){
+                    LogHelper.d(TAG, "APP not found!");
+                    Intent i = new Intent(mContext, WebBrowserActivity.class)
+                            .putExtra(WebBrowserActivity.EXTRA_TITLE, "巨方支付下载")
+                            .putExtra(WebBrowserActivity.EXTRA_URL, "http://www.baidu.com");
+                    mContext.startActivity(i);
+                } else {
+                    mContext.startActivity(intent);
                 }
-                mContext.startActivity(intent);
             }
         }));
         functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", "http://114.215.236.171:6012/Service/CreditLines", mWebListener));
