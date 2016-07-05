@@ -1,8 +1,10 @@
 package com.jinjunhang.onlineclass.ui.lib;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
@@ -51,7 +53,18 @@ public class ExtendFunctionManager {
         mContext = context;
         mWebListener = new WebClickListener();
         mNotSupportListener = new NotSupportClickListener();
-        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "http://www.baidu.com", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "http://www.baidu.com", new ClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                LogHelper.d(TAG, "shua ka clicked");
+                PackageManager packageManager = mContext.getPackageManager();
+                Intent intent = packageManager.getLaunchIntentForPackage("com.jinjunhang.contract");
+                if(intent==null){
+                    System.out.println("APP not found!");
+                }
+                mContext.startActivity(intent);
+            }
+        }));
         functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", "http://114.215.236.171:6012/Service/CreditLines", mWebListener));
         functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", "http://114.215.236.171:6012/Service/FastCard", mWebListener));
         functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", "http://114.215.236.171:6012/Service/CardManage", mWebListener));
