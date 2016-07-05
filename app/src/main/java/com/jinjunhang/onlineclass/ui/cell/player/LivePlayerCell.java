@@ -27,6 +27,7 @@ public class LivePlayerCell extends PlayerCell {
         super(activity);
     }
 
+
     @Override
     public ViewGroup getView() {
         ViewGroup v = super.getView();

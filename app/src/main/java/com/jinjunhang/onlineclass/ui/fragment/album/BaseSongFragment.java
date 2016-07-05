@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
@@ -39,7 +40,7 @@ import java.util.List;
 /**
  * Created by jjh on 2016-7-2.
  */
-public abstract class BaseSongFragment  extends BaseFragment{
+public abstract class BaseSongFragment  extends BaseFragment implements MusicPlayer.MusicPlayerControlListener{
     private final static String TAG = LogHelper.makeLogTag(BaseSongFragment.class);
     public final static String EXTRA_SONG = "SongFragement_song";
 
@@ -67,6 +68,25 @@ public abstract class BaseSongFragment  extends BaseFragment{
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
     }
+
+    @Override
+    public void onClickNext() {
+        reloadNewSong();
+    }
+
+    @Override
+    public void onClickPrev() {
+        reloadNewSong();
+    }
+
+    public void onClickNewSong() {
+        reloadNewSong();
+    }
+
+    protected void reloadNewSong() {
+        ((SingleFragmentActivity)getActivity()).setActivityTitle(mMusicPlayer.getCurrentPlaySong().getName());
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {

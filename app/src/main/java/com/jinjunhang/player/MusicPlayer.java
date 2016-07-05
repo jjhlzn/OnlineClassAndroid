@@ -208,6 +208,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         LogHelper.d(TAG, "onPlayerStateChanged: playbackState = " + playbackState);
         if (playbackState == ExoPlayer.STATE_ENDED) {
+            //自动播放下一首
             next();
         }
     }

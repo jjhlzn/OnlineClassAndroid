@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer.ExoPlayer;
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -44,7 +45,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by jjh on 2016-7-2.
  */
-public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.MusicPlayerControlListener {
+public class LiveSongFragment extends BaseSongFragment  {
 
     public final static int MAX_COMMENT_COUNT = 200;
 
@@ -178,15 +179,15 @@ public class LiveSongFragment extends BaseSongFragment implements MusicPlayer.Mu
         LogHelper.d(TAG, "reCreateListViewCells called");
     }
 
-    @Override
-    public void onClickNext() {
-        new GetLiveSongCommentsTask().execute();
-    }
 
     @Override
-    public void onClickPrev() {
+    protected void reloadNewSong() {
+        super.reloadNewSong();
+        mLastCommentId = "-1";
         new GetLiveSongCommentsTask().execute();
+
     }
+
 
     @Override
     protected View.OnClickListener createSendOnClickListener() {

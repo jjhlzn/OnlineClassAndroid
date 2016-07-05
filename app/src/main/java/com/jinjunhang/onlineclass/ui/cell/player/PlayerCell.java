@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -79,7 +81,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mSeekbar.setProgress(0);
     }
 
-
     public PlayerCell(Activity activity) {
         super(activity);
         mMusicPlayer = MusicPlayer.getInstance(activity);
@@ -103,6 +104,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     @Override
     public ViewGroup getView() {
         Song song = mMusicPlayer.getCurrentPlaySong();
+        mLastSong = song;
         int playerView;
         View v;
         if (song.isLive()) {
@@ -304,6 +306,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     }
 
 
+
+    private Song mLastSong;
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         LogHelper.d(TAG, "onPlayerStateChanged called, mInited = " + mInited);
@@ -311,6 +315,12 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             return;
         updatePlayButton();
         updatePrevAndNextButton();
+
+        if (!mLastSong.getId().equals( mMusicPlayer.getCurrentPlaySong().getId()) ) {
+            //更换标题
+            //重新加载
+        }
+
     }
 
     @Override
@@ -341,14 +351,16 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mMusicPlayer.play(mMusicPlayer.getSongs(), position);
+                BaseSongFragment fragment = (BaseSongFragment) (((AppCompatActivity)mActivity).getSupportFragmentManager().findFragmentById(R.id.fragmentContainer));
+                fragment.onClickNewSong();
                 mPlayListAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
     private void showPlayList() {
         LogHelper.d(TAG, "showPlayList");
+        mPlayListAdapter.notifyDataSetChanged();
         mPlayerListView.setVisibility(View.VISIBLE);
     }
 

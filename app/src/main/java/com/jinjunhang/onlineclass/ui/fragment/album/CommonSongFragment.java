@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -39,7 +40,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/13.
  */
-public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.MusicPlayerControlListener {
+public class CommonSongFragment extends BaseSongFragment {
 
     private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
     private CommentHeaderCell mCommentHeaderCell;
@@ -126,13 +127,10 @@ public class CommonSongFragment extends BaseSongFragment implements MusicPlayer.
         LogHelper.d(TAG, "reCreateListViewCells called");
     }
 
-    @Override
-    public void onClickNext() {
-        new GetSongCommentsTask().execute();
-    }
 
     @Override
-    public void onClickPrev() {
+    protected void reloadNewSong() {
+        super.reloadNewSong();
         new GetSongCommentsTask().execute();
     }
 
