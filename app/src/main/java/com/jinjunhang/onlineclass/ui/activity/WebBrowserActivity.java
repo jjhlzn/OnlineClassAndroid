@@ -23,8 +23,11 @@ import android.widget.TextView;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -55,6 +58,8 @@ public class WebBrowserActivity extends AppCompatActivity {
         setContentView(R.layout.web_browser);
 
         mUrl = getIntent().getStringExtra(EXTRA_URL);
+        mUrl = addUserInfo(mUrl);
+        LogHelper.d(TAG, mUrl);
         mTitle = getIntent().getStringExtra(EXTRA_TITLE);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -92,6 +97,16 @@ public class WebBrowserActivity extends AppCompatActivity {
             view.loadUrl(url);
             return true;
         }
+    }
+
+    private String addUserInfo(String url) {
+        if (url.indexOf("?") == -1) {
+            url += "?";
+        }
+
+        LoginUser user = LoginUserDao.getInstance(CustomApplication.get()).get();
+        url += "userid=" + user.getUserName() + "&" + "token=" + user.getToken();
+        return url;
     }
 
 

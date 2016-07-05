@@ -1,37 +1,33 @@
 package com.jinjunhang.onlineclass.db;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Created by jjh on 2016-6-30.
  */
-public class UserImageDao {
+public class QrImageDao {
 
-    private static UserImageDao instance = null;
+    private static QrImageDao instance = null;
     private Context mContext;
 
-    private UserImageDao(Context context) {
+    private QrImageDao(Context context) {
         mContext = context;
     }
 
-    public synchronized static UserImageDao getInstance(Context ctx) {
+    public synchronized static QrImageDao getInstance(Context ctx) {
         if (null == instance) {
-            instance = new UserImageDao(ctx);
+            instance = new QrImageDao(ctx);
         }
         return instance;
     }
 
     public Bitmap get() {
-        String name = "userprofile.png";
+        String name = "userqrcode.png";
         try{
             FileInputStream fis = mContext.openFileInput(name);
             Bitmap b = BitmapFactory.decodeStream(fis);
@@ -44,7 +40,7 @@ public class UserImageDao {
     }
 
     public void saveOrUpdate(Bitmap image) {
-        String name = "userprofile.png";
+        String name = "userqrcode.png";
         FileOutputStream out;
         try {
             out = mContext.openFileOutput(name, Context.MODE_PRIVATE);
