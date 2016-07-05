@@ -55,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:visibility="gone"
         android:background="@color/background_shadow">
         <View
             android:layout_width="match_parent"
@@ -62,7 +63,6 @@
         <include layout="@layout/play_list_view"
                  android:layout_width="match_parent"
                  android:layout_height="400dp"
-
                  android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
