@@ -100,6 +100,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/resetPassword";
     }
 
+    public static String UpdateTokenUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/updatetoken";
+    }
+
 
     //课程
     public static String GetAlbumsUrl() {

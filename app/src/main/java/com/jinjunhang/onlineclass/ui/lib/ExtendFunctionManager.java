@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,18 +54,24 @@ public class ExtendFunctionManager {
         mContext = context;
         mWebListener = new WebClickListener();
         mNotSupportListener = new NotSupportClickListener();
-        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "http://www.baidu.com", new ClickListener() {
+        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "", new ClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
                 LogHelper.d(TAG, "shua ka clicked");
                 PackageManager packageManager = mContext.getPackageManager();
-                Intent intent = packageManager.getLaunchIntentForPackage("com.jinjunhang.contract");
+                Intent intent = packageManager.getLaunchIntentForPackage("com.uen.jfzf");
                 if(intent == null){
                     LogHelper.d(TAG, "APP not found!");
+                    /*
                     Intent i = new Intent(mContext, WebBrowserActivity.class)
                             .putExtra(WebBrowserActivity.EXTRA_TITLE, "巨方支付下载")
-                            .putExtra(WebBrowserActivity.EXTRA_URL, "http://www.baidu.com");
-                    mContext.startActivity(i);
+                            .putExtra(WebBrowserActivity.EXTRA_URL, "https://uenpay.com/downloadcopy/jfjr/down-jfjr.html#rd"); */
+
+                    Intent downloadIntent = new Intent();
+                    downloadIntent.setAction("android.intent.action.VIEW");
+                    Uri content_url = Uri.parse("https://uenpay.com/downloadcopy/jfjr/down-jfjr.html#rd");
+                    downloadIntent.setData(content_url);
+                    mContext.startActivity(downloadIntent);
                 } else {
                     mContext.startActivity(intent);
                 }

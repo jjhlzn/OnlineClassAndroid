@@ -10,6 +10,7 @@ public abstract class ServerResponse {
 
     public final static int SUCCESS = 0;
     public final static int FAIL = -1;
+    public final static int TOKEN_INVALID  =  -10;
 
     public ServerResponse() {}
     private int mStatus;
