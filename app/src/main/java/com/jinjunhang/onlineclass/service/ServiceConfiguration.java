@@ -143,6 +143,11 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/comment/addLive";
     }
 
+    //other
+    public static String CheckUpgradeUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/checkUpgrade";
+    }
+
 }
 
 
