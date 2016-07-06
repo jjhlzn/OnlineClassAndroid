@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.libraries.cast.companionlibrary.utils.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
@@ -104,7 +105,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     @Override
     public ViewGroup getView() {
         Song song = mMusicPlayer.getCurrentPlaySong();
-        mLastSong = song;
+       // mLastSong = song;
         int playerView;
         View v;
         if (song.isLive()) {
@@ -305,9 +306,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         stopSeekbarUpdate();
     }
 
-
-
-    private Song mLastSong;
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         LogHelper.d(TAG, "onPlayerStateChanged called, mInited = " + mInited);
@@ -315,12 +313,10 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             return;
         updatePlayButton();
         updatePrevAndNextButton();
-
-        if (!mLastSong.getId().equals( mMusicPlayer.getCurrentPlaySong().getId()) ) {
-            //更换标题
-            //重新加载
+        LogHelper.d(TAG, "state = " +playbackState + ", duration = " + mMusicPlayer.getDuration());
+        if (playbackState == ExoPlayer.STATE_READY && mMusicPlayer.getDuration() > 0) {
+            mDurationTextView.setText(com.jinjunhang.framework.lib.Utils.convertTimeString(mMusicPlayer.getDuration()));
         }
-
     }
 
     @Override

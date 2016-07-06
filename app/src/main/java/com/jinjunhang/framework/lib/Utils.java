@@ -157,6 +157,24 @@ public class Utils {
         }
     }
 
+    /**
+     * parse milisecons to hh:mm:ss的格式字符串, 例如3661000位 01:01:01
+     * @param milliseconds
+     * @return
+     */
+    public static String convertTimeString(long milliseconds) {
+        long sec = milliseconds/1000;
+        long hour = sec / 60 / 60;
+        long reminder = sec - hour * 3600;
+        long minutes = reminder / 60;
+        reminder = reminder - minutes * 60;
+        if (hour == 0) {
+            return String.format("%2d:%2d", minutes, reminder).replace(" ", "0");
+        } else {
+            return String.format("%2d:%2d:%2d", hour, minutes, reminder).replace(" ", "0");
+        }
+    }
+
     /*
     public static LoginUser getLoginUser() {
         Iterator<LoginUser> users = LoginUser.findAll(LoginUser.class);

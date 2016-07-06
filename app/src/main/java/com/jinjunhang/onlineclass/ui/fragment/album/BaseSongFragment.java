@@ -47,7 +47,6 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
     protected Song mSong;
     protected MusicPlayer mMusicPlayer;
 
-
     protected SongListVieCellAdapter mAdapter;
 
     protected PlayerCell mPlayerCell;
@@ -98,8 +97,6 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
 
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
-
-
 
 
         //设置emoji切换按钮
@@ -199,7 +196,6 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
                 public boolean onTouch(View v, MotionEvent event) {
                    // LogHelper.d(TAG, "onTouch called");
                     closeCommentWindow();
-
                     return false;
                 }
 

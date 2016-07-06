@@ -59,7 +59,7 @@ public class ExtendFunctionManager {
             public void onClick(ExtendFunction function) {
                 LogHelper.d(TAG, "shua ka clicked");
                 PackageManager packageManager = mContext.getPackageManager();
-                Intent intent = packageManager.getLaunchIntentForPackage("com.uen.jfzf");
+                Intent intent = packageManager.getLaunchIntentForPackage("com.jfzf.oem");
                 if(intent == null){
                     LogHelper.d(TAG, "APP not found!");
                     /*

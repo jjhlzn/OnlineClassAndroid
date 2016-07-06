@@ -73,6 +73,7 @@ public class CommonSongFragment extends BaseSongFragment {
         mMusicPlayer.removeMusicPlayerControlListener();
     }
 
+
     private class GetSongCommentsTask extends AsyncTask<Void, Void, GetSongCommentsResponse> {
         @Override
         protected GetSongCommentsResponse doInBackground(Void... params) {
