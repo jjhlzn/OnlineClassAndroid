@@ -45,4 +45,7 @@ dependencies {
     compile 'com.orhanobut:dialogplus:1.11@aar'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile files('libs/libammsdk.jar')
+
+
+    compile 'com.afollestad.material-dialogs:core:0.8.6.1'
 }

@@ -139,7 +139,7 @@ public class BasicService {
         catch (IOException ioe) {
             Log.e(TAG, "Fetch " + request.getServiceUrl() + " failed: ", ioe);
             resp.setStatus(ServerResponse.FAIL);
-            resp.setErrorMessage("IOException happen");
+            resp.setErrorMessage("服务器出错");
             return resp;
         } catch (JSONException e) {
             Log.e(TAG, "Parse response of " + request.getServiceUrl() + " failed: ", e);

@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.player.utils.LogHelper;
@@ -36,18 +37,24 @@ public class Utils {
     public final static long UPDATE_TIME_DELTA = 1000 * 60 * 5;
 
     public static void showMessage(Context context, String message) {
-
+        /*
         new SweetAlertDialog(context)
                 .setTitleText(message)
+                .show();*/
+        new MaterialDialog.Builder(context)
+                .content(message)
+                .positiveText("好的")
                 .show();
     }
 
     public static void showErrorMessage(Context context, String message) {
 
+        /*
         new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
                 .setTitleText("")
                 .setContentText(message)
-                .show();
+                .show();*/
+        showMessage(context, message);
     }
 
     public static void showMessage(Context context, String message, DialogInterface.OnDismissListener listener) {
