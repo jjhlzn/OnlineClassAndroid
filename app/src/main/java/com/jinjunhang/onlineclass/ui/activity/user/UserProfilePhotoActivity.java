@@ -34,7 +34,7 @@ public class UserProfilePhotoActivity extends BaseMusicSingleFragmentActivity {
 
         ImageButton button = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
         button.setVisibility(View.VISIBLE);
-        button.setImageResource(R.drawable.back);
+        button.setImageResource(R.drawable.more);
     }
 
     @Override
