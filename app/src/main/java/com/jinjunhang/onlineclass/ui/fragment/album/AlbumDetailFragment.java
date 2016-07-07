@@ -57,6 +57,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
 
         mAlbum = (Album) getActivity().getIntent().getSerializableExtra(EXTRA_ALBUM);
 
+
         ImageView imageView = (ImageView) v.findViewById(R.id.albumDtail_image);
         Glide.with(getActivity()).load(mAlbum.getImage()).into(imageView);
 
@@ -66,12 +67,19 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
         ((BaseMusicSingleFragmentActivity)getActivity()).setActivityTitle(mAlbum.getName());
 
         ListView listView = (ListView)v.findViewById(R.id.listView);
+        //去掉列表的分割线
+        listView.setDividerHeight(0);
+        listView.setDivider(null);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
-                MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
 
+
+                Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
+                MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
+                if (!musicPlayer.isPlay(song)) {
+                    MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
+                }
                 Intent i = new Intent(getActivity(), SongActivity.class)
                         .putExtra(BaseSongFragment.EXTRA_SONG, song);
                 startActivity(i);

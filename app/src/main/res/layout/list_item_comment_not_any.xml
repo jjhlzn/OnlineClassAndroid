@@ -16,7 +16,7 @@
             android:id="@+id/comment_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:height="60dp"
             android:textSize="15sp"
             android:gravity="center"
             android:text="目前没有任何点评"

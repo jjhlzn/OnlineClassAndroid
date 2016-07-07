@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
@@ -77,18 +78,18 @@ public class ExtendFunctionManager {
                 }
             }
         }));
-        functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", "http://www.baidu.com", mWebListener));
-        functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", "http://114.215.236.171:6012/Service/FastCard", mWebListener));
-        functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", "http://114.215.236.171:6012/Service/CardManage", mWebListener));
-        functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", "http://114.215.236.171:6012/Service/Ipcrs", mWebListener));
-        functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", "http://114.215.236.171:6012/Service/MccSearch", mWebListener));
-        functions.add(new ExtendFunction(R.drawable.shopcart, "商城", "", mNotSupportListener));
-        functions.add(new ExtendFunction(R.drawable.rmb, "缴费", "", mNotSupportListener));
-        functions.add(new ExtendFunction(R.drawable.dollar, "贷款", "", mNotSupportListener));
-        functions.add(new ExtendFunction(R.drawable.car, " 汽车分期", "", mNotSupportListener));
-        functions.add(new ExtendFunction(R.drawable.customerservice, "客服", "", mNotSupportListener));
+        functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", ServiceLinkManager.FunctionUpUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", ServiceLinkManager.FunctionFastCardUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", ServiceLinkManager.FunctionCardManagerUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", ServiceLinkManager.FunctionCreditSearchUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", ServiceLinkManager.FunctionMccSearchUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.shopcart, "商城", ServiceLinkManager.FunctionShopUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.rmb, "缴费", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.dollar, "贷款", ServiceLinkManager.FunctionLoanUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.car, " 汽车分期", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.customerservice, "客服", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener));
 
-        moreFunction =  new ExtendFunction(R.drawable.morefunction, "更多", "http://www.baidu.com", new ClickListener() {
+        moreFunction =  new ExtendFunction(R.drawable.morefunction, "更多", "", new ClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
                 Intent i = new Intent(context, ExtendFunctionActivity.class);

@@ -67,9 +67,28 @@ public class ServiceLinkManager {
 
 
     public static String FunctionMccSearchUrl() {
-
         return "http://"+host+":"+port+"/Service/MccSearch";
+    }
 
+    public static String FunctionJiaoFeiUrl() {
+        return "http://"+host+":"+port+"/Service/Fee";
+    }
+
+    public static String FunctionLoanUrl() {
+        return "http://"+host+":"+port+"/Service/Loan";
+    }
+
+    public static String FunctionCarLoanUrl() {
+        return "http://"+host+":"+port+"/Service/CarLoan";
+    }
+
+    public static String FunctionShopUrl() {
+        return "http://"+host+":"+port+"/shop/shopindex";
+    }
+
+
+    public static String ShareQrImageUrl() {
+        return "http://"+host+":"+port+"/Center/MyLink.aspx";
     }
 
 }

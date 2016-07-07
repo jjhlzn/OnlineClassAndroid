@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.data5tream.emojilib.EmojiParser;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
@@ -49,12 +50,10 @@ public class LiveSongFragment extends BaseSongFragment  {
 
     public final static int MAX_COMMENT_COUNT = 200;
 
-    private final static String TAG = LogHelper.makeLogTag(CommonSongFragment.class);
+    private final static String TAG = LogHelper.makeLogTag(LiveSongFragment.class);
     private LiveCommentHeaderCell mCommentHeaderCell;
     private String mLastCommentId = "-1";
     private int commentCount = 0;
-
-
 
     private boolean isUpdatingChat = false;
     private int mUpdateChatCount = 0;
@@ -71,7 +70,6 @@ public class LiveSongFragment extends BaseSongFragment  {
     };
     private static final long CHAT_UPDATE_INTERNAL = 5000;
     private static final long CHAT_UPDATE_INITIAL_INTERVAL = 2000;
-
 
     private void updateChat() {
         if (isUpdatingChat)
@@ -121,9 +119,7 @@ public class LiveSongFragment extends BaseSongFragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-
-
-
+        commentCount = 0;
         mCommentHeaderCell = new LiveCommentHeaderCell(getActivity());
         new GetLiveSongCommentsTask().execute();
         scheduleChatUpdate();
@@ -148,35 +144,38 @@ public class LiveSongFragment extends BaseSongFragment  {
         stopChatUpdate();
     }
 
-    private void reCreateListViewCells(List<Comment> comments, int totalCommentCount) {
-        List<ListViewCell> cells = new ArrayList<>();
-        cells.add(mPlayerCell);
-        cells.add(new WideSectionSeparatorCell(getActivity()));
-        cells.add(mCommentHeaderCell);
 
-        if (commentCount == 0) {
-            cells.add(new NoCommentCell(getActivity()));
-        } else {
-            for (Comment comment : comments) {
-                cells.add(new CommentCell(getActivity(), comment));
-            }
-        }
 
-        List<ListViewCell> oldComments = mAdapter.getCells();
-        LogHelper.d(TAG, "oldComment.count = " + oldComments.size());
 
-        if (oldComments.size() > 2) {
-            oldComments.remove(0);
-            oldComments.remove(0);
-            oldComments.remove(0);
+    private void addMoreComments(List<Comment> comments) {
+        List<ListViewCell> cells = mAdapter.getCells();
+        LogHelper.d(TAG, "cells.size = " + cells.size() + ", commentCount = " + commentCount);
+
+        if (cells.size() == 2) {
+            cells.add(mCommentHeaderCell);
+
             if (commentCount == 0) {
-                oldComments.remove(0);
+                cells.add(new  NoCommentCell(getActivity()));
             }
-            cells.addAll(oldComments);
         }
 
-        this.mAdapter.setCells(cells);
-        LogHelper.d(TAG, "reCreateListViewCells called");
+        if (comments.size() == 0) {
+            return;
+        }
+
+        if (cells.size() >= 4) {
+            ListViewCell thirdCell = mAdapter.getItem(3);
+            if (thirdCell instanceof NoCommentCell) {
+                cells.remove(3);
+            }
+        }
+
+        for (Comment comment : comments) {
+            CommentCell cell = new CommentCell(getActivity(), comment);
+            cells.add(3, cell);
+        }
+
+        mAdapter.notifyDataSetChanged();
     }
 
 
@@ -185,9 +184,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         super.reloadNewSong();
         mLastCommentId = "-1";
         new GetLiveSongCommentsTask().execute();
-
     }
-
 
     @Override
     protected View.OnClickListener createSendOnClickListener() {
@@ -203,6 +200,7 @@ public class LiveSongFragment extends BaseSongFragment  {
 
                 Song song = mMusicPlayer.getCurrentPlaySong();
                 SendLiveCommentRequest request = new SendLiveCommentRequest();
+                comment = EmojiParser.convertToCheatCode(comment);
                 request.setComment(comment);
                 request.setSong(song);
                 request.setLastId(mLastCommentId);
@@ -243,7 +241,7 @@ public class LiveSongFragment extends BaseSongFragment  {
             }
 
             List<Comment> comments = resp.getCommentList();
-            reCreateListViewCells(comments, comments.size());
+            addMoreComments(comments);
 
             isUpdatingChat = false;
         }
@@ -274,7 +272,7 @@ public class LiveSongFragment extends BaseSongFragment  {
             }
 
             List<Comment> newComments =  resp.getCommentList();
-            reCreateListViewCells(newComments, newComments.size());
+            addMoreComments(newComments);
 
             Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
             mCommentEditText.setText("");

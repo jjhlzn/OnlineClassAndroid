@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -33,6 +34,7 @@ import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.onlineclass.ui.lib.LinearLayoutThatDetectsSoftKeyboard;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
+import com.ppi.emoji.emojiParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +127,6 @@ public class CommonSongFragment extends BaseSongFragment {
         }
 
         this.mAdapter.setCells(cells);
-        LogHelper.d(TAG, "reCreateListViewCells called");
     }
 
 
@@ -149,7 +150,12 @@ public class CommonSongFragment extends BaseSongFragment {
 
                 Song song = mMusicPlayer.getCurrentPlaySong();
                 SendCommentRequest request = new SendCommentRequest();
+                LogHelper.d(TAG, "comment0 = [" + comment + "]");
+                comment = EmojiParser.convertToCheatCode(comment);
+
+                LogHelper.d(TAG, "comment1 = [" + comment + "]");
                 request.setComment(comment);
+
                 request.setSong(song);
                 closeCommentWindow();
                 new SendCommentTask().execute(request);
@@ -184,7 +190,14 @@ public class CommonSongFragment extends BaseSongFragment {
             comment.setUserId(loginUser.getUserName());
             comment.setNickName(loginUser.getNickName());
             CommentCell cell = new CommentCell(getActivity(), comment);
-            mAdapter.getCells().add(3, cell);
+
+            ListViewCell thirdCell = mAdapter.getItem(3);
+            if (thirdCell instanceof NoCommentCell) {
+                mAdapter.getCells().set(3, cell);
+            } else {
+                mAdapter.getCells().add(3, cell);
+            }
+
             mAdapter.notifyDataSetChanged();
         }
     }

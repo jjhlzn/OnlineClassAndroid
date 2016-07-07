@@ -37,10 +37,6 @@ public class Utils {
     public final static long UPDATE_TIME_DELTA = 1000 * 60 * 5;
 
     public static void showMessage(Context context, String message) {
-        /*
-        new SweetAlertDialog(context)
-                .setTitleText(message)
-                .show();*/
         new MaterialDialog.Builder(context)
                 .content(message)
                 .positiveText("好的")
@@ -49,11 +45,6 @@ public class Utils {
 
     public static void showErrorMessage(Context context, String message) {
 
-        /*
-        new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
-                .setTitleText("")
-                .setContentText(message)
-                .show();*/
         showMessage(context, message);
     }
 

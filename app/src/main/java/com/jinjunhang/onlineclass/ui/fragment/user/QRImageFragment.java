@@ -21,7 +21,10 @@ import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.db.QrImageDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.utils.LogHelper;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXImageObject;
@@ -147,9 +150,9 @@ public class QRImageFragment extends BaseFragment {
 
     private void shareUrl(boolean isPengyouquan) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://www.baidu.com";
+        webpage.webpageUrl = ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "二维码";
+        msg.title = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
         msg.description = "description";
         Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.me_qrcode);
         msg.thumbData =Util.bmpToByteArray(thumb, true);
