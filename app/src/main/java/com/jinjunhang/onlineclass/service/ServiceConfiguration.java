@@ -10,8 +10,8 @@ public class ServiceConfiguration {
     //public final static String serverName = "192.168.1.50";
 
     public static final String DEFAULT_HTTP = "http";
-    public static final String DEFAULT_HOST = "jjhaudio.hengdianworld.com";
-    public static final String DEFAULT_PORT = "80";
+    public static final String DEFAULT_HOST = "114.215.236.171";
+    public static final String DEFAULT_PORT = "6012";
 
     private final static boolean isUseConfig = true;
     public static String LOCATOR_HTTP = "";
@@ -20,8 +20,8 @@ public class ServiceConfiguration {
     private final static String serverName1 = "jjhaudio.hengdianworld.com";
     private final static int port1 = 80;
 
-    private final static String serverName2 = "192.168.1.57";
-    private final static int port2 = 3000;
+    private final static String serverName2 = "114.215.236.171";
+    private final static int port2 = 6012;
 
     static {
         KeyValueDao keyValueDao = KeyValueDao.getInstance(CustomApplication.get());
