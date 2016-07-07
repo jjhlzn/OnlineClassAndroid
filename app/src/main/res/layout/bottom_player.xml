@@ -30,7 +30,7 @@
             android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/avril"/>
+            android:src="@drawable/smallusericon"/>
 
         <ImageView
             android:id="@+id/bottomPlayer_playImage"
