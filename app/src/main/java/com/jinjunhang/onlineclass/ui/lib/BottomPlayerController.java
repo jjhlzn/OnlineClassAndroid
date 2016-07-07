@@ -84,17 +84,17 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
     }
 
     private void updateAlbumImage() {
-        LogHelper.d(TAG, "updateAlbumImage called");
+        //LogHelper.d(TAG, "updateAlbumImage called");
 
         if (mMusicPlayer.getCurrentPlaySong() != null && mSongImage != null) {
-            LogHelper.d(TAG, "image =  " + mMusicPlayer.getCurrentPlaySong().getAlbum().getImage());
-            LogHelper.d(TAG , "mSongImage = " + mSongImage);
+            //LogHelper.d(TAG, "image =  " + mMusicPlayer.getCurrentPlaySong().getAlbum().getImage());
+            //LogHelper.d(TAG , "mSongImage = " + mSongImage);
             Glide.with(mActivity).load(mMusicPlayer.getCurrentPlaySong().getAlbum().getImage()).asBitmap().into(mSongImage);
         }
     }
 
     public void attachToView(ViewGroup parent) {
-        LogHelper.d(TAG, "attachToView called");
+        //LogHelper.d(TAG, "attachToView called");
         if (getView().getParent() == parent) {
             return;
         }

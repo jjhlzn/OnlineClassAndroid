@@ -154,7 +154,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         cells.add(new WideSectionSeparatorCell(getActivity()));
         cells.add(mCommentHeaderCell);
 
-        if (totalCommentCount == 0) {
+        if (commentCount == 0) {
             cells.add(new NoCommentCell(getActivity()));
         } else {
             for (Comment comment : comments) {
@@ -238,12 +238,13 @@ public class LiveSongFragment extends BaseSongFragment  {
                 return;
             }
             commentCount += resp.getCommentList().size();
-            List<Comment> comments = resp.getCommentList();
-            reCreateListViewCells(comments, comments.size());
-
             if (resp.getCommentList().size() > 0) {
                 mLastCommentId = resp.getCommentList().get(0).getId() + "";
             }
+
+            List<Comment> comments = resp.getCommentList();
+            reCreateListViewCells(comments, comments.size());
+
             isUpdatingChat = false;
         }
     }

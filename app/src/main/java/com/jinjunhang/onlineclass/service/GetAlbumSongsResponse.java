@@ -13,7 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by lzn on 16/6/12.
@@ -41,8 +43,20 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             //LogHelper.d(TAG, "AlbumType.LiveAlbumType.getName() = " + AlbumType.LiveAlbumType.getName());
             if (req.getAlbum().getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName())) {
                 LiveSong liveSong = new LiveSong();
-                liveSong.setStartDateTime(json.getString("startTime"));
-                liveSong.setEndDateTime(json.getString("endTime"));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                if (json.has("startTime")) {
+                    liveSong.setStartDateTime(json.getString("startTime"));
+                } else {
+                    liveSong.setStartDateTime(sdf.format(new Date()));
+                }
+                if (json.has("endTime")) {
+                    liveSong.setEndDateTime(json.getString("endTime"));
+                } else {
+                    Date now = new Date();
+                    now.setTime( now.getTime() + 4 * 60 * 60 * 1000 );
+                    liveSong.setEndDateTime(sdf.format(now));
+                }
+
                 liveSong.setImageUrl(json.getString("image"));
                 liveSong.setListenPeople(json.getString("listenPeople"));
                 song = liveSong;

@@ -70,7 +70,10 @@ public class LiveSong extends Song {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             Date endTime = sdf.parse(mEndDateTime);
-            return (endTime.getTime() - new Date().getTime()) / 1000;
+            Date nowTime = sdf.parse(sdf.format(new Date()));
+            //LogHelper.d(TAG, "endDateTime = " + mEndDateTime + ", endTime = " + sdf.format(endTime) + ", nowTime = " + sdf.format(nowTime));
+           //LogHelper.d(TAG, "endTime.getTime() = " + endTime.getTime() + ", nowTime.getTime() = " + nowTime.getTime());
+            return (endTime.getTime() - nowTime.getTime()) / 1000;
         }
         catch (Exception ex) {
             LogHelper.e(TAG, ex);
