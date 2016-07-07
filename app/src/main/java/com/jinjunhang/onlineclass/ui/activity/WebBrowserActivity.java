@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -51,6 +52,7 @@ public class WebBrowserActivity extends AppCompatActivity {
     private String mUrl;
     private String mTitle;
     private WebView mWebView;
+    private TextView mCloseButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,15 +65,28 @@ public class WebBrowserActivity extends AppCompatActivity {
         mTitle = getIntent().getStringExtra(EXTRA_TITLE);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        View customView = getLayoutInflater().inflate(R.layout.actionbar_browser, null);
         ((TextView)customView.findViewById(R.id.actionbar_text)).setText(mTitle);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
         //设置返回按键
         ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
+        mCloseButton = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_close_button);
         backButton.setVisibility(View.VISIBLE);
         backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
+
+
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
@@ -85,6 +100,8 @@ public class WebBrowserActivity extends AppCompatActivity {
         openURL();
     }
 
+
+
     /** Opens the URL in a browser */
     private void openURL() {
         mWebView.loadUrl(mUrl);
@@ -96,6 +113,22 @@ public class WebBrowserActivity extends AppCompatActivity {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (mWebView.canGoBack()) {
+                mCloseButton.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            if (mWebView.canGoBack()) {
+                mCloseButton.setVisibility(View.VISIBLE);
+            }
         }
     }
 

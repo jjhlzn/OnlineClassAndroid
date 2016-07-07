@@ -77,7 +77,7 @@ public class ExtendFunctionManager {
                 }
             }
         }));
-        functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", "http://114.215.236.171:6012/Service/CreditLines", mWebListener));
+        functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", "http://www.baidu.com", mWebListener));
         functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", "http://114.215.236.171:6012/Service/FastCard", mWebListener));
         functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", "http://114.215.236.171:6012/Service/CardManage", mWebListener));
         functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", "http://114.215.236.171:6012/Service/Ipcrs", mWebListener));
