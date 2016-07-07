@@ -55,6 +55,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
     protected View mCommentWindow;
     protected EditText mCommentEditText;
     private ViewGroup mEmojiKeyBoardView;
+    private ImageButton keyboardSwitchButton;
 
     abstract protected PlayerCell createPlayerCell();
     abstract protected  View.OnClickListener createSendOnClickListener();
@@ -98,9 +99,8 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
 
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
 
-
         //设置emoji切换按钮
-        final ImageButton keyboardSwitchButton = (ImageButton) v.findViewById(R.id.emojikeyboard_switch_button);
+        keyboardSwitchButton = (ImageButton) v.findViewById(R.id.emojikeyboard_switch_button);
 
         //control comment editor
         mCommentTip = v.findViewById(R.id.bottom_comment_tip);
@@ -110,10 +110,9 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         mCommentTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 mCommentWindow.setVisibility(View.VISIBLE);
                 mCommentEditText.requestFocus();
+                keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
             }
@@ -176,25 +175,20 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         createAdapter(v);
         mListView.setAdapter(mAdapter);
 
-
         setupUI4HideKeybaord(v, getActivity());
         return v;
     }
 
 
     public void setupUI4HideKeybaord(View view, final Activity activity) {
-        //Set up touch listener for non-text box views to hide keyboard.
-        //LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
         if (view.getId() == R.id.bottom_comment) {
             return;
         }
 
         if(view instanceof ListView) {
-            //LogHelper.d(TAG, "register onTouchListener for id = " + view.getId());
             view.setOnTouchListener(new View.OnTouchListener() {
 
                 public boolean onTouch(View v, MotionEvent event) {
-                   // LogHelper.d(TAG, "onTouch called");
                     closeCommentWindow();
                     return false;
                 }
@@ -202,8 +196,6 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
             });
         }
 
-
-        //If a layout container, iterate over children and seed recursion.
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 View innerView = ((ViewGroup) view).getChildAt(i);
