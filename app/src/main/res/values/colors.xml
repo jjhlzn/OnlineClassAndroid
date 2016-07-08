@@ -25,6 +25,7 @@
 
     <color name="statusbar_background">#ff7b00</color>
     <color name="fragment_background">#EEECE9</color>
+    <color name="login_buton_background">#f0861b</color>
 
     <color name="hint_color">#ccc</color>
     <color name="black">#000</color>

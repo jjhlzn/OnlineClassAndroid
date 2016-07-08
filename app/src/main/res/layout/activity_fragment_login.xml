@@ -12,22 +12,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="133dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="135dp"
+        android:layout_marginTop="25dp"
         android:orientation="vertical"
-        android:gravity="center|center_vertical"
-        >
+        android:gravity="center|center_vertical">
 
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:layout_margin="0dp"
             android:layout_gravity="center"
             android:src="@drawable/log"/>
 
         <TextView
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -105,7 +104,8 @@
             android:layout_marginRight="20dp"
             android:id="@+id/login_button"
             android:text="登     录"
-            style="@style/button"/>
+            style="@style/button"
+            android:background="@color/login_buton_background"/>
     </LinearLayout>
 
     <RelativeLayout
