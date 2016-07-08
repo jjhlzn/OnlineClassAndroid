@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.github.data5tream.emojilib.EmojiParser;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -200,7 +201,14 @@ public class LiveSongFragment extends BaseSongFragment  {
 
                 Song song = mMusicPlayer.getCurrentPlaySong();
                 SendLiveCommentRequest request = new SendLiveCommentRequest();
-                comment = EmojiParser.convertToCheatCode(comment);
+
+                LogHelper.d(TAG, "comment0 = [" + comment + "], length = " + comment.length());
+                String newComment = "";
+                for(String each : mCommentChars) {
+                    newComment += MyEmojiParse.convertToCheatCode(each);
+                }
+                comment = newComment;
+
                 request.setComment(comment);
                 request.setSong(song);
                 request.setLastId(mLastCommentId);

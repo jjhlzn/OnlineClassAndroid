@@ -53,15 +53,26 @@ public class EmojiKeyboard {
             for(int j = 0; j < 7; j++) {
                 TextView textView = (TextView) rowView.findViewById(getEmojiTextViewId(rowView, j));
                 textView.setText(EmojiParser.parseEmojis(emojiKeys[index]));
+                final String key = emojiKeys[index];
                 index++;
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         TextView my = (TextView)v;
                         LogHelper.d(TAG, "char = " + my.getText()+ ", length = " + my.getText().length());
+
+                        /*
+                        if (key.equals(":arrow_left:")) {
+                            if ( mEditText.getText().length() == 0) {
+                                return;
+                            }
+
+                            mEditText.setText(mEditText.getText().subSequence(0, mEditText.getText().length() - 1));
+                        } else {
+
+                        }*/
                         mEditText.setText(mEditText.getText().toString() + my.getText());
                         mEditText.setSelection(mEditText.getText().length());
-
                     }
                 });
             }
