@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.player.utils.LogHelper;
 import com.ppi.emoji.EmojiTextView;
 import com.ppi.emoji.emojiParser;
 
@@ -17,6 +18,8 @@ import com.ppi.emoji.emojiParser;
  * Created by jjh on 2016-7-3.
  */
 public class EmojiKeyboard {
+    private static final String TAG = LogHelper.makeLogTag(EmojiKeyboard.class);
+
     private Activity mContext;
     private EditText mEditText;
 
@@ -46,6 +49,7 @@ public class EmojiKeyboard {
         int index = 0;
         for (int i = 0; i < rows; i++) {
             LinearLayout rowView = createRow();
+
             for(int j = 0; j < 7; j++) {
                 TextView textView = (TextView) rowView.findViewById(getEmojiTextViewId(rowView, j));
                 textView.setText(EmojiParser.parseEmojis(emojiKeys[index]));
@@ -54,8 +58,10 @@ public class EmojiKeyboard {
                     @Override
                     public void onClick(View v) {
                         TextView my = (TextView)v;
+                        LogHelper.d(TAG, "char = " + my.getText()+ ", length = " + my.getText().length());
                         mEditText.setText(mEditText.getText().toString() + my.getText());
                         mEditText.setSelection(mEditText.getText().length());
+
                     }
                 });
             }

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -57,6 +60,9 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
     private ViewGroup mEmojiKeyBoardView;
     private ImageButton keyboardSwitchButton;
 
+    protected List<String> mCommentChars;
+    private String oldCommentString;
+
     abstract protected PlayerCell createPlayerCell();
     abstract protected  View.OnClickListener createSendOnClickListener();
 
@@ -67,6 +73,12 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         mEmojiKeyBoardView.setVisibility(View.GONE);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    }
+
+    protected void resetComment() {
+        mCommentEditText.setText("");
+        mCommentChars = new ArrayList<>();
+        oldCommentString = "";
     }
 
     @Override
@@ -90,6 +102,8 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mCommentChars = new ArrayList<>();
+        oldCommentString = "";
 
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
         mSong = mMusicPlayer.getCurrentPlaySong();
@@ -125,6 +139,39 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
                 keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
                 params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            }
+        });
+
+        mCommentEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                LogHelper.d(TAG, "s = " + s + ", s.length = "+s.length()+", start = " + start + ", before = " + before + ", count = " + count);
+
+                try {
+                    if (s.length() > oldCommentString.length()) {
+                        mCommentChars.add(s.subSequence(start + before, s.length()).toString());
+                        LogHelper.d(TAG, "add char = " + s.subSequence(start + before, s.length()).toString());
+                    } else {
+                        if (mCommentChars.size() > 0) {
+                            mCommentChars.remove(mCommentChars.size() - 1);
+                            LogHelper.d(TAG, "remove char");
+                        }
+                    }
+                    oldCommentString = s.toString();
+                }catch (Exception ex){
+                    LogHelper.e(TAG, ex);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -150,14 +151,21 @@ public class CommonSongFragment extends BaseSongFragment {
 
                 Song song = mMusicPlayer.getCurrentPlaySong();
                 SendCommentRequest request = new SendCommentRequest();
-                LogHelper.d(TAG, "comment0 = [" + comment + "]");
-                comment = EmojiParser.convertToCheatCode(comment);
+
+                LogHelper.d(TAG, "comment0 = [" + comment + "], length = " + comment.length());
+                String newComment = "";
+                for(String each : mCommentChars) {
+                    newComment += MyEmojiParse.convertToCheatCode(each);
+                }
+                comment = newComment;
+
 
                 LogHelper.d(TAG, "comment1 = [" + comment + "]");
                 request.setComment(comment);
 
                 request.setSong(song);
                 closeCommentWindow();
+                resetComment();
                 new SendCommentTask().execute(request);
             }
         };
