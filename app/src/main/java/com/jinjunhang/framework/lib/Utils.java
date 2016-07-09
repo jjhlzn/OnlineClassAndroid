@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
+import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -23,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by lzn on 16/4/3.
@@ -48,20 +48,27 @@ public class Utils {
         showMessage(context, message);
     }
 
-    public static void showMessage(Context context, String message, DialogInterface.OnDismissListener listener) {
+    public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
+        /*
         SweetAlertDialog dialog = new SweetAlertDialog(context)
                 .setTitleText(message);
         dialog.setOnDismissListener(listener);
         dialog.show();
+        */
+        new AlertDialogWrapper.Builder(context)
+                .setMessage(message)
+                .setNegativeButton("好的", listener)
+                .show();
     }
 
 
+    /*
     public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
         dlgAlert.setMessage(message);
         dlgAlert.setPositiveButton("确定", listener);
         dlgAlert.create().show();
-    }
+    }*/
 
 
     public static void showConfirmMessage(Context context, String message, DialogInterface.OnClickListener listener) {
