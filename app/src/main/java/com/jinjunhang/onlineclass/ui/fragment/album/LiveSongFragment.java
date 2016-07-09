@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.github.data5tream.emojilib.EmojiParser;
 import com.google.android.exoplayer.ExoPlayer;
+import com.google.common.collect.Lists;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
@@ -171,6 +172,7 @@ public class LiveSongFragment extends BaseSongFragment  {
             }
         }
 
+        comments = Lists.reverse(comments);
         for (Comment comment : comments) {
             CommentCell cell = new CommentCell(getActivity(), comment);
             cells.add(3, cell);
@@ -212,6 +214,7 @@ public class LiveSongFragment extends BaseSongFragment  {
                 request.setComment(comment);
                 request.setSong(song);
                 request.setLastId(mLastCommentId);
+                resetComment();
                 closeCommentWindow();
                 new SendLiveCommentTask().execute(request);
             }
