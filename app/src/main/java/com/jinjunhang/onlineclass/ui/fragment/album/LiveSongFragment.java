@@ -266,6 +266,14 @@ public class LiveSongFragment extends BaseSongFragment  {
 
         @Override
         protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
+            while(isUpdatingChat) {
+                try {
+                    Thread.sleep(1000);
+                }catch(Exception ex){
+                    LogHelper.e(TAG, ex);
+                }
+            }
+            isUpdatingChat = true;
             mRequest = params[0];
             return new BasicService().sendRequest(mRequest);
         }
@@ -274,6 +282,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         protected void onPostExecute(SendLiveCommentResponse resp) {
             super.onPostExecute(resp);
             if (!resp.isSuccess()) {
+                isUpdatingChat = false;
                 Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
                 return;
             }
@@ -289,6 +298,7 @@ public class LiveSongFragment extends BaseSongFragment  {
             mCommentEditText.setText("");
 
             mAdapter.notifyDataSetChanged();
+            isUpdatingChat = false;
         }
     }
 

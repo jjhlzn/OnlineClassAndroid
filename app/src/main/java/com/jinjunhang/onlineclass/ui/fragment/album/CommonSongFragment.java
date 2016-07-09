@@ -159,7 +159,6 @@ public class CommonSongFragment extends BaseSongFragment {
                 }
                 comment = newComment;
 
-
                 LogHelper.d(TAG, "comment1 = [" + comment + "]");
                 request.setComment(comment);
 
