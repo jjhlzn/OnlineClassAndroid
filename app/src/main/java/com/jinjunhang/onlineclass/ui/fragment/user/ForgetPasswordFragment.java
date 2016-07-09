@@ -187,9 +187,9 @@ public class ForgetPasswordFragment extends BaseFragment {
                 return;
             }
 
-            Utils.showMessage(getActivity(), "重设成功", new DialogInterface.OnDismissListener() {
+            Utils.showMessage(getActivity(), "重设成功", new DialogInterface.OnClickListener() {
                 @Override
-                public void onDismiss(DialogInterface dialog) {
+                public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     getActivity().startActivity(i);
                 }

@@ -101,9 +101,9 @@ public class SetPasswordFragment extends BaseFragment {
             LoginUser user = LoginUserDao.getInstance(getActivity()).get();
             user.setPassword(mRequest.getmNewPassword());
             LoginUserDao.getInstance(getActivity()).save(user);
-            Utils.showMessage(getActivity(), "更新成功", new DialogInterface.OnDismissListener() {
+            Utils.showMessage(getActivity(), "更新成功", new DialogInterface.OnClickListener() {
                 @Override
-                public void onDismiss(DialogInterface dialog) {
+                public void onClick(DialogInterface dialog, int which) {
                     getActivity().finish();
                 }
             });
