@@ -57,6 +57,11 @@ public class CommentListFragment extends BaseFragment implements AbsListView.OnS
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
+
+        //去掉列表的分割线
+        mListView.setDividerHeight(0);
+        mListView.setDivider(null);
+
         mListView.setOnItemClickListener(new BaseListViewOnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
