@@ -9,18 +9,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.player.utils.LogHelper;
-import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.sdk.modelmsg.WXTextObject;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
@@ -48,9 +45,25 @@ public class LaunchActivity extends Activity {
 
         mLoginUserDao = LoginUserDao.getInstance(this);
 
-
        new CheckUpgradeTask().execute();
 
+    }
+
+    //注册信鸽，并进去下个页面
+    private void registerXinGeAndGoToNextActivity() {
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object o, int i) {
+                Log.d(TAG, "register device succes, devicetoken = " + o.toString());
+                checkLogin();
+            }
+
+            @Override
+            public void onFail(Object o, int i, String s) {
+                Log.d(TAG, "register device fail");
+                checkLogin();
+            }
+        });
     }
 
     private void checkLogin() {
@@ -60,7 +73,6 @@ public class LaunchActivity extends Activity {
         } else {
             i = new Intent(this, MainActivity.class);
         }
-
         startActivity(i);
     }
 
@@ -76,7 +88,7 @@ public class LaunchActivity extends Activity {
         protected void onPostExecute(final CheckUpgradeResponse resp) {
             super.onPostExecute(resp);
             if (!resp.isSuccess()) {
-                checkLogin();
+                registerXinGeAndGoToNextActivity();
                 return;
             }
 
@@ -97,7 +109,7 @@ public class LaunchActivity extends Activity {
                         LogHelper.d(TAG, "click which = " + which);
                         if (which == 0) {
                             LogHelper.d(TAG, "cancel clicked");
-                            checkLogin();
+                            registerXinGeAndGoToNextActivity();
                         } else {
                             chooseUpgrade = true;
                             LogHelper.d(TAG, "upgrade clicked");
@@ -115,7 +127,7 @@ public class LaunchActivity extends Activity {
                     }
                 });
             } else {
-                checkLogin();
+                registerXinGeAndGoToNextActivity();
             }
         }
     }
@@ -132,7 +144,7 @@ public class LaunchActivity extends Activity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 if (!chooseUpgrade) {
-                    checkLogin();
+                    registerXinGeAndGoToNextActivity();
                 }
             }
         });

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ import com.jinjunhang.onlineclass.service.LoginResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ConfigurationActivity;
 import com.jinjunhang.player.utils.LogHelper;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 
 /**
  * Created by lzn on 16/6/27.
@@ -33,11 +36,25 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
     private LoadingAnimation mLoading;
 
     private LoginUserDao mLoginUserDao;
+    private String mDeviceToken = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_login);
+
+        XGPushManager.registerPush(LoginActivity.this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object o, int i) {
+                Log.d(TAG, "register device succes, devicetoken = " + o.toString());
+                mDeviceToken = o.toString();
+            }
+
+            @Override
+            public void onFail(Object o, int i, String s) {
+                Log.d(TAG, "register device fail");
+            }
+        });
 
         mLoading = new LoadingAnimation(this);
         mLoginUserDao = LoginUserDao.getInstance(this);
@@ -63,12 +80,33 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                     return;
                 }
 
-                LoginRequest req = new LoginRequest();
+                final LoginRequest req = new LoginRequest();
                 req.setUserName(userName);
                 req.setPassword(password);
                 //TODO: mock device token
-                req.setDeviceToken("");
-                new LoginTask().execute(req);
+                mLoading.show("");
+                if (!"".equals(mDeviceToken)) {
+                    req.setDeviceToken(mDeviceToken);
+                    new LoginTask().execute(req);
+                } else {
+                    XGPushManager.registerPush(LoginActivity.this, new XGIOperateCallback() {
+                        @Override
+                        public void onSuccess(Object o, int i) {
+                            Log.d(TAG, "register device succes, devicetoken = " + o.toString());
+                            mDeviceToken = o.toString();
+                            req.setDeviceToken(o.toString());
+                            new LoginTask().execute(req);
+                        }
+
+                        @Override
+                        public void onFail(Object o, int i, String s) {
+                            Log.d(TAG, "register device fail");
+                            mLoading.hide();
+                            Utils.showMessage(LoginActivity.this, "服务器出错，请重试!");
+                        }
+                    });
+                }
+
             }
         });
 
@@ -113,7 +151,7 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mLoading.show("");
+
         }
 
         @Override
