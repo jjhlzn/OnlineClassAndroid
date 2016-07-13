@@ -28,6 +28,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
+import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -46,7 +47,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
 
     private PagableController mPagableController;
     private Album mAlbum;
-
+    private ExoPlayerNotificationManager mNotificationManager;
 
 
     @Nullable
@@ -54,6 +55,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_albumdetail, container, false);
 
+        mNotificationManager = new ExoPlayerNotificationManager(getActivity());
 
         mAlbum = (Album) getActivity().getIntent().getSerializableExtra(EXTRA_ALBUM);
 
@@ -79,6 +81,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
                 MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
                 if (!musicPlayer.isPlay(song)) {
                     MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
+                    mNotificationManager.display();
                 }
                 Intent i = new Intent(getActivity(), SongActivity.class)
                         .putExtra(BaseSongFragment.EXTRA_SONG, song);

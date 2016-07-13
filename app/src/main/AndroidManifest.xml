@@ -194,6 +194,11 @@
              MediaBrowser (for browsing) and MediaController (for play session control) -->
         <!-- Service that keeps track of reconnecting to Cast when wifi is enabled. -->
 
+        <receiver android:name="com.jinjunhang.onlineclass.ui.lib.AudioPlayerBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="com.example.app.ACTION_PLAY" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
