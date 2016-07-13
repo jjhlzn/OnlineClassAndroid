@@ -55,7 +55,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_albumdetail, container, false);
 
-        mNotificationManager = new ExoPlayerNotificationManager(getActivity());
+        mNotificationManager =  ExoPlayerNotificationManager.getInstance(getActivity());
 
         mAlbum = (Album) getActivity().getIntent().getSerializableExtra(EXTRA_ALBUM);
 

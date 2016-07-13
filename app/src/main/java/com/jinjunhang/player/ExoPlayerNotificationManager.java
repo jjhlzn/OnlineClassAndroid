@@ -8,11 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.NotificationCompat;
 
+import com.google.android.exoplayer.ExoPlaybackException;
+import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
@@ -21,13 +24,21 @@ import com.jinjunhang.player.utils.LogHelper;
 /**
  * Created by jjh on 2016-7-13.
  */
-public class ExoPlayerNotificationManager {
-    private Activity mActivity;
+public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
+    private Context mActivity;
     private NotificationManager mNotificationManager;
 
     private static final String TAG = LogHelper.makeLogTag(ExoPlayerNotificationManager.class);
 
-    public ExoPlayerNotificationManager(Activity activity) {
+    private static ExoPlayerNotificationManager instance;
+    public  static ExoPlayerNotificationManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new ExoPlayerNotificationManager(context);
+        }
+        return instance;
+    }
+
+    private ExoPlayerNotificationManager(Context activity) {
         this.mActivity = activity;
     }
 
@@ -35,30 +46,53 @@ public class ExoPlayerNotificationManager {
         LogHelper.d(TAG, "updatePlayPauseAction");
         String label;
         int icon;
-        String pkg = mActivity.getPackageName();
-        //PendingIntent intent =  PendingIntent.getBroadcast(mActivity, 1, new Intent("com.example.app.ACTION_PLAY").setPackage(pkg), PendingIntent.FLAG_CANCEL_CURRENT);
-
         Intent switchIntent = new Intent("com.example.app.ACTION_PLAY");
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mActivity, 100, switchIntent, 0);
-        /*
-        if (mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING) {
-            label = mService.getString(R.string.label_pause);
-            icon = R.drawable.uamp_ic_pause_white_24dp;
-            intent = mPauseIntent;
-        } else { */
-            label ="test";
-            icon = R.drawable.uamp_ic_play_arrow_white_48dp;
-            //intent = mPlayIntent;
-       // }
+        MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity);
+
+        if (musicPlayer.isPlaying()) {
+            label ="暂停";
+            icon = R.drawable.icon_ios_music_pause;
+        } else {
+            label ="播放";
+            icon = R.drawable.icon_ios_music_play;
+        }
+
+        builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
+    }
+
+    private void addPrevButton(NotificationCompat.Builder builder) {
+        String label;
+        int icon;
+        Intent switchIntent = new Intent("com.example.app.ACTION_PREV");
+        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mActivity, 100, switchIntent, 0);
+
+        label ="暂停";
+        icon = R.drawable.icon_ios_music_backward;
+
+        builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
+    }
+
+    private void addNextButton(NotificationCompat.Builder builder) {
+        String label;
+        int icon;
+        Intent switchIntent = new Intent("com.example.app.ACTION_NEXT");
+        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mActivity, 100, switchIntent, 0);
+        MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity);
+
+        label ="暂停";
+        icon = R.drawable.icon_ios_music_forward;
+
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
     }
 
     public void display() {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mActivity);
-        int playPauseButtonPosition = 0;
+        int playPauseButtonPosition = 1;
 
-
+        addPrevButton(notificationBuilder);
         addPlayPauseAction(notificationBuilder);
+        addNextButton(notificationBuilder);
 
         // If skip to next action is enabled
         /*
@@ -96,18 +130,13 @@ public class ExoPlayerNotificationManager {
         }
 
         notificationBuilder
-                .setStyle(new NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(
-                                new int[]{playPauseButtonPosition})  // show only play/pause in compact view
-                       // .setMediaSession(mSessionToken)
-                        )
-                //.setColor(mNotificationColor)
+                .setStyle(new NotificationCompat.MediaStyle())
                 .setSmallIcon(R.drawable.ic_notification)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setUsesChronometer(true)
-                //.setContentIntent(createContentIntent(description))
                 .setContentTitle(songName)
                 .setContentText(author)
+                .setShowWhen(false)
                 .setLargeIcon(art);
 
         /*
@@ -129,9 +158,15 @@ public class ExoPlayerNotificationManager {
 
         mNotificationManager = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
 
+
    /* notificationID allows you to update the notification later on. */
         int notificationID = 100;
-        mNotificationManager.notify(notificationID, notificationBuilder.build());
+
+        Notification notification = notificationBuilder.build();
+        notification.flags |= Notification.FLAG_NO_CLEAR;
+
+        mNotificationManager.notify(notificationID, notification);
+       // mActivity.startForeground()
 
     }
 
@@ -189,4 +224,18 @@ public class ExoPlayerNotificationManager {
         mNotificationManager.notify(notificationID, mBuilder.build());
     }
 
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        display();
+    }
+
+    @Override
+    public void onPlayWhenReadyCommitted() {
+
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
 }

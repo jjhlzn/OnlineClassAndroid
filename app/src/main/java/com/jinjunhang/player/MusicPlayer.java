@@ -38,6 +38,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
             instance.context = context;
             instance.player = new DemoPlayer();
             instance.player.addListener(instance);
+            instance.player.addListener(ExoPlayerNotificationManager.getInstance(context));
         }
         return instance;
     }
@@ -199,6 +200,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
         if (player == null) {
             player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
             player.addListener(this);
+            player.addListener(ExoPlayerNotificationManager.getInstance(context));
         } else {
             player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type            ));
         }
