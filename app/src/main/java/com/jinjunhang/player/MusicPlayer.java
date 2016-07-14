@@ -156,7 +156,6 @@ public class MusicPlayer implements ExoPlayer.Listener {
     public void prev() {
 
         if (hasPrev()) {
-            currentIndex--;
             Song song = mSongs[currentIndex--];
             play(song);
             if (mControlListener != null){
