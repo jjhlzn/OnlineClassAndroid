@@ -196,9 +196,9 @@
 
         <receiver android:name="com.jinjunhang.onlineclass.ui.lib.AudioPlayerBroadcastReceiver" >
             <intent-filter>
-                <action android:name="com.example.app.ACTION_PLAY" />
-                <action android:name="com.example.app.ACTION_PREV" />
-                <action android:name="com.example.app.ACTION_NEXT" />
+                <action android:name="com.jinjunhang.onlineclass.ACTION_PLAY" />
+                <action android:name="com.jinjunhang.onlineclass.ACTION_PREV" />
+                <action android:name="com.jinjunhang.onlineclass.ACTION_NEXT" />
             </intent-filter>
         </receiver>
     </application>

@@ -21,7 +21,7 @@ public class AudioPlayerBroadcastReceiver extends BroadcastReceiver {
         ExoPlayerNotificationManager notificationManager =  ExoPlayerNotificationManager.getInstance(context);
         String action = intent.getAction();
         LogHelper.d(TAG, "action = " + action );
-        if(action.equalsIgnoreCase("com.example.app.ACTION_PLAY")){
+        if(action.equalsIgnoreCase(ExoPlayerNotificationManager.ACTION_PLAY)){
             // do your stuff to play action;
             LogHelper.d(TAG, "AudioPlayerBroadcastReceiver#onReceive");
             if (musicPlayer.isPlaying()) {
@@ -30,10 +30,10 @@ public class AudioPlayerBroadcastReceiver extends BroadcastReceiver {
                 musicPlayer.resume();
             }
             notificationManager.display();
-        } else if (action.equalsIgnoreCase("com.example.app.ACTION_PREV")){
+        } else if (action.equalsIgnoreCase(ExoPlayerNotificationManager.ACTION_PREV)){
             musicPlayer.prev();
 
-        } else if (action.equalsIgnoreCase("com.example.app.ACTION_NEXT")){
+        } else if (action.equalsIgnoreCase(ExoPlayerNotificationManager.ACTION_NEXT)){
             musicPlayer.next();
         }
     }
