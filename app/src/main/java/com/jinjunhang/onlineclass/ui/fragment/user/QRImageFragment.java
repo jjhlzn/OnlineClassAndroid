@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.ui.fragment.user;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+import com.jinjunhang.player.utils.BitmapHelper;
 import com.jinjunhang.player.utils.LogHelper;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXImageObject;
@@ -35,7 +37,9 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 
 /**
  * Created by jjh on 2016-7-1.
@@ -94,8 +98,35 @@ public class QRImageFragment extends BaseFragment {
             }
         });
 
-        final  ImageView qrImage = (ImageView) v.findViewById(R.id.qr_image);
+        final ImageView qrImage = (ImageView) v.findViewById(R.id.qr_image);
+        if (qrImageDao.get() != null) {
+            qrImage.setImageBitmap(qrImageDao.get());
+        }
 
+        final String qrImageUrl = LoginUserDao.getInstance(getActivity()).get().getCodeImageUrl();
+
+
+        (new AsyncTask<Void, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                try {
+                    Bitmap bitmap =  BitmapHelper.fetchAndRescaleBitmap(qrImageUrl+"?"+ new Date().getTime(), 300, 300);
+                    return  bitmap;
+                } catch (IOException ex) {
+                    LogHelper.e(TAG, ex);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                qrImageDao.saveOrUpdate(bitmap);
+                qrImage.setImageBitmap(bitmap);
+            }
+        }).execute();
+
+
+        /*
         Glide.with(getActivity()).load(LoginUserDao.getInstance(getActivity()).get().getCodeImageUrl()).asBitmap().into(new BitmapImageViewTarget(qrImage) {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> animation) {
@@ -108,7 +139,7 @@ public class QRImageFragment extends BaseFragment {
             @Override
             protected void setResource(Bitmap resource) {
             }
-        });
+        }); */
 
         return v;
     }

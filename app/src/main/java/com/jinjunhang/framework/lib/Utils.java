@@ -31,11 +31,6 @@ import java.util.Iterator;
 public class Utils {
     private final static String TAG = "Utils";
 
-    public final static int PAGESIZE_APPROVAL = 25;
-    public final static int PAGESIZE_ORDER = 25;
-
-    public final static long UPDATE_TIME_DELTA = 1000 * 60 * 5;
-
     public static void showMessage(Context context, String message) {
         new MaterialDialog.Builder(context)
                 .content(message)
@@ -49,34 +44,10 @@ public class Utils {
     }
 
     public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
-        /*
-        SweetAlertDialog dialog = new SweetAlertDialog(context)
-                .setTitleText(message);
-        dialog.setOnDismissListener(listener);
-        dialog.show();
-        */
         new AlertDialogWrapper.Builder(context)
                 .setMessage(message)
                 .setNegativeButton("好的", listener)
                 .show();
-    }
-
-
-    /*
-    public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-        dlgAlert.setMessage(message);
-        dlgAlert.setPositiveButton("确定", listener);
-        dlgAlert.create().show();
-    }*/
-
-
-    public static void showConfirmMessage(Context context, String message, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-        dlgAlert.setMessage(message);
-        dlgAlert.setPositiveButton("确定", listener);
-        dlgAlert.setNegativeButton("取消", null);
-        dlgAlert.create().show();
     }
 
 
@@ -179,18 +150,5 @@ public class Utils {
             return String.format("%2d:%2d:%2d", hour, minutes, reminder).replace(" ", "0");
         }
     }
-
-    /*
-    public static LoginUser getLoginUser() {
-        Iterator<LoginUser> users = LoginUser.findAll(LoginUser.class);
-        if (users.hasNext()) {
-            return users.next();
-        }
-        return null;
-    }
-
-    public static void removeLoginUser() {
-        LoginUser.delete(LoginUser.class);
-    } */
 
 }
