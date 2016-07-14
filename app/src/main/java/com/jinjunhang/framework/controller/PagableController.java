@@ -31,6 +31,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     private PagableArrayAdapter mPagableArrayAdapter;
     private PagableRequestHandler mPagableRequestHandler;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private PagableErrorResponseHandler mErrorResponseHanlder = new DefaultPagableErrorResponseHanlder();
 
     //用于load more
     private View mFooterView;
@@ -74,6 +75,8 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     public void setShowLoadCompleteTip(boolean showLoadCompleteTip) {
         mIsShowLoadCompleteTip = showLoadCompleteTip;
     }
+
+
 
     public boolean isShowLoadCompleteTip() {
         return mIsShowLoadCompleteTip;
@@ -194,7 +197,20 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         public PagedServerResponse handle();
     }
 
-    public static class PagableTask extends AsyncTask<Void, Void, PagedServerResponse> {
+    public interface PagableErrorResponseHandler {
+        public void handle(PagedServerResponse resp);
+    }
+
+    private class DefaultPagableErrorResponseHanlder implements PagableErrorResponseHandler {
+        @Override
+        public void handle(PagedServerResponse resp) {
+            Log.e(TAG, "resp return error, status = " + resp.getStatus() + ", errorMessage = " + resp.getErrorMessage());
+            Utils.showMessage(mActivity, resp.getErrorMessage());
+            return;
+        }
+    }
+
+    private class PagableTask extends AsyncTask<Void, Void, PagedServerResponse> {
         private final static String TAG = "PagableTask";
         private PagableController mPagableController;
         private PagableRequestHandler mPagableHandler;
@@ -230,8 +246,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
             }
 
             if (resp.getStatus() != ServerResponse.SUCCESS) {
-                Log.e(TAG, "resp return error, status = " + resp.getStatus() + ", errorMessage = " + resp.getErrorMessage());
-                Utils.showMessage(mPagableController.mActivity, resp.getErrorMessage());
+                mErrorResponseHanlder.handle(resp);
                 mPagableController.mIsRefreshing = false;
                 mPagableController.mIsLoading = false;
                 return;
