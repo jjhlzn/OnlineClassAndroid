@@ -38,7 +38,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     private boolean mIsRefreshing;
     private boolean mMoreDataAvailable;
     private int mPageIndex;
-    private boolean mIsShowLoadCompleteTip = true;
+    private boolean mIsShowLoadCompleteTip = false;
 
     public PagableController(Activity activity, ListView listView) {
         mActivity = activity;

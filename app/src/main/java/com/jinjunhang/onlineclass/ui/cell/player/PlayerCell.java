@@ -105,7 +105,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     @Override
     public ViewGroup getView() {
         Song song = mMusicPlayer.getCurrentPlaySong();
-       // mLastSong = song;
         int playerView;
         View v;
         if (song.isLive()) {
@@ -117,8 +116,10 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             v = mActivity.getLayoutInflater().inflate(playerView, null);
         }
 
+
         setPlayButtons(v);
         setSeekbar(v);
+        setDurationLabel();
 
         mInited = true;
 
@@ -189,7 +190,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mSeekbar = (SeekBar) v.findViewById(R.id.player_seekbar);
         mSeekbar.setMax(0);
         mSeekbar.setMax(1000);
-        //mSeekbar.setProgress(50);
+
+        updateProgress();
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -203,7 +205,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //.seekTo(seekBar.getProgress());
                 long seekToSec = mMusicPlayer.getDuration() * seekBar.getProgress() / 1000;
                 mMusicPlayer.seekTo(seekToSec);
                 scheduleSeekbarUpdate();
@@ -258,22 +259,17 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {
             mBufferCircle.setVisibility(View.VISIBLE);
             load_animations();
-
-            LogHelper.d(TAG, "start buffer circle rotate");
         } else {
             if (mRotation != null) {
                 mRotation.cancel();
             }
             mBufferCircle.setAnimation(null);
             mBufferCircle.setVisibility(View.INVISIBLE);
-            LogHelper.d(TAG, "stop buffer circle rot ate");
         }
 
     }
 
     private void updatePrevAndNextButton() {
-        LogHelper.d(TAG, "updatePrevAndNextButton");
-        LogHelper.d(TAG, "hasPrev = " + mMusicPlayer.hasPrev());
         if (mMusicPlayer.hasNext()) {
             mNextButton.setAlpha(1f);
             mNextButton.setClickable(true);
@@ -306,17 +302,25 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         stopSeekbarUpdate();
     }
 
+    private void setDurationLabel() {
+        int playbackState = mMusicPlayer.getState();
+        if (playbackState == ExoPlayer.STATE_READY && mMusicPlayer.getDuration() > 0) {
+            String durationString = com.jinjunhang.framework.lib.Utils.convertTimeString(mMusicPlayer.getDuration());
+            LogHelper.d(TAG, "set duration text view: " + durationString);
+            mDurationTextView.setText(durationString);
+        }
+    }
+
+
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        LogHelper.d(TAG, "onPlayerStateChanged called, mInited = " + mInited);
+
+
         if (!mInited)
             return;
         updatePlayButton();
         updatePrevAndNextButton();
-        LogHelper.d(TAG, "state = " +playbackState + ", duration = " + mMusicPlayer.getDuration());
-        if (playbackState == ExoPlayer.STATE_READY && mMusicPlayer.getDuration() > 0) {
-            mDurationTextView.setText(com.jinjunhang.framework.lib.Utils.convertTimeString(mMusicPlayer.getDuration()));
-        }
+        setDurationLabel();
     }
 
     @Override
@@ -330,7 +334,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     }
 
     private void setupPlayList() {
-
         mPlayListAdapter = new PlayListAdapter(mActivity, mMusicPlayer.getSongs());
         ListView playListView = (ListView) mPlayerListView.findViewById(R.id.play_list_listView);
         playListView.setAdapter(mPlayListAdapter);
