@@ -28,8 +28,8 @@ import com.jinjunhang.player.utils.LogHelper;
  */
 public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
     public static final String ACTION_PLAY = "com.jinjunhang.onlineclass.ACTION_PLAY";
-    public static final String ACTION_PREV = "com.jinjunhang.onlineclass.ACTION_PLAY";
-    public static final String ACTION_NEXT = "com.jinjunhang.onlineclass.ACTION_PLAY";
+    public static final String ACTION_PREV = "com.jinjunhang.onlineclass.ACTION_PREV";
+    public static final String ACTION_NEXT = "com.jinjunhang.onlineclass.ACTION_NEXT";
 
     private final int NOTIFICATION_ID = 100;
 
@@ -60,10 +60,10 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
 
         if (musicPlayer.isPlaying()) {
             label = "暂停";
-            icon = R.drawable.icon_ios_music_pause;
+            icon = R.drawable.icon_ios_music_pause_80;
         } else {
             label = "播放";
-            icon = R.drawable.icon_ios_music_play;
+            icon = R.drawable.icon_ios_music_play_80;
         }
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
@@ -76,7 +76,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mContext, 100, switchIntent, 0);
 
         label = "上一首";
-        icon = R.drawable.icon_ios_music_backward;
+        icon = R.drawable.icon_ios_music_backward_80;
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
     }
@@ -88,7 +88,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mContext, 100, switchIntent, 0);
 
         label = "下一首";
-        icon = R.drawable.icon_ios_music_forward;
+        icon = R.drawable.icon_ios_music_forward_80;
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
     }
