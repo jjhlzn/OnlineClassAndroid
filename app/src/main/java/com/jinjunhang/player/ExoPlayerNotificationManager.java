@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v7.app.NotificationCompat;
 import android.widget.ImageView;
 
@@ -21,6 +22,8 @@ import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.player.utils.LogHelper;
 
 /**
@@ -94,26 +97,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
     }
 
     public void display() {
-        new GetImageTask().execute();
-    }
-
-    private void fetchBitmapFromURLAsync(final String bitmapUrl,
-                                         final NotificationCompat.Builder builder) {
-        AlbumArtCache.getInstance().fetch(bitmapUrl, new AlbumArtCache.FetchListener() {
-            @Override
-            public void onFetched(String artUrl, Bitmap bitmap, Bitmap icon) {
-                    // If the media is still the same, update the notification:
-                    LogHelper.d(TAG, "fetchBitmapFromURLAsync: set bitmap to ", artUrl);
-                    builder.setLargeIcon(bitmap);
-                    mNotificationManager.notify(NOTIFICATION_ID, builder.build());
-
-            }
-        });
-    }
-
-    public void display0() {
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext);
-        int playPauseButtonPosition = 1;
 
         addPrevButton(notificationBuilder);
         addPlayPauseAction(notificationBuilder);
@@ -138,8 +122,8 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setUsesChronometer(true)
                 .setContentTitle(songName)
+                .setContentIntent(createContentIntent())
                 .setContentText(author)
-                .setColor(Color.RED)
                 .setShowWhen(false);
 
         mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -153,8 +137,28 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         fetchArtUrl = song.getAlbum().getImage();
         LogHelper.d(TAG, "imageUrl = " + fetchArtUrl);
         fetchBitmapFromURLAsync(fetchArtUrl, notificationBuilder);
-
     }
+
+    private PendingIntent createContentIntent() {
+        Intent openUI = new Intent(mContext, SongActivity.class);
+        openUI.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return PendingIntent.getActivity(mContext, 100, openUI, 0);
+    }
+
+    private void fetchBitmapFromURLAsync(final String bitmapUrl,
+                                         final NotificationCompat.Builder builder) {
+        AlbumArtCache.getInstance().fetch(bitmapUrl, new AlbumArtCache.FetchListener() {
+            @Override
+            public void onFetched(String artUrl, Bitmap bitmap, Bitmap icon) {
+                    // If the media is still the same, update the notification:
+                    LogHelper.d(TAG, "fetchBitmapFromURLAsync: set bitmap to ", artUrl);
+                    builder.setLargeIcon(bitmap);
+                    mNotificationManager.notify(NOTIFICATION_ID, builder.build());
+
+            }
+        });
+    }
+
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -171,11 +175,4 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
 
     }
 
-    private class GetImageTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            display0();
-            return null;
-        }
-    }
 }
