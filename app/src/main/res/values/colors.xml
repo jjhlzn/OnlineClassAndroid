@@ -31,4 +31,8 @@
     <color name="black">#000</color>
 
     <color name="background_shadow">#dc262525</color>
+
+    <color name="refresh_progress_1">@color/colorPrimary</color>
+    <color name="refresh_progress_2">@color/colorPrimary</color>
+    <color name="refresh_progress_3">@color/colorPrimary</color>
 </resources>

@@ -71,6 +71,7 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
 
         //设置PagableController
         mPagableController = new PagableController(getActivity(), mListView);

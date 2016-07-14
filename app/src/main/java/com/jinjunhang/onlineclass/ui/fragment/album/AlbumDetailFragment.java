@@ -91,6 +91,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
         });
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
 
         mPagableController = new PagableController(getActivity(), listView);
         if (mAlbum.isLive()) {
