@@ -43,7 +43,7 @@ public class AdvImageCell extends BaseListViewCell {
 
     private int getHeight() {
 
-        int screenWith = Utils.getScreenHeight(mActivity);
+        int screenWith = Utils.getScreenWidth(mActivity);
         if (screenWith >= 1440) {
             return 420 + 500;
         } else {
