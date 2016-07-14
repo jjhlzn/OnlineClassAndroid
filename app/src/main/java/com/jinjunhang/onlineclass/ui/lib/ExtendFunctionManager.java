@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
@@ -99,6 +100,8 @@ public class ExtendFunctionManager {
         if (isNeedMore) {
             functions.add(moreFunction);
         }
+
+
     }
 
     public int getRowCount() {
@@ -110,6 +113,18 @@ public class ExtendFunctionManager {
         return functions.size();
     }
 
+
+    private int getHeight() {
+
+       int screenWidth =   Utils.getScreenWidth(mContext);
+        LogHelper.d(TAG, "width = " + screenWidth);
+        if (screenWidth >= 1440) {
+            return 250;
+        }
+
+        return 200;
+    }
+
     public ExtendFunctionCell getCell(int row) {
         ExtendFunctionCell cell = new ExtendFunctionCell((Activity) mContext);
 
@@ -118,10 +133,9 @@ public class ExtendFunctionManager {
         LinearLayout layout = new LinearLayout(mContext);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 
-        ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
+        ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
-        params.height = 200;
+        params.height = getHeight();
         layout.setLayoutParams(params);
         layout.setBackgroundColor(Color.WHITE );
 

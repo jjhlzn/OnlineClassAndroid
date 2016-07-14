@@ -14,6 +14,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.service.GetAdsRequest;
@@ -38,6 +39,17 @@ public class AdvImageCell extends BaseListViewCell {
 
     public SliderLayout getSliderShow() {
         return sliderShow;
+    }
+
+    private int getHeight() {
+
+        int screenWith = Utils.getScreenHeight(mActivity);
+        if (screenWith >= 1440) {
+            return 420 + 500;
+        } else {
+            return 420;
+        }
+
     }
 
     @Override
@@ -72,7 +84,7 @@ public class AdvImageCell extends BaseListViewCell {
         LinearLayout group = (LinearLayout)view.findViewById(R.id.list_item_albumtype_viewgroup);
         AbsListView.LayoutParams groupParams = new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         groupParams.width = Utils.getScreenWidth(mActivity);
-        groupParams.height = 420;
+        groupParams.height = getHeight();
 
         group.setLayoutParams(groupParams);
         group.setGravity(Gravity.BOTTOM);
