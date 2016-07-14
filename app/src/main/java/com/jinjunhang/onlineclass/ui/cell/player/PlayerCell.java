@@ -248,7 +248,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     }
 
 
-    private void updatePlayButton() {
+    protected void updatePlayButton() {
         int state = mMusicPlayer.getState();
         if (StatusHelper.isPlayingForUI(mMusicPlayer) ) {
             mPlayButton.setImageResource(R.drawable.icon_ios_music_pause);

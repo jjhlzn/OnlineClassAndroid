@@ -127,10 +127,11 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     public void resume() {
-        if (!isPause()) {
+        if (!isPause() || getCurrentPlaySong().isLive()) {
             Song song = mSongs[currentIndex];
             play(song);
         }
+
         player.setPlayWhenReady(true);
     }
 
