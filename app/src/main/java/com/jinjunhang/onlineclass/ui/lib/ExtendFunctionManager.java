@@ -120,8 +120,9 @@ public class ExtendFunctionManager {
         LogHelper.d(TAG, "width = " + screenWidth);
         if (screenWidth >= 1440) {
             return 250;
+        } else if (screenWidth <= 720) {
+            return 140;
         }
-
         return 200;
     }
 
