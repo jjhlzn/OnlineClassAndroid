@@ -33,26 +33,23 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />
 
+        <RelativeLayout
+            android:layout_width="60dp"
+            android:layout_height="52dp"
 
-        <ImageButton
-            android:id="@+id/actionbar_right_button"
-            android:layout_marginTop="10dp"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-
-            android:layout_toLeftOf="@+id/rightView"
-            android:src="@drawable/back"
-            android:visibility="invisible"
-            android:background="@null"
             android:gravity="center"
-            />
-        <!-- 这个TextView存在仅仅是为了让左边的按钮靠做一点 -->
-        <TextView
-            android:id="@+id/rightView"
-            android:layout_width="8dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
-            android:visibility="invisible"
-            android:text=""/>
+            android:layout_alignParentRight="true">
+            <ImageButton
+                android:id="@+id/actionbar_right_button"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/back"
+                android:background="@null"
+                android:visibility="invisible"
+                android:gravity="center"
+                />
+        </RelativeLayout>
+
+
     </RelativeLayout>
 </LinearLayout>
