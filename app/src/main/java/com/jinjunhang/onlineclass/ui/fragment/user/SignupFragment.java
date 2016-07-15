@@ -18,10 +18,12 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.GetCheckCodeRequest;
 import com.jinjunhang.onlineclass.service.GetCheckCodeResponse;
 import com.jinjunhang.onlineclass.service.SignupRequest;
 import com.jinjunhang.onlineclass.service.SignupResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 
@@ -66,6 +68,7 @@ public class SignupFragment extends BaseFragment {
         final EditText checkCodeField = (EditText) v.findViewById(R.id.signup_checkcode);
         final EditText invitePhoneField = (EditText) v.findViewById(R.id.signup_invitePhone);
         final EditText passwordField = (EditText) v.findViewById(R.id.signup_password);
+        Button showAgreementButton = (Button) v.findViewById(R.id.protocol_message);
 
         singupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +120,16 @@ public class SignupFragment extends BaseFragment {
                 getCheckCodeButtonPressed();
 
                 new GetCheckCodeTask().execute(request);
+            }
+        });
+
+        showAgreementButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "巨方助手APP服务协议")
+                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.AgreementUrl());
+                getActivity().startActivity(i);
             }
         });
 

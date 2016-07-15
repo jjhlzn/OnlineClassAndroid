@@ -90,6 +90,10 @@ public class ServiceLinkManager {
         return "http://"+host+":"+port+"/Center/MyLink.aspx";
     }
 
+    public static String AgreementUrl() {
+        return "http://"+host+":"+port+"/agreement.html";
+    }
+
 
 }
 

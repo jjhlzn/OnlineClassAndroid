@@ -153,12 +153,15 @@ public class WebBrowserActivity extends AppCompatActivity {
     }
 
     private String addUserInfo(String url) {
-        if (url.indexOf("?") == -1) {
-            url += "?";
-        }
+
 
         LoginUser user = LoginUserDao.getInstance(CustomApplication.get()).get();
-        url += "userid=" + user.getUserName() + "&" + "token=" + user.getToken();
+        if (user != null) {
+            if (url.indexOf("?") == -1) {
+                url += "?";
+            }
+            url += "userid=" + user.getUserName() + "&" + "token=" + user.getToken();
+        }
         return url;
     }
 
