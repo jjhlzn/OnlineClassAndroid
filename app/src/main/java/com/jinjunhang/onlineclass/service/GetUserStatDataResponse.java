@@ -17,6 +17,13 @@ public class GetUserStatDataResponse extends ServerResponse {
     private String mTuiJianPeople;
     private String mOrderCount;
 
+    private String mName;
+    private String mNickName;
+    private String mLevel;
+    private String mBoss;
+    private String mSex;
+    private String mCodeImageUrl;
+
     public String getJifen() {
         return mJifen;
     }
@@ -37,6 +44,30 @@ public class GetUserStatDataResponse extends ServerResponse {
         return mOrderCount;
     }
 
+    public String getName() {
+        return mName;
+    }
+
+    public String getNickName() {
+        return mNickName;
+    }
+
+    public String getLevel() {
+        return mLevel;
+    }
+
+    public String getBoss() {
+        return mBoss;
+    }
+
+    public String getSex() {
+        return mSex;
+    }
+
+    public String getCodeImageUrl() {
+        return mCodeImageUrl;
+    }
+
     @Override
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
         mJifen = json.getString("jifen");
@@ -44,5 +75,12 @@ public class GetUserStatDataResponse extends ServerResponse {
         mTeamPeople = json.getString("teamPeople");
         mTuiJianPeople = json.getString("tuijianPeople");
         mOrderCount = json.getString("orderCount");
+
+        mName = json.getString("name");
+        mNickName = json.getString("nickname");
+        mLevel = json.getString("level");
+        mBoss = json.getString("boss");
+        mSex = json.getString("sex");
+        mCodeImageUrl = json.getString("codeImageUrl");
     }
 }

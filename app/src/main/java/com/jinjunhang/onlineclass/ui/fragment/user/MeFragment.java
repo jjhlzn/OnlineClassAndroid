@@ -15,6 +15,8 @@ import android.widget.ListView;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.GetUserStatDataRequest;
 import com.jinjunhang.onlineclass.service.GetUserStatDataResponse;
@@ -248,6 +250,17 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             cell1.updateView();
             cell2.getRecord().setOtherInfo(resp.getTeamPeople());
             cell2.updateView();
+
+            FirstSectionCell firstCell = (FirstSectionCell)mCells.get(0);
+            LoginUser loginUser = LoginUserDao.getInstance(getActivity()).get();
+            loginUser.setName(resp.getName());
+            loginUser.setNickName(resp.getNickName());
+            loginUser.setLevel(resp.getLevel());
+            loginUser.setBoss(resp.getBoss());
+            loginUser.setCodeImageUrl(resp.getCodeImageUrl());
+            loginUser.setSex(resp.getSex());
+            LoginUserDao.getInstance(getActivity()).save(loginUser);
+            firstCell.update();
 
             mSwipeRefreshLayout.setRefreshing(false);
             isLoading = false;
