@@ -39,13 +39,20 @@
             android:layout_marginTop="10dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentRight="true"
+
+            android:layout_toLeftOf="@+id/rightView"
             android:src="@drawable/back"
-            android:padding="10dp"
             android:visibility="invisible"
             android:background="@null"
             android:gravity="center"
             />
+        <!-- 这个TextView存在仅仅是为了让左边的按钮靠做一点 -->
+        <TextView
+            android:id="@+id/rightView"
+            android:layout_width="8dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:text=""/>
     </RelativeLayout>
 </LinearLayout>
