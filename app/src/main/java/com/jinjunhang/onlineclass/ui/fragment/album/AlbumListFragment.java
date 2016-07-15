@@ -1,5 +1,8 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +16,11 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.model.Album;
@@ -35,7 +41,7 @@ import java.util.ArrayList;
  *
  */
 public class AlbumListFragment extends BottomPlayerFragment implements  SingleFragmentActivity.OnBackPressedListener,
-        AbsListView.OnScrollListener {
+        AbsListView.OnScrollListener, PagableController.PagableErrorResponseHandler {
     public final static String EXTRA_ALBUMTYPE = "extra_albumtype";
 
     private final static String TAG = "AlbumListFragment";
@@ -84,6 +90,7 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
         mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(adapter);
         mPagableController.setPagableRequestHandler(new AlbumListHanlder());
+        mPagableController.setErrorResponseHanlder(this);
         mPagableController.setOnScrollListener(this);
 
         //((FrameLayout)v.findViewById(R.id.fragmentContainer)).addView(mPlayerController.getView());
@@ -121,9 +128,33 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
     }
 
 
+    @Override
+    public void handle(PagedServerResponse resp) {
+        showVipBuyMessage(getActivity(), resp.getErrorMessage());
+    }
 
+    private void showVipBuyMessage(Context context, String message) {
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+        dlgAlert.setMessage(message);
+        dlgAlert.setPositiveButton("去购买", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(getActivity(), WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "购买VIP课程")
+                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl());
+                getActivity().startActivity(i);
+            }
+        });
+        dlgAlert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().finish();
+            }
+        });
+        dlgAlert.setCancelable(false);
 
-
+        dlgAlert.create().show();
+    }
 }
 
 

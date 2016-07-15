@@ -7,7 +7,6 @@ public class ServiceLinkManager {
     private static String host = "114.215.236.171";
     private static String port = "6012";
 
-
     public static String  MyTuiJianUrl() {
         return "http://"+host+":"+port+"/Center/MyTuiJian";
     }
@@ -90,6 +89,7 @@ public class ServiceLinkManager {
     public static String ShareQrImageUrl() {
         return "http://"+host+":"+port+"/Center/MyLink.aspx";
     }
+
 
 }
 

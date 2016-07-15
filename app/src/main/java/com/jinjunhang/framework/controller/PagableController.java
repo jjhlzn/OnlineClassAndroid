@@ -63,6 +63,10 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         mPagableRequestHandler = pagableRequestHandler;
     }
 
+    public void setErrorResponseHanlder(PagableErrorResponseHandler errorResponseHanlder) {
+        mErrorResponseHanlder = errorResponseHanlder;
+    }
+
     public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         mSwipeRefreshLayout = swipeRefreshLayout;
         mSwipeRefreshLayout.setOnRefreshListener(this);
