@@ -13,12 +13,12 @@
 
         <ImageButton
             android:id="@+id/actionbar_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/back"
             android:padding="10dp"
-            android:layout_marginLeft="-15dp"
             android:background="@null"
             android:visibility="invisible"
             />
