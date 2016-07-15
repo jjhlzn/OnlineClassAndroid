@@ -31,6 +31,8 @@ import java.util.Iterator;
 public class Utils {
     private final static String TAG = "Utils";
 
+    public static final String WEIXIN_SHERE_APP_ID = "wx73653b5260b24787";
+
     public static void showMessage(Context context, String message) {
         new MaterialDialog.Builder(context)
                 .content(message)

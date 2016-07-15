@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.ui.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,16 +25,23 @@ import android.widget.TextView;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+import com.jinjunhang.onlineclass.ui.lib.WeixinShareManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.jinjunhang.player.utils.TimeUtil;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,10 +63,13 @@ public class WebBrowserActivity extends AppCompatActivity {
     private WebView mWebView;
     private TextView mCloseButton;
 
+    private WeixinShareManager mWeixinShareManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.web_browser);
+
 
         mUrl = getIntent().getStringExtra(EXTRA_URL);
         mUrl = addUserInfo(mUrl);
@@ -93,6 +105,8 @@ public class WebBrowserActivity extends AppCompatActivity {
             }
         });
 
+        setWeixinShareIfNeed(findViewById(R.id.rootView));
+
         mWebView = (WebView) findViewById(R.id.webview);
 
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
@@ -100,6 +114,12 @@ public class WebBrowserActivity extends AppCompatActivity {
         openURL();
     }
 
+
+    private void  setWeixinShareIfNeed(View v) {
+       if ("提额秘诀".equals(mTitle)) {
+           mWeixinShareManager = new WeixinShareManager(this, v);
+       }
+    }
 
 
     /** Opens the URL in a browser */
