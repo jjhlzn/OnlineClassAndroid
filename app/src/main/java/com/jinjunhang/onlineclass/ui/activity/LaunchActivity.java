@@ -26,7 +26,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 /**
  * Created by lzn on 16/6/19.
  */
-public class LaunchActivity extends AppCompatActivity {
+public class LaunchActivity extends Activity {
     private static final String TAG = LogHelper.makeLogTag(LaunchActivity.class);
 
     private LoginUserDao mLoginUserDao;

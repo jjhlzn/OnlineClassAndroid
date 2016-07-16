@@ -43,32 +43,41 @@ public class AdvImageCell extends BaseListViewCell {
     }
 
     private int getHeight() {
-        int actionBarHeight = Utils.dip2px(mActivity, Utils.getActionBarHeight(mActivity));
-        LogHelper.d(TAG, "ationBarHeight = " + actionBarHeight);
-        int albumTypeListHeight = Utils.dip2px(mActivity, 54) * 3;
-        int separatorHeight = Utils.dip2px(mActivity, 4);
+        int actionBarHeight = Utils.px2dip( mActivity, Utils.getActionBarHeight(mActivity) );
+        int statusBarHeight = Utils.px2dip(mActivity, Utils.getStatusBarHeight(mActivity));
+        int albumTypeListHeight = 54 * 3;
+        int separatorHeight =  4;
 
         ExtendFunctionManager manager = new ExtendFunctionManager(mActivity);
-        int functionCellListHeight = manager.getRowCount() * Utils.dip2px(mActivity, manager.getHeight());
+        int functionCellListHeight = Utils.px2dip(mActivity, manager.getRowCount() * manager.getHeight());
 
+        int bottomHeight =  Utils.px2dip(mActivity, Utils.BOTTOM_BAR_HEIGHT );
 
-
-        int screenWith = Utils.getScreenWidth(mActivity);
-        int screenHeight = Utils.getScreenHeight(mActivity);
+        int screenWith =   Utils.px2dip(mActivity, Utils.getScreenWidth(mActivity));
+        int screenHeight =  Utils.px2dip(mActivity,Utils.getScreenHeight(mActivity));
         LogHelper.d(TAG, "screenWidth = " +screenWith + ", screenHeight = " +screenHeight);
+
+        LogHelper.d(TAG, "actionBarHeight = " + actionBarHeight + ", albumTypeListHeight = " + albumTypeListHeight + ", separtorHeight = " + separatorHeight + ", functionCellListHeight = "
+           + functionCellListHeight + ", bottomHeight = " + bottomHeight + ", statusBarHeight = " +statusBarHeight);
+
+        int result = screenHeight - actionBarHeight - albumTypeListHeight - separatorHeight - functionCellListHeight - bottomHeight - statusBarHeight + 3;
+        LogHelper.d(TAG, "adv height should be " + result + ", " + Utils.dip2px(mActivity, result));
+        return  Utils.dip2px(mActivity, result);
+
+        /*
         if (screenWith >= 1440) { //高于2560 * 1440
             return 420 + 500;
         } else if (screenWith <= 720){ //低于1280 * 720
             return 280;
         } else{
-            int result = 420;
+            return 420;
             /*
             if (screenHeight >= 1700 ) {
                 int delta = screenHeight - 1920;
                 result = result + delta;
             }*/
-            return result;
-        }
+
+        //}
 
     }
 
