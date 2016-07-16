@@ -97,6 +97,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
 
     protected void reloadNewSong() {
         ((SingleFragmentActivity)getActivity()).setActivityTitle(mMusicPlayer.getCurrentPlaySong().getName());
+        mPlayerCell.loadArtImage();
     }
 
     @Nullable

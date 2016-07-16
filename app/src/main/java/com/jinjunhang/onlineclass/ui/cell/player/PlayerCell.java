@@ -63,6 +63,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
 
     private View mPlayerListView;
     private PlayListAdapter mPlayListAdapter;
+    protected View v;
 
     //private Song mSong;
 
@@ -107,7 +108,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     public ViewGroup getView() {
         Song song = mMusicPlayer.getCurrentPlaySong();
         int playerView;
-        View v;
         if (song.isLive()) {
             playerView = R.layout.player_view_live;
             v = mActivity.getLayoutInflater().inflate(playerView, null);
@@ -121,7 +121,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         setPlayButtons(v);
         setSeekbar(v);
         setDurationLabel();
-        loadArtImage(v);
+        loadArtImage();
 
         mInited = true;
 
@@ -133,13 +133,15 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         return R.drawable.backgroundimage;
     }
 
-    protected void loadArtImage(View v) {
+    public void loadArtImage() {
         Song song = mMusicPlayer.getCurrentPlaySong();
         if (song == null) {
             return;
         }
 
         ImageView songImage = (ImageView) v.findViewById(R.id.player_song_image);
+
+        //缓存歌曲的图片
         Glide.with(mActivity)
                 .load(song.getImageUrl())
                 .placeholder(getPlaceHolderArtImage())

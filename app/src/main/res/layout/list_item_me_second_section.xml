@@ -7,6 +7,7 @@
     android:layout_height="55dp">
 
     <LinearLayout
+        android:id="@+id/jifenButton"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.33"
@@ -34,6 +35,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/chaifuButton"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.33"
@@ -61,6 +63,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/tuanduiButton"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.33"

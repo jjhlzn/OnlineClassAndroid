@@ -94,6 +94,18 @@ public class ServiceLinkManager {
         return "http://"+host+":"+port+"/agreement.html";
     }
 
+    public static String MyjifenUrl() {
+        return  "http://"+host+":"+port+"/Center/MyPoint";
+    }
+
+    public static String MyChaifuUrl() {
+        return  "http://"+host+":"+port+"/Center/MyMoney";
+    }
+
+    public static String MyTeamUrl2() {
+        return  "http://"+host+":"+port+"/Center/MyTeam2";
+    }
+
 
 }
 
