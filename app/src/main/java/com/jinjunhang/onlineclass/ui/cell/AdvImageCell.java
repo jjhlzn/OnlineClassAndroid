@@ -54,12 +54,20 @@ public class AdvImageCell extends BaseListViewCell {
 
 
         int screenWith = Utils.getScreenWidth(mActivity);
+        int screenHeight = Utils.getScreenHeight(mActivity);
+        LogHelper.d(TAG, "screenWidth = " +screenWith + ", screenHeight = " +screenHeight);
         if (screenWith >= 1440) { //高于2560 * 1440
             return 420 + 500;
         } else if (screenWith <= 720){ //低于1280 * 720
             return 280;
         } else{
-            return 420;
+            int result = 420;
+            /*
+            if (screenHeight >= 1700 ) {
+                int delta = screenHeight - 1920;
+                result = result + delta;
+            }*/
+            return result;
         }
 
     }
@@ -73,7 +81,7 @@ public class AdvImageCell extends BaseListViewCell {
         ViewGroup.LayoutParams params = sliderShow.getLayoutParams();
         params.width = Utils.getScreenWidth(mActivity);
         params.height = (int)(params.width * 0.3);
-        LogHelper.d(TAG, "width = " + params.width + ", height = " + params.height);
+        LogHelper.d(TAG, "advHeight = " + params.height);
 
         if (mAdvertiseList == null) {
             new GetAdvImageTask().execute();

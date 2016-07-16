@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
@@ -38,7 +39,7 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getScreenHeight(this);
         setContentView(R.layout.activity_fragment_launch);
 
 
@@ -89,6 +90,7 @@ public class LaunchActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final CheckUpgradeResponse resp) {
             super.onPostExecute(resp);
+
             if (!resp.isSuccess()) {
                 registerXinGeAndGoToNextActivity();
                 return;
