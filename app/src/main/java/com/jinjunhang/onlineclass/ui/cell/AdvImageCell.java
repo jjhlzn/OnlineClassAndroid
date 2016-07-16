@@ -20,6 +20,7 @@ import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.service.GetAdsRequest;
 import com.jinjunhang.onlineclass.service.GetAdsResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.List;
@@ -42,6 +43,15 @@ public class AdvImageCell extends BaseListViewCell {
     }
 
     private int getHeight() {
+        int actionBarHeight = Utils.dip2px(mActivity, Utils.getActionBarHeight(mActivity));
+        LogHelper.d(TAG, "ationBarHeight = " + actionBarHeight);
+        int albumTypeListHeight = Utils.dip2px(mActivity, 54) * 3;
+        int separatorHeight = Utils.dip2px(mActivity, 4);
+
+        ExtendFunctionManager manager = new ExtendFunctionManager(mActivity);
+        int functionCellListHeight = manager.getRowCount() * Utils.dip2px(mActivity, manager.getHeight());
+
+
 
         int screenWith = Utils.getScreenWidth(mActivity);
         if (screenWith >= 1440) { //高于2560 * 1440

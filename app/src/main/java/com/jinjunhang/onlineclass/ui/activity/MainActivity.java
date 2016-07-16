@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -103,6 +105,15 @@ public class MainActivity extends BaseMusicActivity  {
         mBottomBar.noTopOffset();
         mBottomBar.hideShadow();
 
+        mBottomBar.post(new Runnable() {
+            @Override
+            public void run() {
+                int height = mBottomBar.getBar().getHeight();
+                Utils.BOTTOM_BAR_HEIGHT = height;
+                LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
+            }
+        });
+
         int selectTab = getIntent().getIntExtra(EXTRA_TAB, 0);
         LogHelper.d(TAG, "selectTab = " + selectTab);
         mBottomBar.selectTabAtPosition(selectTab, true);
@@ -113,10 +124,19 @@ public class MainActivity extends BaseMusicActivity  {
     private void setCommonActionBar() {
         getSupportActionBar().show();
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        final View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
+
+        customView.post(new Runnable(){
+            public void run(){
+                int height = customView.findViewById(R.id.action_bar).getHeight();
+                int heightInPixel = Utils.dip2px(MainActivity.this, height);
+                LogHelper.d(TAG, "action bar = " + height);
+            }
+        });
         parent.setContentInsetsAbsolute(0, 0);
+
     }
 
     private void setSearchActionBar() {

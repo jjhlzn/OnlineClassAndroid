@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +31,8 @@ import java.util.Iterator;
  */
 public class Utils {
     private final static String TAG = "Utils";
+
+    public static int BOTTOM_BAR_HEIGHT = 153; //in dp
 
     public static final String WEIXIN_SHERE_APP_ID = "wx73653b5260b24787";
 
@@ -151,6 +154,33 @@ public class Utils {
         } else {
             return String.format("%2d:%2d:%2d", hour, minutes, reminder).replace(" ", "0");
         }
+    }
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    /**
+     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+     */
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static int getActionBarHeight(Context context) {
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,context.getResources().getDisplayMetrics());
+        }
+        LogHelper.d(TAG, "action bar height = " + actionBarHeight);
+        return actionBarHeight;
     }
 
 }

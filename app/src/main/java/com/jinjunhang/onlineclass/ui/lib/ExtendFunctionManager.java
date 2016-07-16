@@ -114,8 +114,7 @@ public class ExtendFunctionManager {
     }
 
 
-    private int getHeight() {
-
+    public int getHeight() {
        int screenWidth =   Utils.getScreenWidth(mContext);
         LogHelper.d(TAG, "width = " + screenWidth);
         if (screenWidth >= 1440) {

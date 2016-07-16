@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.jinjunhang.framework.service.BasicService;
@@ -24,7 +25,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 /**
  * Created by lzn on 16/6/19.
  */
-public class LaunchActivity extends Activity {
+public class LaunchActivity extends AppCompatActivity {
     private static final String TAG = LogHelper.makeLogTag(LaunchActivity.class);
 
     private LoginUserDao mLoginUserDao;
@@ -39,6 +40,7 @@ public class LaunchActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fragment_launch);
+
 
         api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         api.registerApp(APP_ID);
