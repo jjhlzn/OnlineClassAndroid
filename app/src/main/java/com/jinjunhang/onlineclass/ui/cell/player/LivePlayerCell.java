@@ -31,15 +31,13 @@ public class LivePlayerCell extends PlayerCell {
     @Override
     public ViewGroup getView() {
         ViewGroup v = super.getView();
+
         String listenerCount = ((LiveSong)mMusicPlayer.getCurrentPlaySong()).getListenPeople();
-        LogHelper.d(TAG, "listenPeopleCount = " + listenerCount);
         mListenerCountLabel.setText(listenerCount);
 
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int state = MusicPlayer.getInstance(mActivity).getState();
-                LogHelper.d(TAG, "state = ", state);
                 if (mMusicPlayer.isPlaying()) {
                     mMusicPlayer.pause();
                 } else {
@@ -52,6 +50,11 @@ public class LivePlayerCell extends PlayerCell {
         });
 
         return v;
+    }
+
+    @Override
+    protected int getPlaceHolderArtImage() {
+        return R.drawable.live_sample_image;
     }
 
     @Override

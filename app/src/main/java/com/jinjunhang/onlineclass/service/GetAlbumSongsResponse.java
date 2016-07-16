@@ -69,6 +69,7 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             song.setDate(json.getString("date"));
             song.setUrl(json.getString("url"));
             song.setId(json.getString("id"));
+            song.setImageUrl(json.getString("image"));
             SongSetting songSetting = new SongSetting();
             JSONObject settingJson =  json.getJSONObject("settings");
             songSetting.setCanComment(settingJson.getBoolean("canComment"));

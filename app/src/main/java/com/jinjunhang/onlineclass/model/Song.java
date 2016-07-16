@@ -10,6 +10,7 @@ public class Song extends BaseModelObject {
     private String mDesc;
     private String mDate;
     private String mUrl;
+    private String imageUrl;
     private SongSetting settings = new SongSetting();
     private Album album;
 
@@ -71,5 +72,13 @@ public class Song extends BaseModelObject {
 
     public boolean isLive() {
         return album.isLive();
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

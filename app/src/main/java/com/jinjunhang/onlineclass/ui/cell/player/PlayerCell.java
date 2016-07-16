@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.google.android.libraries.cast.companionlibrary.utils.Utils;
@@ -120,11 +121,30 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         setPlayButtons(v);
         setSeekbar(v);
         setDurationLabel();
+        loadArtImage(v);
 
         mInited = true;
 
         LogHelper.d(TAG, "playerCell make view");
         return (LinearLayout)v.findViewById(R.id.list_item_albumtype_viewgroup);
+    }
+
+    protected int getPlaceHolderArtImage() {
+        return R.drawable.backgroundimage;
+    }
+
+    protected void loadArtImage(View v) {
+        Song song = mMusicPlayer.getCurrentPlaySong();
+        if (song == null) {
+            return;
+        }
+
+        ImageView songImage = (ImageView) v.findViewById(R.id.player_song_image);
+        Glide.with(mActivity)
+                .load(song.getImageUrl())
+                .placeholder(getPlaceHolderArtImage())
+                .into(songImage);
+
     }
 
     protected void setPlayButtons(View v) {
