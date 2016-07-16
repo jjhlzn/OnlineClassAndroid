@@ -5,17 +5,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.player.utils.LogHelper;
@@ -75,22 +78,20 @@ public class Utils {
 
     public static int getScreenWidth(Context context) {
         if (screenWidth < 0) {
-            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            screenWidth = size.x;
-            screenHeight = size.y;
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            wm.getDefaultDisplay().getMetrics(displaymetrics);
+            screenHeight = displaymetrics.heightPixels;
+            screenWidth = displaymetrics.widthPixels;
+            LogHelper.d(TAG, "compute: width = " + screenWidth + ", height = " + screenHeight);
         }
         return screenWidth;
     }
 
     public static int getScreenHeight(Context context) {
+        LogHelper.d(TAG, "getScreenHeight called: width = " + screenWidth + ", height = " + screenHeight);
         if (screenWidth < 0) {
-            Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            screenWidth = size.x;
-            screenHeight = size.y;
+            getScreenWidth(context);
         }
         return screenHeight;
     }
