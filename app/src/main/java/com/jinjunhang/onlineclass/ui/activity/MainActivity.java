@@ -148,15 +148,6 @@ public class MainActivity extends BaseMusicActivity  {
         parent.setContentInsetsAbsolute(0, 0);
     }
 
-    private void setMeActionBar() {
-        getSupportActionBar().hide();
-        /*
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar_search, null);
-        getSupportActionBar().setCustomView(customView);
-        Toolbar parent =(Toolbar) customView.getParent();
-        parent.setContentInsetsAbsolute(0, 0); */
-    }
 
     private <T extends Fragment> Fragment getFragment(Class<T> fragmentClass) {
         Fragment fragment = fragmentMap.get(fragmentClass);

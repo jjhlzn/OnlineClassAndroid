@@ -55,12 +55,28 @@ public class AdvImageCell extends BaseListViewCell {
 
         int screenWith =   Utils.px2dip(mActivity, Utils.getScreenWidth(mActivity));
         int screenHeight =  Utils.px2dip(mActivity,Utils.getScreenHeight(mActivity));
-        LogHelper.d(TAG, "screenWidth = " +screenWith + ", screenHeight = " +screenHeight);
+        LogHelper.d(TAG, "screenWidth = " +Utils.getScreenWidth(mActivity) + ", screenHeight = " +Utils.getScreenHeight(mActivity));
 
         LogHelper.d(TAG, "actionBarHeight = " + actionBarHeight + ", albumTypeListHeight = " + albumTypeListHeight + ", separtorHeight = " + separatorHeight + ", functionCellListHeight = "
            + functionCellListHeight + ", bottomHeight = " + bottomHeight + ", statusBarHeight = " +statusBarHeight);
 
-        int result = screenHeight - actionBarHeight - albumTypeListHeight - separatorHeight - functionCellListHeight - bottomHeight - statusBarHeight + 3;
+        int result = screenHeight - actionBarHeight - albumTypeListHeight - separatorHeight - functionCellListHeight - bottomHeight - statusBarHeight;
+
+        int screenWidthInPixcel = Utils.getScreenWidth(mActivity);
+        int delta = 3;
+        if (screenWidthInPixcel == 1080) {
+            result = 420;
+        } else if (screenWidthInPixcel == 720) {
+            result = 280;
+        } else if (screenWidthInPixcel == 1440) {
+            result = 920;
+        } else {
+            if (screenWidthInPixcel < 720) {
+                delta = 10;
+            }
+            result += delta;
+        }
+
         LogHelper.d(TAG, "adv height should be " + result + ", " + Utils.dip2px(mActivity, result));
         return  Utils.dip2px(mActivity, result);
 
