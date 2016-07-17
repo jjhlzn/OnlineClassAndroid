@@ -98,10 +98,13 @@ public class ExtendFunctionManager {
             }
         });
         if (isNeedMore) {
-            functions.add(moreFunction);
+            int lastIndex = showMaxRow * itemCountEachRow - 1;
+            if (lastIndex >= functions.size() - 1) {
+                functions.add(moreFunction);
+            } else {
+                functions.set(lastIndex, moreFunction);
+            }
         }
-
-
     }
 
     public int getRowCount() {
@@ -118,12 +121,18 @@ public class ExtendFunctionManager {
         int screenWidth =   Utils.getScreenWidth(mContext);
         int screenHeight =   Utils.getScreenHeight(mContext);
         //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
+        int height = 200;
         if (screenWidth >= 1440) {
-            return 250;
-        } else if (screenWidth <= 720) {
-            return 140;
+            height = 250;
+        }else  if (screenWidth <= 480) {
+            LogHelper.d(TAG, "height is 100");
+            height = 95;
         }
-        return 200;
+        else if (screenWidth <= 720) {
+            height = 140;
+        }
+        LogHelper.d(TAG, "each row height in pixel = " + height);
+        return height;
     }
 
     public ExtendFunctionCell getCell(int row) {

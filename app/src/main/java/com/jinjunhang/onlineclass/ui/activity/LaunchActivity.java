@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -18,6 +20,8 @@ import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.player.utils.LogHelper;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnMenuTabClickListener;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -36,12 +40,38 @@ public class LaunchActivity extends Activity {
 
     private boolean chooseUpgrade;
 
+    BottomBar  mBottomBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.getScreenHeight(this);
         setContentView(R.layout.activity_fragment_launch);
 
+        mBottomBar = BottomBar.attach(this, savedInstanceState);
+        mBottomBar.setMaxFixedTabs(5);
+        mBottomBar.setItemsFromMenu(R.menu.bottombar, new OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(@IdRes int menuItemId) {
+
+            }
+
+            @Override
+            public void onMenuTabReSelected(@IdRes int menuItemId) {
+
+            }
+        });
+        mBottomBar.noTopOffset();
+        mBottomBar.hideShadow();
+        mBottomBar.setVisibility(View.INVISIBLE);
+        mBottomBar.post(new Runnable() {
+            @Override
+            public void run() {
+                int height = mBottomBar.getBar().getHeight();
+                Utils.BOTTOM_BAR_HEIGHT = height;
+                LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
+            }
+        });
 
         api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         api.registerApp(APP_ID);

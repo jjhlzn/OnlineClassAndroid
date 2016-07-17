@@ -49,6 +49,7 @@ public class AdvImageCell extends BaseListViewCell {
         int separatorHeight =  4;
 
         ExtendFunctionManager manager = new ExtendFunctionManager(mActivity);
+        LogHelper.d(TAG, "manager.getRowCount() * manager.getHeight() = " + manager.getRowCount() * manager.getHeight());
         int functionCellListHeight = Utils.px2dip(mActivity, manager.getRowCount() * manager.getHeight());
 
         int bottomHeight =  Utils.px2dip(mActivity, Utils.BOTTOM_BAR_HEIGHT );
@@ -63,13 +64,19 @@ public class AdvImageCell extends BaseListViewCell {
         int result = screenHeight - actionBarHeight - albumTypeListHeight - separatorHeight - functionCellListHeight - bottomHeight - statusBarHeight;
 
         int screenWidthInPixcel = Utils.getScreenWidth(mActivity);
-        int delta = 3;
-        if (screenWidthInPixcel == 1080) {
+        int screenHeightInPixcel = Utils.getScreenHeight(mActivity);
+
+        int delta = 5;
+        boolean needConvert = true;
+        if (screenWidthInPixcel == 1080 && screenHeightInPixcel == 1920) {
             result = 420;
+            needConvert = false;
         } else if (screenWidthInPixcel == 720) {
             result = 280;
+            needConvert = false;
         } else if (screenWidthInPixcel == 1440) {
             result = 920;
+            needConvert = false;
         } else {
             if (screenWidthInPixcel < 720) {
                 delta = 10;
@@ -77,8 +84,13 @@ public class AdvImageCell extends BaseListViewCell {
             result += delta;
         }
 
-        LogHelper.d(TAG, "adv height should be " + result + ", " + Utils.dip2px(mActivity, result));
-        return  Utils.dip2px(mActivity, result);
+        if (needConvert) {
+            LogHelper.d(TAG, "adv height should be " + result + ", " + Utils.dip2px(mActivity, result));
+            return Utils.dip2px(mActivity, result);
+        } else {
+            LogHelper.d(TAG, "adv height should be " + result + ", " + result);
+            return result;
+        }
 
         /*
         if (screenWith >= 1440) { //高于2560 * 1440
@@ -129,7 +141,11 @@ public class AdvImageCell extends BaseListViewCell {
         LinearLayout group = (LinearLayout)view.findViewById(R.id.list_item_albumtype_viewgroup);
         AbsListView.LayoutParams groupParams = new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         groupParams.width = Utils.getScreenWidth(mActivity);
-        groupParams.height = getHeight();
+        int height = getHeight();
+        if (height < params.height) {
+            height = params.height + 15;
+        }
+        groupParams.height = height;
 
         group.setLayoutParams(groupParams);
         group.setGravity(Gravity.BOTTOM);

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
@@ -48,9 +49,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
 
-        mFunctionManager = new ExtendFunctionManager(getActivity());
+        int maxShowRows = 10;
 
-
+        mFunctionManager = new ExtendFunctionManager(maxShowRows, getActivity(), true);
 
         if (mCells.size() == 0) {
             for (AlbumType albumType : mAlbumTypes) {
