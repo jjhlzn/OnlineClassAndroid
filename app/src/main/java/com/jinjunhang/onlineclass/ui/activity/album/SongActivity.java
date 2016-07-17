@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.ui.activity.album;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,9 +11,11 @@ import android.widget.Toast;
 
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.CommonSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.LiveSongFragment;
+import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
 /**
@@ -26,6 +29,15 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
     protected Fragment createFragment() {
         Song song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
        // return new SongFragment();
+        if (song == null) {  //从通知栏过来
+           song = MusicPlayer.getInstance(this).getCurrentPlaySong();
+        }
+
+        if (song == null) {
+            Intent i = new Intent(this, MainActivity.class);
+            startActivity(i);
+            return null;
+        }
 
         if (song.isLive()) {
             return new LiveSongFragment();
