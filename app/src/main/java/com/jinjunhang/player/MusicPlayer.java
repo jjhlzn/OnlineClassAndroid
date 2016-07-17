@@ -6,6 +6,7 @@ import android.net.Uri;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.google.android.exoplayer.util.Util;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.playback.exo.player.DemoPlayer;
 import com.jinjunhang.player.playback.exo.player.ExtractorRendererBuilder;
@@ -30,6 +31,8 @@ public class MusicPlayer implements ExoPlayer.Listener {
     private Song[] mSongs;
     private int currentIndex = -1;
     private MusicPlayerControlListener mControlListener;
+    private int lastType = Util.TYPE_OTHER;
+    private Album lastAlbum = null;
 
     public static MusicPlayer getInstance(Context context) {
         if (instance == null) {
@@ -202,8 +205,15 @@ public class MusicPlayer implements ExoPlayer.Listener {
             player.addListener(this);
             player.addListener(ExoPlayerNotificationManager.getInstance(context));
         } else {
-            player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type            ));
+            if (lastAlbum != null && lastAlbum.getId().equals(song.getAlbum().getId())) {
+                player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type));
+            } else {
+                player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
+                player.addListener(this);
+                player.addListener(ExoPlayerNotificationManager.getInstance(context));
+            }
         }
+        lastAlbum = song.getAlbum();
     }
 
     @Override

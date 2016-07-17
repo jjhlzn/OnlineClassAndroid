@@ -75,12 +75,11 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
                 Song song = (Song)((mPagableController.getPagableArrayAdapter()).getItem(position));
                 MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
                 if (!musicPlayer.isPlay(song)) {
-                    MusicPlayer.getInstance(getActivity()).play(mAlbum.getSongs(), position);
+                    musicPlayer.pause();
+                    musicPlayer.play(mAlbum.getSongs(), position);
                     mNotificationManager.display();
                 }
                 Intent i = new Intent(getActivity(), SongActivity.class)
