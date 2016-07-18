@@ -143,10 +143,8 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
     private void setFootView() {
         mFooterView = LayoutInflater.from(mActivity).inflate(R.layout.loading_view, null);
-
         resetFootView();
         mListView.addFooterView(mFooterView, null, false);
-
     }
 
     private void resetFootView() {
