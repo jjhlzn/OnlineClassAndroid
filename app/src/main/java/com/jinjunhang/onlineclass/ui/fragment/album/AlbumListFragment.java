@@ -18,6 +18,7 @@ import android.widget.ListView;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.PagedServerResponse;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
@@ -130,7 +131,11 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
     @Override
     public void handle(PagedServerResponse resp) {
-        showVipBuyMessage(getActivity(), resp.getErrorMessage());
+        if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
+            showVipBuyMessage(getActivity(), resp.getErrorMessage());
+        } else {
+            Utils.showMessage(getActivity(), resp.getErrorMessage());
+        }
     }
 
     private void showVipBuyMessage(Context context, String message) {
