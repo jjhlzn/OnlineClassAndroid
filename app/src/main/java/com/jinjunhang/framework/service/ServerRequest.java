@@ -10,6 +10,9 @@ public abstract class ServerRequest {
 
     private boolean isResendForInvalidToken = false;
     private String mTest;
+    private int  connectionTimeout = 5; //in seconds
+    private int  writeTimeout = 5; //in seconds
+    private int  readTimeout = 5; //in seconds
 
     public String getTest() {
         return mTest;
@@ -17,6 +20,30 @@ public abstract class ServerRequest {
 
     public void setTest(String test) {
         mTest = test;
+    }
+
+    public int getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    public int getWriteTimeout() {
+        return writeTimeout;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setConnectionTimeout(int connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+    }
+
+    public void setWriteTimeout(int writeTimeout) {
+        this.writeTimeout = writeTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
     }
 
     public boolean isResendForInvalidToken() {

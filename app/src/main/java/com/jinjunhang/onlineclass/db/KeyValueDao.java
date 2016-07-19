@@ -23,6 +23,7 @@ public class KeyValueDao {
     public static final String SERVER_HTTP = "SERVER_HTTP";
     public static final String SERVER_HOST = "SERVER_HOST";
     public static final String SERVER_PORT = "SERVER_PORT";
+    public static final String IS_GET_SERVICE_LOCATOR = "IS_GET_SERVICE_LOCATOR";
 
     private DBOpenHelper dbOpenHelper;
     private static KeyValueDao instance = null;

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -36,10 +37,9 @@ public class BasicService {
 
     private final static String TAG = "BasicService";
 
-    private OkHttpClient client = new OkHttpClient();
-
 
     private String send(ServerRequest request) throws IOException {
+
         String method = "POST";
         Map<String, Object> params = addUserAndDeviceInfo(request.getParams());
         Gson gson = new Gson();
@@ -54,6 +54,12 @@ public class BasicService {
             return get(url);
         } else {
             Log.d(TAG, "send POST request: " + url);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(request.getConnectionTimeout(), TimeUnit.SECONDS)
+                    .writeTimeout(request.getWriteTimeout(), TimeUnit.SECONDS)
+                    .readTimeout(request.getReadTimeout(), TimeUnit.SECONDS)
+                    .build();
+
             Request request1 = new Request.Builder()
                     .url(request.getServiceUrl())
                     .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), paramsString))
@@ -74,6 +80,7 @@ public class BasicService {
     }
 
     private String get(String url) throws IOException {
+        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -150,6 +157,7 @@ public class BasicService {
     }
 
     public ServerResponse upload(String url, File file) {
+        OkHttpClient client = new OkHttpClient();
         ServerResponse resp = new ServerResponse() {
             @Override
             public void parse(ServerRequest request, JSONObject json) throws JSONException {
@@ -166,7 +174,7 @@ public class BasicService {
                     .addFormDataPart("token", user.getToken())
                     .build();
             Request request = new Request.Builder().url(url).post(formBody).build();
-            Response response = this.client.newCall(request).execute();
+            Response response = client.newCall(request).execute();
             String jsonString = response.body().string();
             JSONObject json =  new JSONObject(jsonString);
             resp.setStatus(json.getInt("status"));

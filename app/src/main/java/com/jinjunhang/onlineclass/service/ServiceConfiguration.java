@@ -152,6 +152,12 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/checkUpgrade";
     }
 
+
+    //ServiceLocator
+    public static String GetServiceLocatorUrl() {
+        return "http://servicelocator.hengdianworld.com:9000/servicelocator";
+    }
+
 }
 
 

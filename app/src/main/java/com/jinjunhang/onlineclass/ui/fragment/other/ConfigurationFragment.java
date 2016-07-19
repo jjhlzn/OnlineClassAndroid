@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
@@ -35,6 +36,7 @@ public class ConfigurationFragment extends android.support.v4.app.Fragment  {
         ((TextView)v.findViewById(R.id.config_http)).setText(http);
         ((TextView)v.findViewById(R.id.config_serverName)).setText(serverName);
         ((TextView)v.findViewById(R.id.config_port)).setText(port+"");
+        ((CheckBox)v.findViewById(R.id.config_useServiceLocator)).setChecked("1".equals(mKeyValueDao.getValue(KeyValueDao.IS_GET_SERVICE_LOCATOR, "1")));
 
         Button saveButton = (Button)v.findViewById(R.id.config_saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -62,9 +64,12 @@ public class ConfigurationFragment extends android.support.v4.app.Fragment  {
                     return;
                 }
 
+                boolean isUseServiceLocator = ((CheckBox)v.findViewById(R.id.config_useServiceLocator)).isChecked();
+
                 mKeyValueDao.saveOrUpdate(KeyValueDao.SERVER_HTTP, newHttp);
                 mKeyValueDao.saveOrUpdate(KeyValueDao.SERVER_HOST, newServerName);
                 mKeyValueDao.saveOrUpdate(KeyValueDao.SERVER_PORT, port+"");
+                mKeyValueDao.saveOrUpdate(KeyValueDao.IS_GET_SERVICE_LOCATOR, isUseServiceLocator ? "1" : "0");
                 ServiceConfiguration.LOCATOR_HTTP = newHttp;
                 ServiceConfiguration.LOCATOR_SERVERNAME = newServerName;
                 ServiceConfiguration.LOCATOR_PORT = port;
