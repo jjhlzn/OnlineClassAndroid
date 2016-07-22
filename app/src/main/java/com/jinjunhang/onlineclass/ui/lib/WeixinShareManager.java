@@ -32,11 +32,11 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 public class WeixinShareManager {
     private final static String TAG = LogHelper.makeLogTag(WeixinShareManager.class);
 
-    private AppCompatActivity mActivity;
-    private View v;
-    private IWXAPI api;
+    protected AppCompatActivity mActivity;
+    protected View v;
+    protected IWXAPI api;
 
-    private QrImageDao qrImageDao;
+    protected QrImageDao qrImageDao;
 
     public WeixinShareManager(AppCompatActivity activity, View v) {
         this.mActivity = activity;
@@ -47,7 +47,7 @@ public class WeixinShareManager {
         setup();
     }
 
-    private void  setup() {
+    protected void  setup() {
         View customView = mActivity.getSupportActionBar().getCustomView();
         ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
         rightButton.setImageResource(R.drawable.share);
@@ -91,7 +91,7 @@ public class WeixinShareManager {
         });
     }
 
-    private void shareUrl(boolean isPengyouquan) {
+    protected void shareUrl(boolean isPengyouquan) {
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
         WXMediaMessage msg = new WXMediaMessage(webpage);
@@ -107,13 +107,13 @@ public class WeixinShareManager {
         api.sendReq(req);
     }
 
-    private String buildTransaction(final String type) {
+    protected String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
 
     // 文本分享
-    private void shareText(boolean isPengyouquan) {
+    protected void shareText(boolean isPengyouquan) {
         // 初始化一个WXTextObject对象
         WXTextObject textObj = new WXTextObject();
         textObj.text = "hallo";
@@ -135,10 +135,10 @@ public class WeixinShareManager {
         api.sendReq(req);
     }
 
-    private static final int THUMB_SIZE = 150;
+    protected static final int THUMB_SIZE = 150;
 
     // 文本分享
-    private void shareImage(boolean isPengyouquan) {
+    protected void shareImage(boolean isPengyouquan) {
         Bitmap bmp = qrImageDao.get();
         if (bmp == null) {
             Toast.makeText(mActivity, "bmp is null", Toast.LENGTH_SHORT).show();

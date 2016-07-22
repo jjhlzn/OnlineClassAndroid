@@ -24,6 +24,7 @@ import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.onlineclass.ui.lib.WeixinShareManager;
+import com.jinjunhang.onlineclass.ui.lib.WeixinShareManager2;
 import com.jinjunhang.player.utils.BitmapHelper;
 import com.jinjunhang.player.utils.LogHelper;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
@@ -51,7 +52,7 @@ public class QRImageFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_qrimage, container, false);
-        mWeixinShareManager = new WeixinShareManager((AppCompatActivity) getActivity(), v);
+        mWeixinShareManager = new WeixinShareManager2((AppCompatActivity) getActivity(), v);
         qrImageDao = QrImageDao.getInstance(getActivity());
 
         final ImageView qrImage = (ImageView) v.findViewById(R.id.qr_image);

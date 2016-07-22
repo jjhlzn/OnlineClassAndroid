@@ -14,19 +14,7 @@ import com.jinjunhang.onlineclass.ui.fragment.user.QRImageFragment;
  * Created by jjh on 2016-7-1.
  */
 public class QRImageActivity extends SingleFragmentActivity {
-    @Override
-    protected void createActionBar() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
-        ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
-        rightButton.setImageResource(R.drawable.share);
-        rightButton.setVisibility(View.VISIBLE);
 
-        getSupportActionBar().setCustomView(customView);
-        Toolbar parent = (Toolbar) customView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
-    }
 
     @Override
     protected String getActivityTitle() {
