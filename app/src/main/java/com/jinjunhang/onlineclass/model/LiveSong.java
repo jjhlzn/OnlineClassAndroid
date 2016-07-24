@@ -1,5 +1,7 @@
 package com.jinjunhang.onlineclass.model;
 
+import android.util.Log;
+
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.text.SimpleDateFormat;
@@ -16,6 +18,11 @@ public class LiveSong extends Song {
 
     private String mStartDateTime;
     private String mEndDateTime;
+    private boolean mHasAdvImage;
+    private String mAdvImageUrl = "";
+    private String mAdvUrl = "";
+
+    private boolean mSongAdvInfoChanged = false;
 
     public String getStartDateTime() {
         return mStartDateTime;
@@ -51,6 +58,65 @@ public class LiveSong extends Song {
 
     public void setListenPeople(String listenPeople) {
         mListenPeople = listenPeople;
+    }
+
+    public boolean hasAdvImage() {
+        return mHasAdvImage;
+    }
+
+    public String getAdvImageUrl() {
+        return mAdvImageUrl;
+    }
+
+    public String getAdvUrl() {
+        return mAdvUrl;
+    }
+
+    public boolean isSongAdvInfoChanged() {
+        return mSongAdvInfoChanged;
+    }
+
+    public void updateSongAdvInfo(boolean hasAdvImage, String advImageUrl, String advUrl) {
+        //hasAdvImage mHasImage all are false, nothing to do
+        if ((hasAdvImage == mHasAdvImage) && !hasAdvImage ) {
+            LogHelper.d(TAG, "hasAdvImage = " + hasAdvImage + ", mHasAdvImage = " + mHasAdvImage);
+            return;
+        }
+
+        //hasAdvImage and mHaImage are not the same
+        if (hasAdvImage != mHasAdvImage) {
+            setHasAdvImage(hasAdvImage);
+            setAdvImageUrl(advImageUrl);
+            setAdvUrl(advUrl);
+            return;
+        }
+
+        //hasAdvImage and mHasImage all are true, need to check AdvImageUrl and AdvUrl
+        if (!advImageUrl.equals(mAdvImageUrl) || !advUrl.equals(mAdvUrl)) {
+            setHasAdvImage(hasAdvImage);
+            setAdvImageUrl(advImageUrl);
+            setAdvUrl(advUrl);
+            return;
+        }
+    }
+
+    public void setSongAdvInfoChanged(boolean songAdvInfoChanged) {
+        mSongAdvInfoChanged = songAdvInfoChanged;
+    }
+
+    public void setHasAdvImage(boolean hasAdvImage) {
+        mHasAdvImage = hasAdvImage;
+        mSongAdvInfoChanged = true;
+    }
+
+    public void setAdvImageUrl(String advImageUrl) {
+        mAdvImageUrl = advImageUrl;
+        mSongAdvInfoChanged = true;
+    }
+
+    public void setAdvUrl(String advUrl) {
+        mAdvUrl = advUrl;
+        mSongAdvInfoChanged = true;
     }
 
     public long getTotalTimeInSec() {

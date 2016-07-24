@@ -12,10 +12,10 @@ import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 /**
  * Created by jjh on 2016-7-3.
  */
-public class NoCommentCell extends BaseListViewCell {
+public class NoCommentCell extends CommentCell {
 
     public NoCommentCell(Activity activity) {
-        super(activity);
+        super(activity, null);
     }
 
     @Override

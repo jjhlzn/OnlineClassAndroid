@@ -7,13 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.data5tream.emojilib.EmojiParser;
 import com.google.android.exoplayer.ExoPlayer;
 import com.google.common.collect.Lists;
-import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -26,16 +23,20 @@ import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsResponse;
 import com.jinjunhang.onlineclass.service.GetLiveListenerRequest;
 import com.jinjunhang.onlineclass.service.GetLiveListenerResponse;
+import com.jinjunhang.onlineclass.service.GetSongInfoRequest;
+import com.jinjunhang.onlineclass.service.GetSongInfoResponse;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.LiveSongListViewCellAdapter;
+import com.jinjunhang.onlineclass.ui.cell.SongAdvCell;
+import com.jinjunhang.onlineclass.ui.cell.SongListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.LiveCommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
-import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
@@ -50,12 +51,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class LiveSongFragment extends BaseSongFragment  {
 
-    public final static int MAX_COMMENT_COUNT = 200;
+    public final static int MAX_COMMENT_COUNT = 10;
 
     private final static String TAG = LogHelper.makeLogTag(LiveSongFragment.class);
-    private LiveCommentHeaderCell mCommentHeaderCell;
     private String mLastCommentId = "-1";
-    private int commentCount = 0;
 
     private boolean isUpdatingChat = false;
     private int mUpdateChatCount = 0;
@@ -90,6 +89,10 @@ public class LiveSongFragment extends BaseSongFragment  {
         if (mUpdateChatCount % 15 == 0) {
             new GetLiveListenerTask().execute();
         }
+
+        if (mUpdateChatCount % 3 == 0) {
+            new GetSongInfoTask().execute();
+        }
     }
 
     private void stopChatUpdate() {
@@ -121,11 +124,22 @@ public class LiveSongFragment extends BaseSongFragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        commentCount = 0;
-        mCommentHeaderCell = new LiveCommentHeaderCell(getActivity());
         new GetLiveSongCommentsTask().execute();
         scheduleChatUpdate();
         return v;
+    }
+
+    @Override
+    protected void createAdapter(View container) {
+        View playListView = container.findViewById(R.id.play_list_view);
+        mPlayerCell = createPlayerCell();
+        mPlayerCell.setPlayerListView(playListView);
+
+        LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
+
+        mAdapter = new LiveSongListViewCellAdapter(getActivity(), song, mPlayerCell);
+        mPlayerCell.setAdapter(mAdapter);
+        LogHelper.d(TAG, "mAdapter.size = " + mAdapter.getCount());
     }
 
     @Override
@@ -147,44 +161,16 @@ public class LiveSongFragment extends BaseSongFragment  {
     }
 
 
-
-
     private void addMoreComments(List<Comment> comments) {
-        List<ListViewCell> cells = mAdapter.getCells();
-        LogHelper.d(TAG, "cells.size = " + cells.size() + ", commentCount = " + commentCount);
-
-        if (cells.size() == 2) {
-            cells.add(mCommentHeaderCell);
-
-            if (commentCount == 0) {
-                cells.add(new  NoCommentCell(getActivity()));
-            }
-        }
-
-        if (comments.size() == 0) {
-            return;
-        }
-
-        if (cells.size() >= 4) {
-            ListViewCell thirdCell = mAdapter.getItem(3);
-            if (thirdCell instanceof NoCommentCell) {
-                cells.remove(3);
-            }
-        }
-
-        comments = Lists.reverse(comments);
-        for (Comment comment : comments) {
-            CommentCell cell = new CommentCell(getActivity(), comment);
-            cells.add(3, cell);
-        }
-
-        mAdapter.notifyDataSetChanged();
+        LiveSongListViewCellAdapter adapter = (LiveSongListViewCellAdapter)mAdapter;
+        adapter.addComments(comments);
     }
 
 
     @Override
     protected void reloadNewSong() {
         super.reloadNewSong();
+        //TODO, 更新adapter
         mLastCommentId = "-1";
         new GetLiveSongCommentsTask().execute();
     }
@@ -246,7 +232,7 @@ public class LiveSongFragment extends BaseSongFragment  {
                 isUpdatingChat = false;
                 return;
             }
-            commentCount += resp.getCommentList().size();
+            //commentCount += resp.getCommentList().size();
             if (resp.getCommentList().size() > 0) {
                 mLastCommentId = resp.getCommentList().get(0).getId() + "";
             }
@@ -286,20 +272,23 @@ public class LiveSongFragment extends BaseSongFragment  {
                 Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
                 return;
             }
-            commentCount += resp.getCommentList().size();
+            //  commentCount += resp.getCommentList().size();
             if (resp.getCommentList().size() > 0) {
                 mLastCommentId = resp.getCommentList().get(0).getId() + "";
             }
 
             List<Comment> newComments =  resp.getCommentList();
-            addMoreComments(newComments);
+            getAdapter().addComments(newComments);
 
             Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
             mCommentEditText.setText("");
 
-            mAdapter.notifyDataSetChanged();
             isUpdatingChat = false;
         }
+    }
+
+    private LiveSongListViewCellAdapter getAdapter() {
+        return (LiveSongListViewCellAdapter)mAdapter;
     }
 
     private  class GetLiveListenerTask extends AsyncTask<Void ,Void, GetLiveListenerResponse> {
@@ -322,4 +311,28 @@ public class LiveSongFragment extends BaseSongFragment  {
         }
     }
 
+    private class GetSongInfoTask extends AsyncTask<Void, Void, GetSongInfoResponse> {
+        @Override
+        protected GetSongInfoResponse doInBackground(Void... params) {
+            Song song = mMusicPlayer.getCurrentPlaySong();
+            GetSongInfoRequest request = new GetSongInfoRequest(song);
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetSongInfoResponse resp) {
+            super.onPostExecute(resp);
+            if (resp.isSuccess()) {
+                LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
+                if (song.getId().equals(resp.getSong().getId())) {
+                    LiveSong newSong = (LiveSong) resp.getSong();
+                    song.updateSongAdvInfo(newSong.hasAdvImage(), newSong.getAdvImageUrl(), newSong.getAdvUrl());
+                    LogHelper.d(TAG, "newSong.hasAdvImage = " + newSong.hasAdvImage());
+                    LogHelper.d(TAG, "song.hasAdvImage = " + song.hasAdvImage()+ ", song.isupdate = " + song.isSongAdvInfoChanged());
+                }
+            }
+        }
+    }
+
 }
+

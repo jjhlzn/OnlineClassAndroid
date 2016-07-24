@@ -134,6 +134,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/song/livelistener";
     }
 
+    public static String GetSongInfoUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/song/getsonginfo";
+    }
+
     //Comment
     public static String SendCommentUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/comment/add";

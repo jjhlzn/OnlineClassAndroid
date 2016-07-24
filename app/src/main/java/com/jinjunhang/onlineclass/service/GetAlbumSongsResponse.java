@@ -39,8 +39,7 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             JSONObject json = jsonArray.getJSONObject(i);
 
             Song song;
-            //LogHelper.d(TAG, "req.getAlbum().getAlbumType().getName() = " + req.getAlbum().getAlbumType().getName());
-            //LogHelper.d(TAG, "AlbumType.LiveAlbumType.getName() = " + AlbumType.LiveAlbumType.getName());
+
             if (req.getAlbum().getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName())) {
                 LiveSong liveSong = new LiveSong();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -59,6 +58,11 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
 
                 liveSong.setImageUrl(json.getString("image"));
                 liveSong.setListenPeople(json.getString("listenPeople"));
+                liveSong.setHasAdvImage(json.getBoolean("hasAdvImage"));
+                if (liveSong.hasAdvImage()) {
+                    liveSong.setAdvImageUrl(json.getString("advImageUrl"));
+                    liveSong.setAdvUrl(json.getString("advUrl"));
+                }
                 song = liveSong;
             } else {
                 song = new Song();
@@ -75,8 +79,6 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             songSetting.setCanComment(settingJson.getBoolean("canComment"));
             songSetting.setMaxCommentWord(settingJson.getInt("maxCommentWord"));
             song.setSettings(songSetting);
-
-
 
             mResultSet.add(song);
         }

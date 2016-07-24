@@ -5,17 +5,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.jinjunhang.player.utils.LogHelper;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by jjh on 2016-7-3.
  */
 public class ListViewCellAdapter extends ArrayAdapter<ListViewCell> {
-    private List<ListViewCell> mCells;
+    private static final String TAG = LogHelper.makeLogTag(ListViewCellAdapter.class);
+    protected List<ListViewCell> mCells;
+    protected Activity mActivity;
 
     public ListViewCellAdapter(Activity activity, List<ListViewCell> cells) {
         super(activity, 0, cells);
         mCells = cells;
+        mActivity = activity;
+    }
+
+    public ListViewCellAdapter(Activity activity) {
+        this(activity, new ArrayList<ListViewCell>());
+
     }
 
     public void setCells(List<ListViewCell> cells) {
@@ -40,6 +51,7 @@ public class ListViewCellAdapter extends ArrayAdapter<ListViewCell> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListViewCell item = getItem(position);
+        LogHelper.d(TAG, "position = " + position);
         return item.getView();
     }
 }

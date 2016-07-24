@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,22 +22,17 @@ import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
-import com.jinjunhang.onlineclass.ui.cell.SongListVieCellAdapter;
+import com.jinjunhang.onlineclass.ui.cell.SongListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
-import com.jinjunhang.onlineclass.ui.lib.LinearLayoutThatDetectsSoftKeyboard;
-import com.jinjunhang.onlineclass.ui.lib.SoftKeyboardHandledLinearLayout;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -50,7 +44,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
     protected Song mSong;
     protected MusicPlayer mMusicPlayer;
 
-    protected SongListVieCellAdapter mAdapter;
+    protected SongListViewCellAdapter mAdapter;
 
     protected PlayerCell mPlayerCell;
 
@@ -252,7 +246,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         }
     }
 
-    private void createAdapter(View container) {
+    protected void createAdapter(View container) {
         ArrayList<ListViewCell> viewCells = new ArrayList<>();
         View playListView = container.findViewById(R.id.play_list_view);
         mPlayerCell = createPlayerCell();
@@ -262,7 +256,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
 
         viewCells.add(new WideSectionSeparatorCell(getActivity()));
 
-        mAdapter = new SongListVieCellAdapter(getActivity(), viewCells);
+        mAdapter = new SongListViewCellAdapter(getActivity(), viewCells);
         mPlayerCell.setAdapter(mAdapter);
     }
 

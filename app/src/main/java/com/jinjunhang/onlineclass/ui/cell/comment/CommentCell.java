@@ -42,7 +42,7 @@ public class CommentCell extends BaseListViewCell {
         image.setOval(true);
 
         //Glide.with(mActivity).load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId())).into(image);
-        Log.d(TAG, "url = " + ServiceConfiguration.GetUserProfileImage(mComment.getUserId()));
+        //Log.d(TAG, "url = " + ServiceConfiguration.GetUserProfileImage(mComment.getUserId()));
         Glide
                 .with(mActivity)
                 .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
