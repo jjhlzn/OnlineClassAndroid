@@ -170,7 +170,7 @@ public class LiveSongFragment extends BaseSongFragment  {
     @Override
     protected void reloadNewSong() {
         super.reloadNewSong();
-        //TODO, 更新adapter
+        getAdapter().loadNewSong((LiveSong)mMusicPlayer.getCurrentPlaySong());
         mLastCommentId = "-1";
         new GetLiveSongCommentsTask().execute();
     }

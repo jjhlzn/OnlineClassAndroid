@@ -41,6 +41,12 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         recreateCells();
     }
 
+    public void loadNewSong(LiveSong song) {
+        mSong = song;
+        mCommentCells = new ArrayList<CommentCell>();
+        recreateCells();
+    }
+
     private void recreateCells() {
         mCells = new ArrayList<>();
         mCells.add(mPlayerCell);
