@@ -15,6 +15,7 @@ import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
+import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell2;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
@@ -53,17 +54,25 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         mFunctionManager = new ExtendFunctionManager(maxShowRows, getActivity(), true);
 
+
+
         if (mCells.size() == 0) {
+            int i = 0;
             for (AlbumType albumType : mAlbumTypes) {
-                AlbumTypeCell item = new AlbumTypeCell(getActivity(), albumType);
+                AlbumTypeCell item = null;
+                if (i == 0)
+                    item = new AlbumTypeCell2(getActivity(), albumType);
+                else
+                    item = new AlbumTypeCell(getActivity(), albumType);
                 mCells.add(item);
+                i++;
             }
 
             mCells.add(new SectionSeparatorCell(getActivity()));
 
 
             int functionRowCount = mFunctionManager.getRowCount();
-            for (int i = 0; i < functionRowCount; i++) {
+            for (i = 0; i < functionRowCount; i++) {
                 mCells.add(mFunctionManager.getCell(i));
             }
 

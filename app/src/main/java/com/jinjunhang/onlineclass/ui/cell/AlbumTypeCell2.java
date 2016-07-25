@@ -13,13 +13,12 @@ import com.jinjunhang.onlineclass.model.AlbumType;
 /**
  * Created by lzn on 16/6/20.
  */
-public class AlbumTypeCell extends BaseListViewCell {
+public class AlbumTypeCell2 extends AlbumTypeCell {
 
-    protected AlbumType mAlbumType;
 
-    public AlbumTypeCell(Activity activity, AlbumType albumType) {
-        super(activity);
-        mAlbumType = albumType;
+
+    public AlbumTypeCell2(Activity activity, AlbumType albumType) {
+        super(activity, albumType);
     }
 
     public AlbumType getAlbumType() {
@@ -37,7 +36,7 @@ public class AlbumTypeCell extends BaseListViewCell {
 
     @Override
     public ViewGroup getView() {
-        View convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_albumtype, null);
+        View convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_albumtype2, null);
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.albumType_list_item_image);
         imageView.setImageResource(mAlbumType.getImage());

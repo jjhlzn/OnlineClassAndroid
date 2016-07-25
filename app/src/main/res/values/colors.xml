@@ -29,6 +29,7 @@
 
     <color name="hint_color">#ccc</color>
     <color name="black">#000</color>
+    <color name="red">#f10707</color>
 
     <color name="background_shadow">#dc262525</color>
 
