@@ -11,8 +11,8 @@ public abstract class ServerRequest {
     private boolean isResendForInvalidToken = false;
     private String mTest;
     private int  connectionTimeout = 5; //in seconds
-    private int  writeTimeout = 5; //in seconds
-    private int  readTimeout = 5; //in seconds
+    private int  writeTimeout = 10; //in seconds
+    private int  readTimeout = 10; //in seconds
 
     public String getTest() {
         return mTest;

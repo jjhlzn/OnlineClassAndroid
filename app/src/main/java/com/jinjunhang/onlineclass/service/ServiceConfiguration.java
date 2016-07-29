@@ -156,6 +156,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/checkUpgrade";
     }
 
+    public static String GetParameterInfoUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getparameterinfo";
+    }
+
 
     //ServiceLocator
     public static String GetServiceLocatorUrl() {

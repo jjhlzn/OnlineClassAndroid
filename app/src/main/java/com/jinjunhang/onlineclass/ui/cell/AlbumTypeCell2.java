@@ -15,10 +15,15 @@ import com.jinjunhang.onlineclass.model.AlbumType;
  */
 public class AlbumTypeCell2 extends AlbumTypeCell {
 
-
+    private String mDescription = "";
 
     public AlbumTypeCell2(Activity activity, AlbumType albumType) {
         super(activity, albumType);
+    }
+
+    public AlbumTypeCell2(Activity activity, AlbumType albumType, String description) {
+        super(activity, albumType);
+        mDescription = description;
     }
 
     public AlbumType getAlbumType() {
@@ -34,6 +39,10 @@ public class AlbumTypeCell2 extends AlbumTypeCell {
         return false;
     }
 
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
     @Override
     public ViewGroup getView() {
         View convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_albumtype2, null);
@@ -44,7 +53,8 @@ public class AlbumTypeCell2 extends AlbumTypeCell {
         TextView nameTextView = (TextView) convertView.findViewById(R.id.albumType_list_item_name);
         nameTextView.setText(mAlbumType.getName());
 
-
+        TextView descriptionTextView = (TextView) convertView.findViewById(R.id.albumType_list_item_detail);
+        descriptionTextView.setText(mDescription);
 
         return (LinearLayout)convertView.findViewById(R.id.list_item_albumtype_viewgroup);
     }

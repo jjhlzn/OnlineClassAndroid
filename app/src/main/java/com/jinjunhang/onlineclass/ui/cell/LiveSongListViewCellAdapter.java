@@ -73,8 +73,7 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
     }
 
     public void addComments(List<Comment> comments) {
-        if (comments.size() == 0 && !mSong.isSongAdvInfoChanged()) {
-            LogHelper.d(TAG, "addComments exit");
+        if (comments.size() == 0) {
             return;
         }
 
@@ -94,8 +93,12 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
 
         mCommentCells = newCommentCells;
         recreateCells();
-        mSong.setSongAdvInfoChanged(false);
+        notifyDataSetChanged();
+    }
 
+    public void notifyAdvChanged() {
+        mSong.setSongAdvInfoChanged(false);
+        recreateCells();
         notifyDataSetChanged();
     }
 

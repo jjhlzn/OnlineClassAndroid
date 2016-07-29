@@ -1,8 +1,10 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -131,6 +133,12 @@ public class WebBrowserActivity extends AppCompatActivity {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            LogHelper.d(TAG, "url = " + url);
+            if (url.contains("/app/jfzs")) {
+                view.getContext().startActivity(
+                        new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
             view.loadUrl(url);
             return true;
         }

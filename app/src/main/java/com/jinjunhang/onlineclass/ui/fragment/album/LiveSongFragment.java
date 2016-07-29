@@ -333,6 +333,9 @@ public class LiveSongFragment extends BaseSongFragment  {
                     song.updateSongAdvInfo(newSong.hasAdvImage(), newSong.getAdvImageUrl(), newSong.getAdvUrl());
                     LogHelper.d(TAG, "newSong.hasAdvImage = " + newSong.hasAdvImage());
                     LogHelper.d(TAG, "song.hasAdvImage = " + song.hasAdvImage()+ ", song.isupdate = " + song.isSongAdvInfoChanged());
+                    if (song.isSongAdvInfoChanged()) {
+                        getAdapter().notifyAdvChanged();
+                    }
                 }
             }
         }

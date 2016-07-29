@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.service.GetParameterInfoRequest;
+import com.jinjunhang.onlineclass.service.GetParameterInfoResponse;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
@@ -34,6 +39,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     private static final String TAG = LogHelper.makeLogTag(MainPageFragment.class);
 
     private List<AlbumType> mAlbumTypes = AlbumType.getAllAlbumType();
+    private KeyValueDao mKeyValueDao;
     private List<ListViewCell> mCells = new ArrayList<>();
     private ExtendFunctionManager mFunctionManager;
     private AdvImageCell mAdvImageCell;
@@ -45,6 +51,8 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
         mListView = (ListView) v.findViewById(R.id.listView);
+
+        mKeyValueDao = KeyValueDao.getInstance(getActivity());
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);
@@ -60,9 +68,10 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             int i = 0;
             for (AlbumType albumType : mAlbumTypes) {
                 AlbumTypeCell item = null;
-                if (i == 0)
-                    item = new AlbumTypeCell2(getActivity(), albumType);
-                else
+                if (i == 0) {
+                    LogHelper.d(TAG, "liveDescription = " + mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_DESCRIPTON, ""));
+                    item = new AlbumTypeCell2(getActivity(), albumType, mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_DESCRIPTON, ""));
+                } else
                     item = new AlbumTypeCell(getActivity(), albumType);
                 mCells.add(item);
                 i++;
@@ -79,6 +88,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             mAdvImageCell = new AdvImageCell(getActivity());
             mCells.add(mAdvImageCell);
         }
+
 
 
         mAlbumTypeAdapter = new AlbumTypeAdapter(mCells);
@@ -101,6 +111,8 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                 }
             }
         });
+
+        new GetParameterTask().execute();
 
         return v;
     }
@@ -136,6 +148,33 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             ListViewCell item = getItem(position);
 
             return item.getView();
+        }
+    }
+
+    private class GetParameterTask extends AsyncTask<Void, Void, GetParameterInfoResponse> {
+
+        @Override
+        protected GetParameterInfoResponse doInBackground(Void... params) {
+            GetParameterInfoRequest request = new GetParameterInfoRequest();
+            List<String> keys = new ArrayList<>();
+            keys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
+            request.setKeywords(keys);
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetParameterInfoResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                LogHelper.e(TAG, resp.getErrorMessage());
+                return;
+            }
+
+            String liveDescription = resp.getValue(GetParameterInfoResponse.LIVE_DESCRIPTON, "");
+            mKeyValueDao.saveOrUpdate(GetParameterInfoResponse.LIVE_DESCRIPTON, liveDescription);
+            AlbumTypeCell2 cell = (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0);
+            cell.setDescription(liveDescription);
+            mAlbumTypeAdapter.notifyDataSetChanged();
         }
     }
 
