@@ -15,7 +15,7 @@ import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 public class CommentHeaderCell  extends BaseListViewCell {
 
     private int mTotalCount;
-    private TextView mHeaderTextView;
+    protected TextView mHeaderTextView;
 
     public int getTotalCount() {
         return mTotalCount;

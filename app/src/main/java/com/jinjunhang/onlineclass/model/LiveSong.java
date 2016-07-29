@@ -5,7 +5,9 @@ import android.util.Log;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by lzn on 16/6/12.
@@ -120,7 +122,7 @@ public class LiveSong extends Song {
     }
 
     public long getTotalTimeInSec() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date startTime = sdf.parse(mStartDateTime);
             Date endTime = sdf.parse(mEndDateTime);
@@ -133,12 +135,14 @@ public class LiveSong extends Song {
     }
 
     public long getTimeLeftInSec() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date endTime = sdf.parse(mEndDateTime);
             Date nowTime = sdf.parse(sdf.format(new Date()));
-            //LogHelper.d(TAG, "endDateTime = " + mEndDateTime + ", endTime = " + sdf.format(endTime) + ", nowTime = " + sdf.format(nowTime));
-           //LogHelper.d(TAG, "endTime.getTime() = " + endTime.getTime() + ", nowTime.getTime() = " + nowTime.getTime());
+            //LogHelper.d(TAG, "endTime = " + sdf.format(endTime) + ", nowTime = " + sdf.format(nowTime));
+            //LogHelper.d(TAG, "endTime.getTime() = " + endTime.getTime() + ", nowTime.getTime() = " + nowTime.getTime());
+
+            //LogHelper.d(TAG, "differ = " + (endTime.getTime() - nowTime.getTime()) / 1000);
             return (endTime.getTime() - nowTime.getTime()) / 1000;
         }
         catch (Exception ex) {

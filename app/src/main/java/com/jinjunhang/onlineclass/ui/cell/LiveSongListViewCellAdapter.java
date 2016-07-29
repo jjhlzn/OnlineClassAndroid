@@ -36,7 +36,7 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         mSong = song;
         mPlayerCell = playerCell;
         mSeparatorCell = new WideSectionSeparatorCell(activity);
-        mCommentHeaderCell = new CommentHeaderCell(activity);
+        mCommentHeaderCell = new LiveCommentHeaderCell(activity);
         mNoCommentCell = new NoCommentCell(activity);
         recreateCells();
     }

@@ -307,6 +307,10 @@ public class LiveSongFragment extends BaseSongFragment  {
             }
 
             int listenerCount = resp.getListernerCount();
+            LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
+            if (song != null) {
+                song.setListenPeople(listenerCount+"人");
+            }
             mPlayerCell.getListenerCountLabel().setText(listenerCount+"人");
         }
     }
