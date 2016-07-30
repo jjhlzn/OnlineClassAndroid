@@ -1,88 +1,89 @@
 package com.jinjunhang.onlineclass.model;
 
+import com.jinjunhang.onlineclass.service.ServiceConfiguration;
+
 /**
  * Created by jjh on 2016-6-29.
  */
 public class ServiceLinkManager {
-    private static String host = "114.215.236.171";
-    private static String port = "6012";
+
 
     public static String  MyTuiJianUrl() {
-        return "http://"+host+":"+port+"/Center/MyTuiJian";
+        return "http://"+ ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTuiJian";
     }
 
     public static String  MyOrderUrl() {
-        return "http://"+host+":"+port+"/Center/MyOrder";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyOrder";
 
     }
 
     public static String  MyAgentUrl() {
-        return  "http://"+host+":"+port+"/Center/MyAgent";
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyAgent";
 
     }
 
     public static String MyExchangeUrl() {
 
-        return "http://"+host+":"+port+"/Center/MyExchange";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyExchange";
 
     }
 
     public static String MyTeamUrl() {
 
-        return "http://"+host+":"+port+"/Center/MyTeam";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTeam";
 
     }
 
     public static String FunctionCardManagerUrl() {
 
-        return "http://"+host+":"+port+"/Service/CardManage";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/CardManage";
 
     }
 
     public static String FunctionCustomerServiceUrl() {
 
-        return "http://"+host+":"+port+"/Service/Custom";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/Custom";
 
     }
 
 
     public static String FunctionUpUrl() {
 
-        return "http://"+host+":"+port+"/Service/CreditLines";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/CreditLines";
 
     }
 
     public static String FunctionFastCardUrl() {
 
-        return "http://"+host+":"+port+"/Service/FastCard";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/FastCard";
 
     }
 
     public static String FunctionCreditSearchUrl() {
 
-        return "http://"+host+":"+port+"/Service/Ipcrs";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/Ipcrs";
 
     }
 
 
     public static String FunctionMccSearchUrl() {
-        return "http://"+host+":"+port+"/Service/MccSearch";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/MccSearch";
     }
 
     public static String FunctionJiaoFeiUrl() {
-        return "http://"+host+":"+port+"/Service/Fee";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/Fee";
     }
 
     public static String FunctionLoanUrl() {
-        return "http://"+host+":"+port+"/Service/Loan";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/Loan";
     }
 
     public static String FunctionCarLoanUrl() {
-        return "http://"+host+":"+port+"/Service/CarLoan";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Service/CarLoan";
     }
 
     public static String FunctionShopUrl() {
-        return "http://"+host+":"+port+"/shop/shopindex";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/shop/shopindex";
     }
 
 
@@ -91,19 +92,19 @@ public class ServiceLinkManager {
     }
 
     public static String AgreementUrl() {
-        return "http://"+host+":"+port+"/agreement.html";
+        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/agreement.html";
     }
 
     public static String MyjifenUrl() {
-        return  "http://"+host+":"+port+"/Center/MyPoint";
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyPoint";
     }
 
     public static String MyChaifuUrl() {
-        return  "http://"+host+":"+port+"/Center/MyMoney";
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyMoney";
     }
 
     public static String MyTeamUrl2() {
-        return  "http://"+host+":"+port+"/Center/MyTeam2";
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTeam2";
     }
 
 
