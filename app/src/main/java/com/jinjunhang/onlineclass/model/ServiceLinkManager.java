@@ -87,7 +87,7 @@ public class ServiceLinkManager {
 
 
     public static String ShareQrImageUrl() {
-        return "http://"+host+":"+port+"/Center/MyLink.aspx";
+        return "http://jf.yhkamani.com/Center/MyLink.aspx";
     }
 
     public static String AgreementUrl() {
