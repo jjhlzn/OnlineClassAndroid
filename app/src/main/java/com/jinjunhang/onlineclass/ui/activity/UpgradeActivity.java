@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -84,6 +85,12 @@ public class UpgradeActivity extends AppCompatActivity {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            LogHelper.d(TAG, "url = " + url);
+            if (url.contains("/app/jfzs")) {
+                view.getContext().startActivity(
+                        new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
             view.loadUrl(url);
             return true;
         }
