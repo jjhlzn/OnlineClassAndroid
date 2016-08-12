@@ -83,7 +83,7 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                 final LoginRequest req = new LoginRequest();
                 req.setUserName(userName);
                 req.setPassword(password);
-                //TODO: mock device token
+
                 mLoading.show("");
                 if (!"".equals(mDeviceToken)) {
                     req.setDeviceToken(mDeviceToken);
@@ -174,5 +174,11 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }

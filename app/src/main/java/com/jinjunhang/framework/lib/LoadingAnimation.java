@@ -26,8 +26,6 @@ public class LoadingAnimation {
 
         ViewGroup container = (ViewGroup) mContext.findViewById(R.id.fragmentContainer);
 
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(100, 100);
-
         container.addView(mLoading);
 
     }
