@@ -93,7 +93,7 @@ public class LaunchActivity extends Activity {
         if (mKeyValueDao.getValue(KeyValueDao.IS_GET_SERVICE_LOCATOR, "1").equals("1")) {
             new GetServiceLocatorTask().execute();
         } else {
-            new CheckUpgradeTask().execute();
+            registerXinGeAndGoToNextActivity();
         }
 
     }
@@ -125,82 +125,6 @@ public class LaunchActivity extends Activity {
         startActivity(i);
     }
 
-    private class CheckUpgradeTask extends AsyncTask<Void, Void, CheckUpgradeResponse> {
-        @Override
-        protected CheckUpgradeResponse doInBackground(Void... params) {
-            CheckUpgradeRequest request = new CheckUpgradeRequest();
-            return new BasicService().sendRequest(request);
-        }
-
-
-        @Override
-        protected void onPostExecute(final CheckUpgradeResponse resp) {
-            super.onPostExecute(resp);
-
-            if (!resp.isSuccess()) {
-                registerXinGeAndGoToNextActivity();
-                return;
-            }
-
-            if (resp.isNeedUpgrade()) {
-
-                final boolean isForceUpgrade = "force".equals(resp.getUpgradeType());
-                LogHelper.d(TAG, "need upgrade, and isForceUpgrade = " + isForceUpgrade);
-                String title = "请升级新版本";
-                if (!isForceUpgrade) {
-                    title = "有新版本，去升级吗？";
-                } else {
-                    chooseUpgrade = true;
-                }
-
-                showForceUpgradeMessage(LaunchActivity.this, title, !isForceUpgrade,  new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        LogHelper.d(TAG, "click which = " + which);
-                        if (which == 0) {
-                            LogHelper.d(TAG, "cancel clicked");
-                            registerXinGeAndGoToNextActivity();
-                        } else {
-                            chooseUpgrade = true;
-                            LogHelper.d(TAG, "upgrade clicked");
-                            Intent i = new Intent(LaunchActivity.this, UpgradeActivity.class)
-                                    .putExtra(UpgradeActivity.EXTRA_URL, resp.getUpgradeUrl())
-                                    .putExtra(UpgradeActivity.EXTRA_TITLE, "升级")
-                                    .putExtra(UpgradeActivity.EXTRA_ISFORCEUPGRADE, isForceUpgrade);
-                            startActivity(i);
-
-                            //prevent return back
-                            if (isForceUpgrade) {
-                                finish();
-                            }
-                        }
-                    }
-                });
-            } else {
-                registerXinGeAndGoToNextActivity();
-            }
-        }
-    }
-
-    private void showForceUpgradeMessage(Context context, String message, boolean hasCancelButton, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-        dlgAlert.setMessage(message);
-        dlgAlert.setPositiveButton("去升级", listener);
-        if (hasCancelButton)
-            dlgAlert.setNegativeButton("取消", null);
-        dlgAlert.setCancelable(false);
-
-        dlgAlert.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (!chooseUpgrade) {
-                    registerXinGeAndGoToNextActivity();
-                }
-            }
-        });
-        dlgAlert.create().show();
-    }
-
 
     private class GetServiceLocatorTask extends AsyncTask<Void, Void, GetServiceLocatorResponse> {
 
@@ -224,7 +148,7 @@ public class LaunchActivity extends Activity {
                 }
             }
 
-            new CheckUpgradeTask().execute();
+            registerXinGeAndGoToNextActivity();
         }
     }
 }

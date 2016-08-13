@@ -83,6 +83,7 @@ public class SettingsFragment extends android.support.v4.app.Fragment  {
             mLoginUserDao.deleteAll();
             Intent i = new Intent(getActivity(), LoginActivity.class);
             startActivity(i);
+            getActivity().finish();
 
         }
 

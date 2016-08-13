@@ -17,8 +17,8 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 = "jjhaudio.hengdianworld.com";
-    private final static int port1 = 80;
+    private final static String serverName1 = "192.168.31.146"; //"jjhaudio.hengdianworld.com";
+    private final static int port1 = 3000;
 
 
     static {
