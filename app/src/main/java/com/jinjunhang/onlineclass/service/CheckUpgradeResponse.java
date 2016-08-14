@@ -22,6 +22,7 @@ public class CheckUpgradeResponse extends ServerResponse {
     private boolean mIsNeedUpgrade;
     private  String mUpgradeType;
     private String mUpgradeUrl;
+    private String mUpgradeFileUrl;
 
     public String getNewestVersion() {
         return mNewestVersion;
@@ -55,11 +56,20 @@ public class CheckUpgradeResponse extends ServerResponse {
         mUpgradeUrl = upgradeUrl;
     }
 
+    public String getUpgradeFileUrl() {
+        return mUpgradeFileUrl;
+    }
+
+    public void setUpgradeFileUrl(String upgradeFileUrl) {
+        mUpgradeFileUrl = upgradeFileUrl;
+    }
+
     @Override
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
         mNewestVersion = json.getString("newestVersion");
         mIsNeedUpgrade = json.getBoolean("isNeedUpgrade");
         mUpgradeType = json.getString("upgradeType");
         mUpgradeUrl = json.getString("upgradeUrl");
+        mUpgradeFileUrl = json.getString("upgradeFileUrl");
     }
 }

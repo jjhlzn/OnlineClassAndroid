@@ -66,9 +66,9 @@ public class LivePlayerCell extends PlayerCell {
         LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
 
         int progress = (int)((double)song.getPlayedTimeInSec() / song.getTotalTimeInSec() * 1000);
-        LogHelper.d(TAG, "startTime = " + song.getStartDateTime() + ", endTime = " + song.getEndDateTime());
-        LogHelper.d(TAG, "leftTime = " + song.getTimeLeftInSec() + ", palyedTime = " + song.getPlayedTimeInSec() + ", totalTime = " + song.getTotalTimeInSec());
-        LogHelper.d(TAG, "progress = " + progress / 10 + "%");
+        //LogHelper.d(TAG, "startTime = " + song.getStartDateTime() + ", endTime = " + song.getEndDateTime());
+        //LogHelper.d(TAG, "leftTime = " + song.getTimeLeftInSec() + ", palyedTime = " + song.getPlayedTimeInSec() + ", totalTime = " + song.getTotalTimeInSec());
+        //LogHelper.d(TAG, "progress = " + progress / 10 + "%");
         mSeekbar.setProgress(progress );
         mPlayTimeTextView.setText(getNowTimeString());
 
@@ -93,6 +93,7 @@ public class LivePlayerCell extends PlayerCell {
         mSeekbar.setMax(0);
         mSeekbar.setMax(1000);
         //mSeekbar.setProgress(50);
+        updateProgress();
         scheduleSeekbarUpdate();
     }
 

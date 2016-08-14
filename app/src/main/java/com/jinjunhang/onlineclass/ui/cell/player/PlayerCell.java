@@ -117,9 +117,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             v = mActivity.getLayoutInflater().inflate(playerView, null);
         }
 
-
-        setPlayButtons(v);
         setSeekbar(v);
+        setPlayButtons(v);
         setDurationLabel();
         loadArtImage();
 
@@ -212,7 +211,6 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mSeekbar = (SeekBar) v.findViewById(R.id.player_seekbar);
         mSeekbar.setMax(0);
         mSeekbar.setMax(1000);
-
         updateProgress();
         mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

@@ -272,7 +272,7 @@ public class MainActivity extends BaseMusicActivity  {
                             progress.setCancelable(false);
                             //  mProgressDialog.setCanceledOnTouchOutside(false);
                             progress.show();
-                            new DownloadTask().execute(resp.getUpgradeUrl());
+                            new DownloadTask().execute(resp.getUpgradeFileUrl());
 
 
                         }
