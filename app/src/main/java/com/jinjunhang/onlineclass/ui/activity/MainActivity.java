@@ -262,9 +262,9 @@ public class MainActivity extends BaseMusicActivity  {
                             LogHelper.d(TAG, "upgrade clicked");
                             progress = new ProgressDialog(MainActivity.this);
                             // Set your ProgressBar Title
-                            progress.setTitle("下载");
+                            progress.setTitle("新版本");
                             // Set your ProgressBar Message
-                            progress.setMessage("下载应用, 请稍等!");
+                            progress.setMessage("下载新版本App, 请稍等!");
                             progress.setIndeterminate(false);
                             progress.setMax(100);
                             progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
