@@ -70,7 +70,8 @@ public class LivePlayerCell extends PlayerCell {
         //LogHelper.d(TAG, "leftTime = " + song.getTimeLeftInSec() + ", palyedTime = " + song.getPlayedTimeInSec() + ", totalTime = " + song.getTotalTimeInSec());
         //LogHelper.d(TAG, "progress = " + progress / 10 + "%");
         mSeekbar.setProgress(progress );
-        mPlayTimeTextView.setText(getNowTimeString());
+        if (mPlayTimeTextView != null)
+            mPlayTimeTextView.setText(getNowTimeString());
 
     }
 

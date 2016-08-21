@@ -30,7 +30,7 @@ public class GetSongInfoResponse extends ServerResponse {
         GetSongInfoRequest req = (GetSongInfoRequest)request;
         JSONObject json = jsonObject.getJSONObject("song");
 
-        if (req.getSong().getAlbum().getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName())) {
+        if (req.getSong().isLive()) {
             LiveSong liveSong = new LiveSong();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             if (json.has("startTime")) {

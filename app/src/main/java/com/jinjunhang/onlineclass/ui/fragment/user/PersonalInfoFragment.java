@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.SetNameActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.SetNickNameActivity;
 import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
@@ -52,6 +54,15 @@ public class PersonalInfoFragment extends BaseFragment {
             @Override
             public void onClick(ListViewCell cell) {
                 Intent i = new Intent(getActivity(), SetNickNameActivity.class);
+                startActivity(i);
+            }
+        }));
+        mItems.add(new LineRecord("更多", "", new CellClickListener() {
+            @Override
+            public void onClick(ListViewCell cell) {
+                Intent i = new Intent(getActivity(), WebBrowserActivity.class);
+                i.putExtra(WebBrowserActivity.EXTRA_TITLE, "我的资料");
+                i.putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.PersonalInfoUrl());
                 startActivity(i);
             }
         }));

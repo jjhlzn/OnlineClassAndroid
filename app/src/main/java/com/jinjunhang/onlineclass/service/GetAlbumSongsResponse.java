@@ -40,7 +40,7 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
 
             Song song;
 
-            if (req.getAlbum().getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName())) {
+            if (req.getAlbum().isLive()) {
                 LiveSong liveSong = new LiveSong();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 if (json.has("startTime")) {

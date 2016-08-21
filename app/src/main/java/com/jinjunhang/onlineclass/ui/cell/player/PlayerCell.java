@@ -258,7 +258,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mSeekbar.setProgress(progress );
 
         long playTimeInSec = currentPosition / 1000;
-        mPlayTimeTextView.setText(TimeUtil.secondsToString(playTimeInSec));
+        if (mPlayTimeTextView != null)
+            mPlayTimeTextView.setText(TimeUtil.secondsToString(playTimeInSec));
     }
 
     private void stopSeekbarUpdate() {

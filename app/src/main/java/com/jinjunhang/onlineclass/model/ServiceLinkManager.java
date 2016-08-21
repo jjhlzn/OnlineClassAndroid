@@ -107,6 +107,10 @@ public class ServiceLinkManager {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTeam2";
     }
 
+    public static String PersonalInfoUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/PersonalInfo";
+    }
+
 
 }
 
