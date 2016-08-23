@@ -96,6 +96,23 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         notifyDataSetChanged();
     }
 
+    public void addComment(Comment comment) {
+        if (comment == null) {
+            return;
+        }
+
+        List<CommentCell> newCommentCells = new ArrayList<>();
+        newCommentCells.add(new CommentCell(mActivity, comment));
+
+        for (int i = 0; i < LiveSongFragment.MAX_COMMENT_COUNT - 1 && i < mCommentCells.size(); i++) {
+            newCommentCells.add(mCommentCells.get(i));
+        }
+
+        mCommentCells = newCommentCells;
+        recreateCells();
+        notifyDataSetChanged();
+    }
+
     public void notifyAdvChanged() {
         mSong.setSongAdvInfoChanged(false);
         recreateCells();

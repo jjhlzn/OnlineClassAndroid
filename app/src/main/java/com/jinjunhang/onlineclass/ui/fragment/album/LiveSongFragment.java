@@ -18,6 +18,7 @@ import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsResponse;
@@ -39,12 +40,20 @@ import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.player.utils.LogHelper;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import io.socket.client.Ack;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -69,24 +78,76 @@ public class LiveSongFragment extends BaseSongFragment  {
             updateChat();
         }
     };
-    private static final long CHAT_UPDATE_INTERNAL = 5000;
+    private static final long CHAT_UPDATE_INTERNAL = 10000;
     private static final long CHAT_UPDATE_INITIAL_INTERVAL = 2000;
 
-    private void updateChat() {
-        if (isUpdatingChat)
+    //chat
+    private Socket mSocket;
+
+    public static String CHAT_MESSAGE_CMD = "chat message";
+
+    private void initChat() {
+        if (mSocket != null)
             return;
 
+        try {
+            mSocket = IO.socket(ServiceLinkManager.ChatServerUrl());
+            mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    LogHelper.d(TAG, "socket connected");
+                }
+
+            }).on(CHAT_MESSAGE_CMD, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    LogHelper.d(TAG, "get a new message");
+                    final Comment comment = new Comment();
+                    try {
+                        JSONObject json = new JSONObject((String)args[0]);
+                        comment.setContent(json.getString("comment"));
+                        comment.setTime(json.getString("time"));
+                        comment.setId(json.getString("id"));
+                        comment.setNickName(json.getString("name"));
+                        comment.setUserId(json.getString("userId"));
+                    } catch (Exception ex) {
+                        LogHelper.e(TAG, ex);
+                        return;
+                    }
+                    addCommentToList(comment);
+                }
+            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    LogHelper.d(TAG, "socket disconnected");
+                }
+            });
+            mSocket.connect();
+        }catch (Exception ex) {
+            LogHelper.e(TAG, ex);
+        }
+    }
+
+    private synchronized void addCommentToList(final Comment comment) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getAdapter().addComment(comment);
+            }
+        });
+    }
+
+    private void releaseChat() {
+        if (mSocket != null) {
+            mSocket.disconnect();
+            mSocket.off();
+        }
+    }
+
+    private void updateChat() {
         mUpdateChatCount++;
 
-        int state = mMusicPlayer.getState();
-        LogHelper.d(TAG, "musicPlayer.state = " + state + ", currentIndex = " + mMusicPlayer.getCurrentPlaySongIndex());
-        if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_IDLE ) {
-            mMusicPlayer.play(mMusicPlayer.getSongs(),  mMusicPlayer.getCurrentPlaySongIndex());
-        }
-
-        new GetLiveSongCommentsTask().execute();
-
-        if (mUpdateChatCount % 15 == 0) {
+        if (mUpdateChatCount % 6 == 0) {
             new GetLiveListenerTask().execute();
         }
 
@@ -145,6 +206,7 @@ public class LiveSongFragment extends BaseSongFragment  {
     @Override
     public void onResume() {
         super.onResume();
+        initChat();
         mMusicPlayer.addMusicPlayerControlListener(this);
     }
 
@@ -157,6 +219,7 @@ public class LiveSongFragment extends BaseSongFragment  {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        releaseChat();
         stopChatUpdate();
     }
 
@@ -247,7 +310,35 @@ public class LiveSongFragment extends BaseSongFragment  {
     /***
      * Send Live Comment Task
      */
+
     private class SendLiveCommentTask extends AsyncTask<SendLiveCommentRequest, Void, SendLiveCommentResponse> {
+        private SendLiveCommentRequest mRequest;
+
+        @Override
+        protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
+            if (mSocket.connected())
+                mSocket.connect();
+            mRequest = params[0];
+
+            mSocket.emit(CHAT_MESSAGE_CMD, mRequest.getRequestJson(), new Ack() {
+                @Override
+                public void call(Object... args) {
+                    LogHelper.d(TAG, "server received.");
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
+                            mCommentEditText.setText("");
+                        }
+                    });
+
+                }
+            });
+            return null;
+        }
+    }
+
+    private class SendLiveCommentTask1 extends AsyncTask<SendLiveCommentRequest, Void, SendLiveCommentResponse> {
         private SendLiveCommentRequest mRequest;
 
         @Override
@@ -331,8 +422,8 @@ public class LiveSongFragment extends BaseSongFragment  {
                 if (song.getId().equals(resp.getSong().getId())) {
                     LiveSong newSong = (LiveSong) resp.getSong();
                     song.updateSongAdvInfo(newSong.hasAdvImage(), newSong.getAdvImageUrl(), newSong.getAdvUrl());
-                    LogHelper.d(TAG, "newSong.hasAdvImage = " + newSong.hasAdvImage());
-                    LogHelper.d(TAG, "song.hasAdvImage = " + song.hasAdvImage()+ ", song.isupdate = " + song.isSongAdvInfoChanged());
+                    //LogHelper.d(TAG, "newSong.hasAdvImage = " + newSong.hasAdvImage());
+                    //LogHelper.d(TAG, "song.hasAdvImage = " + song.hasAdvImage()+ ", song.isupdate = " + song.isSongAdvInfoChanged());
                     if (song.isSongAdvInfoChanged()) {
                         getAdapter().notifyAdvChanged();
                     }

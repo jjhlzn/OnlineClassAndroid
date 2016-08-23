@@ -1,5 +1,14 @@
 package com.jinjunhang.framework.service;
 
+import android.os.Build;
+import android.util.DisplayMetrics;
+
+import com.google.gson.Gson;
+import com.jinjunhang.onlineclass.BuildConfig;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -61,5 +70,59 @@ public abstract class ServerRequest {
         return params;
     }
     public abstract Class getServerResponseClass();
+
+
+    public String getRequestJson() {
+        Map<String, Object> params = addUserAndDeviceInfo(getParams());
+        Gson gson = new Gson();
+        String paramsString = gson.toJson(params);
+        return paramsString;
+    }
+
+
+    private Map<String, Object> addUserAndDeviceInfo(Map<String, Object> params) {
+        Map<String, Object> newParams = new LinkedHashMap<>();
+        newParams.put("request", params);
+        newParams.put("client", getDeviceInfo());
+        newParams.put("userInfo", getUserInfo());
+        return newParams;
+    }
+
+    private Map<String ,Object> getUserInfo() {
+        Map<String, Object> userInfo = new LinkedHashMap<>();
+        LoginUser loginUser = LoginUserDao.getInstance(CustomApplication.get()).get();
+        if (loginUser == null) {
+            loginUser = new LoginUser();
+        }
+        userInfo.put("userid", loginUser.getUserName());
+        userInfo.put("token", loginUser.getPassword());
+        return userInfo;
+    }
+
+    private Map<String, Object> getDeviceInfo() {
+        Map<String, Object> deviceInfo = new LinkedHashMap<>();
+        deviceInfo.put("platform", "android");
+        deviceInfo.put("model",  getDeviceName());
+        deviceInfo.put("osversion", getAndroidVersion());
+
+        DisplayMetrics metrics = CustomApplication.get().getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        deviceInfo.put("screensize", width+"*"+height);
+        deviceInfo.put("appversion",  BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
+        return deviceInfo;
+    }
+
+    private String getAndroidVersion() {
+        String release = Build.VERSION.RELEASE;
+        int sdkVersion = Build.VERSION.SDK_INT;
+        return "Android SDK: " + sdkVersion + " (" + release +")";
+    }
+
+    private static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        return manufacturer + " " + model;
+    }
 
 }
