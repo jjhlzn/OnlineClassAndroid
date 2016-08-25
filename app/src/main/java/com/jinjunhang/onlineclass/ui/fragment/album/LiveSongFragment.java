@@ -105,7 +105,7 @@ public class LiveSongFragment extends BaseSongFragment  {
                     final Comment comment = new Comment();
                     try {
                         JSONObject json = new JSONObject((String)args[0]);
-                        comment.setContent(json.getString("comment"));
+                        comment.setContent(json.getString("content"));
                         comment.setTime(json.getString("time"));
                         comment.setId(json.getString("id"));
                         comment.setNickName(json.getString("name"));
@@ -338,45 +338,6 @@ public class LiveSongFragment extends BaseSongFragment  {
         }
     }
 
-    private class SendLiveCommentTask1 extends AsyncTask<SendLiveCommentRequest, Void, SendLiveCommentResponse> {
-        private SendLiveCommentRequest mRequest;
-
-        @Override
-        protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
-            while(isUpdatingChat) {
-                try {
-                    Thread.sleep(1000);
-                }catch(Exception ex){
-                    LogHelper.e(TAG, ex);
-                }
-            }
-            isUpdatingChat = true;
-            mRequest = params[0];
-            return new BasicService().sendRequest(mRequest);
-        }
-
-        @Override
-        protected void onPostExecute(SendLiveCommentResponse resp) {
-            super.onPostExecute(resp);
-            if (!resp.isSuccess()) {
-                isUpdatingChat = false;
-                Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
-                return;
-            }
-            //  commentCount += resp.getCommentList().size();
-            if (resp.getCommentList().size() > 0) {
-                mLastCommentId = resp.getCommentList().get(0).getId() + "";
-            }
-
-            List<Comment> newComments =  resp.getCommentList();
-            getAdapter().addComments(newComments);
-
-            Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
-            mCommentEditText.setText("");
-
-            isUpdatingChat = false;
-        }
-    }
 
     private LiveSongListViewCellAdapter getAdapter() {
         return (LiveSongListViewCellAdapter)mAdapter;
