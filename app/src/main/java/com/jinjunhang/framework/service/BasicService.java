@@ -41,9 +41,7 @@ public class BasicService {
     private String send(ServerRequest request) throws IOException {
 
         String method = "POST";
-        Map<String, Object> params = addUserAndDeviceInfo(request.getParams());
-        Gson gson = new Gson();
-        String paramsString = gson.toJson(params);
+        String paramsString = request.getRequestJson();
         Log.d(TAG, "paramsString = " + paramsString);
 
         String url = request.getServiceUrl();
@@ -71,13 +69,7 @@ public class BasicService {
         }
     }
 
-    private Map<String, Object> addUserAndDeviceInfo(Map<String, Object> params) {
-        Map<String, Object> newParams = new LinkedHashMap<>();
-        newParams.put("request", params);
-        newParams.put("client", getDeviceInfo());
-        newParams.put("userInfo", getUserInfo());
-        return newParams;
-    }
+
 
     private String get(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
@@ -187,43 +179,6 @@ public class BasicService {
     }
 
 
-    private Map<String ,Object> getUserInfo() {
-        Map<String, Object> userInfo = new LinkedHashMap<>();
-        LoginUser loginUser = LoginUserDao.getInstance(CustomApplication.get()).get();
-        if (loginUser == null) {
-            loginUser = new LoginUser();
-        }
-        userInfo.put("userid", loginUser.getUserName());
-        userInfo.put("token", loginUser.getPassword());
-        return userInfo;
-    }
-
-    public static String getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
-        return manufacturer + " " + model;
-    }
-
-
-    private Map<String, Object> getDeviceInfo() {
-        Map<String, Object> deviceInfo = new LinkedHashMap<>();
-        deviceInfo.put("platform", "android");
-        deviceInfo.put("model",  getDeviceName());
-        deviceInfo.put("osversion", getAndroidVersion());
-
-        DisplayMetrics metrics = CustomApplication.get().getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        deviceInfo.put("screensize", width+"*"+height);
-        deviceInfo.put("appversion",  BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
-        return deviceInfo;
-    }
-
-    public String getAndroidVersion() {
-        String release = Build.VERSION.RELEASE;
-        int sdkVersion = Build.VERSION.SDK_INT;
-        return "Android SDK: " + sdkVersion + " (" + release +")";
-    }
 
 }
 

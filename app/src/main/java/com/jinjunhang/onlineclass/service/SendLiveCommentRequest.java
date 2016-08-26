@@ -59,4 +59,5 @@ public class SendLiveCommentRequest extends ServerRequest {
         params.put("lastId", mLastId);
         return params;
     }
+
 }

@@ -111,6 +111,9 @@ public class ServiceLinkManager {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/PersonalInfo";
     }
 
+    public static String ChatServerUrl() {
+        return "http://chat.yhkamani.com";
+    }
 
 }
 
