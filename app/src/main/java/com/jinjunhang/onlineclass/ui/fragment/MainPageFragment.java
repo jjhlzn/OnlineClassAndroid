@@ -66,13 +66,13 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         if (mCells.size() == 0) {
             int i = 0;
+            List<String> descKeys = new ArrayList<>();
+            descKeys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
+            descKeys.add(GetParameterInfoResponse.VIP_DESCRIPTON);
+            descKeys.add(GetParameterInfoResponse.BEFORE_DESCRIPTON);
             for (AlbumType albumType : mAlbumTypes) {
                 AlbumTypeCell item = null;
-                if (i == 0) {
-                    LogHelper.d(TAG, "liveDescription = " + mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_DESCRIPTON, ""));
-                    item = new AlbumTypeCell2(getActivity(), albumType, mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_DESCRIPTON, ""));
-                } else
-                    item = new AlbumTypeCell(getActivity(), albumType);
+                item = new AlbumTypeCell2(getActivity(), albumType, mKeyValueDao.getValue(descKeys.get(i), ""));
                 mCells.add(item);
                 i++;
             }
@@ -158,6 +158,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             GetParameterInfoRequest request = new GetParameterInfoRequest();
             List<String> keys = new ArrayList<>();
             keys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
+            keys.add(GetParameterInfoResponse.VIP_DESCRIPTON);
+            keys.add(GetParameterInfoResponse.BEFORE_DESCRIPTON);
+            LogHelper.d(TAG, "keys = " + keys);
             request.setKeywords(keys);
             return new BasicService().sendRequest(request);
         }
@@ -170,11 +173,17 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                 return;
             }
 
-            String liveDescription = resp.getValue(GetParameterInfoResponse.LIVE_DESCRIPTON, "");
-            mKeyValueDao.saveOrUpdate(GetParameterInfoResponse.LIVE_DESCRIPTON, liveDescription);
-            AlbumTypeCell2 cell = (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0);
-            cell.setDescription(liveDescription);
+            updateCell(GetParameterInfoResponse.LIVE_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0));
+            updateCell(GetParameterInfoResponse.VIP_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(1));
+            updateCell(GetParameterInfoResponse.BEFORE_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(2));
+
             mAlbumTypeAdapter.notifyDataSetChanged();
+        }
+
+        private void updateCell(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
+            String description = resp.getValue(key, "");
+            mKeyValueDao.saveOrUpdate(key, description);
+            cell.setDescription(description);
         }
     }
 

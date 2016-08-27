@@ -2,11 +2,15 @@ package com.jinjunhang.onlineclass.service;
 
 import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+import com.jinjunhang.player.utils.LogHelper;
+
+import java.util.logging.LogManager;
 
 /**
  * Created by lzn on 16/3/23.
  */
 public class ServiceConfiguration {
+    private static final String TAG = LogHelper.makeLogTag(ServiceConfiguration.class);
     //public final static String serverName = "192.168.1.50";
 
     public static final String DEFAULT_HTTP = "http";
@@ -17,7 +21,7 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 = "192.168.31.146"; //"jjhaudio.hengdianworld.com";
+    private final static String serverName1 = "192.168.1.57"; //"jjhaudio.hengdianworld.com";
     private final static int port1 = 3000;
 
 
@@ -40,6 +44,7 @@ public class ServiceConfiguration {
     }
 
     public static String serverName() {
+        LogHelper.d(TAG, "isUseConfig = " + isUseConfig);
         if (isUseConfig) {
             return LOCATOR_SERVERNAME;
         }

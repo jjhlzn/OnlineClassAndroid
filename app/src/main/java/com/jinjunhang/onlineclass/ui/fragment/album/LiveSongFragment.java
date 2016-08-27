@@ -65,7 +65,6 @@ public class LiveSongFragment extends BaseSongFragment  {
     private final static String TAG = LogHelper.makeLogTag(LiveSongFragment.class);
     private String mLastCommentId = "-1";
 
-    private boolean isUpdatingChat = false;
     private int mUpdateChatCount = 0;
 
     //定时获取评论、回复播放
@@ -278,7 +277,6 @@ public class LiveSongFragment extends BaseSongFragment  {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            isUpdatingChat = true;
         }
 
         @Override
@@ -292,7 +290,6 @@ public class LiveSongFragment extends BaseSongFragment  {
         @Override
         protected void onPostExecute(GetLiveCommentsResponse resp) {
             if (resp.getStatus() != ServerResponse.SUCCESS) {
-                isUpdatingChat = false;
                 return;
             }
             //commentCount += resp.getCommentList().size();
@@ -302,8 +299,6 @@ public class LiveSongFragment extends BaseSongFragment  {
 
             List<Comment> comments = resp.getCommentList();
             addMoreComments(comments);
-
-            isUpdatingChat = false;
         }
     }
 
