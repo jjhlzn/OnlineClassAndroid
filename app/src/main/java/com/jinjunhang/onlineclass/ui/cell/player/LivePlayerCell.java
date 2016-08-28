@@ -41,7 +41,7 @@ public class LivePlayerCell extends PlayerCell {
                 if (mMusicPlayer.isPlaying()) {
                     mMusicPlayer.pause();
                 } else {
-                    mMusicPlayer.play(mMusicPlayer.getSongs(), mMusicPlayer.getCurrentPlaySongIndex());
+                    //mMusicPlayer.play(mMusicPlayer.getSongs(), mMusicPlayer.getCurrentPlaySongIndex());
                     mMusicPlayer.resume();
                     scheduleSeekbarUpdate();
                 }

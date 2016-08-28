@@ -308,7 +308,8 @@ public class DemoPlayer
   }
 
   public void release() {
-    rendererBuilder.cancel();
+    if (rendererBuilder != null)
+         rendererBuilder.cancel();
     rendererBuildingState = RENDERER_BUILDING_STATE_IDLE;
     surface = null;
     player.release();

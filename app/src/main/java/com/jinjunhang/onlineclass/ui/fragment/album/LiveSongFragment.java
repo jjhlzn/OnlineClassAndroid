@@ -26,6 +26,7 @@ import com.jinjunhang.onlineclass.service.GetLiveListenerRequest;
 import com.jinjunhang.onlineclass.service.GetLiveListenerResponse;
 import com.jinjunhang.onlineclass.service.GetSongInfoRequest;
 import com.jinjunhang.onlineclass.service.GetSongInfoResponse;
+import com.jinjunhang.onlineclass.service.HeartbeatRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
@@ -152,6 +153,10 @@ public class LiveSongFragment extends BaseSongFragment  {
 
         if (mUpdateChatCount % 3 == 0) {
             new GetSongInfoTask().execute();
+        }
+
+        if (mUpdateChatCount % 20 == 0) {
+            new SendHeartbeatTask().execute();
         }
     }
 
@@ -385,6 +390,16 @@ public class LiveSongFragment extends BaseSongFragment  {
                     }
                 }
             }
+        }
+    }
+
+    private class SendHeartbeatTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            Song song = mMusicPlayer.getCurrentPlaySong();
+            HeartbeatRequest request = new HeartbeatRequest(song);
+            new BasicService().sendRequest(request);
+            return null;
         }
     }
 

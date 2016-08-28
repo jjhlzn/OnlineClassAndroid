@@ -141,6 +141,10 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/song/getsonginfo";
     }
 
+    public static String SendHeartbeatUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/song/heartbeat";
+    }
+
     //Comment
     public static String SendCommentUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/comment/add";

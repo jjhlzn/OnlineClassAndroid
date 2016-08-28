@@ -26,6 +26,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.MusicPlayer;
+import com.jinjunhang.player.playback.ExoPlayback;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.jinjunhang.player.utils.TimeUtil;
@@ -333,15 +334,26 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     }
 
 
+    private int lastPlayerState = ExoPlayer.STATE_IDLE;
+    private boolean hasSeekTo = false;
+
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-
         if (!mInited)
             return;
         updatePlayButton();
         updatePrevAndNextButton();
         setDurationLabel();
+
+        //TODO: 如何测试这段代码
+        if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING && !hasSeekTo) {
+            hasSeekTo = true;
+            MusicPlayer.getInstance(mActivity).seekTo(-1);
+            LogHelper.e(TAG, "lastPlayerState = " + lastPlayerState + ", playbackState = " + playbackState + ", playWhenReady = " + playWhenReady );
+        } else if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING) {
+            hasSeekTo = false;
+        }
+        lastPlayerState = playbackState;
     }
 
     @Override
