@@ -31,7 +31,6 @@ public class MusicPlayer implements ExoPlayer.Listener {
     private Song[] mSongs;
     private int currentIndex = -1;
     private MusicPlayerControlListener mControlListener;
-    private int lastType = Util.TYPE_OTHER;
     private Album lastAlbum = null;
 
     public static MusicPlayer getInstance(Context context) {
@@ -111,6 +110,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     public void play(List<Song> songs, int startIndex) {
+        LogHelper.d(TAG, "play(list, index) called");
         mSongs = new Song[songs.size()];
         mSongs =   songs.toArray(mSongs);
         currentIndex = startIndex;
@@ -119,6 +119,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     private void play(Song song) {
+        LogHelper.d(TAG, "play(song) called");
         createPlayer(song);
         player.prepare();
         player.setPlayWhenReady(true);
@@ -130,12 +131,20 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     public void resume() {
-        if (!isPause() || getCurrentPlaySong().isLive()) {
+        LogHelper.d(TAG, "resume");
+        if (!isPause() ) {
+            LogHelper.d(TAG, "resume from pause");
+            LogHelper.d(TAG, "resume: recreate player");
             Song song = mSongs[currentIndex];
             play(song);
+        } else {
+            LogHelper.d(TAG, "resume not from pause");
+            if (getCurrentPlaySong().isLive()){
+                //TODO: 跳到最新
+                player.seekTo(-1);
+            }
+            player.setPlayWhenReady(true);
         }
-
-        player.setPlayWhenReady(true);
     }
 
     public boolean hasNext() {
@@ -143,6 +152,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     public void next() {
+        LogHelper.d("next called");
         if (hasNext()) {
             currentIndex++;
             Song song = mSongs[currentIndex];
@@ -196,6 +206,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
     }
 
     private void createPlayer(Song song) {
+        LogHelper.d(TAG, "createPlayer() called");
         int type = Util.TYPE_OTHER;
         if (song.isLive()) {
             type = Util.TYPE_HLS;
@@ -206,9 +217,11 @@ public class MusicPlayer implements ExoPlayer.Listener {
             player.addListener(ExoPlayerNotificationManager.getInstance(context));
         } else {
             if (lastAlbum != null && lastAlbum.getId().equals(song.getAlbum().getId())) {
-                player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type));
+                LogHelper.d(TAG, "player.setRendererBuilder");
+                //player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type));
             } else {
                 //在创建之前先release
+                LogHelper.d(TAG, "recreate player");
                 player.release();
                 player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
                 player.addListener(this);
