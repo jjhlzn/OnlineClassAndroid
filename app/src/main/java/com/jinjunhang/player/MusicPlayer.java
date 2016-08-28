@@ -208,6 +208,8 @@ public class MusicPlayer implements ExoPlayer.Listener {
             if (lastAlbum != null && lastAlbum.getId().equals(song.getAlbum().getId())) {
                 player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type));
             } else {
+                //在创建之前先release
+                player.release();
                 player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
                 player.addListener(this);
                 player.addListener(ExoPlayerNotificationManager.getInstance(context));
