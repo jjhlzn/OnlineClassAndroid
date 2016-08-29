@@ -38,10 +38,12 @@ public class LivePlayerCell extends PlayerCell {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogHelper.d(TAG, "LivePlayerCell play button pressed");
                 if (mMusicPlayer.isPlaying()) {
                     mMusicPlayer.pause();
                 } else {
                     //mMusicPlayer.play(mMusicPlayer.getSongs(), mMusicPlayer.getCurrentPlaySongIndex());
+                    LogHelper.d(TAG, "LivePlayerCell resume");
                     mMusicPlayer.resume();
                     scheduleSeekbarUpdate();
                 }

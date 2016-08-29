@@ -127,23 +127,35 @@ public class MusicPlayer implements ExoPlayer.Listener {
 
 
     public void pause() {
+        LogHelper.d(TAG, "pause");
         player.setPlayWhenReady(false);
     }
 
     public void resume() {
         LogHelper.d(TAG, "resume");
-        if (!isPause() ) {
-            LogHelper.d(TAG, "resume from pause");
-            LogHelper.d(TAG, "resume: recreate player");
-            Song song = mSongs[currentIndex];
-            play(song);
-        } else {
-            LogHelper.d(TAG, "resume not from pause");
-            if (getCurrentPlaySong().isLive()){
-                //TODO: 跳到最新
+        if (getCurrentPlaySong().isLive()) {
+            int state = getState();
+            if (isPause() || state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_READY) {
+                LogHelper.d(TAG, "resume from pause");
                 player.seekTo(-1);
+                player.setPlayWhenReady(true);
+            } else {
+                LogHelper.d(TAG, "resume not from pause");
+                LogHelper.d(TAG, "resume: recreate player");
+                Song song = mSongs[currentIndex];
+                play(song);
             }
-            player.setPlayWhenReady(true);
+        } else {
+            if (isPause()) {
+                if (getCurrentPlaySong().isLive()){
+                    //跳到最远
+                    player.seekTo(-1);
+                }
+                player.setPlayWhenReady(true);
+            } else {
+                Song song = mSongs[currentIndex];
+                play(song);
+            }
         }
     }
 

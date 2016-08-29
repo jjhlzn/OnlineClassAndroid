@@ -162,6 +162,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogHelper.d(TAG, "PlayerCell play pressed");
                 int state = MusicPlayer.getInstance(mActivity).getState();
                 LogHelper.d(TAG, "state = ", state);
                 if (mMusicPlayer.isPlaying()) {
