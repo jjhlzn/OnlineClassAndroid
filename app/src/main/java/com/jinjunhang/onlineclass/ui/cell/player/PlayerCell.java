@@ -347,14 +347,16 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         setDurationLabel();
 
         //TODO: 如何测试这段代码
-        if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING && !hasSeekTo) {
-            hasSeekTo = true;
-            MusicPlayer.getInstance(mActivity).seekTo(-1);
-            LogHelper.e(TAG, "lastPlayerState = " + lastPlayerState + ", playbackState = " + playbackState + ", playWhenReady = " + playWhenReady );
-        } else if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING) {
-            hasSeekTo = false;
+        if (mMusicPlayer.getCurrentPlaySong() != null && mMusicPlayer.getCurrentPlaySong().isLive()) {
+            if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING && !hasSeekTo) {
+                hasSeekTo = true;
+                MusicPlayer.getInstance(mActivity).seekTo(-1);
+                LogHelper.e(TAG, "lastPlayerState = " + lastPlayerState + ", playbackState = " + playbackState + ", playWhenReady = " + playWhenReady);
+            } else if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING) {
+                hasSeekTo = false;
+            }
+            lastPlayerState = playbackState;
         }
-        lastPlayerState = playbackState;
     }
 
     @Override
