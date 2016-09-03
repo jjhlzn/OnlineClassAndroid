@@ -316,7 +316,7 @@ public class LiveSongFragment extends BaseSongFragment  {
 
         @Override
         protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
-            if (mSocket.connected())
+            if (!mSocket.connected())
                 mSocket.connect();
             mRequest = params[0];
 
