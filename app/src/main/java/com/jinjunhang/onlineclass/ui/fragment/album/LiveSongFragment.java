@@ -316,10 +316,14 @@ public class LiveSongFragment extends BaseSongFragment  {
 
         @Override
         protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
-            if (!mSocket.connected())
-                mSocket.connect();
-            mRequest = params[0];
+            if (!mSocket.connected()) {
+                LogHelper.d(TAG, "reconect to socket");
+                mSocket = null;
+                initChat();
+            }
 
+            mRequest = params[0];
+            LogHelper.d(TAG, "send comment to socket");
             mSocket.emit(CHAT_MESSAGE_CMD, mRequest.getRequestJson(), new Ack() {
                 @Override
                 public void call(Object... args) {
