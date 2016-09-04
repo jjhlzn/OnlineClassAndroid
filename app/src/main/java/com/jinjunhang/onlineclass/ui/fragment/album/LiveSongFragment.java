@@ -89,9 +89,19 @@ public class LiveSongFragment extends BaseSongFragment  {
     private void initChat() {
         if (mSocket != null)
             return;
-
         try {
             mSocket = IO.socket(ServiceLinkManager.ChatServerUrl());
+            setSocketEvent();
+            mSocket.connect();
+        }catch (Exception ex) {
+            LogHelper.e(TAG, ex);
+        }
+    }
+
+    private void setSocketEvent() {
+        try {
+            if (mSocket == null)
+                return;
             mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
@@ -318,6 +328,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
             if (!mSocket.connected()) {
                 LogHelper.d(TAG, "reconect to socket");
+                mSocket.off();
                 mSocket = null;
                 initChat();
             }
