@@ -358,7 +358,7 @@ public class LiveSongFragment extends BaseSongFragment  {
                             final Comment comment = new Comment();
                             comment.setContent(mRequest.getComment());
                             Date now = new Date();
-                            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:dd");
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                             comment.setTime(sdf.format(now));
                             comment.setId("1");
                             LoginUser user = LoginUserDao.getInstance(getActivity()).get();

@@ -8,3 +8,5 @@
 /captures
 *.apk
 app/app-release.apk
+
+*.apk副本
