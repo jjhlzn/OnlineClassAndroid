@@ -27,6 +27,7 @@ import com.jinjunhang.onlineclass.service.GetLiveListenerResponse;
 import com.jinjunhang.onlineclass.service.GetSongInfoRequest;
 import com.jinjunhang.onlineclass.service.GetSongInfoResponse;
 import com.jinjunhang.onlineclass.service.HeartbeatRequest;
+import com.jinjunhang.onlineclass.service.JoinRoomRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
@@ -85,6 +86,7 @@ public class LiveSongFragment extends BaseSongFragment  {
     private Socket mSocket;
 
     public static String CHAT_MESSAGE_CMD = "chat message";
+    public static String CHAT_JOIN_ROOM = "join room";
 
     private void initChat() {
         if (mSocket != null)
@@ -106,6 +108,9 @@ public class LiveSongFragment extends BaseSongFragment  {
                 @Override
                 public void call(Object... args) {
                     LogHelper.d(TAG, "socket connected");
+                    JoinRoomRequest request = new JoinRoomRequest(mMusicPlayer.getCurrentPlaySong());
+                    LogHelper.d(TAG, "send join room request");
+                    mSocket.emit(CHAT_JOIN_ROOM, request.getRequestJson());
                 }
 
             }).on(CHAT_MESSAGE_CMD, new Emitter.Listener() {
