@@ -113,6 +113,7 @@ public class ServiceLinkManager {
 
     public static String ChatServerUrl() {
         return "http://chat.yhkamani.com";
+        //return "http://192.168.1.54:3000";
     }
 
 }

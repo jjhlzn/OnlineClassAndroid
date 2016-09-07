@@ -16,8 +16,10 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
@@ -40,11 +42,14 @@ import com.jinjunhang.onlineclass.ui.cell.comment.LiveCommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.utils.LogHelper;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.Executors;
@@ -348,6 +353,20 @@ public class LiveSongFragment extends BaseSongFragment  {
                         @Override
                         public void run() {
                             Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
+
+                            //make comment
+                            final Comment comment = new Comment();
+                            comment.setContent(mRequest.getComment());
+                            Date now = new Date();
+                            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:dd");
+                            comment.setTime(sdf.format(now));
+                            comment.setId("1");
+                            LoginUser user = LoginUserDao.getInstance(getActivity()).get();
+                            comment.setNickName(user.getNickName());
+                            comment.setUserId(user.getUserName());
+
+                            addCommentToList(comment);
+
                             mCommentEditText.setText("");
                         }
                     });
