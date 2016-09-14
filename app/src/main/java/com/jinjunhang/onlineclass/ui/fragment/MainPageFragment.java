@@ -62,8 +62,6 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         mFunctionManager = new ExtendFunctionManager(maxShowRows, getActivity(), true);
 
-
-
         if (mCells.size() == 0) {
             int i = 0;
             List<String> descKeys = new ArrayList<>();
@@ -112,9 +110,13 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        new GetParameterTask().execute();
-
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        new GetParameterTask().execute();
     }
 
     @Override

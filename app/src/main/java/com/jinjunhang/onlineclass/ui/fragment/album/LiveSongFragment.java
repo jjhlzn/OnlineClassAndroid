@@ -174,10 +174,6 @@ public class LiveSongFragment extends BaseSongFragment  {
         if (mUpdateChatCount % 3 == 0) {
             new GetSongInfoTask().execute();
         }
-
-        if (mUpdateChatCount % 20 == 0) {
-            new SendHeartbeatTask().execute();
-        }
     }
 
     private void stopChatUpdate() {

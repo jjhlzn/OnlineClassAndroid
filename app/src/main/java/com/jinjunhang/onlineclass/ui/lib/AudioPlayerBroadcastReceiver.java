@@ -17,7 +17,7 @@ public class AudioPlayerBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = LogHelper.makeLogTag(AudioPlayerBroadcastReceiver.class);
     @Override
     public void onReceive(Context context, Intent intent) {
-        /*
+
         MusicPlayer musicPlayer = MusicPlayer.getInstance(context);
         ExoPlayerNotificationManager notificationManager =  ExoPlayerNotificationManager.getInstance(context);
         String action = intent.getAction();
@@ -36,6 +36,6 @@ public class AudioPlayerBroadcastReceiver extends BroadcastReceiver {
 
         } else if (action.equalsIgnoreCase(ExoPlayerNotificationManager.ACTION_NEXT)){
             musicPlayer.next();
-        } */
+        }
     }
 }
