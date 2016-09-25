@@ -27,6 +27,7 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.WebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.search.SearchFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
@@ -98,9 +99,9 @@ public class MainActivity extends BaseMusicActivity  {
                         setCommonActionBar();
                         break;
                     case R.id.bottomBarSearch:
-                        title = "搜索";
-                        fragment = getFragment(SearchFragment.class);
-                        setSearchActionBar();
+                        title = "申请";
+                        fragment = getFragment(WebBrowserFragment.class);
+                        setCommonActionBar();
                         break;
                     case R.id.bottomBarMe:
                         title = "";
@@ -170,6 +171,7 @@ public class MainActivity extends BaseMusicActivity  {
 
     }
 
+    /*
     private void setSearchActionBar() {
         getSupportActionBar().show();
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -177,7 +179,7 @@ public class MainActivity extends BaseMusicActivity  {
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
-    }
+    }*/
 
 
     private <T extends Fragment> Fragment getFragment(Class<T> fragmentClass) {
