@@ -45,7 +45,7 @@ public class AdvImageCell extends BaseListViewCell {
     private int getHeight() {
         int actionBarHeight = Utils.px2dip( mActivity, Utils.getActionBarHeight(mActivity) );
         int statusBarHeight = Utils.px2dip(mActivity, Utils.getStatusBarHeight(mActivity));
-        int albumTypeListHeight = 54 * 3;
+        int albumTypeListHeight = 76 * 2; //152
         int separatorHeight =  4;
 
         ExtendFunctionManager manager = new ExtendFunctionManager(mActivity);
@@ -68,14 +68,16 @@ public class AdvImageCell extends BaseListViewCell {
 
         int delta = 5;
         boolean needConvert = true;
+        LogHelper.d(TAG, "10pixcel = "+ Utils.dip2px(mActivity, 10));
         if (screenWidthInPixcel == 1080 && screenHeightInPixcel == 1920) {
-            result = 420;
+            result = 420 + Utils.dip2px(mActivity, 10) + 8;
             needConvert = false;
+
         } else if (screenWidthInPixcel == 720) {
-            result = 280;
+            result = 280 + Utils.dip2px(mActivity, 10) + 6;
             needConvert = false;
         } else if (screenWidthInPixcel == 1440) {
-            result = 920;
+            result = 920 + Utils.dip2px(mActivity, 10) + 8;
             needConvert = false;
         } else {
             if (screenWidthInPixcel < 720) {
@@ -91,21 +93,6 @@ public class AdvImageCell extends BaseListViewCell {
             LogHelper.d(TAG, "adv height should be " + result + ", " + result);
             return result;
         }
-
-        /*
-        if (screenWith >= 1440) { //高于2560 * 1440
-            return 420 + 500;
-        } else if (screenWith <= 720){ //低于1280 * 720
-            return 280;
-        } else{
-            return 420;
-            /*
-            if (screenHeight >= 1700 ) {
-                int delta = screenHeight - 1920;
-                result = result + delta;
-            }*/
-
-        //}
 
     }
 
