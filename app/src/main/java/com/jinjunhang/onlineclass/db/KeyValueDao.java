@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.player.utils.LogHelper;
 
 /**
  * Created by jjh on 2016-6-30.
  */
 public class KeyValueDao {
+    private static final String TAG = LogHelper.makeLogTag(KeyValueDao.class);
 
     public static final String KEY_USER_JIFEN = "USER_JIFEN";
     public static final String KEY_USER_CAFIFU = "USER_CAIFU";
@@ -48,6 +50,9 @@ public class KeyValueDao {
         try {
             cursor.moveToFirst();
             return cursor.getString(1);
+        } catch (Exception ex) {
+            LogHelper.e(TAG, ex);
+            return defaultValue;
         } finally {
             cursor.close();;
         }
@@ -68,7 +73,10 @@ public class KeyValueDao {
             } else {
                 db.update("KEY_VALUE", values, "", new String[]{});
             }
-        } finally {
+        } catch (Exception ex) {
+            LogHelper.e(TAG, ex);
+        }
+        finally {
             cursor.close();
         }
 

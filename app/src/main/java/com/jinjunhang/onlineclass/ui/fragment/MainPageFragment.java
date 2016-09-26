@@ -71,13 +71,23 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             descKeys.add(GetParameterInfoResponse.PAY_DESCRIPTON);
             for (AlbumType albumType : mAlbumTypes) {
                 AlbumTypeCell item = null;
+                //设置课程类型的名字
                 if (albumType.getTypeCode() == AlbumType.LiveAlbumType.getTypeCode()) {
-                    albumType.setName(mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_COURSE_NAME, "直播课程"));
+                    String name = mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_COURSE_NAME, "直播课程");
+                    LogHelper.d(TAG, "name = " + name);
+                    albumType.setName(name);
                 }
+
                 if (albumType.getTypeCode() == AlbumType.VipAlbumType.getTypeCode()) {
-                    albumType.setName(mKeyValueDao.getValue(GetParameterInfoResponse.PAY_COURSE_NAME, "会员专享课堂"));
+                    String name = mKeyValueDao.getValue(GetParameterInfoResponse.PAY_COURSE_NAME, "会员专享课堂");
+                    LogHelper.d(TAG, "name = " + name);
+                    albumType.setName(name);
                 }
-                item = new AlbumTypeCell2(getActivity(), albumType, mKeyValueDao.getValue(descKeys.get(i), ""));
+
+                String desc = mKeyValueDao.getValue(descKeys.get(i), "");
+                LogHelper.d(TAG, "desc = " + desc);
+
+                item = new AlbumTypeCell2(getActivity(), albumType, desc);
                 mCells.add(item);
                 i++;
             }
@@ -200,6 +210,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         private void updateCellForName(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
             String name = resp.getValue(key, "");
             mKeyValueDao.saveOrUpdate(key, name);
+            LogHelper.d(TAG, "update key " + key + " with value " + name);
             cell.setName(name);
         }
     }

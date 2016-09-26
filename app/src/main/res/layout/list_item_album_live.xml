@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.62"
+            android:layout_weight="0.54"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -61,11 +61,32 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.12"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/album_list_playing_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.4"
+                    android:layout_marginLeft="0dp"
+
+                    android:textSize="14sp"
+                    android:gravity="center_vertical|left"
+                    android:text="直播中"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/red"/>
+
+
+        </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.16"
+            android:layout_weight="0.12"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center_vertical|center_horizontal">

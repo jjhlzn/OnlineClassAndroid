@@ -21,6 +21,7 @@ public class AlbumTypeCell2 extends AlbumTypeCell {
     public AlbumTypeCell2(Activity activity, AlbumType albumType, String description) {
         super(activity, albumType);
         mDescription = description;
+        mName = albumType.getName();
     }
 
     public AlbumType getAlbumType() {
