@@ -415,15 +415,28 @@ public class LiveSongFragment extends BaseSongFragment  {
             super.onPostExecute(resp);
             if (resp.isSuccess()) {
                 LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
-                if (song.getId().equals(resp.getSong().getId())) {
+                //if (song.getId().equals(resp.getSong().getId())) {
                     LiveSong newSong = (LiveSong) resp.getSong();
-                    song.updateSongAdvInfo(newSong.hasAdvImage(), newSong.getAdvImageUrl(), newSong.getAdvUrl());
-                    //LogHelper.d(TAG, "newSong.hasAdvImage = " + newSong.hasAdvImage());
-                    //LogHelper.d(TAG, "song.hasAdvImage = " + song.hasAdvImage()+ ", song.isupdate = " + song.isSongAdvInfoChanged());
-                    if (song.isSongAdvInfoChanged()) {
-                        getAdapter().notifyAdvChanged();
+
+                    boolean hasChange = false;
+                    if (newSong.hasAdvImage() != song.hasAdvImage() || newSong.getAdvImageUrl() != song.getAdvImageUrl() || newSong.getAdvUrl() != song.getAdvUrl()) {
+                        hasChange = true;
                     }
-                }
+
+                    if (newSong.getAdvText() != song.getAdvText()) {
+                        hasChange = true;
+                    }
+                    LogHelper.d(TAG, "hasChange = " + hasChange);
+                    if (!hasChange) {
+                        return;
+                    }
+
+                    song.setHasAdvImage(newSong.hasAdvImage());
+                    song.setAdvImageUrl(newSong.getAdvImageUrl());
+                    song.setAdvUrl(newSong.getAdvUrl());
+                    song.setAdvText(newSong.getAdvText());
+                    getAdapter().notifyAdvChanged();
+               // }
             }
         }
     }

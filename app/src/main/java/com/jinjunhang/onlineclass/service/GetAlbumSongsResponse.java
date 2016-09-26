@@ -67,6 +67,7 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
 
                 liveSong.setPlaying(json.getBoolean("playing"));
                 liveSong.setAdvText(json.getString("advText"));
+                liveSong.setScrollRate(json.getInt("advScrollRate"));
                 JSONArray imgAdvArray = json.getJSONArray("advImages");
                 for(int j = 0; j < imgAdvArray.length(); j++) {
                     JSONObject jsonItem = imgAdvArray.getJSONObject(j);
@@ -74,6 +75,7 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
                     advertise.setImageUrl(jsonItem.getString("imageurl"));
                     advertise.setClickUrl(jsonItem.getString("link"));
                     advertise.setTitle(jsonItem.getString("title"));
+                    liveSong.getImageAdvs().add(advertise);
                 }
 
                 song = liveSong;

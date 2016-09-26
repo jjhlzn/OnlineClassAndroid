@@ -1,15 +1,26 @@
 package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.TimeUtil;
@@ -31,6 +42,32 @@ public class LivePlayerCell extends PlayerCell {
     @Override
     public ViewGroup getView() {
         ViewGroup v = super.getView();
+        LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
+
+        Button applyButton = (Button) v.findViewById(R.id.player_apply_button);
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "我要报名")
+                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl());
+                mActivity.startActivity(i);
+            }
+        });
+        if (song.hasAdvImage()){
+            applyButton.setVisibility(View.VISIBLE);
+            v.findViewById(R.id.player_hand).setVisibility(View.VISIBLE);
+        } else {
+            applyButton.setVisibility(View.INVISIBLE);
+            v.findViewById(R.id.player_hand).setVisibility(View.INVISIBLE);
+        }
+
+        TextView advTextView = (TextView)v.findViewById(R.id.player_adv_text);
+        if (song.getAdvText() == null || song.getAdvText().trim().equals("")) {
+            advTextView.setText("欢迎大家收听");
+        } else {
+            advTextView.setText(song.getAdvText());
+        }
 
         String listenerCount = ((LiveSong)mMusicPlayer.getCurrentPlaySong()).getListenPeople();
         mListenerCountLabel.setText(listenerCount);
@@ -55,8 +92,34 @@ public class LivePlayerCell extends PlayerCell {
     }
 
     @Override
-    protected int getPlaceHolderArtImage() {
-        return R.drawable.live_sample_image;
+    protected void loadArtImage(View v) {
+        LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
+        if (song == null) {
+            return;
+        }
+        SliderLayout sliderShow = (SliderLayout)v.findViewById(R.id.player_song_image_adv);
+        LogHelper.d(TAG, "sliderShow = " + sliderShow);
+
+        for(final Advertise adv : song.getImageAdvs()){
+            LogHelper.d(TAG, "advimage = " + adv.getImageUrl() + ". title = " + adv.getTitle());
+            DefaultSliderView textSliderView = new DefaultSliderView(mActivity);
+            textSliderView.image(adv.getImageUrl()).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                @Override
+                public void onSliderClick(BaseSliderView slider) {
+                    Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                            .putExtra(WebBrowserActivity.EXTRA_TITLE, adv.getTitle())
+                            .putExtra(WebBrowserActivity.EXTRA_URL, adv.getClickUrl());
+                    mActivity.startActivity(i);
+                }
+            });
+            sliderShow.addSlider(textSliderView);
+        }
+
+        long duration = 500;
+        if (duration < song.getScrollRate() * 1000) {
+            duration = song.getScrollRate() * 1000;
+        }
+        sliderShow.setDuration(duration);
     }
 
     @Override

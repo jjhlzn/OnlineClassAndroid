@@ -28,6 +28,7 @@ public class LiveSong extends Song {
 
     private boolean playing = false;
     private String advText = "";
+    private int mScrollRate = 5;
     private List<Advertise> imageAdvs = new ArrayList<Advertise>();
 
     private boolean mSongAdvInfoChanged = false;
@@ -183,5 +184,13 @@ public class LiveSong extends Song {
 
     public void setImageAdvs(List<Advertise> imageAdvs) {
         this.imageAdvs = imageAdvs;
+    }
+
+    public int getScrollRate() {
+        return mScrollRate;
+    }
+
+    public void setScrollRate(int scrollRate) {
+        mScrollRate = scrollRate;
     }
 }

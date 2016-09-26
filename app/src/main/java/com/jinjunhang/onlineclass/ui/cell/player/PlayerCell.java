@@ -121,7 +121,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         setSeekbar(v);
         setPlayButtons(v);
         setDurationLabel();
-        loadArtImage();
+        loadArtImage(v);
 
         mInited = true;
 
@@ -135,20 +135,18 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         return R.drawable.backgroundimage;
     }
 
-    public void loadArtImage() {
+    protected void loadArtImage(View v) {
         Song song = mMusicPlayer.getCurrentPlaySong();
         if (song == null) {
             return;
         }
 
         ImageView songImage = (ImageView) v.findViewById(R.id.player_song_image);
-
         //缓存歌曲的图片
         Glide.with(mActivity)
                 .load(song.getImageUrl())
                 .placeholder(getPlaceHolderArtImage())
                 .into(songImage);
-
     }
 
     protected void setPlayButtons(View v) {

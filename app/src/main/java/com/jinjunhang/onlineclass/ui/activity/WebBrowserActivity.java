@@ -77,6 +77,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         mUrl = addUserInfo(mUrl);
         LogHelper.d(TAG, mUrl);
         mTitle = getIntent().getStringExtra(EXTRA_TITLE);
+        LogHelper.d(TAG, "title = " + mTitle);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customView = getLayoutInflater().inflate(R.layout.actionbar_browser, null);

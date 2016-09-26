@@ -52,6 +52,7 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         mCells.add(mPlayerCell);
         mCells.add(mSeparatorCell);
 
+        /*
         LogHelper.d(TAG, "recreateCells: hasAdvImage = " + mSong.hasAdvImage());
         if (mSong.hasAdvImage()) {
             if (mSongAdvCell == null) {
@@ -59,9 +60,9 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
             }
             mCells.add(mSongAdvCell);
             mCells.add(mSeparatorCell);
-        }
+        } */
 
-        mCells.add(mCommentHeaderCell);
+       // mCells.add(mCommentHeaderCell);
         if (mCommentCells.size() == 0) {
             mCells.add(mNoCommentCell);
         }

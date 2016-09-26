@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/list_item_albumtype_viewgroup"
               android:layout_width="match_parent"
-              android:layout_height="10dp"
+              android:layout_height="6dp"
               android:orientation="horizontal">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="6dp"
         android:background="@color/fragment_background"/>
 
 </LinearLayout>
