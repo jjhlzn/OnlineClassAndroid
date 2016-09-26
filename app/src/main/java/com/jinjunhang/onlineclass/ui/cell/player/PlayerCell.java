@@ -129,6 +129,8 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         return (LinearLayout)v.findViewById(R.id.list_item_albumtype_viewgroup);
     }
 
+
+
     protected int getPlaceHolderArtImage() {
         return R.drawable.backgroundimage;
     }

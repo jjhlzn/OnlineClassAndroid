@@ -5,8 +5,10 @@ import android.util.Log;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -23,6 +25,10 @@ public class LiveSong extends Song {
     private boolean mHasAdvImage;
     private String mAdvImageUrl = "";
     private String mAdvUrl = "";
+
+    private boolean playing = false;
+    private String advText = "";
+    private List<Advertise> imageAdvs = new ArrayList<Advertise>();
 
     private boolean mSongAdvInfoChanged = false;
 
@@ -153,5 +159,29 @@ public class LiveSong extends Song {
 
     public long getPlayedTimeInSec() {
         return getTotalTimeInSec() - getTimeLeftInSec();
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public String getAdvText() {
+        return advText;
+    }
+
+    public List<Advertise> getImageAdvs() {
+        return imageAdvs;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public void setAdvText(String advText) {
+        this.advText = advText;
+    }
+
+    public void setImageAdvs(List<Advertise> imageAdvs) {
+        this.imageAdvs = imageAdvs;
     }
 }

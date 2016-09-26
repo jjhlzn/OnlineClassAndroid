@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.service;
 
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerRequest;
+import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -63,6 +64,18 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
                     liveSong.setAdvImageUrl(json.getString("advImageUrl"));
                     liveSong.setAdvUrl(json.getString("advUrl"));
                 }
+
+                liveSong.setPlaying(json.getBoolean("playing"));
+                liveSong.setAdvText(json.getString("advText"));
+                JSONArray imgAdvArray = json.getJSONArray("advImages");
+                for(int j = 0; j < imgAdvArray.length(); j++) {
+                    JSONObject jsonItem = imgAdvArray.getJSONObject(j);
+                    Advertise advertise = new Advertise();
+                    advertise.setImageUrl(jsonItem.getString("imageurl"));
+                    advertise.setClickUrl(jsonItem.getString("link"));
+                    advertise.setTitle(jsonItem.getString("title"));
+                }
+
                 song = liveSong;
             } else {
                 song = new Song();

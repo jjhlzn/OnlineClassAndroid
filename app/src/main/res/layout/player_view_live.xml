@@ -11,13 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="205dp">
 
-        <ImageView
+        <com.daimajia.slider.library.SliderLayout
             android:id="@+id/player_song_image"
             android:layout_width="match_parent"
             android:layout_height="205dp"
+            android:background="@color/ccl_grey600"
             android:gravity="center_vertical|left"
             android:src="@drawable/live_sample_image"
             android:scaleType="fitXY"/>
+
 
         <ImageView
             android:id="@+id/peopleImage"
@@ -68,7 +70,8 @@
             android:textColor="@android:color/background_dark"
             android:layout_alignParentLeft="true"
             android:text="00:00"
-            android:textSize="12dp"/>
+            android:textSize="12dp"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/player_durationText"
             android:layout_width="wrap_content"
@@ -80,7 +83,16 @@
             android:maxLines="1"
             android:textColor="@android:color/background_dark"
             android:text="00:00"
-            android:textSize="12dp"/>
+            android:textSize="12dp"
+            android:visibility="gone"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/adv_text_background"
+            android:textColor="@color/colorPrimary"
+            android:text="这是广告"
+            android:textSize="12dp"
+            android:gravity="center_horizontal|center_vertical"/>
     </RelativeLayout>
 
 
@@ -98,6 +110,7 @@
             android:src="@drawable/icon_ios_music_backward"
             android:scaleType="fitXY"
             android:background="@null"
+            android:visibility="gone"
             />
 
         <RelativeLayout
@@ -140,8 +153,8 @@
             android:layout_height="35dp"
             android:src="@drawable/icon_ios_music_forward"
             android:scaleType="fitXY"
-            android:background="@null"/>
-
+            android:background="@null"
+            android:visibility="gone"/>
 
 
 
@@ -160,7 +173,33 @@
             android:layout_marginRight="20dp"
             android:src="@drawable/icon_ios_list"
             android:scaleType="fitXY"
-            android:background="@null"/>
+            android:background="@null"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/player_hand"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/player_hand"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/player_apply_button"
+            android:background="@null"
+            android:layout_height="30dp"
+            android:layout_marginEnd="6dp"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:layout_alignWithParentIfMissing="true"
+            android:maxLines="1"
+            android:textColor="@color/colorPrimary"
+            android:text="我要报名！"
+            android:textSize="12dp"
+            android:layout_width="65dp"/>
+
     </LinearLayout>
 
 
