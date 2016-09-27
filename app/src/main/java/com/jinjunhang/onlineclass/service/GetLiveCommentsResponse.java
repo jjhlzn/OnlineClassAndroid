@@ -39,7 +39,9 @@ public class GetLiveCommentsResponse extends ServerResponse {
             comment.setTime(json.getString("time"));
             comment.setUserId(json.getString("userId"));
             comment.setNickName(json.getString("name"));
-            //comment.setManager(json.getBoolean("isManager"));
+            if (json.has("isManager")) {
+                comment.setManager(json.getBoolean("isManager"));
+            }
             mCommentList.add(comment);
         }
     }

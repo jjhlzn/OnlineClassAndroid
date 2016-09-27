@@ -38,5 +38,5 @@
     <color name="refresh_progress_3">@color/colorPrimary</color>
 
 
-    <color name="adv_text_background">#ccc</color>
+    <color name="adv_text_background">#efeef3</color>
 </resources>

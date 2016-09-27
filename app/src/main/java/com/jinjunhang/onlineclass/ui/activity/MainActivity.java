@@ -17,19 +17,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.common.io.Files;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
-import com.jinjunhang.onlineclass.ui.fragment.WebBrowserFragment;
+import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
-import com.jinjunhang.onlineclass.ui.fragment.search.SearchFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.player.utils.LogHelper;
 import com.roughike.bottombar.BottomBar;
@@ -39,7 +36,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -100,7 +96,7 @@ public class MainActivity extends BaseMusicActivity  {
                         break;
                     case R.id.bottomBarSearch:
                         title = "申请";
-                        fragment = getFragment(WebBrowserFragment.class);
+                        fragment = getFragment(ShopWebBrowserFragment.class);
                         setCommonActionBar();
                         break;
                     case R.id.bottomBarMe:

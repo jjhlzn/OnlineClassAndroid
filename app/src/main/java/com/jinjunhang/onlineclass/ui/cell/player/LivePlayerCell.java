@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -26,7 +27,9 @@ import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.TimeUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -100,12 +103,28 @@ public class LivePlayerCell extends PlayerCell {
         SliderLayout sliderShow = (SliderLayout)v.findViewById(R.id.player_song_image_adv);
         LogHelper.d(TAG, "sliderShow = " + sliderShow);
 
-        for(final Advertise adv : song.getImageAdvs()){
-            LogHelper.d(TAG, "advimage = " + adv.getImageUrl() + ". title = " + adv.getTitle());
+        //List<Advertise> advs = song.getImageAdvs();
+        List<Advertise> advs = new ArrayList<Advertise>();
+
+        if (advs.size() == 0) {
+            Advertise adv = new Advertise();
+            adv.setImageUrl(ServiceLinkManager.DefaultAdvImageUrl());
+            adv.setClickUrl("");
+            advs.add(adv);
+        }
+
+        for(final Advertise adv : advs){
+            LogHelper.d(TAG, "advimage = " + adv.getImageUrl() + ", title = " + adv.getTitle());
+            if (adv.getImageUrl() == null || "".equals(adv.getImageUrl().trim())) {
+                continue;
+            }
             DefaultSliderView textSliderView = new DefaultSliderView(mActivity);
             textSliderView.image(adv.getImageUrl()).setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                 @Override
                 public void onSliderClick(BaseSliderView slider) {
+                    if (adv.getClickUrl().equals("")) {
+                        return;
+                    }
                     Intent i = new Intent(mActivity, WebBrowserActivity.class)
                             .putExtra(WebBrowserActivity.EXTRA_TITLE, adv.getTitle())
                             .putExtra(WebBrowserActivity.EXTRA_URL, adv.getClickUrl());
@@ -115,11 +134,22 @@ public class LivePlayerCell extends PlayerCell {
             sliderShow.addSlider(textSliderView);
         }
 
-        long duration = 500;
-        if (duration < song.getScrollRate() * 1000) {
-            duration = song.getScrollRate() * 1000;
+        if (advs.size() == 1) {
+            sliderShow.stopAutoCycle();
+            sliderShow.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
+        } else {
+
+            long duration = 500;
+            if (duration < song.getScrollRate() * 1000) {
+                duration = song.getScrollRate() * 1000;
+            }
+
+            if (song.getScrollRate() == 0) {
+                duration = 5000;
+            }
+
+            sliderShow.setDuration(duration);
         }
-        sliderShow.setDuration(duration);
     }
 
     @Override

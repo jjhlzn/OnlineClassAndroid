@@ -5,9 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +17,16 @@ import android.widget.TextView;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-import com.jinjunhang.onlineclass.ui.lib.WeixinShareManager;
 import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 
 /**
  * Created by lzn on 2016/9/25.
  */
 
-public class WebBrowserFragment extends android.support.v4.app.Fragment {
-    private final static String TAG = LogHelper.makeLogTag(WebBrowserFragment.class);
+public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
+    private final static String TAG = LogHelper.makeLogTag(ShopWebBrowserFragment.class);
 
     public final static String EXTRA_URL = "EXTRA_URL";
     public final static String EXTRA_TITLE = "EXTRA_TITLE";
@@ -45,8 +41,8 @@ public class WebBrowserFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.web_browser, container, false);
 
-        //mUrl = ServiceLinkManager.MyAgentUrl();
-        mUrl = "http://www.baidu.com";
+        mUrl = ServiceLinkManager.ShenqingUrl();
+        //mUrl = "http://www.baidu.com";
         mUrl = addUserInfo(mUrl);
         LogHelper.d(TAG, mUrl);
 
@@ -70,7 +66,7 @@ public class WebBrowserFragment extends android.support.v4.app.Fragment {
         mWebView = (WebView) v.findViewById(R.id.webview);
 
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
-        mWebView.setWebViewClient(new WebBrowserFragment.MyWebViewClient());
+        mWebView.setWebViewClient(new ShopWebBrowserFragment.MyWebViewClient());
         openURL();
 
         return v;

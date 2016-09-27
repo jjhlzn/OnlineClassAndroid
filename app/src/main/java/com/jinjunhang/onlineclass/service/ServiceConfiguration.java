@@ -17,7 +17,7 @@ public class ServiceConfiguration {
     public static final String DEFAULT_HOST = "jf.yhkamani.com";
     public static final String DEFAULT_PORT = "80";
 
-    private final static boolean isUseConfig = false;
+    private final static boolean isUseConfig = true;
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;

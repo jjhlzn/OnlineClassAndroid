@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.cell.comment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,17 +40,23 @@ public class CommentCell extends BaseListViewCell {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_comment, null);
 
         RoundedImageView image = ((RoundedImageView)v.findViewById(R.id.comment_user_image));
-        image.setOval(true);
+
+        if (mComment.isManager()) {
+            image.setImageResource(R.drawable.user2_0);
+            ((TextView)v.findViewById(R.id.comment_username)).setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
+        }
+        //image.setOval(true);
 
         //Glide.with(mActivity).load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId())).into(image);
         //Log.d(TAG, "url = " + ServiceConfiguration.GetUserProfileImage(mComment.getUserId()));
+        /*
         Glide
                 .with(mActivity)
                 .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
                 .centerCrop()
                 .placeholder(R.drawable.smallusericon)
                 .crossFade()
-                .into(image);
+                .into(image); */
 
 
         ((TextView)v.findViewById(R.id.comment_username)).setText(mComment.getNickName());
