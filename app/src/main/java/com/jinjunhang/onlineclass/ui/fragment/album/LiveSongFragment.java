@@ -130,7 +130,7 @@ public class LiveSongFragment extends BaseSongFragment  {
                         comment.setId(json.getString("id"));
                         comment.setNickName(json.getString("name"));
                         comment.setUserId(json.getString("userId"));
-                        comment.setManager(json.getBoolean("isManager"));
+                        comment.setManager(json.getInt("isManager") == 1);
                     } catch (Exception ex) {
                         LogHelper.e(TAG, ex);
                         return;

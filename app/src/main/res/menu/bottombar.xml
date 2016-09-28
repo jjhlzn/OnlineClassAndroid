@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/bottomBarSearch"
-        android:icon="@drawable/search_bottom_icon"
+        android:icon="@drawable/shenqing"
         android:title="申请" />
 
     <item

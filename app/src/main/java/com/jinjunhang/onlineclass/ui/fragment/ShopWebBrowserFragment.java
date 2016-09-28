@@ -14,6 +14,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -43,7 +44,8 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
 
         mUrl = ServiceLinkManager.ShenqingUrl();
         //mUrl = "http://www.baidu.com";
-        mUrl = addUserInfo(mUrl);
+        mUrl = Util.addUserInfo(mUrl);
+        mUrl = Util.addDeviceInfo(mUrl);
         LogHelper.d(TAG, mUrl);
 
         //设置返回按键
@@ -110,19 +112,6 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
                 mBackButton.setVisibility(View.INVISIBLE);
             }
         }
-    }
-
-    private String addUserInfo(String url) {
-
-
-        LoginUser user = LoginUserDao.getInstance(CustomApplication.get()).get();
-        if (user != null) {
-            if (url.indexOf("?") == -1) {
-                url += "?";
-            }
-            url += "userid=" + user.getUserName() + "&" + "token=" + user.getToken();
-        }
-        return url;
     }
 }
 
