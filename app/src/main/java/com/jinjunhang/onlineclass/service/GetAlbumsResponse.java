@@ -38,7 +38,7 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
             album.setImage(json.getString("image"));
             album.setListenCount(json.getString("listenCount"));
             album.setAlbumType(AlbumType.getAlbumTypeByCode(json.getString("type")));
-            if (json.has("playinig")) {
+            if (json.has("playing")) {
                 album.setPlaying(json.getBoolean("playing"));
             }
 
@@ -47,8 +47,6 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
             } else {
                 album.setReady(true);
             }
-            //TODO:
-            album.setReady(true);
 
             mResultSet.add(album);
         }
