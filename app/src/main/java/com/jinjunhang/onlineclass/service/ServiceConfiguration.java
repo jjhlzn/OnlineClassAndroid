@@ -4,8 +4,6 @@ import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.utils.LogHelper;
 
-import java.util.logging.LogManager;
-
 /**
  * Created by lzn on 16/3/23.
  */
@@ -44,7 +42,7 @@ public class ServiceConfiguration {
     }
 
     public static String serverName() {
-        LogHelper.d(TAG, "isUseConfig = " + isUseConfig);
+        //LogHelper.d(TAG, "isUseConfig = " + isUseConfig);
         if (isUseConfig) {
             return LOCATOR_SERVERNAME;
         }

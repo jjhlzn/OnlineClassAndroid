@@ -1,7 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment.other;
 
 import android.content.DialogInterface;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;

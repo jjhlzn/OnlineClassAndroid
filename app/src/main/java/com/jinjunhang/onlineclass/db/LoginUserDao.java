@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.player.utils.LogHelper;
 
 /**
  * Created by lzn on 16/6/27.
  */
 public class LoginUserDao {
+    private static final String TAG = LogHelper.makeLogTag(LoginUserDao.class);
     private DBOpenHelper dbOpenHelper;
     private static LoginUserDao instance = null;
 
@@ -50,6 +52,7 @@ public class LoginUserDao {
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select M_USER_NAME, M_PASSWORD, M_LEVEL, M_CODE_IMAGE_URL, M_BOSS, M_SEX, M_NAME, M_NICK_NAME, M_TOKEN from LOGIN_USER", null);
         if (cursor.getCount() == 0) {
+            LogHelper.d(TAG, "no login user found");
             return null;
         }
         try {
@@ -64,15 +67,18 @@ public class LoginUserDao {
             user.setName(cursor.getString(6));
             user.setNickName(cursor.getString(7));
             user.setToken(cursor.getString(8));
+            LogHelper.d(TAG, user.getUserName() + " user found");
             return user;
         } finally {
-            cursor.close();;
+            cursor.close();
+
         }
     }
 
     public void deleteAll() {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.delete("LOGIN_USER", "", null);
+
     }
 
 
@@ -84,6 +90,7 @@ public class LoginUserDao {
             return cursor.getInt(0);
         } finally {
             cursor.close();
+
         }
     }
 }

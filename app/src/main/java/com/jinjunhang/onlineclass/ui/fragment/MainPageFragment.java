@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
-import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.service.GetParameterInfoRequest;
 import com.jinjunhang.onlineclass.service.GetParameterInfoResponse;
