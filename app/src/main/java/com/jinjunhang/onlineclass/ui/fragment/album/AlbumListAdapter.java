@@ -34,6 +34,14 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
                 convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_album_live, null);
                 ((TextView)convertView.findViewById(R.id.listen_people_label)).setText(album.getListenCount());
                 ((TextView)convertView.findViewById(R.id.album_list_item_desc)).setText(album.getDesc());
+                if (!album.isReady()) {
+                    ((ImageView)convertView.findViewById(R.id.user_image)).setImageResource(R.drawable.user1_1);
+                }
+                if (album.isPlaying()) {
+                    ((TextView)convertView.findViewById(R.id.album_list_playing_desc)).setVisibility(View.VISIBLE);
+                } else {
+                    ((TextView)convertView.findViewById(R.id.album_list_playing_desc)).setVisibility(View.INVISIBLE);
+                }
 
             } else {
                 convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_album, null);

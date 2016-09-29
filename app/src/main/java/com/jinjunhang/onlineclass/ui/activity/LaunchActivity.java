@@ -1,25 +1,18 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.google.common.util.concurrent.ExecutionError;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
-import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
-import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.service.GetServiceLocatorRequest;
 import com.jinjunhang.onlineclass.service.GetServiceLocatorResponse;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
@@ -32,8 +25,6 @@ import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * Created by lzn on 16/6/19.
  */
@@ -45,8 +36,6 @@ public class LaunchActivity extends Activity {
     private static final String APP_ID = "wx73653b5260b24787";
     private IWXAPI api;
 
-    private boolean chooseUpgrade;
-
     BottomBar  mBottomBar;
     private KeyValueDao mKeyValueDao;
 
@@ -57,33 +46,40 @@ public class LaunchActivity extends Activity {
         setContentView(R.layout.activity_fragment_launch);
 
         mKeyValueDao = KeyValueDao.getInstance(this);
+        //mKeyValueDao.deleteAll();
+        //mKeyValueDao.getAll();
 
-        //下面这段代码是为了获取BottomBar的高度
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
-        mBottomBar.setMaxFixedTabs(5);
-        mBottomBar.setItemsFromMenu(R.menu.bottombar, new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-
-            }
-
-            @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
-
-            }
-        });
-        mBottomBar.noTopOffset();
-        mBottomBar.hideShadow();
-        mBottomBar.setVisibility(View.INVISIBLE);
-        mBottomBar.post(new Runnable() {
-            @Override
-            public void run() {
-                int height = mBottomBar.getBar().getHeight();
-                Utils.BOTTOM_BAR_HEIGHT = height;
-                LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
-            }
-        });
-
+        int height =  Integer.parseInt(mKeyValueDao.getValue(KeyValueDao.BOTTOM_BAR_HEIGHT, -1 + ""));
+        LogHelper.d(TAG, "height = " + height);
+        if (height == -1) {
+            LogHelper.d(TAG, "compute bottom bar height");
+            //下面这段代码是为了获取BottomBar的高度
+            mBottomBar = BottomBar.attach(this, savedInstanceState);
+            mBottomBar.setMaxFixedTabs(5);
+            mBottomBar.setItemsFromMenu(R.menu.bottombar, new OnMenuTabClickListener() {
+                @Override
+                public void onMenuTabSelected(@IdRes int menuItemId) {
+                }
+                @Override
+                public void onMenuTabReSelected(@IdRes int menuItemId) {
+                }
+            });
+            mBottomBar.noTopOffset();
+            mBottomBar.hideShadow();
+            mBottomBar.setVisibility(View.INVISIBLE);
+            mBottomBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    int height = mBottomBar.getBar().getHeight();
+                    Utils.BOTTOM_BAR_HEIGHT = height;
+                    LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT + ", " + height);
+                    mKeyValueDao.saveOrUpdate(KeyValueDao.BOTTOM_BAR_HEIGHT, height + "");
+                }
+            });
+        } else {
+            Utils.BOTTOM_BAR_HEIGHT = height;
+            LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT + ", " + height);
+        }
 
         api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         api.registerApp(APP_ID);
@@ -96,6 +92,7 @@ public class LaunchActivity extends Activity {
             registerXinGeAndGoToNextActivity();
         }
 
+        LogHelper.e(TAG, "CreateView finish");
     }
 
     //注册信鸽，并进去下个页面
@@ -116,6 +113,8 @@ public class LaunchActivity extends Activity {
     }
 
     private void checkLogin() {
+
+
         Intent i;
         if (mLoginUserDao.get() == null) {
             i = new Intent(this, LoginActivity.class);
@@ -124,6 +123,7 @@ public class LaunchActivity extends Activity {
         }
         startActivity(i);
     }
+
 
 
     private class GetServiceLocatorTask extends AsyncTask<Void, Void, GetServiceLocatorResponse> {

@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
@@ -62,15 +61,32 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         mFunctionManager = new ExtendFunctionManager(maxShowRows, getActivity(), true);
 
+
+
         if (mCells.size() == 0) {
             int i = 0;
             List<String> descKeys = new ArrayList<>();
             descKeys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
-            descKeys.add(GetParameterInfoResponse.VIP_DESCRIPTON);
-            descKeys.add(GetParameterInfoResponse.BEFORE_DESCRIPTON);
+            descKeys.add(GetParameterInfoResponse.PAY_DESCRIPTON);
             for (AlbumType albumType : mAlbumTypes) {
                 AlbumTypeCell item = null;
-                item = new AlbumTypeCell2(getActivity(), albumType, mKeyValueDao.getValue(descKeys.get(i), ""));
+                //设置课程类型的名字
+                if (albumType.getTypeCode() == AlbumType.LiveAlbumType.getTypeCode()) {
+                    String name = mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_COURSE_NAME, "直播课程");
+                    LogHelper.d(TAG, "name = " + name);
+                    albumType.setName(name);
+                }
+
+                if (albumType.getTypeCode() == AlbumType.VipAlbumType.getTypeCode()) {
+                    String name = mKeyValueDao.getValue(GetParameterInfoResponse.PAY_COURSE_NAME, "会员专享课堂");
+                    LogHelper.d(TAG, "name = " + name);
+                    albumType.setName(name);
+                }
+
+                String desc = mKeyValueDao.getValue(descKeys.get(i), "");
+                LogHelper.d(TAG, "desc = " + desc);
+
+                item = new AlbumTypeCell2(getActivity(), albumType, desc);
                 mCells.add(item);
                 i++;
             }
@@ -160,8 +176,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             GetParameterInfoRequest request = new GetParameterInfoRequest();
             List<String> keys = new ArrayList<>();
             keys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
-            keys.add(GetParameterInfoResponse.VIP_DESCRIPTON);
-            keys.add(GetParameterInfoResponse.BEFORE_DESCRIPTON);
+            keys.add(GetParameterInfoResponse.PAY_DESCRIPTON);
+            keys.add(GetParameterInfoResponse.LIVE_COURSE_NAME);
+            keys.add(GetParameterInfoResponse.PAY_COURSE_NAME);
             LogHelper.d(TAG, "keys = " + keys);
             request.setKeywords(keys);
             return new BasicService().sendRequest(request);
@@ -175,17 +192,25 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
                 return;
             }
 
-            updateCell(GetParameterInfoResponse.LIVE_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0));
-            updateCell(GetParameterInfoResponse.VIP_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(1));
-            updateCell(GetParameterInfoResponse.BEFORE_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(2));
+            updateCellForDescription(GetParameterInfoResponse.LIVE_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0));
+            updateCellForDescription(GetParameterInfoResponse.PAY_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(1));
+            updateCellForName(GetParameterInfoResponse.LIVE_COURSE_NAME, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0));
+            updateCellForName(GetParameterInfoResponse.PAY_COURSE_NAME, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(1));
 
             mAlbumTypeAdapter.notifyDataSetChanged();
         }
 
-        private void updateCell(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
+        private void updateCellForDescription(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
             String description = resp.getValue(key, "");
             mKeyValueDao.saveOrUpdate(key, description);
             cell.setDescription(description);
+        }
+
+        private void updateCellForName(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
+            String name = resp.getValue(key, "");
+            mKeyValueDao.saveOrUpdate(key, name);
+            LogHelper.d(TAG, "update key " + key + " with value " + name);
+            cell.setName(name);
         }
     }
 

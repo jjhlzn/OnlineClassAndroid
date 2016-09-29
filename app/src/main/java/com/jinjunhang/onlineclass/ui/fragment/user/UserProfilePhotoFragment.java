@@ -57,8 +57,9 @@ public class UserProfilePhotoFragment extends BaseFragment {
         } else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, result);
             //上传到服务器，并且保存到本地
-            Uri imageUri = Crop.getOutput(result);
+
             try {
+                Uri imageUri = Crop.getOutput(result);
                 Bitmap bitmap =  MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 UserImageDao userImageDao = UserImageDao.getInstance(getActivity());
                 userImageDao.saveOrUpdate(bitmap);

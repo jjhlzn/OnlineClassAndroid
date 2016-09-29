@@ -24,6 +24,10 @@ public class AlbumType extends BaseModelObject {
         return mName;
     }
 
+    public void setName(String name) {
+        mName = name;
+    }
+
     public String getTypeCode() {
         return mTypeCode;
     }
@@ -32,7 +36,7 @@ public class AlbumType extends BaseModelObject {
         return image;
     }
 
-    public final static AlbumType LiveAlbumType = new AlbumType("直播课程！", "Live", R.drawable.albumtype_live);
+    public final static AlbumType LiveAlbumType = new AlbumType("直播课程", "Live", R.drawable.albumtype_live);
     public final static AlbumType VipAlbumType = new AlbumType("VIP课程", "Vip", R.drawable.albumtype_vip);
     public final static AlbumType CommonAlbumType = new AlbumType("往期直播课程", "Common", R.drawable.albumtype_common);
 
@@ -40,7 +44,7 @@ public class AlbumType extends BaseModelObject {
         List<AlbumType> types = new ArrayList<AlbumType>();
         types.add(LiveAlbumType);
         types.add(VipAlbumType);
-        types.add(CommonAlbumType);
+        //types.add(CommonAlbumType);
         return types;
     }
 

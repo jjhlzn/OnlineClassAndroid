@@ -17,6 +17,8 @@ public class Album extends BaseModelObject {
     private int mCount;
     private String mListenCount;
     private AlbumType mAlbumType;
+    private boolean playing;
+    private boolean isReady;
     private List<Song> mSongs;
 
 
@@ -90,6 +92,22 @@ public class Album extends BaseModelObject {
 
     public void setDesc(String desc) {
         mDesc = desc;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 
     public static interface MediaBrowserProvider {

@@ -2,11 +2,13 @@ package com.jinjunhang.onlineclass.service;
 
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.model.SongSetting;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,6 +55,21 @@ public class GetSongInfoResponse extends ServerResponse {
                 liveSong.setAdvImageUrl(json.getString("advImageUrl"));
                 liveSong.setAdvUrl(json.getString("advUrl"));
             }
+
+            liveSong.setPlaying(json.getBoolean("playing"));
+            liveSong.setAdvText(json.getString("advText"));
+            liveSong.setScrollRate(json.getInt("advScrollRate"));
+            JSONArray imgAdvArray = json.getJSONArray("advImages");
+
+            for(int j = 0; j < imgAdvArray.length(); j++) {
+                JSONObject jsonItem = imgAdvArray.getJSONObject(j);
+                Advertise advertise = new Advertise();
+                advertise.setImageUrl(jsonItem.getString("imageurl"));
+                advertise.setClickUrl(jsonItem.getString("link"));
+                advertise.setTitle(jsonItem.getString("title"));
+                liveSong.getImageAdvs().add(advertise);
+            }
+
             song = liveSong;
         } else {
             song = new Song();

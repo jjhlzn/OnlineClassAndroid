@@ -116,5 +116,13 @@ public class ServiceLinkManager {
         //return "http://192.168.1.54:3000";
     }
 
+    public static String ShenqingUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/shenqing";
+    }
+
+    public static String DefaultAdvImageUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/images/liveSampleImage.png";
+    }
+
 }
 

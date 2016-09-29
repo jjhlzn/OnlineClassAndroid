@@ -13,10 +13,10 @@
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/comment_user_image"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/smallusericon"
+            android:src="@drawable/user2_1"
             />
     </LinearLayout>
 
@@ -53,9 +53,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
 
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:gravity="center_vertical|left"
-                android:text="Name"
+                android:text="00:00:00"
                 android:textAlignment="textEnd"
                 android:textColor="@android:color/darker_gray"/>
 

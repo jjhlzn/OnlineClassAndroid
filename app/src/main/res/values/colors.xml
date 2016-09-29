@@ -36,4 +36,7 @@
     <color name="refresh_progress_1">@color/colorPrimary</color>
     <color name="refresh_progress_2">@color/colorPrimary</color>
     <color name="refresh_progress_3">@color/colorPrimary</color>
+
+
+    <color name="adv_text_background">#efeef3</color>
 </resources>

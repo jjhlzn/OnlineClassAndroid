@@ -6,17 +6,27 @@ package com.jinjunhang.framework.wx;
         import java.io.IOException;
         import java.io.InputStream;
         import java.io.RandomAccessFile;
+        import java.io.UnsupportedEncodingException;
         import java.net.HttpURLConnection;
         import java.net.MalformedURLException;
         import java.net.URL;
         import java.net.URLConnection;
+        import java.net.URLEncoder;
 
         import junit.framework.Assert;
 
         import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.graphics.Bitmap.CompressFormat;
+        import android.os.Build;
+        import android.util.DisplayMetrics;
         import android.util.Log;
+
+        import com.jinjunhang.onlineclass.BuildConfig;
+        import com.jinjunhang.onlineclass.db.LoginUserDao;
+        import com.jinjunhang.onlineclass.model.LoginUser;
+        import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
+        import com.jinjunhang.player.utils.LogHelper;
 
 public class Util {
 
@@ -75,6 +85,46 @@ public class Util {
         }
 
         return null;
+    }
+
+    public static String addUserInfo(String url) {
+        LoginUser user = LoginUserDao.getInstance(CustomApplication.get()).get();
+        if (user != null) {
+            if (url.indexOf("?") == -1) {
+                url += "?";
+            }
+            url += "userid=" + user.getUserName() + "&" + "token=" + user.getToken();
+        }
+        return url;
+    }
+
+    public static String addDeviceInfo(String url) {
+        if (url.indexOf("?") == -1) {
+            url += "?";
+        }
+        DisplayMetrics metrics = CustomApplication.get().getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        String queryString = "platform=android&model=" + getDeviceName()+ "&osversion="+getAndroidVersion()+"&screensize="+(width+"*"+height)
+                +"&appversion="+(BuildConfig.VERSION_NAME + "." + BuildConfig.VERSION_CODE);
+        try {
+            return url + URLEncoder.encode(queryString, "UTF-8");
+        } catch (UnsupportedEncodingException ex){
+            LogHelper.e(TAG, ex);
+            return url;
+        }
+    }
+
+    private static String getAndroidVersion() {
+        String release = Build.VERSION.RELEASE;
+        int sdkVersion = Build.VERSION.SDK_INT;
+        return "Android SDK: " + sdkVersion + " (" + release +")";
+    }
+
+    private static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        return manufacturer + " " + model;
     }
 
     public static byte[] readFromFile(String fileName, int offset, int len) {

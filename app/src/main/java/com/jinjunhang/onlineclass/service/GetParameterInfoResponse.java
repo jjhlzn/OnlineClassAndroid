@@ -16,8 +16,9 @@ import java.util.Map;
 public class GetParameterInfoResponse extends ServerResponse{
 
     public final static String LIVE_DESCRIPTON = "livedescription";
-    public final static String VIP_DESCRIPTON = "vipdescription";
-    public final static String BEFORE_DESCRIPTON = "beforedescription";
+    public final static String PAY_DESCRIPTON = "vipdescription";
+    public final static String LIVE_COURSE_NAME = "liveCourseName";
+    public final static String PAY_COURSE_NAME = "payCourseName";
 
     private Map<String, String> mMap = new HashMap<>();
 

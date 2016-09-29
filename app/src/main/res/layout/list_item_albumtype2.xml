@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/list_item_albumtype_viewgroup"
               android:layout_width="match_parent"
-              android:layout_height="54dp"
+              android:layout_height="75dp"
               android:orientation="horizontal"
               android:background="@color/white"
               >
@@ -18,11 +18,11 @@
 
                         <ImageView
                             android:id="@+id/albumType_list_item_image"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="31dp"
+                            android:layout_height="31dp"
                             android:layout_marginLeft="10dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
+                            android:layout_marginTop="22dp"
+                            android:layout_marginBottom="22dp"
                             android:gravity="center_vertical|left"
                             android:src="@drawable/log"
                             />
@@ -57,10 +57,10 @@
                     android:layout_height="match_parent"
                     android:gravity="right">
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginBottom="15dp"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginTop="26dp"
+                            android:layout_marginBottom="26dp"
                             android:layout_alignParentRight="true"
                             android:gravity="center_vertical|right"
                             android:src="@drawable/morethan"
