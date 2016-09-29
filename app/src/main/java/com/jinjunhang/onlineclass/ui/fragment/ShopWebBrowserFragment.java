@@ -44,6 +44,7 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
 
         mUrl = ServiceLinkManager.ShenqingUrl();
         //mUrl = "http://www.baidu.com";
+        //mUrl = "http://wxpay.weixin.qq.com/pub_v2/pay/wap.v2.php";
         mUrl = Util.addUserInfo(mUrl);
         mUrl = Util.addDeviceInfo(mUrl);
         LogHelper.d(TAG, mUrl);
@@ -87,6 +88,16 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
             if (url.contains("/app/jfzs")) {
                 view.getContext().startActivity(
                         new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }
+            //支持微信支付
+
+            if (url.startsWith("weixin://wap/pay?")) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+
                 return true;
             }
             view.loadUrl(url);

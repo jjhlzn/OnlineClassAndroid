@@ -141,6 +141,14 @@ public class WebBrowserActivity extends AppCompatActivity {
                         new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                 return true;
             }
+            //支持微信支付
+            if (url.startsWith("weixin://wap/pay?")) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true;
+            }
             view.loadUrl(url);
             return true;
         }
