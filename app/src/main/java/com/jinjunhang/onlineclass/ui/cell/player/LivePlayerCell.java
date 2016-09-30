@@ -40,10 +40,18 @@ public class LivePlayerCell extends PlayerCell {
     public LivePlayerCell(Activity activity) {
         super(activity);
     }
+    private TextView advTextView;
 
+    public void setAdvTextViewSelected() {
+        if (advTextView != null) {
+            advTextView.setSelected(true);
+        }
+    }
 
     @Override
     public ViewGroup getView() {
+        LogHelper.d(TAG, "LivePlayer.getView() called");
+
         ViewGroup v = super.getView();
         LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
 
@@ -65,7 +73,7 @@ public class LivePlayerCell extends PlayerCell {
             v.findViewById(R.id.player_hand).setVisibility(View.INVISIBLE);
         }
 
-        TextView advTextView = (TextView)v.findViewById(R.id.player_adv_text);
+        advTextView = (TextView)v.findViewById(R.id.player_adv_text);
         if (song.getAdvText() == null || song.getAdvText().trim().equals("")) {
             advTextView.setText("欢迎大家收听");
         } else {
@@ -104,8 +112,7 @@ public class LivePlayerCell extends PlayerCell {
         SliderLayout sliderShow = (SliderLayout)v.findViewById(R.id.player_song_image_adv);
         LogHelper.d(TAG, "sliderShow = " + sliderShow);
 
-        //List<Advertise> advs = song.getImageAdvs();
-        List<Advertise> advs = new ArrayList<Advertise>();
+        List<Advertise> advs = song.getImageAdvs();
 
         if (advs.size() == 0) {
             Advertise adv = new Advertise();
