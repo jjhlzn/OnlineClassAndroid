@@ -8,6 +8,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
+import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.LiveSongFragment;
 import com.jinjunhang.player.utils.LogHelper;
@@ -70,6 +71,10 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         for(int i = 0; i < LiveSongFragment.MAX_COMMENT_COUNT && i < mCommentCells.size(); i++) {
             CommentCell cell = mCommentCells.get(i);
             mCells.add(cell);
+        }
+
+        if (mPlayerCell != null) {
+            ((LivePlayerCell)mPlayerCell).setAdvTextViewSelected();
         }
     }
 
