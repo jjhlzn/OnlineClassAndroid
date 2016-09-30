@@ -52,7 +52,6 @@ import okio.Okio;
 import okio.Source;
 
 
-
 public class MainActivity extends BaseMusicActivity  {
 
     public static final int REQUEST_ME_UPDATE_USER_IAMGE = 1;
@@ -147,6 +146,8 @@ public class MainActivity extends BaseMusicActivity  {
         mPlayerController.attachToView(mBottomBar);
 
         new CheckUpgradeTask().execute();
+
+
     }
 
     private void setCommonActionBar() {

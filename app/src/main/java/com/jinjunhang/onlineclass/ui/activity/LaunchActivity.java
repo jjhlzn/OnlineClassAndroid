@@ -18,6 +18,7 @@ import com.jinjunhang.onlineclass.service.GetServiceLocatorResponse;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.player.utils.LogHelper;
+import com.networkbench.agent.impl.NBSAppAgent;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.tencent.android.tpush.XGIOperateCallback;
@@ -93,6 +94,8 @@ public class LaunchActivity extends Activity {
         }
 
         LogHelper.e(TAG, "CreateView finish");
+
+        NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
     }
 
     //注册信鸽，并进去下个页面
