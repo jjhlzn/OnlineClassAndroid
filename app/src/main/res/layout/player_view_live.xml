@@ -76,16 +76,29 @@
             android:text="00:00"
             android:textSize="12dp"
             android:visibility="gone"/>
+
+
         <TextView
             android:id="@+id/player_adv_text"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
+
             android:background="@color/adv_text_background"
             android:textColor="@color/colorPrimary"
             android:text="这是广告"
             android:textSize="12dp"
-            android:gravity="center_horizontal|center_vertical"/>
+            android:gravity="center_horizontal|center_vertical"
+
+            android:scrollHorizontally="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"/>
     </RelativeLayout>
+
+
+
 
     <SeekBar
         android:id="@+id/player_seekbar"

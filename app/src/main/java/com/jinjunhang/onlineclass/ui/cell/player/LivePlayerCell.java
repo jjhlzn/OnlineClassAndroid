@@ -71,6 +71,7 @@ public class LivePlayerCell extends PlayerCell {
         } else {
             advTextView.setText(song.getAdvText());
         }
+        advTextView.setSelected(true);
 
         String listenerCount = ((LiveSong)mMusicPlayer.getCurrentPlaySong()).getListenPeople();
         mListenerCountLabel.setText(listenerCount);

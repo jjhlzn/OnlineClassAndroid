@@ -49,6 +49,7 @@
                     android:textColor="@color/red"
                     android:textSize="15sp"
                     android:gravity="center_vertical|left"
+                    android:maxLines="2"
                     android:text=""/>
 
                 <LinearLayout
