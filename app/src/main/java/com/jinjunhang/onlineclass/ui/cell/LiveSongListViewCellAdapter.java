@@ -73,9 +73,7 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
             mCells.add(cell);
         }
 
-        if (mPlayerCell != null) {
-            ((LivePlayerCell)mPlayerCell).setAdvTextViewSelected();
-        }
+
     }
 
     public void addComments(List<Comment> comments) {

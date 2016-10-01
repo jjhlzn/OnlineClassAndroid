@@ -95,7 +95,7 @@ public class LaunchActivity extends Activity {
 
         LogHelper.e(TAG, "CreateView finish");
 
-        NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
+        //NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
     }
 
     //注册信鸽，并进去下个页面

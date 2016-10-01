@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 import com.jinjunhang.player.utils.TimeUtil;
+import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,15 +41,6 @@ public class LivePlayerCell extends PlayerCell {
 
     public LivePlayerCell(Activity activity) {
         super(activity);
-    }
-    private TextView advTextView;
-
-    public void setAdvTextViewSelected() {
-        LogHelper.d(TAG, "setAdvTextViewSelected called");
-        if (advTextView != null) {
-            advTextView.setSelected(true);
-            LogHelper.d(TAG, "advTextView set selected");
-        }
     }
 
     @Override
@@ -75,13 +68,14 @@ public class LivePlayerCell extends PlayerCell {
             v.findViewById(R.id.player_hand).setVisibility(View.INVISIBLE);
         }
 
-        advTextView = (TextView)v.findViewById(R.id.player_adv_text);
+        MarqueeView advTextView = (MarqueeView)v.findViewById(R.id.player_adv_text);
         if (song.getAdvText() == null || song.getAdvText().trim().equals("")) {
-            advTextView.setText("欢迎大家收听");
+            advTextView.startWithText("欢迎大家收听");
         } else {
-            advTextView.setText(song.getAdvText());
+            advTextView.startWithText(song.getAdvText());
         }
-        advTextView.setSelected(true);
+
+        //advTextView.setSelected(true);
 
         String listenerCount = ((LiveSong)mMusicPlayer.getCurrentPlaySong()).getListenPeople();
         mListenerCountLabel.setText(listenerCount);

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'newlens'
+//apply plugin: 'newlens'
 
 android {
     compileSdkVersion 23
@@ -59,7 +59,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
-
     compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.4"
+    compile 'com.sunfusheng:marqueeview:1.1.0'
 
 }

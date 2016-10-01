@@ -10,3 +10,4 @@
 app/app-release.apk
 
 *.apk副本
+*.log

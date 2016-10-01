@@ -171,7 +171,6 @@ public class LiveSongFragment extends BaseSongFragment  {
     private void updateChat() {
         mUpdateChatCount++;
 
-        ((LivePlayerCell)mPlayerCell).setAdvTextViewSelected();
 
         if (mUpdateChatCount % 6 == 0) {
             new GetLiveListenerTask().execute();
