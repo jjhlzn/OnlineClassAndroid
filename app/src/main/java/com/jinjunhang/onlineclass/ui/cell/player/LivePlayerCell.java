@@ -43,8 +43,10 @@ public class LivePlayerCell extends PlayerCell {
     private TextView advTextView;
 
     public void setAdvTextViewSelected() {
+        LogHelper.d(TAG, "setAdvTextViewSelected called");
         if (advTextView != null) {
             advTextView.setSelected(true);
+            LogHelper.d(TAG, "advTextView set selected");
         }
     }
 
@@ -110,7 +112,6 @@ public class LivePlayerCell extends PlayerCell {
             return;
         }
         SliderLayout sliderShow = (SliderLayout)v.findViewById(R.id.player_song_image_adv);
-        LogHelper.d(TAG, "sliderShow = " + sliderShow);
 
         List<Advertise> advs = song.getImageAdvs();
 
@@ -162,20 +163,14 @@ public class LivePlayerCell extends PlayerCell {
 
     @Override
     protected void updateProgress() {
-        //LogHelper.d(TAG, "updateProgress called");
         if (!mMusicPlayer.isPlaying()) {
             return;
         }
         LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
-
         int progress = (int)((double)song.getPlayedTimeInSec() / song.getTotalTimeInSec() * 1000);
-        //LogHelper.d(TAG, "startTime = " + song.getStartDateTime() + ", endTime = " + song.getEndDateTime());
-        //LogHelper.d(TAG, "leftTime = " + song.getTimeLeftInSec() + ", palyedTime = " + song.getPlayedTimeInSec() + ", totalTime = " + song.getTotalTimeInSec());
-        //LogHelper.d(TAG, "progress = " + progress / 10 + "%");
         mSeekbar.setProgress(progress );
         if (mPlayTimeTextView != null)
             mPlayTimeTextView.setText(getNowTimeString());
-
     }
 
     @Override
@@ -196,7 +191,6 @@ public class LivePlayerCell extends PlayerCell {
         mSeekbar = (SeekBar) v.findViewById(R.id.player_seekbar);
         mSeekbar.setMax(0);
         mSeekbar.setMax(1000);
-        //mSeekbar.setProgress(50);
         updateProgress();
         scheduleSeekbarUpdate();
     }
