@@ -25,6 +25,12 @@ import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.player.utils.LogHelper;
+import com.tencent.mm.sdk.constants.Build;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -196,4 +202,41 @@ public class Utils {
         int titleBarHeight= contentViewTop - statusBarHeight;
         return titleBarHeight;
     }
+
+    public static boolean handleWechatPay(IWXAPI wxApi, String url, LoadingAnimation loadingAnimation) {
+        if (url.startsWith("wechatpay://")) {
+
+            boolean isPaySupported = wxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+            if (!isPaySupported){
+                if (loadingAnimation != null) {
+                    Utils.showErrorMessage(loadingAnimation.getActivity(), "");
+                }
+                return false;
+            }
+
+            if (loadingAnimation != null) {
+                loadingAnimation.show("");
+            }
+
+            String jsonString = url.substring(12);
+            LogHelper.d(TAG, "jsonString = " + jsonString);
+            try {
+                JSONObject json = new JSONObject(jsonString);
+                PayReq request = new PayReq();
+                request.appId = json.getString("appid");
+                request.partnerId = json.getString("partnerid");
+                request.prepayId= json.getString("prepayid");
+                request.packageValue = json.getString("package");
+                request.nonceStr= json.getString("noncestr");
+                request.timeStamp= json.getString("timestamp");
+                request.sign= json.getString("sign");
+                wxApi.sendReq(request);
+            } catch (JSONException ex) {
+                LogHelper.e(TAG, ex);
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.jinjunhang.onlineclass.ui.lib;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
-import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;

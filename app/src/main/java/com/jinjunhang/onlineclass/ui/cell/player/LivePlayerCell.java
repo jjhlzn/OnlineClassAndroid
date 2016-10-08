@@ -2,34 +2,24 @@ package com.jinjunhang.onlineclass.ui.cell.player;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
-import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
-import com.jinjunhang.player.utils.TimeUtil;
 import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

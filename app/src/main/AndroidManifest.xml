@@ -188,6 +188,9 @@
         <activity android:name=".ui.activity.UpgradeActivity"
                   android:screenOrientation="portrait" />
 
+        <activity android:name="com.jinjunhang.onlineclass.wxapi.WXPayEntryActivity"
+                  android:screenOrientation="portrait" />
+
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to
              consumers through MediaBrowserService and MediaSession. Consumers connect to it through

@@ -6,15 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.onlineclass.ui.activity.album.CommentListActivity;
-import com.jinjunhang.onlineclass.ui.fragment.album.CommentListFragment;
-import com.jinjunhang.player.MusicPlayer;
 
 /**
  * Created by lzn on 16/7/22.

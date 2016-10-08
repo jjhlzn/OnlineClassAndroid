@@ -24,11 +24,8 @@ import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
-import com.jinjunhang.onlineclass.service.GetParameterInfoRequest;
-import com.jinjunhang.onlineclass.service.GetParameterInfoResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
@@ -38,7 +35,6 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
-import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell2;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
@@ -46,7 +42,6 @@ import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by lzn on 16/6/10.

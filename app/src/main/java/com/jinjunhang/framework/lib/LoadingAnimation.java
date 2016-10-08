@@ -16,6 +16,10 @@ public class LoadingAnimation {
     private Activity mContext;
     private LinearLayout mLoading;
 
+    public Activity getActivity() {
+        return mContext;
+    }
+
     public LoadingAnimation(Activity context) {
         mContext = context;
     }
@@ -25,6 +29,9 @@ public class LoadingAnimation {
         mLoading.setGravity(Gravity.CENTER);
 
         ViewGroup container = (ViewGroup) mContext.findViewById(R.id.fragmentContainer);
+        if (container == null) {
+            container = (ViewGroup) mContext.findViewById(R.id.rootView);
+        }
 
         container.addView(mLoading);
 
@@ -32,6 +39,10 @@ public class LoadingAnimation {
 
     public void hide() {
         ViewGroup container = (ViewGroup) mContext.findViewById(R.id.fragmentContainer);
+        if (container == null) {
+            container = (ViewGroup) mContext.findViewById(R.id.rootView);
+        }
+
         container.removeView(mLoading);
     }
 

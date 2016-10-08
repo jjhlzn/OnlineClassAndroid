@@ -1,6 +1,5 @@
 package com.jinjunhang.onlineclass.ui.fragment.user;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,8 +23,6 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.utils.LogHelper;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

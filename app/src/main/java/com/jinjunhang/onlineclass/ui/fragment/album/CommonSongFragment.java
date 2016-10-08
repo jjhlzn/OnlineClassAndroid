@@ -1,6 +1,5 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.github.data5tream.emojilib.EmojiParser;
-import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -23,7 +20,6 @@ import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
 import com.jinjunhang.onlineclass.service.SendCommentRequest;
 import com.jinjunhang.onlineclass.service.SendCommentResponse;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
@@ -32,10 +28,7 @@ import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-import com.jinjunhang.onlineclass.ui.lib.LinearLayoutThatDetectsSoftKeyboard;
-import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
-import com.ppi.emoji.emojiParser;
 
 import java.util.ArrayList;
 import java.util.List;
