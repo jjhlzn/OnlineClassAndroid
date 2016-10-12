@@ -84,7 +84,7 @@ public class MainActivity extends BaseMusicActivity  {
         mBottomBar.setItemsFromMenu(R.menu.bottombar, new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(@IdRes int menuItemId) {
-                String title = "";
+                String title = null;
                 FragmentManager fm = getSupportFragmentManager();
                 Fragment fragment = null;
                 switch (menuItemId) {
@@ -97,6 +97,8 @@ public class MainActivity extends BaseMusicActivity  {
                         title = "申请";
                         fragment = getFragment(ShopWebBrowserFragment.class);
                         setCommonActionBar();
+                        break;
+                    case R.id.bottomBarEmpty:
                         break;
                     case R.id.bottomBarMe:
                         title = "";
@@ -117,7 +119,7 @@ public class MainActivity extends BaseMusicActivity  {
                     transaction.commit();
                 }
 
-                if (menuItemId != R.id.bottomBarSearch)
+                if (menuItemId != R.id.bottomBarSearch && title != null)
                     ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
             }
 
