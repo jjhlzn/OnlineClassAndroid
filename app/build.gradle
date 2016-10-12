@@ -19,6 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        debug {
+            storeFile file("/Users/lzn/AndroidStudioProjects/OnlineClassAndroid/keystore.jks")
+            storePassword "jjhlzn"
+            keyAlias "jjhlzn"
+            keyPassword "jjhlzn"
+        }
+    }
 }
 
 

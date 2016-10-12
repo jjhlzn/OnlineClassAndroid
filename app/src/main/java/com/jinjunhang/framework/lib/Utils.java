@@ -214,9 +214,10 @@ public class Utils {
                 return false;
             }
 
+            /*
             if (loadingAnimation != null) {
                 loadingAnimation.show("");
-            }
+            }*/
 
             String jsonString = url.substring(12);
             LogHelper.d(TAG, "jsonString = " + jsonString);

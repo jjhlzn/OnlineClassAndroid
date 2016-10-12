@@ -45,6 +45,7 @@ import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.player.utils.LogHelper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -122,6 +123,7 @@ public class LiveSongFragment extends BaseSongFragment  {
                 @Override
                 public void call(Object... args) {
                     LogHelper.d(TAG, "get a new message");
+
                     final Comment comment = new Comment();
                     try {
                         JSONObject json = new JSONObject((String)args[0]);
@@ -350,6 +352,29 @@ public class LiveSongFragment extends BaseSongFragment  {
                 @Override
                 public void call(Object... args) {
                     LogHelper.d(TAG, "server received.");
+                    final JSONObject resultJson = (JSONObject)args[0];
+                    LogHelper.d(TAG, resultJson);
+                    int status = -1;
+                    try {
+                        status = resultJson.getInt("status");
+                        if (status != 0) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Utils.showErrorMessage(getActivity(), resultJson.getString("errorMessage"));
+                                    }catch (JSONException ex) {
+                                        LogHelper.e(TAG, ex);
+                                    }
+                                }
+                            });
+                            return;
+                        }
+                    } catch (JSONException ex) {
+                        LogHelper.e(TAG, ex);
+                        return;
+                    }
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

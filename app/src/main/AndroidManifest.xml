@@ -204,6 +204,13 @@
                 <action android:name="com.jinjunhang.onlineclass.ACTION_NEXT" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
