@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.player.utils.LogHelper;
-import com.ppi.emoji.EmojiTextView;
-import com.ppi.emoji.emojiParser;
 
 /**
  * Created by jjh on 2016-7-3.

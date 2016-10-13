@@ -14,8 +14,6 @@ import com.jinjunhang.player.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import com.ppi.emoji.EmojiTextView;
-import com.ppi.emoji.emojiParser;
-
 /**
  * Created by lzn on 16/6/22.
  */
