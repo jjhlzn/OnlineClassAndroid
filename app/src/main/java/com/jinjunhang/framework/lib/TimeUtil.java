@@ -1,4 +1,4 @@
-package com.jinjunhang.player.utils;
+package com.jinjunhang.framework.lib;
 
 /**
  * Created by lzn on 16/6/19.

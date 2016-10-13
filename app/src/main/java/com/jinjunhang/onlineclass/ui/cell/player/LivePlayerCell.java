@@ -16,7 +16,7 @@ import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.text.SimpleDateFormat;

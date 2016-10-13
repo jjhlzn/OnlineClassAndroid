@@ -39,7 +39,7 @@ import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 

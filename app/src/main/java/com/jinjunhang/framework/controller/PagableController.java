@@ -15,7 +15,6 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.List;
 

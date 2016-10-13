@@ -3,12 +3,10 @@ package com.jinjunhang.onlineclass.service;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.onlineclass.model.Advertise;
-import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
-import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.model.SongSetting;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;

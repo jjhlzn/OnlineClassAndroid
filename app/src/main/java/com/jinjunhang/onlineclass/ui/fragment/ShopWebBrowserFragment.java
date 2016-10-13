@@ -14,27 +14,13 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.gson.JsonParser;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.db.LoginUserDao;
-import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
-import com.tencent.mm.sdk.modelbase.BaseReq;
-import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.logging.LogManager;
 
 /**
  * Created by lzn on 2016/9/25.

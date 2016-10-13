@@ -1,10 +1,9 @@
 package com.jinjunhang.player.utils;
 
 import android.media.session.PlaybackState;
-import android.util.Log;
 
 import com.google.android.exoplayer.ExoPlayer;
-import com.google.android.gms.common.api.Status;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.player.MusicPlayer;
 
 /**

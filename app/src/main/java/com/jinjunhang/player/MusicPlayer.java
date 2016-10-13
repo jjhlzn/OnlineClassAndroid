@@ -11,9 +11,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.playback.exo.player.DemoPlayer;
 import com.jinjunhang.player.playback.exo.player.ExtractorRendererBuilder;
 import com.jinjunhang.player.playback.exo.player.HlsRendererBuilder;
-import com.jinjunhang.player.playback.exo.player.SmoothStreamingRendererBuilder;
-import com.jinjunhang.player.playback.exo.player.SmoothStreamingTestMediaDrmCallback;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 
 import java.util.ArrayList;
@@ -64,8 +62,8 @@ public class MusicPlayer implements ExoPlayer.Listener {
     private DemoPlayer.RendererBuilder getRendererBuilder(Uri contentUri, int contentType) {
         String userAgent = Util.getUserAgent(context, "ExoPlayerDemo");
         switch (contentType) {
-            case Util.TYPE_SS:
-                return new SmoothStreamingRendererBuilder(context, userAgent, contentUri.toString(), new SmoothStreamingTestMediaDrmCallback());
+            //case Util.TYPE_SS:
+             //   return new SmoothStreamingRendererBuilder(context, userAgent, contentUri.toString(), new SmoothStreamingTestMediaDrmCallback());
             case Util.TYPE_HLS:
                 return new HlsRendererBuilder(context, userAgent, contentUri.toString());
             case Util.TYPE_OTHER:
@@ -208,13 +206,6 @@ public class MusicPlayer implements ExoPlayer.Listener {
             return null;
         }
         return mSongs[currentIndex];
-    }
-
-    public int getCurrentPlaySongIndex() {
-        if (mSongs == null) {
-            return -1;
-        }
-        return currentIndex;
     }
 
     private void createPlayer(Song song) {

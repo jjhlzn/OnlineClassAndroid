@@ -18,7 +18,7 @@ import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 /**
  * Created by lzn on 16/6/20.

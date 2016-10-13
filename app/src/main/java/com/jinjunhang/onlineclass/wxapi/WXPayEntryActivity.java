@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;

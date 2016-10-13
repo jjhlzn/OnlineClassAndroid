@@ -26,7 +26,7 @@ package com.jinjunhang.framework.wx;
         import com.jinjunhang.onlineclass.db.LoginUserDao;
         import com.jinjunhang.onlineclass.model.LoginUser;
         import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-        import com.jinjunhang.player.utils.LogHelper;
+        import com.jinjunhang.framework.lib.LogHelper;
 
 public class Util {
 

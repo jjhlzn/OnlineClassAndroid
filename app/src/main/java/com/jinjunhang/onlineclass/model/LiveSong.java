@@ -1,15 +1,11 @@
 package com.jinjunhang.onlineclass.model;
 
-import android.util.Log;
-
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by lzn on 16/6/12.

@@ -1,8 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,30 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
-import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
-import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetSongCommentsRequest;
-import com.jinjunhang.onlineclass.service.GetSongCommentsResponse;
-import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
-import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
-import com.jinjunhang.onlineclass.ui.cell.me.CommonCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;

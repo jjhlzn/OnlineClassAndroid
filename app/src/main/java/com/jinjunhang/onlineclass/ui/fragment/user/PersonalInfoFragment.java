@@ -22,7 +22,7 @@ import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;

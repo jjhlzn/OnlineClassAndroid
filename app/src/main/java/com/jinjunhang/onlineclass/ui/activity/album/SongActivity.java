@@ -1,13 +1,7 @@
 package com.jinjunhang.onlineclass.ui.activity.album;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.Toast;
 
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
@@ -16,7 +10,7 @@ import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.CommonSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.LiveSongFragment;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 /**
  * Created by lzn on 16/6/13.

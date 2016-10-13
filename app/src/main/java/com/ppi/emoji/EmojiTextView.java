@@ -8,12 +8,10 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.TextView;
 
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 public class EmojiTextView extends android.widget.TextView {
 	private static final String TAG = EmojiTextView.class.getName();
