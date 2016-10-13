@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.jinjunhang.player.ExoPlayerNotificationManager;
-import com.jinjunhang.player.MediaNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.LogHelper;
 

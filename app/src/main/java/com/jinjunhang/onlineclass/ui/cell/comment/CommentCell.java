@@ -1,19 +1,14 @@
 package com.jinjunhang.onlineclass.ui.cell.comment;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
-import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.player.utils.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -45,18 +40,6 @@ public class CommentCell extends BaseListViewCell {
             image.setImageResource(R.drawable.user2_0);
             ((TextView)v.findViewById(R.id.comment_username)).setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
         }
-        //image.setOval(true);
-
-        //Glide.with(mActivity).load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId())).into(image);
-        //Log.d(TAG, "url = " + ServiceConfiguration.GetUserProfileImage(mComment.getUserId()));
-        /*
-        Glide
-                .with(mActivity)
-                .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
-                .centerCrop()
-                .placeholder(R.drawable.smallusericon)
-                .crossFade()
-                .into(image); */
 
 
         ((TextView)v.findViewById(R.id.comment_username)).setText(mComment.getNickName());
