@@ -208,13 +208,6 @@ public class MusicPlayer implements ExoPlayer.Listener {
         return mSongs[currentIndex];
     }
 
-    public int getCurrentPlaySongIndex() {
-        if (mSongs == null) {
-            return -1;
-        }
-        return currentIndex;
-    }
-
     private void createPlayer(Song song) {
         LogHelper.d(TAG, "createPlayer() called");
         int type = Util.TYPE_OTHER;
