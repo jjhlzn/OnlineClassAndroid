@@ -28,7 +28,7 @@ import com.jinjunhang.onlineclass.ui.cell.comment.MoreCommentLinkCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;

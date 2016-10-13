@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
-import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.List;
 

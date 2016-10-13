@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 /**
  * Created by lzn on 16/6/27.

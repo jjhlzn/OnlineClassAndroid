@@ -19,7 +19,7 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.lib.WeixinShareManager;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 

@@ -1,15 +1,12 @@
 package com.jinjunhang.framework.lib;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +18,7 @@ import android.widget.EditText;
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.player.utils.LogHelper;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -34,7 +28,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 
 
 /**

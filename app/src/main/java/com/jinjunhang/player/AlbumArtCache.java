@@ -20,8 +20,8 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.LruCache;
 
-import com.jinjunhang.player.utils.BitmapHelper;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.BitmapHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.io.IOException;
 

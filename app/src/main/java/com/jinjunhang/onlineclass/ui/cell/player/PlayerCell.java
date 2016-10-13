@@ -25,9 +25,9 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
-import com.jinjunhang.player.utils.TimeUtil;
+import com.jinjunhang.framework.lib.TimeUtil;
 
 import java.util.List;
 import java.util.concurrent.Executors;

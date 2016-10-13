@@ -28,7 +28,7 @@ import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 

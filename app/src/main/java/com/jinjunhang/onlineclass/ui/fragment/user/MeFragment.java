@@ -33,7 +33,7 @@ import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.cell.me.SecondSectionCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;

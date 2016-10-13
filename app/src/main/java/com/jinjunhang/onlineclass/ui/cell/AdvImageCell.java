@@ -20,7 +20,7 @@ import com.jinjunhang.onlineclass.service.GetAdsRequest;
 import com.jinjunhang.onlineclass.service.GetAdsResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.List;
 

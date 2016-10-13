@@ -2,7 +2,6 @@ package com.jinjunhang.onlineclass.ui.lib;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -17,7 +16,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 

@@ -19,7 +19,7 @@ import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.UserProfilePhotoActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**

@@ -20,7 +20,7 @@ import com.jinjunhang.onlineclass.service.LoginRequest;
 import com.jinjunhang.onlineclass.service.LoginResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ConfigurationActivity;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 

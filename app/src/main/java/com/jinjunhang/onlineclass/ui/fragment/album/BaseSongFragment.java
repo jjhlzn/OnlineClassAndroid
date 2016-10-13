@@ -29,7 +29,7 @@ import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;

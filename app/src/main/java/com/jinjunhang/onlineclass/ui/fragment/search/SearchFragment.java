@@ -21,7 +21,7 @@ import com.jinjunhang.onlineclass.service.GetHotSearchWordsRequest;
 import com.jinjunhang.onlineclass.service.GetHotSearchWordsResponse;
 import com.jinjunhang.onlineclass.ui.activity.search.SearchResultActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.List;
 

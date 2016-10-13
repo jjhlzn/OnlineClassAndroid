@@ -16,11 +16,10 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.onlineclass.service.SetNickNameRequest;
 import com.jinjunhang.onlineclass.service.SetPasswordRequest;
 import com.jinjunhang.onlineclass.service.SetPasswordResponse;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 /**
  * Created by jjh on 2016-7-2.

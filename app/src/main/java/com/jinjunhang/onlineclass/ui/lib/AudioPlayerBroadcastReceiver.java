@@ -3,11 +3,10 @@ package com.jinjunhang.onlineclass.ui.lib;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 /**
  * Created by jjh on 2016-7-13.

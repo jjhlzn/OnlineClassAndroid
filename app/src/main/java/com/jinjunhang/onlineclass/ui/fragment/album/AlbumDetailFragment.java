@@ -20,7 +20,6 @@ import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.model.Album;
@@ -30,7 +29,7 @@ import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;

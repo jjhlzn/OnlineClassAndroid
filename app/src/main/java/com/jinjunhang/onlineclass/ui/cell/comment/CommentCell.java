@@ -10,7 +10,7 @@ import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import com.ppi.emoji.EmojiTextView;

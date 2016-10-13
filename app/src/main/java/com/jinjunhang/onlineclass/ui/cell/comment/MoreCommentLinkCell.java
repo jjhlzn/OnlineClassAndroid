@@ -12,7 +12,7 @@ import com.jinjunhang.onlineclass.ui.activity.album.CommentListActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.CommentListFragment;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 /**
  * Created by jjh on 2016-7-3.

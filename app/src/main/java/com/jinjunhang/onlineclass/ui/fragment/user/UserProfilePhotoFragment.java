@@ -1,7 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment.user;
 
 import android.app.Activity;
-import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -25,15 +23,13 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.UserImageDao;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.user.UserProfilePhotoActivity;
-import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnItemClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.soundcloud.android.crop.Crop;
-import com.soundcloud.android.crop.CropImageActivity;
 
 import java.io.File;
 

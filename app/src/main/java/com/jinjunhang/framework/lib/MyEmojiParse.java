@@ -2,7 +2,6 @@ package com.jinjunhang.framework.lib;
 
 import com.github.data5tream.emojilib.EmojiParser;
 import com.github.data5tream.emojilib.emoji.Map;
-import com.jinjunhang.player.utils.LogHelper;
 
 import java.util.Arrays;
 import java.util.HashMap;

@@ -11,7 +11,7 @@ import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.playback.exo.player.DemoPlayer;
 import com.jinjunhang.player.playback.exo.player.ExtractorRendererBuilder;
 import com.jinjunhang.player.playback.exo.player.HlsRendererBuilder;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.player.utils.StatusHelper;
 
 import java.util.ArrayList;

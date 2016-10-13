@@ -1,11 +1,8 @@
 package com.jinjunhang.onlineclass.ui.lib;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -17,7 +14,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.db.QrImageDao;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXImageObject;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;

@@ -4,14 +4,12 @@ import android.app.Activity;
 
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LiveSong;
-import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.NoCommentCell;
-import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.LiveSongFragment;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -25,7 +25,7 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
-import com.jinjunhang.player.utils.LogHelper;
+import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
 import java.util.List;
