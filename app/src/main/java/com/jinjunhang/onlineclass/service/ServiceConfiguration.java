@@ -1,8 +1,9 @@
 package com.jinjunhang.onlineclass.service;
 
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-import com.jinjunhang.player.utils.LogHelper;
+
 
 /**
  * Created by lzn on 16/3/23.
