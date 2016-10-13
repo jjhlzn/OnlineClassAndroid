@@ -1,6 +1,5 @@
 package com.jinjunhang.onlineclass.model;
 
-import com.orm.SugarRecord;
 
 import java.io.Serializable;
 

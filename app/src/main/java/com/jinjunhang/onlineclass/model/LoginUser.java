@@ -1,9 +1,7 @@
 package com.jinjunhang.onlineclass.model;
 
 import com.jinjunhang.onlineclass.service.LoginResponse;
-import com.orm.SugarRecord;
-import com.orm.dsl.Table;
-import com.orm.dsl.Unique;
+
 
 import java.io.Serializable;
 
@@ -11,7 +9,7 @@ import java.io.Serializable;
  * Created by lzn on 16/6/27.
  */
 
-public class LoginUser extends SugarRecord implements Serializable {
+public class LoginUser implements Serializable {
 
     private String mUserName;
 

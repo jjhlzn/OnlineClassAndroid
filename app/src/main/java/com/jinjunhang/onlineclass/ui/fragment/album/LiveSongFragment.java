@@ -471,15 +471,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         }
     }
 
-    private class SendHeartbeatTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            Song song = mMusicPlayer.getCurrentPlaySong();
-            HeartbeatRequest request = new HeartbeatRequest(song);
-            new BasicService().sendRequest(request);
-            return null;
-        }
-    }
+
 
 }
 

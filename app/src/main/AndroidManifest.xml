@@ -36,12 +36,6 @@
         android:theme="@style/AppTheme">
 
 
-        <meta-data android:name="DATABASE" android:value="onlineclassandroid.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.jinjunhang.onlineclass.model" />
-
-
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <!-- android:name="com.tencent.android.tpush.XGPushReceiver" -->
