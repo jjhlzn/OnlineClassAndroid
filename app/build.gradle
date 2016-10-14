@@ -10,15 +10,17 @@ android {
         minSdkVersion 17
         targetSdkVersion 21
         versionCode 5
-        versionName "1.3"
+        versionName "1.2"
         multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     signingConfigs {
         debug {
             storeFile file("/Users/lzn/AndroidStudioProjects/OnlineClassAndroid/keystore.jks")
@@ -27,6 +29,7 @@ android {
             keyPassword "jjhlzn"
         }
     }
+
 }
 
 
@@ -67,7 +70,7 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
-    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.4"
+    //compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.4"
     compile 'com.sunfusheng:marqueeview:1.1.0'
 
 }
