@@ -276,7 +276,8 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPlayerCell.release();
+        if (mPlayerCell != null)
+            mPlayerCell.release();
     }
 }
 

@@ -18,8 +18,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer.ExoPlaybackException;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lzn on 16/6/22.
  */
-public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
+public class PlayerCell extends BaseListViewCell implements ExoPlayer.EventListener {
 
     private ArrayAdapter mAdapter;
 
@@ -277,7 +278,7 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
             mPlayButton.setImageResource(R.drawable.icon_ios_music_play);
         }
 
-        if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {
+        if (state == ExoPlayer.STATE_BUFFERING ){ //|| state == ExoPlayer.STATE_PREPARING) {
             mBufferCircle.setVisibility(View.VISIBLE);
             load_animations();
         } else {
@@ -357,8 +358,19 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         }
     }
 
+
     @Override
-    public void onPlayWhenReadyCommitted() {
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
 
     }
 

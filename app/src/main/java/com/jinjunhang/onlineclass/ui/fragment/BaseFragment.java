@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.google.android.exoplayer.ExoPlaybackException;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.ui.lib.BottomPlayerController;
@@ -14,7 +15,7 @@ import com.jinjunhang.player.MusicPlayer;
 /**
  * Created by lzn on 16/6/18.
  */
-public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener  {
+public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.EventListener  {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,8 +34,19 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
 
     }
 
+
     @Override
-    public void onPlayWhenReadyCommitted() {
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
 
     }
 

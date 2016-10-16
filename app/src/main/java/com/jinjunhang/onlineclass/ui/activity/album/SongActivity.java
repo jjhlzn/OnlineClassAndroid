@@ -9,6 +9,7 @@ import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.CommonSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.LiveSongFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.LiveVedioFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
 
@@ -33,11 +34,13 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
             return null;
         }
 
+        return new LiveVedioFragment();
+        /*
         if (song.isLive()) {
             return new LiveSongFragment();
         } else {
             return new CommonSongFragment();
-        }
+        } */
     }
    
 }

@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.NotificationCompat;
 
-import com.google.android.exoplayer.ExoPlaybackException;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
@@ -18,7 +19,7 @@ import com.jinjunhang.framework.lib.LogHelper;
 /**
  * Created by jjh on 2016-7-13.
  */
-public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
+public class ExoPlayerNotificationManager implements ExoPlayer.EventListener {
     public static final String ACTION_PLAY = "com.jinjunhang.onlineclass.ACTION_PLAY";
     public static final String ACTION_PREV = "com.jinjunhang.onlineclass.ACTION_PREV";
     public static final String ACTION_NEXT = "com.jinjunhang.onlineclass.ACTION_NEXT";
@@ -102,8 +103,9 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         if (song != null) {
             songName = song.getName();
             author = song.getAlbum().getAuthor();
+        } else {
+            return;
         }
-
 
         notificationBuilder
                 .setStyle(new NotificationCompat.MediaStyle())
@@ -154,14 +156,24 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         display();
     }
 
-    @Override
-    public void onPlayWhenReadyCommitted() {
-
-    }
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
 
     }
 
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
+
+    }
 }

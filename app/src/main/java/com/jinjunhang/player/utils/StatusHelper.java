@@ -2,7 +2,7 @@ package com.jinjunhang.player.utils;
 
 import android.media.session.PlaybackState;
 
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.player.MusicPlayer;
 
@@ -22,9 +22,9 @@ public class StatusHelper {
             case ExoPlayer.STATE_BUFFERING:
                 resultState = PlaybackState.STATE_BUFFERING;
                 break;
-            case ExoPlayer.STATE_PREPARING:
+            //case ExoPlayer.STATE_PREPARING:
                 //resultState = PlaybackState.STATE
-                break;
+            //    break;
             case ExoPlayer.STATE_ENDED:
                 break;
             case ExoPlayer.STATE_READY:
@@ -35,7 +35,7 @@ public class StatusHelper {
 
     public static boolean isPlayingForUI(MusicPlayer musicPlayer) {
         int state = musicPlayer.getState();
-        boolean isPlayingForUI = musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
+        boolean isPlayingForUI = musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) ; // || (state == ExoPlayer.STATE_PREPARING);
        // LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
         return isPlayingForUI;
     }
