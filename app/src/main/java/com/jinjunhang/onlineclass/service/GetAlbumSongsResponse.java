@@ -80,6 +80,14 @@ public class GetAlbumSongsResponse extends PagedServerResponse<Song> {
             } else {
                 song = new Song();
             }
+
+            if (json.has("type")) {
+                String type = json.getString("type");
+                if (Song.SongType.Video.getName().equals(type)) {
+                    song.setSongType(Song.SongType.Video);
+                }
+            }
+
             song.setAlbum(req.getAlbum());
             song.setName(json.getString("name"));
             song.setDesc(json.getString("desc"));

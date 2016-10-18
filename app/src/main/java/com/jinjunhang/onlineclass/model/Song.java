@@ -1,9 +1,26 @@
 package com.jinjunhang.onlineclass.model;
 
+import java.io.Serializable;
+
 /**
  * Created by lzn on 16/6/10.
  */
 public class Song extends BaseModelObject {
+
+    public static class SongType implements Serializable {
+        public final static SongType Video = new Song.SongType("video");
+        public final static SongType Audio = new Song.SongType("audio");
+
+        private String mName;
+
+        public SongType(String name) {
+            mName = name;
+        }
+
+        public String getName() {
+            return mName;
+        }
+    }
 
     private String mId;
     private String mName;
@@ -13,6 +30,7 @@ public class Song extends BaseModelObject {
     private String imageUrl;
     private SongSetting settings = new SongSetting();
     private Album album;
+    private SongType mSongType = SongType.Audio;
 
     public String getId() {
         return mId;
@@ -80,5 +98,13 @@ public class Song extends BaseModelObject {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public SongType getSongType() {
+        return mSongType;
+    }
+
+    public void setSongType(SongType songType) {
+        mSongType = songType;
     }
 }

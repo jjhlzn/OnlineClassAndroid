@@ -16,13 +16,10 @@
 package com.jinjunhang.player.playback.exo.player;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.MediaCodec.CryptoException;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
-import android.view.Surface;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -32,17 +29,11 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
-import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
-import com.google.android.exoplayer2.drm.HttpMediaDrmCallback;
 import com.google.android.exoplayer2.drm.StreamingDrmSessionManager;
-import com.google.android.exoplayer2.drm.UnsupportedDrmException;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer.DecoderInitializationException;
-import com.google.android.exoplayer2.mediacodec.MediaCodecUtil.DecoderQueryException;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
@@ -51,31 +42,13 @@ import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelections;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.DebugTextViewHelper;
-import com.google.android.exoplayer2.ui.PlaybackControlView;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A wrapper around {@link ExoPlayer} that provides a higher level interface. It can be prepared
@@ -88,15 +61,13 @@ public class SimpleExoPlayerWrapper
         DefaultBandwidthMeter.EventListener,
         StreamingDrmSessionManager.EventListener
 {
-
-
-
     // Constants pulled into this class for convenience.
+    /*
     public static final int STATE_IDLE = ExoPlayer.STATE_IDLE;
     //public static final int STATE_PREPARING = ExoPlayer.STATE_PREPARING;
     public static final int STATE_BUFFERING = ExoPlayer.STATE_BUFFERING;
     public static final int STATE_READY = ExoPlayer.STATE_READY;
-    public static final int STATE_ENDED = ExoPlayer.STATE_ENDED;
+    public static final int STATE_ENDED = ExoPlayer.STATE_ENDED; */
 
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
@@ -112,9 +83,10 @@ public class SimpleExoPlayerWrapper
     private long playerPosition;
 
 
+    /*
     private int rendererBuildingState;
     private int lastReportedPlaybackState;
-    private boolean lastReportedPlayWhenReady;
+    private boolean lastReportedPlayWhenReady; */
 
     private EventLogger eventLogger;
 
@@ -197,7 +169,7 @@ public class SimpleExoPlayerWrapper
 
         MediaSource[] mediaSources = new MediaSource[uris.length];
         for (int i = 0; i < uris.length; i++) {
-            //// TODO: 2016/10/15   extension should be dynamic 
+            //// TODO: 2016/10/15   extension should be dynamic
             mediaSources[i] = buildMediaSource(uris[i], ".m3u8");
         }
         MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0]

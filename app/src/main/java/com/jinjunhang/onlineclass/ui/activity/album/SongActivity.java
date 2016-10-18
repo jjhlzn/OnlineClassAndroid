@@ -23,7 +23,7 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
         Song song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
-       // return new SongFragment();
+
         if (song == null) {  //从通知栏过来
            song = MusicPlayer.getInstance(this).getCurrentPlaySong();
         }
@@ -34,13 +34,15 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
             return null;
         }
 
-        return new LiveVedioFragment();
-        /*
-        if (song.isLive()) {
-            return new LiveSongFragment();
+        if (song.getSongType().getName().equals(Song.SongType.Video.getName())) {
+            return new LiveVedioFragment();
         } else {
-            return new CommonSongFragment();
-        } */
+            if (song.isLive()) {
+                return new LiveSongFragment();
+            } else {
+                return new CommonSongFragment();
+            }
+        }
     }
    
 }

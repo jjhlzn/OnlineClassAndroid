@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/19.
  *
- * 该类是DemoPlayer的包装类（代理类）。
+ * 该类是SimpleExoPlayerWrapper的包装类（代理类）。
  */
 public class MusicPlayer implements ExoPlayer.EventListener {
     private static final String TAG = LogHelper.makeLogTag(MusicPlayer.class);
@@ -38,7 +38,6 @@ public class MusicPlayer implements ExoPlayer.EventListener {
             instance.context = context;
             instance.player = new SimpleExoPlayerWrapper();
             instance.player.addListener(instance);
-            instance.player.addListener(ExoPlayerNotificationManager.getInstance(context));
         }
         return instance;
     }
@@ -63,13 +62,17 @@ public class MusicPlayer implements ExoPlayer.EventListener {
      * @param listener
      */
     public void addListener(ExoPlayer.EventListener listener) {
-        //// TODO: 2016/10/15  
-        //player.addListener(listener);
+        //// TODO: 2016/10/15
+        LogHelper.d(TAG, "add listener: " + listener);
+        if (listener == null) {
+            return;
+        }
+        player.addListener(listener);
     }
 
     public void removeListener(ExoPlayer.EventListener listener) {
         //todo
-        //player.removeListener(listener);
+        player.removeListener(listener);
     }
 
     public int getState() {
