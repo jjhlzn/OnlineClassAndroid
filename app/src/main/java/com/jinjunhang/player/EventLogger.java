@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jinjunhang.player.playback.exo.player;
+package com.jinjunhang.player;
 
 import android.os.SystemClock;
 import android.util.Log;
@@ -54,7 +54,7 @@ import java.util.Locale;
 /**
  * Logs player events using {@link Log}.
  */
-/* package */ final class EventLogger implements ExoPlayer.EventListener,
+public final class EventLogger implements ExoPlayer.EventListener,
         AudioRendererEventListener, VideoRendererEventListener, AdaptiveMediaSourceEventListener,
     ExtractorMediaSource.EventListener, StreamingDrmSessionManager.EventListener,
     TrackSelector.EventListener<MappedTrackInfo>, MetadataRenderer.Output<List<Id3Frame>> {

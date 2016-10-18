@@ -18,7 +18,7 @@ import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.player.utils.StatusHelper;
+import com.jinjunhang.player.StatusHelper;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**

@@ -14,13 +14,14 @@ import com.jinjunhang.player.MusicPlayer;
 public class BaseMusicActivity extends AppCompatActivity {
 
     protected BottomPlayerController mPlayerController;
-    protected MusicPlayer mMusicPlayer = MusicPlayer.getInstance(this);
+    protected MusicPlayer mMusicPlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlayerController = BottomPlayerController.getInstance(this);
         getSupportActionBar().setElevation(0);
+        mMusicPlayer = MusicPlayer.getInstance(this);
     }
 
     @Override

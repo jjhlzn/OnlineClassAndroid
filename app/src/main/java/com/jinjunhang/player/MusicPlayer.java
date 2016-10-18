@@ -1,16 +1,38 @@
 package com.jinjunhang.player;
 
 import android.content.Context;
+import android.net.Uri;
+import android.os.Handler;
+import android.text.TextUtils;
 
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.jinjunhang.onlineclass.model.Album;
+import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.dash.DashMediaSource;
+import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.source.smoothstreaming.DefaultSsChunkSource;
+import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.util.Util;
 import com.jinjunhang.onlineclass.model.Song;
-import com.jinjunhang.player.playback.exo.player.SimpleExoPlayerWrapper;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.player.utils.StatusHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,25 +47,40 @@ public class MusicPlayer implements ExoPlayer.EventListener {
     private static MusicPlayer instance;
 
     private Context context;
-    private SimpleExoPlayerWrapper player;
     private Song[] mSongs;
     private int currentIndex = -1;
     private MusicPlayerControlListener mControlListener;
-    private Album lastAlbum = null;
+
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
+
+
+    private SimpleExoPlayer player;
+    private DataSource.Factory mediaDataSourceFactory;
+    private MappingTrackSelector trackSelector;
+
+    private boolean shouldAutoPlay;
+    private boolean shouldRestorePosition;
+    private int playerWindow;
+    private long playerPosition;
+
+    private EventLogger eventLogger;
+    private  Handler mainHandler; //= new Handler();
+
 
     public static MusicPlayer getInstance(Context context) {
         if (instance == null) {
             LogHelper.i(TAG, "create new MusicPlayer");
             instance = new MusicPlayer();
-            instance.context = context;
-            instance.player = new SimpleExoPlayerWrapper();
-            instance.player.addListener(instance);
+            instance.mainHandler = new Handler();
+            instance.mediaDataSourceFactory = buildDataSourceFactory(true);
+            instance.context = CustomApplication.get();;
+            instance.initializePlayer();
         }
         return instance;
     }
 
     public SimpleExoPlayer getSimpleExoPlayer() {
-        return player.getPlayer();
+        return player;
     }
 
     /**
@@ -253,9 +290,12 @@ public class MusicPlayer implements ExoPlayer.EventListener {
 
     private void createPlayer(Song song) {
         LogHelper.d(TAG, "createPlayer() called");
+        release();
         if (player == null) {
             player = createPlayer0(song);
-        } else {
+        }
+        /*
+        else {
             //if (lastAlbum != null && lastAlbum.getId().equals(song.getAlbum().getId())) {
              //   LogHelper.d(TAG, "player.setRendererBuilder");
                 //player.setRendererBuilder(getRendererBuilder(Uri.parse(song.getUrl()), type));
@@ -265,12 +305,11 @@ public class MusicPlayer implements ExoPlayer.EventListener {
                 player.release();
                 player = createPlayer0(song);
             //}
-        }
-        lastAlbum = song.getAlbum();
+        } */
     }
 
-    private SimpleExoPlayerWrapper createPlayer0(Song song) {
-        SimpleExoPlayerWrapper player = new SimpleExoPlayerWrapper(song);
+    private SimpleExoPlayer createPlayer0(Song song) {
+        initializePlayer();
         player.addListener(this);
         player.addListener(ExoPlayerNotificationManager.getInstance(context));
         return player;
@@ -279,8 +318,120 @@ public class MusicPlayer implements ExoPlayer.EventListener {
     private void play(Song song) {
         LogHelper.d(TAG, "play(song) called");
         createPlayer(song);
-        player.prepare();
+        //player.prepare();
+        setMediaSource(song);
         player.setPlayWhenReady(true);
+    }
+
+    private void setMediaSource(Song song) {
+        //String url = "http://devimages.apple.com/samplecode/adDemo/ad.m3u8";
+        //String url = "http://114.55.147.70:1935/live/jjh/playlist.m3u8";
+        String url = song.getUrl();
+        Uri[] uris = new Uri[1];
+        uris[0] = Uri.parse(url);
+
+
+        MediaSource[] mediaSources = new MediaSource[uris.length];
+        for (int i = 0; i < uris.length; i++) {
+            //// TODO: 2016/10/15   extension should be dynamic
+            mediaSources[i] = buildMediaSource(uris[i], ".m3u8");
+        }
+        MediaSource mediaSource = mediaSources.length == 1 ? mediaSources[0]
+                : new ConcatenatingMediaSource(mediaSources);
+        player.prepare(mediaSource, !shouldRestorePosition);
+
+    }
+
+    private MediaSource buildMediaSource(Uri uri, String overrideExtension) {
+        int type = Util.inferContentType(!TextUtils.isEmpty(overrideExtension) ? "." + overrideExtension
+                : uri.getLastPathSegment());
+        switch (type) {
+            case C.TYPE_SS:
+                return new SsMediaSource(uri, buildDataSourceFactory(false),
+                        new DefaultSsChunkSource.Factory(mediaDataSourceFactory), mainHandler, eventLogger);
+            case C.TYPE_DASH:
+                return new DashMediaSource(uri, buildDataSourceFactory(false),
+                        new DefaultDashChunkSource.Factory(mediaDataSourceFactory), mainHandler, eventLogger);
+            case C.TYPE_HLS:
+                return new HlsMediaSource(uri, mediaDataSourceFactory, mainHandler, eventLogger);
+            case C.TYPE_OTHER:
+                return new ExtractorMediaSource(uri, mediaDataSourceFactory, new DefaultExtractorsFactory(),
+                        mainHandler, eventLogger);
+            default: {
+                throw new IllegalStateException("Unsupported type: " + type);
+            }
+        }
+    }
+
+    /**
+     * Returns a new DataSource factory.
+     *
+     * @param useBandwidthMeter Whether to set {@link #BANDWIDTH_METER} as a listener to the new
+     *     DataSource factory.
+     * @return A new DataSource factory.
+     */
+    private static DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
+        return ((CustomApplication)CustomApplication.get()).buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
+    }
+
+
+    private void initializePlayer() {
+
+        if (player == null) {
+            boolean preferExtensionDecoders = false;
+            DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = null;
+
+
+            eventLogger = new EventLogger();
+            TrackSelection.Factory videoTrackSelectionFactory =
+                    new AdaptiveVideoTrackSelection.Factory(BANDWIDTH_METER);
+            trackSelector = new DefaultTrackSelector(mainHandler, videoTrackSelectionFactory);
+            //trackSelector.addListener(this);
+            trackSelector.addListener(eventLogger);
+            //trackSelectionHelper = new TrackSelectionHelper(trackSelector, videoTrackSelectionFactory);
+            player = ExoPlayerFactory.newSimpleInstance(context, trackSelector, new DefaultLoadControl(),
+                    drmSessionManager, preferExtensionDecoders);
+            //player.addListener(this);
+            //player.addListener(eventLogger);
+            //player.setAudioDebugListener(eventLogger);
+            //player.setVideoDebugListener(eventLogger);
+            //player.setId3Output(eventLogger);
+            //simpleExoPlayerView.setPlayer(player);
+            if (shouldRestorePosition) {
+                if (playerPosition == C.TIME_UNSET) {
+                    player.seekToDefaultPosition(playerWindow);
+                } else {
+                    player.seekTo(playerWindow, playerPosition);
+                }
+            }
+            player.setPlayWhenReady(shouldAutoPlay);
+            //debugViewHelper = new DebugTextViewHelper(player, debugTextView);
+            //debugViewHelper.start();
+            //playerNeedsSource = true;
+            player.addListener(this);
+        }
+
+    }
+
+    public void release() {
+        if (player != null) {
+            shouldAutoPlay = player.getPlayWhenReady();
+            shouldRestorePosition = false;
+            Timeline timeline = player.getCurrentTimeline();
+            if (timeline != null) {
+                playerWindow = player.getCurrentWindowIndex();
+                Timeline.Window window = timeline.getWindow(playerWindow, new Timeline.Window());
+                if (!window.isDynamic) {
+                    shouldRestorePosition = true;
+                    playerPosition = window.isSeekable ? player.getCurrentPosition() : C.TIME_UNSET;
+                }
+            }
+            player.removeListener(this);
+            player.release();
+            player = null;
+            trackSelector = null;
+            eventLogger = null;
+        }
     }
 
 

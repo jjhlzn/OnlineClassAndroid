@@ -1,10 +1,9 @@
-package com.jinjunhang.player.utils;
+package com.jinjunhang.player;
 
 import android.media.session.PlaybackState;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.player.MusicPlayer;
 
 /**
  * Created by lzn on 16/6/19.
