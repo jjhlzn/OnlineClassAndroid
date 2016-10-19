@@ -94,6 +94,11 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         //mPlayerCell.loadArtImage();
     }
 
+
+    protected int getActivityLayoutId() {
+        return R.layout.activity_fragment_play_song;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,7 +109,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         mSong = mMusicPlayer.getCurrentPlaySong();
         setTitle(mSong.getName());
 
-        View v = inflater.inflate(R.layout.activity_fragment_play_song, container, false);
+        View v = inflater.inflate(getActivityLayoutId(), container, false);
 
         v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
 
@@ -204,7 +209,7 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
                             params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                             keyboardSwitchButton.setImageResource(R.drawable.keybaord_keyboard);
                         }
-                    }, 100);
+                    }, 150);
                 }
             }
         });

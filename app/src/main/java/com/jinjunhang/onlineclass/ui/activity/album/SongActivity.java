@@ -8,8 +8,9 @@ import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.CommonSongFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.LiveAudioFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.LiveSongFragment;
-import com.jinjunhang.onlineclass.ui.fragment.album.LiveVedioFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.LiveVideoFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
 
@@ -19,10 +20,11 @@ import com.jinjunhang.framework.lib.LogHelper;
 public class SongActivity extends BaseMusicSingleFragmentActivity {
 
     private final static String TAG = LogHelper.makeLogTag(SongActivity.class);
+    private Song song;
 
     @Override
     protected Fragment createFragment() {
-        Song song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
+        song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
 
         if (song == null) {  //从通知栏过来
            song = MusicPlayer.getInstance(this).getCurrentPlaySong();
@@ -34,15 +36,27 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
             return null;
         }
 
+
         if (song.getSongType().getName().equals(Song.SongType.Video.getName())) {
-            return new LiveVedioFragment();
+
+            return new LiveVideoFragment();
         } else {
             if (song.isLive()) {
-                return new LiveSongFragment();
+                return new LiveAudioFragment();
             } else {
                 return new CommonSongFragment();
             }
         }
     }
-   
+
+    @Override
+    protected boolean hasActionBar() {
+        if (song != null)  {
+            if (song.getSongType().getName().equals(Song.SongType.Video.getName())) {
+                return false;
+            }
+        }
+
+        return super.hasActionBar();
+    }
 }

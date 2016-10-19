@@ -26,10 +26,10 @@ import java.util.List;
 /**
  * Created by jjh on 2016-7-2.
  */
-public class LivePlayerCell extends PlayerCell {
-    private static final  String  TAG = LogHelper.makeLogTag(LivePlayerCell.class);
+public class LiveAudioPlayerCell extends PlayerCell {
+    private static final  String  TAG = LogHelper.makeLogTag(LiveAudioPlayerCell.class);
 
-    public LivePlayerCell(Activity activity) {
+    public LiveAudioPlayerCell(Activity activity) {
         super(activity);
     }
 
@@ -73,12 +73,12 @@ public class LivePlayerCell extends PlayerCell {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogHelper.d(TAG, "LivePlayerCell play button pressed");
+                LogHelper.d(TAG, "LiveAudioPlayerCell play button pressed");
                 if (mMusicPlayer.isPlaying()) {
                     mMusicPlayer.pause();
                 } else {
                     //mMusicPlayer.play(mMusicPlayer.getSongs(), mMusicPlayer.getCurrentPlaySongIndex());
-                    LogHelper.d(TAG, "LivePlayerCell resume");
+                    LogHelper.d(TAG, "LiveAudioPlayerCell resume");
                     mMusicPlayer.resume();
                     scheduleSeekbarUpdate();
                 }

@@ -40,6 +40,11 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         recreateCells();
     }
 
+    public LiveSongListViewCellAdapter(Activity activity, LiveSong song) {
+        this(activity, song, null);
+    }
+
+
     public void loadNewSong(LiveSong song) {
         mSong = song;
         mCommentCells = new ArrayList<CommentCell>();
@@ -48,20 +53,12 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
 
     private void recreateCells() {
         mCells = new ArrayList<>();
-        mCells.add(mPlayerCell);
-        mCells.add(mSeparatorCell);
 
-        /*
-        LogHelper.d(TAG, "recreateCells: hasAdvImage = " + mSong.hasAdvImage());
-        if (mSong.hasAdvImage()) {
-            if (mSongAdvCell == null) {
-                mSongAdvCell = new SongAdvCell(mActivity, mSong);
-            }
-            mCells.add(mSongAdvCell);
+        if (mPlayerCell != null) {
+            mCells.add(mPlayerCell);
             mCells.add(mSeparatorCell);
-        } */
+        }
 
-       // mCells.add(mCommentHeaderCell);
         if (mCommentCells.size() == 0) {
             mCells.add(mNoCommentCell);
         }

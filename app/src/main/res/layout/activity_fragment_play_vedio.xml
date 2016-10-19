@@ -10,7 +10,7 @@
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView android:id="@+id/player_view"
                                                           android:focusable="true"
                                                           android:layout_width="match_parent"
-                                                          android:layout_height="200dp"
+                                                          android:layout_height="220dp"
                                                           android:background="@color/black"/>
 
     <!-- 这个SwipeRefreshLayout不能删除，一旦删除，会造成PlayerCell无法进行单独刷新 -->

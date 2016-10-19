@@ -29,7 +29,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     }
 
     public void setActivityTitle(String title) {
-        ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+        if (hasActionBar()) {
+            ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+        }
     }
 
     protected void createActionBar() {
@@ -71,7 +73,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             Log.d(TAG, "has action bar");
             createActionBar();
             ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(getActivityTitle());
-            //if (NavUtils.getParentActivityName(this) == null) {
+
             if (!hasParent()) {
                 getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button).setVisibility(View.INVISIBLE);
             } else {
@@ -85,6 +87,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                     }
                 });
             }
+        } else {
+            getSupportActionBar().hide();
         }
     }
 

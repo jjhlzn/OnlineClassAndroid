@@ -13,7 +13,6 @@ import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
-import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LiveSong;
@@ -30,8 +29,6 @@ import com.jinjunhang.onlineclass.service.JoinRoomRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.cell.LiveSongListViewCellAdapter;
-import com.jinjunhang.onlineclass.ui.cell.player.LivePlayerCell;
-import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.framework.lib.LogHelper;
 
 import org.json.JSONException;
@@ -53,7 +50,7 @@ import io.socket.emitter.Emitter;
 /**
  * Created by jjh on 2016-7-2.
  */
-public class LiveSongFragment extends BaseSongFragment  {
+public abstract class LiveSongFragment extends BaseSongFragment  {
 
     public final static int MAX_COMMENT_COUNT = 10;
 
@@ -190,10 +187,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         }
     }
 
-    @Override
-    protected PlayerCell createPlayerCell() {
-        return new LivePlayerCell(getActivity());
-    }
+
 
     @Nullable
     @Override
@@ -204,18 +198,7 @@ public class LiveSongFragment extends BaseSongFragment  {
         return v;
     }
 
-    @Override
-    protected void createAdapter(View container) {
-        View playListView = container.findViewById(R.id.play_list_view);
-        mPlayerCell = createPlayerCell();
-        mPlayerCell.setPlayerListView(playListView);
 
-        LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
-
-        mAdapter = new LiveSongListViewCellAdapter(getActivity(), song, mPlayerCell);
-        mPlayerCell.setAdapter(mAdapter);
-        LogHelper.d(TAG, "mAdapter.size = " + mAdapter.getCount());
-    }
 
     @Override
     public void onResume() {
@@ -307,7 +290,6 @@ public class LiveSongFragment extends BaseSongFragment  {
             if (resp.getStatus() != ServerResponse.SUCCESS) {
                 return;
             }
-            //commentCount += resp.getCommentList().size();
             if (resp.getCommentList().size() > 0) {
                 mLastCommentId = resp.getCommentList().get(0).getId() + "";
             }
@@ -320,7 +302,6 @@ public class LiveSongFragment extends BaseSongFragment  {
     /***
      * Send Live Comment Task
      */
-
     private class SendLiveCommentTask extends AsyncTask<SendLiveCommentRequest, Void, SendLiveCommentResponse> {
         private SendLiveCommentRequest mRequest;
 
@@ -395,6 +376,9 @@ public class LiveSongFragment extends BaseSongFragment  {
         return (LiveSongListViewCellAdapter)mAdapter;
     }
 
+    /**
+     * 获取在线人数
+     */
     private  class GetLiveListenerTask extends AsyncTask<Void ,Void, GetLiveListenerResponse> {
         @Override
         protected GetLiveListenerResponse doInBackground(Void... params) {
@@ -415,10 +399,16 @@ public class LiveSongFragment extends BaseSongFragment  {
             if (song != null) {
                 song.setListenPeople(listenerCount+"人");
             }
-            mPlayerCell.getListenerCountLabel().setText(listenerCount+"人");
+
+            if (mPlayerCell != null) {
+                mPlayerCell.getListenerCountLabel().setText(listenerCount + "人");
+            }
         }
     }
 
+    /**
+     * 获取课堂信息（歌曲）
+     */
     private class GetSongInfoTask extends AsyncTask<Void, Void, GetSongInfoResponse> {
         @Override
         protected GetSongInfoResponse doInBackground(Void... params) {
@@ -432,33 +422,30 @@ public class LiveSongFragment extends BaseSongFragment  {
             super.onPostExecute(resp);
             if (resp.isSuccess()) {
                 LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
-                //if (song.getId().equals(resp.getSong().getId())) {
-                    LiveSong newSong = (LiveSong) resp.getSong();
+                LiveSong newSong = (LiveSong) resp.getSong();
 
-                    boolean hasChange = false;
-                    if (newSong.hasAdvImage() != song.hasAdvImage() || newSong.getAdvImageUrl() != song.getAdvImageUrl() || newSong.getAdvUrl() != song.getAdvUrl()) {
-                        hasChange = true;
-                    }
+                boolean hasChange = false;
+                if (newSong.hasAdvImage() != song.hasAdvImage() || newSong.getAdvImageUrl() != song.getAdvImageUrl() || newSong.getAdvUrl() != song.getAdvUrl()) {
+                    hasChange = true;
+                }
 
-                    if (newSong.getAdvText() != song.getAdvText()) {
-                        hasChange = true;
-                    }
-                    LogHelper.d(TAG, "hasChange = " + hasChange);
-                    if (!hasChange) {
-                        return;
-                    }
+                if (newSong.getAdvText() != song.getAdvText()) {
+                    hasChange = true;
+                }
+                LogHelper.d(TAG, "hasChange = " + hasChange);
+                if (!hasChange) {
+                    return;
+                }
 
-                    song.setHasAdvImage(newSong.hasAdvImage());
-                    song.setAdvImageUrl(newSong.getAdvImageUrl());
-                    song.setAdvUrl(newSong.getAdvUrl());
-                    song.setAdvText(newSong.getAdvText());
-                    getAdapter().notifyAdvChanged();
-               // }
+                song.setHasAdvImage(newSong.hasAdvImage());
+                song.setAdvImageUrl(newSong.getAdvImageUrl());
+                song.setAdvUrl(newSong.getAdvUrl());
+                song.setAdvText(newSong.getAdvText());
+                getAdapter().notifyAdvChanged();
+
             }
         }
     }
-
-
 
 }
 
