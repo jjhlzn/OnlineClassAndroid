@@ -3,12 +3,15 @@ package com.jinjunhang.onlineclass.ui.fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -71,6 +74,9 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
 
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
         mWebView.setWebViewClient(new ShopWebBrowserFragment.MyWebViewClient());
+
+        WebSettings settings = mWebView.getSettings();
+        settings.setDomStorageEnabled(true);
         openURL();
 
         return v;
@@ -122,6 +128,11 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
             } else {
                 mBackButton.setVisibility(View.INVISIBLE);
             }
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error){
+            handler.proceed();
         }
     }
 }

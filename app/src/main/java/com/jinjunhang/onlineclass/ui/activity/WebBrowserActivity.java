@@ -3,12 +3,15 @@ package com.jinjunhang.onlineclass.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
@@ -90,6 +93,9 @@ public class WebBrowserActivity extends AppCompatActivity {
 
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
         mWebView.setWebViewClient(new MyWebViewClient());
+
+        WebSettings settings = mWebView.getSettings();
+        settings.setDomStorageEnabled(true);
         openURL();
     }
 
@@ -144,6 +150,11 @@ public class WebBrowserActivity extends AppCompatActivity {
             if (mWebView.canGoBack()) {
                 mCloseButton.setVisibility(View.VISIBLE);
             }
+        }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error){
+            handler.proceed();
         }
     }
 
