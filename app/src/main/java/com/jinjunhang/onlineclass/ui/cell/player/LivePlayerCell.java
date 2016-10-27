@@ -46,7 +46,7 @@ public class LivePlayerCell extends PlayerCell {
             public void onClick(View v) {
                 Intent i = new Intent(mActivity, WebBrowserActivity.class)
                         .putExtra(WebBrowserActivity.EXTRA_TITLE, "我要报名")
-                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl());
+                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl2());
                 mActivity.startActivity(i);
             }
         });

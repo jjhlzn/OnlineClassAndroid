@@ -22,6 +22,11 @@ public class ServiceLinkManager {
 
     }
 
+    public static String  MyAgentUrl2() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyLevel2.aspx";
+
+    }
+
     public static String MyExchangeUrl() {
 
         return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyExchange";
