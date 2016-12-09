@@ -22,11 +22,20 @@ android {
     }
 
     signingConfigs {
-        debug {
-            storeFile file("/Users/lzn/AndroidStudioProjects/OnlineClassAndroid/keystore.jks")
+       debug {
+            storeFile file("/Users/jinjunhang/projects/OnlineClassAndroid/keystore.jks")
             storePassword "jjhlzn"
             keyAlias "jjhlzn"
             keyPassword "jjhlzn"
+        }
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86_64', 'armeabi-v7a'
+            universalApk true
         }
     }
 

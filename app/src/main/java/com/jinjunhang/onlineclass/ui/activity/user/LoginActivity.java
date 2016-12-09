@@ -13,6 +13,7 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -85,7 +86,8 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                 req.setPassword(password);
 
                 mLoading.show("");
-                if (!"".equals(mDeviceToken)) {
+
+                if ( Util.isVirtualEmulator() || !"".equals(mDeviceToken)) {
                     req.setDeviceToken(mDeviceToken);
                     new LoginTask().execute(req);
                 } else {
@@ -102,7 +104,7 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                         public void onFail(Object o, int i, String s) {
                             Log.d(TAG, "register device fail");
                             mLoading.hide();
-                            Utils.showMessage(LoginActivity.this, "服务器出错，请重试!");
+                            Utils.showMessage(LoginActivity.this, "您的网络不给力，请检查网络是否正常!");
                         }
                     });
                 }

@@ -138,12 +138,12 @@ public class BasicService {
         catch (IOException ioe) {
             Log.e(TAG, "Fetch " + request.getServiceUrl() + " failed: ", ioe);
             resp.setStatus(ServerResponse.FAIL);
-            resp.setErrorMessage("服务器出错");
+            resp.setErrorMessage("您的网络不给力，请检查网络是否正常");
             return resp;
         } catch (JSONException e) {
             Log.e(TAG, "Parse response of " + request.getServiceUrl() + " failed: ", e);
             resp.setStatus(ServerResponse.FAIL);
-            resp.setErrorMessage("JSON parse exception happen");
+            resp.setErrorMessage("您的网络不给力，请检查网络是否正常");
             return resp;
         }
     }
@@ -173,7 +173,7 @@ public class BasicService {
             resp.setErrorMessage(json.getString("errorMessage"));
         }catch (Exception ex) {
             resp.setStatus(ServerResponse.FAIL);
-            resp.setErrorMessage("服务器出错");
+            resp.setErrorMessage("您的网络不给力，请检查网络是否正常");
         }
         return resp;
     }

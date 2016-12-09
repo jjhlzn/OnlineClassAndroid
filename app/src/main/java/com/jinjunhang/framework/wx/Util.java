@@ -251,4 +251,9 @@ public class Util {
 
         return null;
     }
+
+    public static boolean isVirtualEmulator() {
+        LogHelper.d(TAG, "build.FINGERPRINT = " + Build.FINGERPRINT);
+        return Build.FINGERPRINT.contains("generic_x86_64");
+    }
 }

@@ -6,8 +6,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -20,6 +23,10 @@ import com.jinjunhang.onlineclass.service.GetServiceLocatorResponse;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
+import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
+import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.tencent.android.tpush.XGIOperateCallback;
@@ -46,14 +53,19 @@ public class LaunchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.getScreenHeight(this);
+        mKeyValueDao = KeyValueDao.getInstance(this);
+        int height =  Integer.parseInt(mKeyValueDao.getValue(KeyValueDao.BOTTOM_BAR_HEIGHT, -1 + ""));
+
+
         setContentView(R.layout.activity_fragment_launch);
 
-        mKeyValueDao = KeyValueDao.getInstance(this);
+
         //mKeyValueDao.deleteAll();
         //mKeyValueDao.getAll();
 
-        int height =  Integer.parseInt(mKeyValueDao.getValue(KeyValueDao.BOTTOM_BAR_HEIGHT, -1 + ""));
+
         LogHelper.d(TAG, "height = " + height);
+
         if (height == -1) {
             LogHelper.d(TAG, "compute bottom bar height");
             //下面这段代码是为了获取BottomBar的高度
@@ -63,8 +75,10 @@ public class LaunchActivity extends Activity {
                 @Override
                 public void onMenuTabSelected(@IdRes int menuItemId) {
                 }
+
                 @Override
                 public void onMenuTabReSelected(@IdRes int menuItemId) {
+
                 }
             });
             mBottomBar.noTopOffset();
@@ -104,7 +118,6 @@ public class LaunchActivity extends Activity {
             registerXinGeAndGoToNextActivity();
         }
 
-        LogHelper.e(TAG, "CreateView finish");
 
         //NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
     }
