@@ -21,7 +21,7 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.ui.lib.WeixinShareManager;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
@@ -44,7 +44,7 @@ public class WebBrowserActivity extends AppCompatActivity {
 
     private LoadingAnimation mLoadingAnimation;
 
-    private WeixinShareManager mWeixinShareManager;
+    private ShareManager mShareManager;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +102,7 @@ public class WebBrowserActivity extends AppCompatActivity {
 
     private void  setWeixinShareIfNeed(View v) {
        if ("提额秘诀".equals(mTitle)) {
-           mWeixinShareManager = new WeixinShareManager(this, v);
+           mShareManager = new ShareManager(this, v);
        }
     }
 

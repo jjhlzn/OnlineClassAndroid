@@ -88,6 +88,9 @@ public class Util {
     }
 
     public static String addUserInfo(String url) {
+        if (url == null) {
+            return "";
+        }
         LoginUser user = LoginUserDao.getInstance(CustomApplication.get()).get();
         if (user != null) {
             if (url.indexOf("?") == -1) {
