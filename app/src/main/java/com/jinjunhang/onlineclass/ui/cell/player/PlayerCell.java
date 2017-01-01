@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
@@ -108,7 +109,12 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         Song song = mMusicPlayer.getCurrentPlaySong();
         int playerView;
         if (song.isLive()) {
-            playerView = R.layout.player_view_live;
+            if (Utils.hasNavigationBar(this.mActivity)) {
+                playerView = R.layout.player_view_live_navigationbar;
+            } else {
+                playerView = R.layout.player_view_live;
+            }
+
             v = mActivity.getLayoutInflater().inflate(playerView, null);
             mListenerCountLabel = (TextView) v.findViewById(R.id.listen_people_label);
         } else {
