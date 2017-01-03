@@ -26,8 +26,8 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 /**
  * Created by jjh on 2016-7-15.
  */
-public class WeixinShareManager {
-    private final static String TAG = LogHelper.makeLogTag(WeixinShareManager.class);
+public class ShareManager {
+    private final static String TAG = LogHelper.makeLogTag(ShareManager.class);
 
     protected AppCompatActivity mActivity;
     protected View v;
@@ -35,12 +35,15 @@ public class WeixinShareManager {
 
     protected QrImageDao qrImageDao;
 
-    public WeixinShareManager(AppCompatActivity activity, View v) {
+    protected WeiboShareService mWeiboShareService;
+
+    public ShareManager(AppCompatActivity activity, View v) {
         this.mActivity = activity;
         this.v = v;
         api = WXAPIFactory.createWXAPI(mActivity, Utils.WEIXIN_SHERE_APP_ID, true);
         api.registerApp(Utils.WEIXIN_SHERE_APP_ID);
         qrImageDao = QrImageDao.getInstance(activity);
+        this.mWeiboShareService = new WeiboShareService(activity);
         setup();
     }
 
@@ -84,6 +87,15 @@ public class WeixinShareManager {
             public void onClick(View v) {
                 LogHelper.d(TAG, "share pemgyouquan button Clicked");
                 shareUrl(true);
+            }
+        });
+
+        View weiboButton = shareView.findViewById(R.id.weibo_button);
+        weiboButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                LogHelper.d(TAG, "share weibo button Clicked");
+                mWeiboShareService.share();
             }
         });
     }

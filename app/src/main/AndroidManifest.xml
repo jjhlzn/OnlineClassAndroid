@@ -139,7 +139,10 @@
 
         <activity android:name=".ui.activity.WebBrowserActivity"
                   android:screenOrientation="portrait">
-
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".ui.activity.search.SearchResultActivity"
@@ -156,7 +159,12 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.activity.user.QRImageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            </activity>
 
         <activity android:name=".ui.activity.user.PersonalInfoActivity"
             android:screenOrientation="portrait" />
@@ -184,6 +192,14 @@
 
         <activity android:name="com.jinjunhang.onlineclass.wxapi.WXPayEntryActivity"
                   android:screenOrientation="portrait" />
+
+
+
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustResize" android:exported="false" >
+        </activity>
 
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to

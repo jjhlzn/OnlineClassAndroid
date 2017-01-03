@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -23,15 +22,10 @@ import com.jinjunhang.onlineclass.service.GetServiceLocatorResponse;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
-import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
-import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
-import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
-import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
@@ -49,6 +43,8 @@ public class LaunchActivity extends Activity {
     BottomBar  mBottomBar;
     private KeyValueDao mKeyValueDao;
 
+    private boolean checkingLogin = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +52,8 @@ public class LaunchActivity extends Activity {
         mKeyValueDao = KeyValueDao.getInstance(this);
         int height =  Integer.parseInt(mKeyValueDao.getValue(KeyValueDao.BOTTOM_BAR_HEIGHT, -1 + ""));
 
-
         setContentView(R.layout.activity_fragment_launch);
 
-
-        //mKeyValueDao.deleteAll();
-        //mKeyValueDao.getAll();
-
-
-        LogHelper.d(TAG, "height = " + height);
 
         if (height == -1) {
             LogHelper.d(TAG, "compute bottom bar height");
@@ -112,13 +101,20 @@ public class LaunchActivity extends Activity {
 
         mLoginUserDao = LoginUserDao.getInstance(this);
 
+
         if (mKeyValueDao.getValue(KeyValueDao.IS_GET_SERVICE_LOCATOR, "1").equals("1")) {
             new GetServiceLocatorTask().execute();
         } else {
             registerXinGeAndGoToNextActivity();
         }
 
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LogHelper.d(TAG, "after 5s delayed, check login");
+                checkLogin();
+            }
+        }, 6000);
         //NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
     }
 
@@ -141,6 +137,10 @@ public class LaunchActivity extends Activity {
 
     private void checkLogin() {
 
+        if (this.checkingLogin)
+            return;
+
+        this.checkingLogin = true;
 
         Intent i;
         if (mLoginUserDao.get() == null) {
