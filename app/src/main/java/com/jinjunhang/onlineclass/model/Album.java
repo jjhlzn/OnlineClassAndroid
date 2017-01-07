@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Album extends BaseModelObject {
 
+
     private String mId;
     private String mName;
     private String mDesc;
@@ -21,6 +22,21 @@ public class Album extends BaseModelObject {
     private boolean isReady;
     private List<Song> mSongs;
 
+
+    /**
+     * 用于在课程列表中，辅助展示课程类型
+     * @return
+     */
+    public static Album LiveAlum;
+    public static Album VipAlbum;
+    static {
+        LiveAlum = new Album();
+        LiveAlum.setName("每日课程");
+        LiveAlum.setAlbumType(AlbumType.DummyAlbumType);
+        VipAlbum = new Album();
+        VipAlbum.setName("会员专享课程");
+        VipAlbum.setAlbumType(AlbumType.DummyAlbumType);
+    }
 
     public String getId() {
         return mId;
@@ -117,6 +133,7 @@ public class Album extends BaseModelObject {
     public boolean isLive() {
         return this.getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName()) || getAlbumType().getName().equals(AlbumType.VipAlbumType.getName());
     }
+    
 }
 
 

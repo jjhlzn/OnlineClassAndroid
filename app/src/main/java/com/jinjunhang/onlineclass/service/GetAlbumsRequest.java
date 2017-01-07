@@ -11,10 +11,14 @@ import java.util.Map;
  */
 public class GetAlbumsRequest extends PagedServerRequest {
 
-    private AlbumType mAlbumType;
+    private String mAlbumTypeCode;
 
     public GetAlbumsRequest(AlbumType albumType) {
-        this.mAlbumType = albumType;
+        this.mAlbumTypeCode = albumType.getTypeCode();
+    }
+
+    public GetAlbumsRequest(String typeCode) {
+        this.mAlbumTypeCode = typeCode;
     }
 
     @Override
@@ -25,7 +29,7 @@ public class GetAlbumsRequest extends PagedServerRequest {
     @Override
     public Map<String, Object> getParams() {
         Map<String, Object> params = super.getParams();
-        params.put("type", mAlbumType.getTypeCode());
+        params.put("type", mAlbumTypeCode);
         return params;
     }
 

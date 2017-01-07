@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.AlbumType;
 
 import java.util.List;
 
@@ -29,7 +30,10 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
         Album album = getItem(position);
 
         if (convertView == null) {
-            if (album.isLive()) {
+            if (album.getAlbumType().getTypeCode().equals(AlbumType.DummyAlbumType.getTypeCode())) {
+                convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_albums_separator, null);
+                ((TextView)convertView.findViewById(R.id.albums_separator_text)).setText(album.getName());
+            }  else if (album.isLive()) {
                 convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_album_live, null);
                 ((TextView)convertView.findViewById(R.id.listen_people_label)).setText(album.getListenCount());
                 ((TextView)convertView.findViewById(R.id.album_list_item_desc)).setText(album.getDesc());
@@ -52,6 +56,9 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
             }
         }
 
+        if (AlbumType.DummyAlbumType.getTypeCode().equals(album.getAlbumType().getTypeCode())) {
+            return convertView;
+        }
         ImageView imageView = (ImageView) convertView.findViewById(R.id.album_list_item_image);
         Glide.with(mActivity).load(album.getImage()).into(imageView);
 

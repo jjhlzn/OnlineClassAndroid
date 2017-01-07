@@ -92,7 +92,6 @@ public class AdvImageCell extends BaseListViewCell {
             LogHelper.d(TAG, "adv height should be " + result + ", " + result);
             return result;
         }
-
     }
 
     @Override

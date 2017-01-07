@@ -16,11 +16,14 @@ import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,7 @@ public class ExtendFunctionManager {
         mContext = context;
         mWebListener = new WebClickListener();
         mNotSupportListener = new NotSupportClickListener();
-        functions.add(new ExtendFunction(R.drawable.commoncard, "去刷卡", "", new ClickListener() {
+        functions.add(new ExtendFunction(R.drawable.f_paybycard, "刷卡", "", new ClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
                 LogHelper.d(TAG, "shua ka clicked");
@@ -77,18 +80,28 @@ public class ExtendFunctionManager {
                 }
             }
         }));
-        functions.add(new ExtendFunction(R.drawable.upicon, "提额秘诀", ServiceLinkManager.FunctionUpUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.visacard, "一键办卡", ServiceLinkManager.FunctionFastCardUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.cardmanager, "卡片管理", ServiceLinkManager.FunctionCardManagerUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", ServiceLinkManager.FunctionCreditSearchUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", ServiceLinkManager.FunctionMccSearchUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.shopcart, "商城", ServiceLinkManager.FunctionShopUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.rmb, "缴费", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.dollar, "贷款", ServiceLinkManager.FunctionLoanUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.car, " 汽车分期", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener));
-        functions.add(new ExtendFunction(R.drawable.customerservice, "客服", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_live, "直播课堂", ServiceLinkManager.FunctionUpUrl(), new ClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                Intent i = new Intent(mContext, AlbumListActivity.class);
+                i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, AlbumType.LiveAlbumType);
+                mContext.startActivity(i);
+            }
+        }));
+        functions.add(new ExtendFunction(R.drawable.f_makecard, "快速办卡", ServiceLinkManager.FunctionFastCardUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_loan, "快速贷款", ServiceLinkManager.FunctionLoanUrl(), mWebListener));
 
-        moreFunction =  new ExtendFunction(R.drawable.morefunction, "更多", "", new ClickListener() {
+        functions.add(new ExtendFunction(R.drawable.f_market, "商城", ServiceLinkManager.FunctionShopUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_car, " 汽车分期", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_cardmanager, "卡片管理", ServiceLinkManager.FunctionCardManagerUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_chongzhi, "我要充值", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener));
+
+        functions.add(new ExtendFunction(R.drawable.f_share, "提额秘诀", ServiceLinkManager.FunctionUpUrl(), mWebListener));
+        //functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", ServiceLinkManager.FunctionCreditSearchUrl(), mWebListener));
+        //functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", ServiceLinkManager.FunctionMccSearchUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_user, "客服", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener));
+
+        moreFunction =  new ExtendFunction(R.drawable.f_more, "更多", "", new ClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
                 Intent i = new Intent(context, ExtendFunctionActivity.class);
@@ -119,7 +132,7 @@ public class ExtendFunctionManager {
         int screenWidth =   Utils.getScreenWidth(mContext);
         int screenHeight =   Utils.getScreenHeight(mContext);
         //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
-        int height = 200;
+        int height = 250;
         if (screenWidth >= 1440) {
             height = 250;
         }else  if (screenWidth <= 480) {
@@ -174,8 +187,8 @@ public class ExtendFunctionManager {
         layout.setLayoutParams(params);
 
         ViewGroup.LayoutParams imageParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        imageParams.width = (int)(width / 4 * 0.45);
-        imageParams.height = (int)(width / 4 * 0.45);
+        imageParams.width = (int)(width / 4 * 0.7);
+        imageParams.height = (int)(width / 4 * 0.7);
         ImageView imageView = new ImageView(mContext);
         imageView.setPadding(0, 20, 0, 0);
         imageView.setLayoutParams(imageParams);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:id="@+id/list_item_viewgroup"
+              android:layout_height="160dp"
+              android:orientation="horizontal"
+              android:background="@drawable/bottom_border">
+
+        <ImageView
+            android:id="@+id/list_mainpage_header_image"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/main_header"
+            />
+
+</LinearLayout>

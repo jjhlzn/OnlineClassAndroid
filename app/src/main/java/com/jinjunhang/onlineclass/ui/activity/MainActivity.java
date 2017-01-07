@@ -32,6 +32,7 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment2;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
@@ -99,7 +100,7 @@ public class MainActivity extends BaseMusicActivity  {
                 switch (menuItemId) {
                     case R.id.bottomBarHome:
                         title = "巨方助手";
-                        fragment = getFragment(MainPageFragment.class);
+                        fragment = getFragment(MainPageFragment2.class);
                         setCommonActionBar();
                         break;
                     case R.id.bottomBarSearch:

@@ -39,4 +39,5 @@
 
 
     <color name="adv_text_background">#efeef3</color>
+    <color name="album_list_background">#B3B3B3</color>
 </resources>

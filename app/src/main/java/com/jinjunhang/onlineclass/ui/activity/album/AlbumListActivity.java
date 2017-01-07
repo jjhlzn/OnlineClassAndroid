@@ -19,7 +19,7 @@ public class AlbumListActivity extends BaseMusicSingleFragmentActivity {
 
     @Override
     protected String getActivityTitle() {
-        return "课程列表";
+        return "直播课程";
     }
 
     @Override

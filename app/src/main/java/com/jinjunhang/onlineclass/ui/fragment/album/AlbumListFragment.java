@@ -16,32 +16,34 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.LoadingAnimation;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
+import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
+import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
-import com.jinjunhang.onlineclass.ui.activity.MainActivity;
-import com.jinjunhang.onlineclass.model.Album;
-import com.jinjunhang.onlineclass.model.AlbumType;
-import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
-import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lzn on 16/6/10.
@@ -79,6 +81,10 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Album album = (Album) (mPagableController.getPagableArrayAdapter().getItem(position));
+
+                if (album.getAlbumType().getTypeCode().equals(AlbumType.DummyAlbumType.getTypeCode())) {
+                    return;
+                }
 
                 if (!album.isReady()) {
                     Utils.showErrorMessage(getActivity(), "该课程未上线，敬请期待！");
@@ -141,9 +147,24 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
     private class AlbumListHanlder implements PagableController.PagableRequestHandler {
         @Override
         public PagedServerResponse handle() {
-            GetAlbumsRequest request = new GetAlbumsRequest(mAlbumType);
+            GetAlbumsRequest request = new GetAlbumsRequest("Live_Vip");
             request.setPageIndex(mPagableController.getPageIndex());
-            return new BasicService().sendRequest(request);
+            GetAlbumsResponse response = (GetAlbumsResponse)new BasicService().sendRequest(request);
+
+            //插入课程分割
+            if (response.isSuccess()) {
+              List<Album> albumList = response.getResultSet();
+              albumList.add(0, Album.LiveAlum);
+              for(int i = 0; i < albumList.size(); i++) {
+                  if (albumList.get(i).getAlbumType().getTypeCode().equals(AlbumType.VipAlbumType.getTypeCode())) {
+                      albumList.add(i, Album.VipAlbum);
+                      break;
+                  }
+              }
+                response.setResultSet(albumList);
+            }
+
+            return response;
         }
     }
 
