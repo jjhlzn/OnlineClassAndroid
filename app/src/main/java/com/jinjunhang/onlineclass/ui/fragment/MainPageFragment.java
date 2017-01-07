@@ -26,6 +26,7 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinMessageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +60,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         int maxShowRows = 10;
 
-        mFunctionManager = new ExtendFunctionManager(maxShowRows, getActivity(), true);
+        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinMessageManager.getInstance(), maxShowRows, getActivity(), true);
 
 
 

@@ -13,6 +13,7 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCellAdapter;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinMessageManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class ExtendFunctionFragment extends BaseFragment {
         listView.setDividerHeight(0);
         listView.setDivider(null);
 
-        mFunctionManager = new ExtendFunctionManager(getActivity(), false);
+        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinMessageManager.getInstance(), getActivity(), false);
 
         int functionRowCount = mFunctionManager.getRowCount();
         for (int i = 0; i < functionRowCount; i++) {
