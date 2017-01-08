@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.HeaderAdvManager;
+import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
+import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.service.GetFunctionMessageRequest;
 import com.jinjunhang.onlineclass.service.GetFunctionMessageResponse;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
@@ -106,6 +109,7 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
         });
         new GetFunctionMessageRequestTask().execute();
         new GetHeaderAdvTask().execute();
+        new GetFooterAdvTask().execute();
 
         //开始定时刷新主图
         scheduleUpdateHeaderAdv();
@@ -230,12 +234,35 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
             GetHeaderAdvResponse.HeaderAdvImage advImage = advImages.get(0);
             mHeaderAdvManager.update(advImage);
             mMainPageAdapter.notifyDataSetChanged();
-
         }
-
-
     }
 
+    private class GetFooterAdvTask extends AsyncTask<Void, Void, GetFooterAdvsResponse> {
+
+        @Override
+        protected GetFooterAdvsResponse doInBackground(Void... voids) {
+            return new BasicService().sendRequest(new GetFooterAdvsRequest());
+        }
+
+        @Override
+        protected void onPostExecute(GetFooterAdvsResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                LogHelper.e(TAG, resp.getErrorMessage());
+                return;
+            }
+
+            List<GetFooterAdvsResponse.FooterAdv> advs = resp.getImageAdvs();
+            if (advs.size() != 4) {
+                LogHelper.e(TAG, "count of footer advs: ", resp.getImageAdvs().size());
+                return;
+            }
+
+            FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(4);
+            footerCell.setAdvs(advs);
+            mMainPageAdapter.notifyDataSetChanged();
+        }
+    }
 
 
 }
