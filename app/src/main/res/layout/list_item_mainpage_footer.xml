@@ -18,7 +18,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:layout_marginRight="5px"
-                    android:src="@drawable/footer_1"
+                    android:src="@drawable/footer_ditu"
                     />
 
                 <ImageView
@@ -28,7 +28,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:layout_marginRight="5px"
-                    android:src="@drawable/footer_2"
+                    android:src="@drawable/footer_ditu"
                     />
 
                 <ImageView
@@ -38,7 +38,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
                     android:layout_marginRight="5px"
-                    android:src="@drawable/footer_3"
+                    android:src="@drawable/footer_ditu"
                     />
 
                 <ImageView
@@ -47,7 +47,7 @@
                     android:layout_weight="0.25"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:src="@drawable/footer_4"
+                    android:src="@drawable/footer_ditu"
                     />
         </LinearLayout>
 
