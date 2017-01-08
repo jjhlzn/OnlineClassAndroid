@@ -29,6 +29,7 @@ import com.jinjunhang.onlineclass.service.GetFunctionMessageResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
@@ -107,7 +108,14 @@ public class ExtendFunctionManager {
         functions.add(new ExtendFunction(R.drawable.f_cardmanager, "卡片管理", "f_cardmanager",ServiceLinkManager.FunctionCardManagerUrl(), mWebListener));
         functions.add(new ExtendFunction(R.drawable.f_chongzhi, "我要充值", "f_chongzhi", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener));
 
-        functions.add(new ExtendFunction(R.drawable.f_share, "提额秘诀", "f_share", ServiceLinkManager.FunctionUpUrl(), mWebListener));
+        functions.add(new ExtendFunction(R.drawable.f_share, "分享", "f_share", ServiceLinkManager.FunctionUpUrl(), new BaseClickListener(){
+            @Override
+            public void onClick(ExtendFunction function) {
+                super.onClick(function);
+                Intent i = new Intent(mContext, QRImageActivity.class);
+                mContext.startActivity(i);
+            }
+        }));
         //functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", ServiceLinkManager.FunctionCreditSearchUrl(), mWebListener));
         //functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", ServiceLinkManager.FunctionMccSearchUrl(), mWebListener));
         functions.add(new ExtendFunction(R.drawable.f_user, "客服", "f_user", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener));
