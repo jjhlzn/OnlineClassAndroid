@@ -96,7 +96,6 @@ public class ExtendFunctionManager {
             public void onClick(ExtendFunction function) {
                 super.onClick(function);
                 Intent i = new Intent(mContext, AlbumListActivity.class);
-                i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, AlbumType.LiveAlbumType);
                 mContext.startActivity(i);
             }
         }));

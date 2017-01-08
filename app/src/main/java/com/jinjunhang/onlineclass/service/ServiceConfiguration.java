@@ -174,6 +174,15 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/clearfunctionmessage";
     }
 
+    //mainPage
+    public static String GetHeaderAdvUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getheaderadvs";
+    }
+
+    public static String GetFootAdvUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getfooteradvs";
+    }
+
 
     //ServiceLocator
     public static String GetServiceLocatorUrl() {

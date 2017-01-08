@@ -1,9 +1,8 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +10,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.db.HeaderAdvManager;
 import com.jinjunhang.onlineclass.service.GetFunctionMessageRequest;
 import com.jinjunhang.onlineclass.service.GetFunctionMessageResponse;
-import com.jinjunhang.onlineclass.service.GetParameterInfoResponse;
-import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
-import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
+import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
+import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
-import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderCell;
-import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
-import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinMessageManager;
 
@@ -32,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lzn on 16/6/10.
@@ -46,12 +49,28 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
     private ListView mListView;
     private MainPageAdapter mMainPageAdapter;
     private ExtendFunctoinMessageManager mFunctoinMessageManager = ExtendFunctoinMessageManager.getInstance();
-    private boolean hasExecCreateViewCompleted = false;
+    private HeaderAdvManager mHeaderAdvManager = HeaderAdvManager.getInstance();
+    private LoadingAnimation mLoading;
+
+    //定时刷新主图
+    private final Handler mHandler = new Handler();
+    private ScheduledFuture<?> mScheduleFuture;
+    private final ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final Runnable mUpdateHeaderAdv = new Runnable() {
+        @Override
+        public void run() {
+            new GetHeaderAdvTask().execute();
+        }
+    };
+    private static final long UPDATE_HEADER_ADV_INTERVAL = 60000;
+    private static final long UPDATE_HEADER_ADV_INITIAL_INTERVAL = 30000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
         mListView = (ListView) v.findViewById(R.id.listView);
+
+        mLoading = new LoadingAnimation(getActivity());
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);
@@ -62,7 +81,7 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
         mFunctionManager = new ExtendFunctionManager(ExtendFunctoinMessageManager.getInstance(), maxShowRows, getActivity(), true);
 
         if (mCells.size() == 0) {
-            mCells.add(new HeaderCell(getActivity()));
+            mCells.add(new HeaderAdvCell(getActivity(), mLoading));
 
             int functionRowCount = mFunctionManager.getRowCount();
             for (int i = 0; i < functionRowCount; i++) {
@@ -82,23 +101,14 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-
-                }
-                /*
-                if (position < 3) {
-                    LogHelper.d(TAG, "on item click");
-                    BaseListViewOnItemClickListener.onItemClickEffect(parent, view, position, id);
-                    AlbumTypeCell cell = (AlbumTypeCell)mCells.get(position);
-                    AlbumType albumType = cell.getAlbumType();
-                    Intent i = new Intent(getActivity(), AlbumListActivity.class);
-                    i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, albumType);
-                    startActivity(i);
-                }*/
+                LogHelper.d(TAG, "mList onItemClick: ", position);
             }
         });
-        //hasExecCreateViewCompleted = true;
         new GetFunctionMessageRequestTask().execute();
+        new GetHeaderAdvTask().execute();
+
+        //开始定时刷新主图
+        scheduleUpdateHeaderAdv();
         return v;
     }
 
@@ -111,6 +121,32 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    private void stopUpdateHeaderAdv() {
+        if (mScheduleFuture != null) {
+            mScheduleFuture.cancel(false);
+        }
+    }
+
+    protected void scheduleUpdateHeaderAdv() {
+        stopUpdateHeaderAdv();
+        if (!mExecutorService.isShutdown()) {
+            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mHandler.post(mUpdateHeaderAdv);
+                        }
+                    }, UPDATE_HEADER_ADV_INTERVAL,
+                    UPDATE_HEADER_ADV_INITIAL_INTERVAL, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopUpdateHeaderAdv();
     }
 
     private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
@@ -169,6 +205,35 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
             LogHelper.d(TAG, "notify adpter data changed");
             mMainPageAdapter.notifyDataSetChanged();
         }
+    }
+
+    private class GetHeaderAdvTask extends AsyncTask<Void, Void, GetHeaderAdvResponse> {
+
+        @Override
+        protected GetHeaderAdvResponse doInBackground(Void... voids) {
+            GetHeaderAdvRequest request = new GetHeaderAdvRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetHeaderAdvResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+            List<GetHeaderAdvResponse.HeaderAdvImage> advImages = response.getImageAdvs();
+            if (advImages.size() == 0) {
+                return;
+            }
+            GetHeaderAdvResponse.HeaderAdvImage advImage = advImages.get(0);
+            mHeaderAdvManager.update(advImage);
+            mMainPageAdapter.notifyDataSetChanged();
+
+        }
+
+
     }
 
 

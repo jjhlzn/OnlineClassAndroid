@@ -1,8 +1,10 @@
 package com.jinjunhang.framework.lib;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,6 +22,8 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -58,6 +62,28 @@ public class Utils {
                 .setMessage(message)
                 .setNegativeButton("好的", listener)
                 .show();
+    }
+
+    public static void showVipBuyMessage(final Context context, String message) {
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+        dlgAlert.setMessage(message);
+        dlgAlert.setPositiveButton("购买", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(context, WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "课程购买")
+                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl());
+                context.startActivity(i);
+            }
+        });
+        dlgAlert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dlgAlert.setCancelable(false);
+
+        dlgAlert.create().show();
     }
 
 
