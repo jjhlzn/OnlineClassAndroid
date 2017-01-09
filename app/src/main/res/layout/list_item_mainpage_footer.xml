@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/list_item_viewgroup"
               android:layout_width="match_parent"
-              android:layout_height="80dp"
+              android:layout_height="90dp"
               android:orientation="horizontal"
               android:background="@drawable/bottom_border">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="96dp">
+            android:layout_height="90dp">
 
                 <ImageView
                     android:id="@+id/list_mainpage_footer_image1"

@@ -59,7 +59,8 @@ public class ExtendFunctionCell extends BaseListViewCell {
         LinearLayout layout = new LinearLayout(mActivity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 
-        ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
         params.height = mHeight;
         layout.setLayoutParams(params);

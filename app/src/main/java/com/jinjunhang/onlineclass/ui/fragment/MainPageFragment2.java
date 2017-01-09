@@ -3,7 +3,6 @@ package com.jinjunhang.onlineclass.ui.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import android.widget.ListView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.HeaderAdvManager;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
@@ -25,6 +22,7 @@ import com.jinjunhang.onlineclass.service.GetFunctionMessageResponse;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
@@ -90,7 +88,7 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
             for (int i = 0; i < functionRowCount; i++) {
                 mCells.add(mFunctionManager.getCell(i));
             }
-
+            mCells.add(new MainPageWhiteSeparatorCell(getActivity()));
             mCells.add(new FooterCell(getActivity()));
         }
 
@@ -258,7 +256,7 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
                 return;
             }
 
-            FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(4);
+            FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(5);
             footerCell.setAdvs(advs);
             mMainPageAdapter.notifyDataSetChanged();
         }

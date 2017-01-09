@@ -77,10 +77,6 @@ public class ExtendFunctionManager {
                 Intent intent = packageManager.getLaunchIntentForPackage("com.jfzf.oem");
                 if(intent == null){
                     LogHelper.d(TAG, "APP not found!");
-                    /*
-                    Intent i = new Intent(mContext, WebBrowserActivity.class)
-                            .putExtra(WebBrowserActivity.EXTRA_TITLE, "巨方支付下载")
-                            .putExtra(WebBrowserActivity.EXTRA_URL, "https://uenpay.com/downloadcopy/jfjr/down-jfjr.html#rd"); */
 
                     Intent downloadIntent = new Intent();
                     downloadIntent.setAction("android.intent.action.VIEW");
@@ -116,8 +112,6 @@ public class ExtendFunctionManager {
                 mContext.startActivity(i);
             }
         }));
-        //functions.add(new ExtendFunction(R.drawable.creditsearch, "信用查询", ServiceLinkManager.FunctionCreditSearchUrl(), mWebListener));
-        //functions.add(new ExtendFunction(R.drawable.mmcsearch, "mcc查询", ServiceLinkManager.FunctionMccSearchUrl(), mWebListener));
         functions.add(new ExtendFunction(R.drawable.f_user, "客服", "f_user", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener));
 
         moreFunction =  new ExtendFunction(R.drawable.f_more, "更多", "f_more", "", new BaseClickListener() {
@@ -155,16 +149,15 @@ public class ExtendFunctionManager {
     public int getHeight() {
         int screenWidth =   Utils.getScreenWidth(mContext);
         int screenHeight =   Utils.getScreenHeight(mContext);
-        //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
+        LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
         int height = 250;
         if (screenWidth >= 1440) {
-            height = 250;
-        }else  if (screenWidth <= 480) {
+            height = 310;
+        } else if (screenWidth <= 480) {
             LogHelper.d(TAG, "height is 100");
             height = 95;
-        }
-        else if (screenWidth <= 720) {
-            height = 140;
+        } else if (screenWidth <= 768) {
+            height = 190;
         }
         LogHelper.d(TAG, "each row height in pixel = " + height);
         return height;
@@ -172,17 +165,7 @@ public class ExtendFunctionManager {
 
     public ExtendFunctionCell getCell(int row) {
         ExtendFunctionCell cell = new ExtendFunctionCell((Activity) mContext);
-
         int startIndex = row * itemCountEachRow;
-
-        //LinearLayout layout = new LinearLayout(mContext);
-        //layout.setOrientation(LinearLayout.HORIZONTAL);
-
-        //ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        // Changes the height and width to the specified *pixels*
-        //params.height = getHeight();
-        //layout.setLayoutParams(params);
-        //layout.setBackgroundColor(Color.WHITE );
 
         for(int i = 0; i < itemCountEachRow; i++) {
             int index = startIndex + i;
@@ -190,17 +173,63 @@ public class ExtendFunctionManager {
                 break;
             }
             ExtendFunction function = functions.get(index);
-            //layout.addView(createSubView(function));
             cell.addFunction(function);
         }
         cell.setHeight(getHeight());
         cell.setFunctionManager(this);
-        //layout.setEnabled(false);
-        //layout.setOnClickListener(null);
-        //cell.setView(layout);
         return cell;
     }
+    
 
+    public ViewGroup createSubView(final ExtendFunction function) {
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+        int width = Utils.getScreenWidth(mContext);
+        ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        // Changes the height and width to the specified *pixels*
+        int cellHeight = getHeight();
+        params.width = width / 4;
+        params.height = cellHeight;
+
+        layout.setLayoutParams(params);
+
+        ViewGroup.LayoutParams imageParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        ImageView imageView = new ImageView(mContext);
+
+
+        imageParams.width = (int)(width / 4 * 0.7);
+        imageParams.height = (int)(width / 4 * 0.7);
+        imageView.setPadding(0, 20, 0, 0);
+
+
+        imageView.setLayoutParams(imageParams);
+
+        makeImage(imageView, function);
+        layout.addView(imageView);
+
+
+        ViewGroup.LayoutParams textParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        textParams.width = width / 4;
+        TextView textView = new TextView(mContext);
+        textView.setLayoutParams(textParams);
+        textView.setText(function.name);
+        textView.setWidth(width / 4);
+        textView.setTextSize(12);
+        textView.setGravity(Gravity.CENTER);
+
+        layout.addView(textView);
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                function.listener.onClick(function);
+            }
+        });
+
+        return layout;
+    }
 
     public void makeImage(ImageView image, ExtendFunction func) {
         //LogHelper.d(TAG, func.name, " has message: ", func.hasMessage());
@@ -233,49 +262,6 @@ public class ExtendFunctionManager {
         image.setImageBitmap(newBitmap);
     }
 
-
-    public ViewGroup createSubView(final ExtendFunction function) {
-        LinearLayout layout = new LinearLayout(mContext);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-
-        int width = Utils.getScreenWidth(mContext);
-        ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        // Changes the height and width to the specified *pixels*
-        params.width = width / 4;
-        layout.setLayoutParams(params);
-
-        ViewGroup.LayoutParams imageParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        imageParams.width = (int)(width / 4 * 0.7);
-        imageParams.height = (int)(width / 4 * 0.7);
-        ImageView imageView = new ImageView(mContext);
-        imageView.setPadding(0, 20, 0, 0);
-        imageView.setLayoutParams(imageParams);
-        //imageView.setImageResource(function.image);
-        makeImage(imageView, function);
-        layout.addView(imageView);
-
-
-        ViewGroup.LayoutParams textParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        textParams.width = width / 4;
-        TextView textView = new TextView(mContext);
-        textView.setLayoutParams(textParams);
-        textView.setText(function.name);
-        textView.setWidth(width / 4);
-        textView.setTextSize(12);
-        textView.setGravity(Gravity.CENTER);
-
-        layout.addView(textView);
-
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                function.listener.onClick(function);
-            }
-        });
-
-        return layout;
-    }
 
     interface ClickListener {
         void onClick(ExtendFunction function);
