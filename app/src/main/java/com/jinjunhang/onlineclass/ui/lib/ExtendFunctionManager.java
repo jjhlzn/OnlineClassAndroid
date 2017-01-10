@@ -179,7 +179,7 @@ public class ExtendFunctionManager {
         cell.setFunctionManager(this);
         return cell;
     }
-    
+
 
     public ViewGroup createSubView(final ExtendFunction function) {
         LinearLayout layout = new LinearLayout(mContext);
@@ -312,10 +312,6 @@ public class ExtendFunctionManager {
         private String url;
         private ClickListener listener;
 
-        /*
-        ExtendFunction(int image, String name, String url, ClickListener listener) {
-            this(image, name, url, false, listener);
-        }*/
 
         ExtendFunction(int image, String name, String code, String url, ClickListener listener) {
             this.image = image;

@@ -71,6 +71,7 @@ public class ExtendFunctoinMessageManager {
 
     public void update(String code, Integer value) {
         mKeyValueDao.saveOrUpdate(code, value+"");
+        map.put(code, value);
     }
 
     public void clearMessage(String code) {

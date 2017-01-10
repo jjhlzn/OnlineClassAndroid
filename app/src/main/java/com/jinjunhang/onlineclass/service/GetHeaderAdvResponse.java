@@ -35,7 +35,7 @@ public class GetHeaderAdvResponse extends ServerResponse {
             adv.mImageUrl = json.getString("imageUrl");
             adv.mType = json.getString("type");
             adv.params = new HashMap<>();
-            JSONArray paramsArr = json.getJSONArray("params");
+            JSONArray paramsArr = json.getJSONArray("Params");
             for(int j = 0; j < paramsArr.length(); j++) {
                 JSONObject paramJson = paramsArr.getJSONObject(j);
                 adv.params.put(paramJson.getString("key"), paramJson.getString("value"));

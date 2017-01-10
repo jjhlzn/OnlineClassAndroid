@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.controller.PagableController;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
@@ -18,6 +19,7 @@ import java.util.List;
  * Created by lzn on 16/6/29.
  */
 public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Album> {
+    private final String TAG = LogHelper.makeLogTag(AlbumListAdapter.class);
     private Activity mActivity;
 
     public AlbumListAdapter(PagableController pagableController, List<Album> dataSet){
@@ -25,12 +27,25 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
         mActivity = pagableController.getActivity();
     }
 
+    private boolean hasImageView(View convertView) {
+        if (convertView.findViewById(R.id.album_list_item_image) != null)
+            return true;
+        return false;
+    }
+
+    private  boolean isDummyAlbumType(Album album) {
+        return album.getAlbumType().getTypeCode().equals(AlbumType.DummyAlbumType.getTypeCode());
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Album album = getItem(position);
 
-        if (convertView == null) {
-            if (album.getAlbumType().getTypeCode().equals(AlbumType.DummyAlbumType.getTypeCode())) {
+        Album album = getItem(position);
+        LogHelper.d(TAG, "postion: ", position);
+        LogHelper.d(TAG, "alubm: ", album.getName() , ", type: ", album.getAlbumType().getName());
+
+        if (convertView == null || !hasImageView(convertView) || isDummyAlbumType(album)) {
+            if (isDummyAlbumType(album)) {
                 convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_albums_separator, null);
                 ((TextView)convertView.findViewById(R.id.albums_separator_text)).setText(album.getName());
             }  else if (album.isLive()) {
@@ -60,10 +75,12 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
             return convertView;
         }
         ImageView imageView = (ImageView) convertView.findViewById(R.id.album_list_item_image);
-        Glide.with(mActivity).load(album.getImage()).into(imageView);
+        if (imageView != null)
+            Glide.with(mActivity).load(album.getImage()).into(imageView);
 
         TextView nameTextView = (TextView) convertView.findViewById(R.id.album_list_item_name);
-        nameTextView.setText(album.getName());
+        if (nameTextView != null)
+            nameTextView.setText(album.getName());
 
 
 
