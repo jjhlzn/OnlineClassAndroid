@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.BasicService;
@@ -40,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lzn on 16/6/10.
  */
-public class MainPageFragment extends android.support.v4.app.Fragment {
+public class MainPageFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = LogHelper.makeLogTag(MainPageFragment.class);
 
@@ -65,6 +67,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     };
     private static final long UPDATE_HEADER_ADV_INTERVAL = 60000;
     private static final long UPDATE_HEADER_ADV_INITIAL_INTERVAL = 30000;
+
+    private boolean mIsLoading = false;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,9 +100,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         mMainPageAdapter = new MainPageAdapter(mCells);
         mListView.setAdapter(mMainPageAdapter);
 
-        //不能下拉刷新
-        v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
-
+        //可以下拉刷新
+        mSwipeRefreshLayout =  (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -123,6 +128,16 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onRefresh() {
+        if (mIsLoading) {
+            return;
+        }
+        mIsLoading = true;
+
+        new GetHeaderAdvTask().execute();
     }
 
     private void stopUpdateHeaderAdv() {
@@ -217,9 +232,13 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
             return new BasicService().sendRequest(request);
         }
 
+
+
         @Override
         protected void onPostExecute(GetHeaderAdvResponse response) {
             super.onPostExecute(response);
+            mIsLoading = false;
+            mSwipeRefreshLayout.setRefreshing(false);
 
             if (!response.isSuccess()) {
                 LogHelper.e(TAG, response.getErrorMessage());

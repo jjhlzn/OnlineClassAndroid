@@ -59,7 +59,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
     private PagableController mPagableController;
 
-    //private AlbumType mAlbumType;
     private ListView mListView;
     private LoadingAnimation mLoading;
     private ExoPlayerNotificationManager mNotificationManager;
@@ -99,8 +98,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
             }
         });
 
-        //mAlbumType = (AlbumType)getActivity().getIntent().getSerializableExtra(EXTRA_ALBUMTYPE);
-
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
@@ -139,7 +136,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
         mPagableController.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
     }
 
@@ -162,7 +158,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
               }
                 response.setResultSet(albumList);
             }
-
             return response;
         }
     }
@@ -176,8 +171,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
             Utils.showMessage(getActivity(), resp.getErrorMessage());
         }
     }
-
-
 
     private class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
 
