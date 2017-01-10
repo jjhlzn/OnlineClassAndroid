@@ -34,7 +34,7 @@ public class MainPageWhiteSeparatorCell extends BaseListViewCell {
     private int getHeight() {
         int screenWidth =   Utils.getScreenWidth(mActivity);
 
-        int result = 6;
+        int result = 20;
         if (screenWidth >= 1440) {
             result = 126;
         }
@@ -48,8 +48,6 @@ public class MainPageWhiteSeparatorCell extends BaseListViewCell {
 
 
     private ViewGroup makeView() {
-
-
 
         LinearLayout layout = new LinearLayout(mActivity);
         layout.setOrientation(LinearLayout.VERTICAL);

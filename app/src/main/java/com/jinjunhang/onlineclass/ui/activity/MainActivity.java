@@ -1,15 +1,12 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
@@ -17,11 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
@@ -32,7 +25,6 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
-import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment2;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
@@ -100,7 +92,7 @@ public class MainActivity extends BaseMusicActivity  {
                 switch (menuItemId) {
                     case R.id.bottomBarHome:
                         title = "巨方助手";
-                        fragment = getFragment(MainPageFragment2.class);
+                        fragment = getFragment(MainPageFragment.class);
                         setCommonActionBar();
                         break;
                     case R.id.bottomBarSearch:

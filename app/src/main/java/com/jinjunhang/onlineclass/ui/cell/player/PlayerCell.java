@@ -109,10 +109,12 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
         Song song = mMusicPlayer.getCurrentPlaySong();
         int playerView;
         if (song.isLive()) {
-            if (Utils.hasNavigationBar(this.mActivity)) {
-                playerView = R.layout.player_view_live_navigationbar;
-            } else {
+            LogHelper.d(TAG, "has naviation bar: ",  Utils.hasNavigationBar(this.mActivity));
+
+            if (Utils.isAndroid4() || Utils.isAndroid5() ) {
                 playerView = R.layout.player_view_live;
+            } else {
+                playerView = R.layout.player_view_live_navigationbar;
             }
 
             v = mActivity.getLayoutInflater().inflate(playerView, null);

@@ -260,6 +260,15 @@ public class Utils {
         return false;
     }
 
+    public static boolean isAndroid4() {
+        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static boolean isAndroid5() {
+        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M
+               &&  android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP;
+    }
+
     public static boolean hasNavigationBar(Activity activity) {
         WindowManager windowManager = activity.getWindowManager();
         Display d = windowManager.getDefaultDisplay();

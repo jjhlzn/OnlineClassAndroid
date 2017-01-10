@@ -44,7 +44,7 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
         LogHelper.d(TAG, "postion: ", position);
         LogHelper.d(TAG, "alubm: ", album.getName() , ", type: ", album.getAlbumType().getName());
 
-        if (convertView == null || !hasImageView(convertView) || isDummyAlbumType(album)) {
+        //if (convertView == null || !hasImageView(convertView) || isDummyAlbumType(album)) {
             if (isDummyAlbumType(album)) {
                 convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_albums_separator, null);
                 ((TextView)convertView.findViewById(R.id.albums_separator_text)).setText(album.getName());
@@ -69,7 +69,7 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
                 TextView listenTextView = (TextView) convertView.findViewById(R.id.album_list_item_listernCountAndCount);
                 listenTextView.setText(album.getListenCount()+ ", " + album.getCount() + "集");
             }
-        }
+        //}
 
         if (AlbumType.DummyAlbumType.getTypeCode().equals(album.getAlbumType().getTypeCode())) {
             return convertView;
