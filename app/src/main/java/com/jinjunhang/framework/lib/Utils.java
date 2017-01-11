@@ -1,8 +1,10 @@
 package com.jinjunhang.framework.lib;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,6 +22,8 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -60,6 +64,28 @@ public class Utils {
                 .show();
     }
 
+    public static void showVipBuyMessage(final Context context, String message) {
+        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
+        dlgAlert.setMessage(message);
+        dlgAlert.setPositiveButton("购买", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent i = new Intent(context, WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "课程购买")
+                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl());
+                context.startActivity(i);
+            }
+        });
+        dlgAlert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dlgAlert.setCancelable(false);
+
+        dlgAlert.create().show();
+    }
+
 
     public static void showServerErrorDialog(Context context){
         showMessage(context, "服务器返回出错!");
@@ -88,13 +114,13 @@ public class Utils {
             wm.getDefaultDisplay().getMetrics(displaymetrics);
             screenHeight = displaymetrics.heightPixels;
             screenWidth = displaymetrics.widthPixels;
-            LogHelper.d(TAG, "compute: width = " + screenWidth + ", height = " + screenHeight);
+            //LogHelper.d(TAG, "compute: width = " + screenWidth + ", height = " + screenHeight);
         }
         return screenWidth;
     }
 
     public static int getScreenHeight(Context context) {
-        LogHelper.d(TAG, "getScreenHeight called: width = " + screenWidth + ", height = " + screenHeight);
+        //LogHelper.d(TAG, "getScreenHeight called: width = " + screenWidth + ", height = " + screenHeight);
         if (screenWidth < 0) {
             getScreenWidth(context);
         }
@@ -115,7 +141,7 @@ public class Utils {
 
     public static void setupUI4HideKeybaord(View view, final Activity activity) {
         //Set up touch listener for non-text box views to hide keyboard.
-        LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
+        //LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
         if (view.getId() == R.id.bottom_comment) {
             return;
         }
@@ -232,6 +258,15 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static boolean isAndroid4() {
+        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static boolean isAndroid5() {
+        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M
+               &&  android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP;
     }
 
     public static boolean hasNavigationBar(Activity activity) {

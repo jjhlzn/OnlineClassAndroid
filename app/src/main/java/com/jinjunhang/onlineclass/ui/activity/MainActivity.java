@@ -1,15 +1,12 @@
 package com.jinjunhang.onlineclass.ui.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
@@ -17,11 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
@@ -85,7 +78,7 @@ public class MainActivity extends BaseMusicActivity  {
 
         setCommonActionBar();
 
-        LogHelper.d(TAG, "has navigation bar: ", Utils.hasNavigationBar(this));
+        //LogHelper.d(TAG, "has navigation bar: ", Utils.hasNavigationBar(this));
 
         fragmentMap = new HashMap();
         mBottomBar = BottomBar.attach(this, savedInstanceState);
@@ -146,7 +139,7 @@ public class MainActivity extends BaseMusicActivity  {
             public void run() {
                 int height = mBottomBar.getBar().getHeight();
                 Utils.BOTTOM_BAR_HEIGHT = height;
-                LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
+                //LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
             }
         });
 

@@ -42,9 +42,6 @@ import java.util.List;
  * Created by jjh on 2016-6-29.
  */
 public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRefreshListener {
-
-
-
     private final static String TAG = LogHelper.makeLogTag(MeFragment.class);
 
     private Boolean inited = false;
@@ -199,8 +196,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             ListViewCell item = getItem(position);
             return item.getView();
         }
-
-
     }
 
 

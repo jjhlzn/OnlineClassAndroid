@@ -71,6 +71,8 @@ public class Song extends BaseModelObject {
     }
 
     public boolean isLive() {
+        if (album == null)
+            return true;
         return album.isLive();
     }
 

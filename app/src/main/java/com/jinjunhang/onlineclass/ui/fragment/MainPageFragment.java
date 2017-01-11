@@ -1,8 +1,9 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,48 +11,72 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.controller.PagableController;
+import com.jinjunhang.framework.lib.LoadingAnimation;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.db.KeyValueDao;
-import com.jinjunhang.onlineclass.model.AlbumType;
-import com.jinjunhang.onlineclass.service.GetParameterInfoRequest;
-import com.jinjunhang.onlineclass.service.GetParameterInfoResponse;
-import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
-import com.jinjunhang.onlineclass.ui.cell.AdvImageCell;
-import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell;
-import com.jinjunhang.onlineclass.ui.cell.AlbumTypeCell2;
-import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
+import com.jinjunhang.onlineclass.db.HeaderAdvManager;
+import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
+import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
+import com.jinjunhang.onlineclass.service.GetFunctionMessageRequest;
+import com.jinjunhang.onlineclass.service.GetFunctionMessageResponse;
+import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
+import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
-import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
-import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
-import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinMessageManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lzn on 16/6/10.
  */
-public class MainPageFragment extends android.support.v4.app.Fragment {
+public class MainPageFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = LogHelper.makeLogTag(MainPageFragment.class);
 
-    private List<AlbumType> mAlbumTypes = AlbumType.getAllAlbumType();
-    private KeyValueDao mKeyValueDao;
     private List<ListViewCell> mCells = new ArrayList<>();
     private ExtendFunctionManager mFunctionManager;
-    private AdvImageCell mAdvImageCell;
 
     private ListView mListView;
-    private AlbumTypeAdapter mAlbumTypeAdapter;
+    private MainPageAdapter mMainPageAdapter;
+    private ExtendFunctoinMessageManager mFunctoinMessageManager = ExtendFunctoinMessageManager.getInstance();
+    private HeaderAdvManager mHeaderAdvManager = HeaderAdvManager.getInstance();
+    private LoadingAnimation mLoading;
+
+    //定时刷新主图
+    private final Handler mHandler = new Handler();
+    private ScheduledFuture<?> mScheduleFuture;
+    private final ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final Runnable mUpdateHeaderAdv = new Runnable() {
+        @Override
+        public void run() {
+            new GetHeaderAdvTask().execute();
+        }
+    };
+    private static final long UPDATE_HEADER_ADV_INTERVAL = 60000;
+    private static final long UPDATE_HEADER_ADV_INITIAL_INTERVAL = 30000;
+
+    private boolean mIsLoading = false;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
         mListView = (ListView) v.findViewById(R.id.listView);
 
-        mKeyValueDao = KeyValueDao.getInstance(getActivity());
+        mLoading = new LoadingAnimation(getActivity());
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);
@@ -59,94 +84,92 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
 
         int maxShowRows = 10;
 
-        mFunctionManager = new ExtendFunctionManager(maxShowRows, getActivity(), true);
-
-
+        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinMessageManager.getInstance(), maxShowRows, getActivity(), true);
 
         if (mCells.size() == 0) {
-            int i = 0;
-            List<String> descKeys = new ArrayList<>();
-            descKeys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
-            descKeys.add(GetParameterInfoResponse.PAY_DESCRIPTON);
-            for (AlbumType albumType : mAlbumTypes) {
-                AlbumTypeCell item = null;
-                //设置课程类型的名字
-                if (albumType.getTypeCode() == AlbumType.LiveAlbumType.getTypeCode()) {
-                    String name = mKeyValueDao.getValue(GetParameterInfoResponse.LIVE_COURSE_NAME, "直播课程");
-                    LogHelper.d(TAG, "name = " + name);
-                    albumType.setName(name);
-                }
-
-                if (albumType.getTypeCode() == AlbumType.VipAlbumType.getTypeCode()) {
-                    String name = mKeyValueDao.getValue(GetParameterInfoResponse.PAY_COURSE_NAME, "会员专享课堂");
-                    LogHelper.d(TAG, "name = " + name);
-                    albumType.setName(name);
-                }
-
-                String desc = mKeyValueDao.getValue(descKeys.get(i), "");
-                LogHelper.d(TAG, "desc = " + desc);
-
-                item = new AlbumTypeCell2(getActivity(), albumType, desc);
-                mCells.add(item);
-                i++;
-            }
-
-            mCells.add(new SectionSeparatorCell(getActivity()));
-
+            mCells.add(new HeaderAdvCell(getActivity(), mLoading));
 
             int functionRowCount = mFunctionManager.getRowCount();
-            for (i = 0; i < functionRowCount; i++) {
+            for (int i = 0; i < functionRowCount; i++) {
                 mCells.add(mFunctionManager.getCell(i));
             }
-
-            mAdvImageCell = new AdvImageCell(getActivity());
-            mCells.add(mAdvImageCell);
+            mCells.add(new MainPageWhiteSeparatorCell(getActivity()));
+            mCells.add(new FooterCell(getActivity()));
         }
 
+        mMainPageAdapter = new MainPageAdapter(mCells);
+        mListView.setAdapter(mMainPageAdapter);
 
-
-        mAlbumTypeAdapter = new AlbumTypeAdapter(mCells);
-        mListView.setAdapter(mAlbumTypeAdapter);
-
-        //不能下拉刷新
-        v.findViewById(R.id.swipe_refresh_layout).setEnabled(false);
+        //可以下拉刷新
+        mSwipeRefreshLayout =  (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < 3) {
-                    LogHelper.d(TAG, "on item click");
-                    BaseListViewOnItemClickListener.onItemClickEffect(parent, view, position, id);
-                    AlbumTypeCell cell = (AlbumTypeCell)mCells.get(position);
-                    AlbumType albumType = cell.getAlbumType();
-                    Intent i = new Intent(getActivity(), AlbumListActivity.class);
-                    i.putExtra(AlbumListFragment.EXTRA_ALBUMTYPE, albumType);
-                    startActivity(i);
-                }
+                LogHelper.d(TAG, "mList onItemClick: ", position);
             }
         });
+        new GetFunctionMessageRequestTask().execute();
+        new GetHeaderAdvTask().execute();
+        new GetFooterAdvTask().execute();
 
+        //开始定时刷新主图
+        scheduleUpdateHeaderAdv();
         return v;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new GetParameterTask().execute();
+        mMainPageAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAdvImageCell != null) {
-            mAdvImageCell.release();
+    }
+
+    @Override
+    public void onRefresh() {
+        if (mIsLoading) {
+            return;
+        }
+        mIsLoading = true;
+
+        new GetHeaderAdvTask().execute();
+    }
+
+    private void stopUpdateHeaderAdv() {
+        if (mScheduleFuture != null) {
+            mScheduleFuture.cancel(false);
         }
     }
 
-    private class AlbumTypeAdapter extends ArrayAdapter<ListViewCell> {
+    protected void scheduleUpdateHeaderAdv() {
+        stopUpdateHeaderAdv();
+        if (!mExecutorService.isShutdown()) {
+            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mHandler.post(mUpdateHeaderAdv);
+                        }
+                    }, UPDATE_HEADER_ADV_INTERVAL,
+                    UPDATE_HEADER_ADV_INITIAL_INTERVAL, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopUpdateHeaderAdv();
+    }
+
+    private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
         private List<ListViewCell> mViewCells;
 
-        public AlbumTypeAdapter(List<ListViewCell> albumTypes) {
+        public MainPageAdapter(List<ListViewCell> albumTypes) {
             super(getActivity(), 0, albumTypes);
             mViewCells = albumTypes;
         }
@@ -169,52 +192,94 @@ public class MainPageFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private class GetParameterTask extends AsyncTask<Void, Void, GetParameterInfoResponse> {
+    private class GetFunctionMessageRequestTask extends AsyncTask<Void, Void, GetFunctionMessageResponse> {
 
         @Override
-        protected GetParameterInfoResponse doInBackground(Void... params) {
-            GetParameterInfoRequest request = new GetParameterInfoRequest();
-            List<String> keys = new ArrayList<>();
-            keys.add(GetParameterInfoResponse.LIVE_DESCRIPTON);
-            keys.add(GetParameterInfoResponse.PAY_DESCRIPTON);
-            keys.add(GetParameterInfoResponse.LIVE_COURSE_NAME);
-            keys.add(GetParameterInfoResponse.PAY_COURSE_NAME);
-            LogHelper.d(TAG, "keys = " + keys);
-            request.setKeywords(keys);
+        protected GetFunctionMessageResponse doInBackground(Void... voids) {
+            GetFunctionMessageRequest request = new GetFunctionMessageRequest();
             return new BasicService().sendRequest(request);
         }
 
         @Override
-        protected void onPostExecute(GetParameterInfoResponse resp) {
+        protected void onPostExecute(GetFunctionMessageResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()){
+                LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
+                return;
+            }
+
+            Map<String, Integer> map = response.getMap();
+            Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, Integer> entry = it.next();
+                String key = entry.getKey();
+                Integer value = entry.getValue();
+                mFunctoinMessageManager.update(key, value);
+            }
+            mFunctoinMessageManager.reload();
+
+            LogHelper.d(TAG, "notify adpter data changed");
+            mMainPageAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class GetHeaderAdvTask extends AsyncTask<Void, Void, GetHeaderAdvResponse> {
+
+        @Override
+        protected GetHeaderAdvResponse doInBackground(Void... voids) {
+            GetHeaderAdvRequest request = new GetHeaderAdvRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+
+
+        @Override
+        protected void onPostExecute(GetHeaderAdvResponse response) {
+            super.onPostExecute(response);
+            mIsLoading = false;
+            mSwipeRefreshLayout.setRefreshing(false);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+            List<GetHeaderAdvResponse.HeaderAdvImage> advImages = response.getImageAdvs();
+            if (advImages.size() == 0) {
+                return;
+            }
+            GetHeaderAdvResponse.HeaderAdvImage advImage = advImages.get(0);
+            mHeaderAdvManager.update(advImage);
+            mMainPageAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class GetFooterAdvTask extends AsyncTask<Void, Void, GetFooterAdvsResponse> {
+
+        @Override
+        protected GetFooterAdvsResponse doInBackground(Void... voids) {
+            return new BasicService().sendRequest(new GetFooterAdvsRequest());
+        }
+
+        @Override
+        protected void onPostExecute(GetFooterAdvsResponse resp) {
             super.onPostExecute(resp);
             if (!resp.isSuccess()) {
                 LogHelper.e(TAG, resp.getErrorMessage());
                 return;
             }
 
-            updateCellForDescription(GetParameterInfoResponse.LIVE_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0));
-            updateCellForDescription(GetParameterInfoResponse.PAY_DESCRIPTON, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(1));
-            updateCellForName(GetParameterInfoResponse.LIVE_COURSE_NAME, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(0));
-            updateCellForName(GetParameterInfoResponse.PAY_COURSE_NAME, resp, (AlbumTypeCell2) mAlbumTypeAdapter.getItem(1));
+            List<GetFooterAdvsResponse.FooterAdv> advs = resp.getImageAdvs();
+            if (advs.size() != 4) {
+                LogHelper.e(TAG, "count of footer advs: ", resp.getImageAdvs().size());
+                return;
+            }
 
-            mAlbumTypeAdapter.notifyDataSetChanged();
-        }
-
-        private void updateCellForDescription(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
-            String description = resp.getValue(key, "");
-            mKeyValueDao.saveOrUpdate(key, description);
-            cell.setDescription(description);
-        }
-
-        private void updateCellForName(String key, GetParameterInfoResponse resp, AlbumTypeCell2 cell) {
-            String name = resp.getValue(key, "");
-            mKeyValueDao.saveOrUpdate(key, name);
-            LogHelper.d(TAG, "update key " + key + " with value " + name);
-            cell.setName(name);
+            FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(5);
+            footerCell.setAdvs(advs);
+            mMainPageAdapter.notifyDataSetChanged();
         }
     }
-
-
 
 
 }

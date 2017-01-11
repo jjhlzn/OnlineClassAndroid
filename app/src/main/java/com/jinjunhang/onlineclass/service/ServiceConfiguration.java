@@ -20,8 +20,8 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 = "192.168.31.146"; //"jjhaudio.hengdianworld.com";
-    private final static int port1 = 3000;
+    private final static String serverName1 =  "192.168.1.108"; //"jf.yhkamani.com"; //"192.168.1.108";
+    private final static int port1 = 5000;
 
 
     static {
@@ -164,6 +164,23 @@ public class ServiceConfiguration {
 
     public static String GetParameterInfoUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/getparameterinfo";
+    }
+
+    public static String GetFunctionMessageUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getfunctionmessage";
+    }
+
+    public static String ClearFunctionMessageUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/clearfunctionmessage";
+    }
+
+    //mainPage
+    public static String GetHeaderAdvUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getheaderadvs";
+    }
+
+    public static String GetFootAdvUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getfooteradvs";
     }
 
 

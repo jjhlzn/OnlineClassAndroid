@@ -16,32 +16,34 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.LoadingAnimation;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
+import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
+import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
-import com.jinjunhang.onlineclass.ui.activity.MainActivity;
-import com.jinjunhang.onlineclass.model.Album;
-import com.jinjunhang.onlineclass.model.AlbumType;
-import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
-import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
-import com.jinjunhang.framework.lib.LogHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by lzn on 16/6/10.
@@ -57,7 +59,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
     private PagableController mPagableController;
 
-    private AlbumType mAlbumType;
     private ListView mListView;
     private LoadingAnimation mLoading;
     private ExoPlayerNotificationManager mNotificationManager;
@@ -80,6 +81,10 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
                 Album album = (Album) (mPagableController.getPagableArrayAdapter().getItem(position));
 
+                if (album.getAlbumType().getTypeCode().equals(AlbumType.DummyAlbumType.getTypeCode())) {
+                    return;
+                }
+
                 if (!album.isReady()) {
                     Utils.showErrorMessage(getActivity(), "该课程未上线，敬请期待！");
                     return;
@@ -93,18 +98,15 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
             }
         });
 
-        mAlbumType = (AlbumType)getActivity().getIntent().getSerializableExtra(EXTRA_ALBUMTYPE);
-
 
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
 
         //设置PagableController
         mPagableController = new PagableController(getActivity(), mListView);
-        LogHelper.d(TAG, "mAlbumType = " + mAlbumType.getName());
-        if (mAlbumType.getName().equals(AlbumType.LiveAlbumType.getName()) || mAlbumType.getName().equals(AlbumType.VipAlbumType.getName())) {
-            mPagableController.setShowLoadCompleteTip(false);
-        }
+        //LogHelper.d(TAG, "mAlbumType = " + mAlbumType.getName());
+        mPagableController.setShowLoadCompleteTip(false);
+
         LogHelper.d(TAG, "isShowLoadCompleteTip = " + mPagableController.isShowLoadCompleteTip());
         AlbumListAdapter adapter = new AlbumListAdapter(mPagableController, new ArrayList<Album>());
         mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
@@ -134,16 +136,29 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
         mPagableController.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
     }
 
     private class AlbumListHanlder implements PagableController.PagableRequestHandler {
         @Override
         public PagedServerResponse handle() {
-            GetAlbumsRequest request = new GetAlbumsRequest(mAlbumType);
+            GetAlbumsRequest request = new GetAlbumsRequest("Live_Vip");
             request.setPageIndex(mPagableController.getPageIndex());
-            return new BasicService().sendRequest(request);
+            GetAlbumsResponse response = (GetAlbumsResponse)new BasicService().sendRequest(request);
+
+            //插入课程分割
+            if (response.isSuccess()) {
+              List<Album> albumList = response.getResultSet();
+              albumList.add(0, Album.LiveAlum);
+              for(int i = 0; i < albumList.size(); i++) {
+                  if (albumList.get(i).getAlbumType().getTypeCode().equals(AlbumType.VipAlbumType.getTypeCode())) {
+                      albumList.add(i, Album.VipAlbum);
+                      break;
+                  }
+              }
+                response.setResultSet(albumList);
+            }
+            return response;
         }
     }
 
@@ -151,32 +166,10 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
     @Override
     public void handle(PagedServerResponse resp) {
         if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
-            showVipBuyMessage(getActivity(), resp.getErrorMessage());
+            Utils.showVipBuyMessage(getActivity(), resp.getErrorMessage());
         } else {
             Utils.showMessage(getActivity(), resp.getErrorMessage());
         }
-    }
-
-    private void showVipBuyMessage(Context context, String message) {
-        AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(context);
-        dlgAlert.setMessage(message);
-        dlgAlert.setPositiveButton("购买", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent i = new Intent(getActivity(), WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "课程购买")
-                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyAgentUrl());
-                getActivity().startActivity(i);
-            }
-        });
-        dlgAlert.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        dlgAlert.setCancelable(false);
-
-        dlgAlert.create().show();
     }
 
     private class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
@@ -193,7 +186,7 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
             super.onPostExecute(resp);
             mLoading.hide();
             if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
-                showVipBuyMessage(getActivity(), resp.getErrorMessage());
+                Utils.showVipBuyMessage(getActivity(), resp.getErrorMessage());
                 return;
             }
 

@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.service;
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.model.Advertise;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.Song;
@@ -74,7 +75,11 @@ public class GetSongInfoResponse extends ServerResponse {
         } else {
             song = new Song();
         }
-        song.setAlbum(req.getSong().getAlbum());
+
+        JSONObject albumJson = json.getJSONObject("album");
+        song.setAlbum(parseAlbum(albumJson));
+
+
         song.setName(json.getString("name"));
         song.setDesc(json.getString("desc"));
         song.setDate(json.getString("date"));
@@ -86,5 +91,27 @@ public class GetSongInfoResponse extends ServerResponse {
         songSetting.setCanComment(settingJson.getBoolean("canComment"));
         songSetting.setMaxCommentWord(settingJson.getInt("maxCommentWord"));
         song.setSettings(songSetting);
+    }
+
+    private Album parseAlbum(JSONObject json) throws JSONException {
+        Album album = new Album();
+        album.setId(json.getString("id"));
+        album.setName(json.getString("name"));
+        album.setAuthor(json.getString("author"));
+        album.setDesc(json.getString("desc"));
+        album.setCount(json.getInt("count"));
+        album.setImage(json.getString("image"));
+        album.setListenCount(json.getString("listenCount"));
+        album.setAlbumType(AlbumType.getAlbumTypeByCode(json.getString("type")));
+        if (json.has("playing")) {
+            album.setPlaying(json.getBoolean("playing"));
+        }
+
+        if (json.has("isReady")) {
+            album.setReady(json.getBoolean("isReady"));
+        } else {
+            album.setReady(true);
+        }
+        return album;
     }
 }

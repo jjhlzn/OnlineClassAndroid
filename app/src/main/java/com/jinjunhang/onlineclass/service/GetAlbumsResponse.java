@@ -48,6 +48,10 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
                 album.setReady(true);
             }
 
+            if (json.has("playTimeDesc")) {
+                album.setPlayTimeDesc(json.getString("playTimeDesc"));
+            }
+
             mResultSet.add(album);
         }
 

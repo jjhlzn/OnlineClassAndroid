@@ -21,6 +21,7 @@ import com.jinjunhang.onlineclass.service.GetAdsResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinMessageManager;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class AdvImageCell extends BaseListViewCell {
         int albumTypeListHeight = 76 * 2; //152
         int separatorHeight =  4;
 
-        ExtendFunctionManager manager = new ExtendFunctionManager(mActivity);
+        ExtendFunctionManager manager = new ExtendFunctionManager(ExtendFunctoinMessageManager.getInstance(), mActivity);
         LogHelper.d(TAG, "manager.getRowCount() * manager.getHeight() = " + manager.getRowCount() * manager.getHeight());
         int functionCellListHeight = Utils.px2dip(mActivity, manager.getRowCount() * manager.getHeight());
 
@@ -92,7 +93,6 @@ public class AdvImageCell extends BaseListViewCell {
             LogHelper.d(TAG, "adv height should be " + result + ", " + result);
             return result;
         }
-
     }
 
     @Override
