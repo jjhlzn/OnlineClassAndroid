@@ -72,7 +72,7 @@ public class KeyValueDao {
     public String getValue(String key, String defaultValue) {
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select M_KEY, M_VALUE from KEY_VALUE WHERE M_KEY = '" + key + "'" , null);
-        LogHelper.d(TAG, "select M_KEY, M_VALUE from KEY_VALUE WHERE M_KEY = '" + key + "'");
+        //LogHelper.d(TAG, "select M_KEY, M_VALUE from KEY_VALUE WHERE M_KEY = '" + key + "'");
         if (cursor.getCount() == 0) {
             LogHelper.d(TAG, "count = " + cursor.getCount());
             return defaultValue;
@@ -80,7 +80,7 @@ public class KeyValueDao {
         try {
             cursor.moveToFirst();
             String value = cursor.getString(1);
-            LogHelper.i(TAG, "result = " + value);
+            //LogHelper.i(TAG, "result = " + value);
             return value;
         } catch (Exception ex) {
             LogHelper.e(TAG, ex);
@@ -92,7 +92,7 @@ public class KeyValueDao {
     }
 
     public void saveOrUpdate(String key, String value) {
-        LogHelper.i(TAG, "db.saveOrUpdate: key = " + key + ", value = " + value);
+        //LogHelper.i(TAG, "db.saveOrUpdate: key = " + key + ", value = " + value);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("M_KEY", key);
@@ -101,10 +101,10 @@ public class KeyValueDao {
         try{
             if (getCount("select count(*) from KEY_VALUE WHERE M_KEY = '" + key + "'") == 0) {
                 db.insert("KEY_VALUE", null, values);
-                LogHelper.i(TAG, "insert key: " + key + ", value: " + value);
+                //LogHelper.i(TAG, "insert key: " + key + ", value: " + value);
             } else {
                 db.update("KEY_VALUE", values, "M_KEY = '"+key+"'", new String[]{});
-                LogHelper.i(TAG, "update key: " + key + ", value: " + value);
+                //LogHelper.i(TAG, "update key: " + key + ", value: " + value);
             }
            // getValue(key, value);
 

@@ -57,7 +57,7 @@ public class MainPageWhiteSeparatorCell extends BaseListViewCell {
                 LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
         int cellHeight = getHeight();
-        LogHelper.d(TAG, "seperator height: ", getHeight());
+        //LogHelper.d(TAG, "seperator height: ", getHeight());
         params.width = width;
         params.height = cellHeight;
 

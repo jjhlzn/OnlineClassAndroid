@@ -149,7 +149,7 @@ public class ExtendFunctionManager {
     public int getHeight() {
         int screenWidth =   Utils.getScreenWidth(mContext);
         int screenHeight =   Utils.getScreenHeight(mContext);
-        LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
+        //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
         int height = 250;
         if (screenWidth >= 1440) {
             height = 310;
@@ -159,7 +159,7 @@ public class ExtendFunctionManager {
         } else if (screenWidth <= 768) {
             height = 190;
         }
-        LogHelper.d(TAG, "each row height in pixel = " + height);
+        //LogHelper.d(TAG, "each row height in pixel = " + height);
         return height;
     }
 

@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class Album extends BaseModelObject {
 
-
     private String mId;
     private String mName;
     private String mDesc;
@@ -21,6 +20,7 @@ public class Album extends BaseModelObject {
     private boolean playing;
     private boolean isReady;
     private List<Song> mSongs;
+    private String playTimeDesc = "";
 
 
     /**
@@ -126,6 +126,14 @@ public class Album extends BaseModelObject {
         isReady = ready;
     }
 
+    public String getPlayTimeDesc() {
+        return playTimeDesc;
+    }
+
+    public void setPlayTimeDesc(String playTimeDesc) {
+        this.playTimeDesc = playTimeDesc;
+    }
+
     public static interface MediaBrowserProvider {
         MediaBrowserCompat getMediaBrowser();
     }
@@ -133,6 +141,12 @@ public class Album extends BaseModelObject {
     public boolean isLive() {
         return this.getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName()) || getAlbumType().getName().equals(AlbumType.VipAlbumType.getName());
     }
+
+    public boolean hasPlayTimeDesc() {
+        return playTimeDesc != null && playTimeDesc.trim().length() > 0;
+    }
+
+
     
 }
 

@@ -55,7 +55,7 @@ public class ExtendFunctionCell extends BaseListViewCell {
 
     @Override
     public ViewGroup getView() {
-        LogHelper.d(TAG, "ExtendFunctionCell.getView() called");
+        //LogHelper.d(TAG, "ExtendFunctionCell.getView() called");
         LinearLayout layout = new LinearLayout(mActivity);
         layout.setOrientation(LinearLayout.HORIZONTAL);
 

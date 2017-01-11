@@ -78,7 +78,7 @@ public class HeaderAdvCell extends BaseListViewCell {
             HeaderAdvManager manager = HeaderAdvManager.getInstance();
             final GetHeaderAdvResponse.HeaderAdvImage adv = manager.getHeaderAdv();
             if (GetHeaderAdvResponse.HeaderAdvImage.TYPE_SONG.equals(adv.getType())) {
-                song.setId(adv.getParams().get(GetHeaderAdvResponse.HeaderAdvImage.TYPE_SONG));
+                song.setId(adv.getParams().get(GetHeaderAdvResponse.HeaderAdvImage.PARAM_KEY_SONG));
                 GetSongInfoRequest request = new GetSongInfoRequest(song);
                 return new BasicService().sendRequest(request);
             } else {

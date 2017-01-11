@@ -114,13 +114,13 @@ public class Utils {
             wm.getDefaultDisplay().getMetrics(displaymetrics);
             screenHeight = displaymetrics.heightPixels;
             screenWidth = displaymetrics.widthPixels;
-            LogHelper.d(TAG, "compute: width = " + screenWidth + ", height = " + screenHeight);
+            //LogHelper.d(TAG, "compute: width = " + screenWidth + ", height = " + screenHeight);
         }
         return screenWidth;
     }
 
     public static int getScreenHeight(Context context) {
-        LogHelper.d(TAG, "getScreenHeight called: width = " + screenWidth + ", height = " + screenHeight);
+        //LogHelper.d(TAG, "getScreenHeight called: width = " + screenWidth + ", height = " + screenHeight);
         if (screenWidth < 0) {
             getScreenWidth(context);
         }
@@ -141,7 +141,7 @@ public class Utils {
 
     public static void setupUI4HideKeybaord(View view, final Activity activity) {
         //Set up touch listener for non-text box views to hide keyboard.
-        LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
+        //LogHelper.d(TAG, "id = " + view.getId() + ", bottom_comment.id = " + R.id.bottom_comment);
         if (view.getId() == R.id.bottom_comment) {
             return;
         }

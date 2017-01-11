@@ -78,7 +78,7 @@ public class MainActivity extends BaseMusicActivity  {
 
         setCommonActionBar();
 
-        LogHelper.d(TAG, "has navigation bar: ", Utils.hasNavigationBar(this));
+        //LogHelper.d(TAG, "has navigation bar: ", Utils.hasNavigationBar(this));
 
         fragmentMap = new HashMap();
         mBottomBar = BottomBar.attach(this, savedInstanceState);
@@ -139,7 +139,7 @@ public class MainActivity extends BaseMusicActivity  {
             public void run() {
                 int height = mBottomBar.getBar().getHeight();
                 Utils.BOTTOM_BAR_HEIGHT = height;
-                LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
+                //LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT+", " + height);
             }
         });
 
