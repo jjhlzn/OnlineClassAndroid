@@ -41,7 +41,7 @@ public class ShareManager2 extends ShareManager {
             @Override
             public void onClick(View v) {
                 LogHelper.d(TAG, "share pemgyouquan button Clicked");
-                shareUrl(true);
+                mQQShareService.shareToQzone();
             }
         });
 
@@ -50,7 +50,8 @@ public class ShareManager2 extends ShareManager {
             @Override
             public void onClick(View v) {
                 LogHelper.d(TAG, "share weibo button Clicked");
-                mWeiboShareService.share();
+                //mWeiboShareService.share();
+                mQQShareService.shareToFriends();
             }
         });
     }
