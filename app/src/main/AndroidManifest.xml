@@ -201,6 +201,24 @@
             android:windowSoftInputMode="adjustResize" android:exported="false" >
         </activity>
 
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1105870136" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.tencent.connect.common.AssistActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+
         <!-- <service android:name=".SimpleMusicService" /> -->
         <!-- Main music service, provides media browsing and media playback services to
              consumers through MediaBrowserService and MediaSession. Consumers connect to it through

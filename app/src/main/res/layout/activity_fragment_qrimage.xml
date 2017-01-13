@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@color/code_image_background"
     android:layout_height="match_parent"
     android:gravity="center">
 
@@ -12,9 +12,9 @@
 
         <ImageView
             android:id="@+id/qr_image"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="-70dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="-100dp"
             />
     </LinearLayout>
 
@@ -22,14 +22,15 @@
     <RelativeLayout
         android:id="@+id/share_view"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="186dp"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
 
         <include layout="@layout/share_menu_1" android:id="@+id/share_menu"
                  android:layout_width="match_parent"
-                 android:layout_height="110dp"
+                 android:layout_height="186dp"
                  android:layout_alignParentBottom="true"
             />
     </RelativeLayout>

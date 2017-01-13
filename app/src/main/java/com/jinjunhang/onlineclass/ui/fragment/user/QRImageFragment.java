@@ -30,13 +30,13 @@ public class QRImageFragment extends BaseFragment {
     private static final String TAG = LogHelper.makeLogTag(QRImageFragment.class);
 
     private QrImageDao qrImageDao;
-    private ShareManager mWeixinShareManager;
+    private ShareManager mShareManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_fragment_qrimage, container, false);
-        mWeixinShareManager = new ShareManager2((AppCompatActivity) getActivity(), v);
+        mShareManager = new ShareManager2((AppCompatActivity) getActivity(), v);
         qrImageDao = QrImageDao.getInstance(getActivity());
 
         final ImageView qrImage = (ImageView) v.findViewById(R.id.qr_image);

@@ -36,6 +36,7 @@ public class ShareManager {
     protected QrImageDao qrImageDao;
 
     protected WeiboShareService mWeiboShareService;
+    protected QQShareService mQQShareService;
 
     public ShareManager(AppCompatActivity activity, View v) {
         this.mActivity = activity;
@@ -44,6 +45,7 @@ public class ShareManager {
         api.registerApp(Utils.WEIXIN_SHERE_APP_ID);
         qrImageDao = QrImageDao.getInstance(activity);
         this.mWeiboShareService = new WeiboShareService(activity);
+        mQQShareService = new QQShareService(activity);
         setup();
     }
 
@@ -95,6 +97,7 @@ public class ShareManager {
             @Override
             public void onClick(View v) {
                 LogHelper.d(TAG, "share weibo button Clicked");
+                //mWeiboShareService.share();
                 mWeiboShareService.share();
             }
         });
