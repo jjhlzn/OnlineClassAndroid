@@ -40,4 +40,5 @@
 
     <color name="adv_text_background">#efeef3</color>
     <color name="album_list_background">#B3B3B3</color>
+    <color name="code_image_background">#EBE9E8</color>
 </resources>
