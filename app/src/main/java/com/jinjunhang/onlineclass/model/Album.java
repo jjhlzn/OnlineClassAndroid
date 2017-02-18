@@ -29,6 +29,7 @@ public class Album extends BaseModelObject {
      */
     public static Album LiveAlum;
     public static Album VipAlbum;
+    public static Album AgentAlbum;
     static {
         LiveAlum = new Album();
         LiveAlum.setName("每日课程");
@@ -36,6 +37,9 @@ public class Album extends BaseModelObject {
         VipAlbum = new Album();
         VipAlbum.setName("会员专享课程");
         VipAlbum.setAlbumType(AlbumType.DummyAlbumType);
+        AgentAlbum = new Album();
+        AgentAlbum.setName("代理培训课程");
+        AgentAlbum.setAlbumType(AlbumType.DummyAlbumType);
     }
 
     public String getId() {
@@ -134,12 +138,10 @@ public class Album extends BaseModelObject {
         this.playTimeDesc = playTimeDesc;
     }
 
-    public static interface MediaBrowserProvider {
-        MediaBrowserCompat getMediaBrowser();
-    }
 
     public boolean isLive() {
-        return this.getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName()) || getAlbumType().getName().equals(AlbumType.VipAlbumType.getName());
+        //return this.getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName()) || getAlbumType().getName().equals(AlbumType.VipAlbumType.getName());
+        return true;
     }
 
     public boolean hasPlayTimeDesc() {

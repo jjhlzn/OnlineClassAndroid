@@ -107,7 +107,6 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
         //LogHelper.d(TAG, "mAlbumType = " + mAlbumType.getName());
         mPagableController.setShowLoadCompleteTip(false);
 
-        LogHelper.d(TAG, "isShowLoadCompleteTip = " + mPagableController.isShowLoadCompleteTip());
         AlbumListAdapter adapter = new AlbumListAdapter(mPagableController, new ArrayList<Album>());
         mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(adapter);
@@ -156,7 +155,13 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
                       break;
                   }
               }
-                response.setResultSet(albumList);
+              for(int i = 0; i < albumList.size(); i++) {
+                  if (albumList.get(i).getAlbumType().getTypeCode().equals(AlbumType.AgentEducationAlbumType.getTypeCode())) {
+                      albumList.add(i, Album.AgentAlbum);
+                      break;
+                  }
+              }
+              response.setResultSet(albumList);
             }
             return response;
         }

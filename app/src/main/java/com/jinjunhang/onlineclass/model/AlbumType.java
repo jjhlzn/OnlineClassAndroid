@@ -39,15 +39,9 @@ public class AlbumType extends BaseModelObject {
     public final static AlbumType DummyAlbumType = new AlbumType("Dummy", "Dummy", R.drawable.albumtype_live);
     public final static AlbumType LiveAlbumType = new AlbumType("直播课程", "Live", R.drawable.albumtype_live);
     public final static AlbumType VipAlbumType = new AlbumType("VIP课程", "Vip", R.drawable.albumtype_vip);
+    public final static AlbumType AgentEducationAlbumType = new AlbumType("代理培训课程", "Agent", R.drawable.albumtype_vip);
     public final static AlbumType CommonAlbumType = new AlbumType("往期直播课程", "Common", R.drawable.albumtype_common);
 
-    public static List<AlbumType> getAllAlbumType() {
-        List<AlbumType> types = new ArrayList<AlbumType>();
-        types.add(LiveAlbumType);
-        types.add(VipAlbumType);
-        //types.add(CommonAlbumType);
-        return types;
-    }
 
     public static AlbumType getAlbumTypeByCode(String code) {
         switch (code) {
@@ -55,6 +49,8 @@ public class AlbumType extends BaseModelObject {
                 return LiveAlbumType;
             case "Vip":
                 return VipAlbumType;
+            case "Agent":
+                return AgentEducationAlbumType;
             default:
                 return CommonAlbumType;
         }

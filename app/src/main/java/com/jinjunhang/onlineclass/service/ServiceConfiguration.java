@@ -16,11 +16,11 @@ public class ServiceConfiguration {
     public static final String DEFAULT_HOST = "jf.yhkamani.com";
     public static final String DEFAULT_PORT = "80";
 
-    private final static boolean isUseConfig = true;
+    private final static boolean isUseConfig = false;
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 =  "192.168.1.108"; //"jf.yhkamani.com"; //"192.168.1.108";
+    private final static String serverName1 =  "192.168.31.175"; //"jf.yhkamani.com"; //"192.168.1.108";
     private final static int port1 = 5000;
 
 
