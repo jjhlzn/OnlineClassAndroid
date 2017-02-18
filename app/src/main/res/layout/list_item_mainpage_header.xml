@@ -9,7 +9,7 @@
         <ImageView
             android:id="@+id/list_mainpage_header_image"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="140dp"
             android:scaleType="fitXY"
             android:src="@drawable/header_ditu"
             />

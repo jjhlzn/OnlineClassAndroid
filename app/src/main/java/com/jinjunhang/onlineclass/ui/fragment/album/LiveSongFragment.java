@@ -214,7 +214,6 @@ public class LiveSongFragment extends BaseSongFragment  {
 
         mAdapter = new LiveSongListViewCellAdapter(getActivity(), song, mPlayerCell);
         mPlayerCell.setAdapter(mAdapter);
-        LogHelper.d(TAG, "mAdapter.size = " + mAdapter.getCount());
     }
 
     @Override

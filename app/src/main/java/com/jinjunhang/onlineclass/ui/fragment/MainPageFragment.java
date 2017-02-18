@@ -25,10 +25,12 @@ import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.CourseNotifyCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinMessageManager;
+import com.sunfusheng.marqueeview.MarqueeView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,6 +90,8 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
 
         if (mCells.size() == 0) {
             mCells.add(new HeaderAdvCell(getActivity(), mLoading));
+
+            mCells.add(new CourseNotifyCell(getActivity()));
 
             int functionRowCount = mFunctionManager.getRowCount();
             for (int i = 0; i < functionRowCount; i++) {
@@ -275,7 +279,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
                 return;
             }
 
-            FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(5);
+            FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(6);
             footerCell.setAdvs(advs);
             mMainPageAdapter.notifyDataSetChanged();
         }

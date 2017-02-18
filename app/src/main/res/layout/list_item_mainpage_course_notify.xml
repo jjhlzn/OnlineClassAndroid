@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:id="@+id/list_item_viewgroup"
+              android:layout_height="20dp"
+              android:background="@color/white"
+              android:orientation="horizontal">
+
+        <com.sunfusheng.marqueeview.MarqueeView
+            android:id="@+id/course_notifyt_text"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/adv_text_background"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal|center_vertical"
+            android:textAlignment="center"
+            app:mvGravity="center"
+            app:mvAnimDuration="1000"
+            app:mvInterval="3000"
+            app:mvTextColor="@color/colorPrimary"
+            app:mvTextSize="12dp"
+            app:mvSingleLine="true">
+
+            </com.sunfusheng.marqueeview.MarqueeView>
+
+</LinearLayout>
