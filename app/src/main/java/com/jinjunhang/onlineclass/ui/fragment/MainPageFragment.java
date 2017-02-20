@@ -17,6 +17,8 @@ import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.HeaderAdvManager;
+import com.jinjunhang.onlineclass.service.GetCourseNotifyRequest;
+import com.jinjunhang.onlineclass.service.GetCourseNotifyResponse;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.service.GetFunctionMessageRequest;
@@ -117,6 +119,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
         new GetFunctionMessageRequestTask().execute();
         new GetHeaderAdvTask().execute();
         new GetFooterAdvTask().execute();
+        new GetCourseNotifyTask().execute();
 
         //开始定时刷新主图
         scheduleUpdateHeaderAdv();
@@ -125,7 +128,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
 
     @Override
     public void onResume() {
+        LogHelper.d(TAG, "MainPageFragment onResume called");
         super.onResume();
+        new GetCourseNotifyTask().execute();
         mMainPageAdapter.notifyDataSetChanged();
     }
 
@@ -142,6 +147,7 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
         mIsLoading = true;
 
         new GetHeaderAdvTask().execute();
+        new GetCourseNotifyTask().execute();
     }
 
     private void stopUpdateHeaderAdv() {
@@ -281,6 +287,27 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
 
             FooterCell footerCell = (FooterCell) mMainPageAdapter.getItem(6);
             footerCell.setAdvs(advs);
+            mMainPageAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class GetCourseNotifyTask extends  AsyncTask<Void, Void, GetCourseNotifyResponse> {
+
+        @Override
+        protected GetCourseNotifyResponse doInBackground(Void... voids) {
+            return new BasicService().sendRequest(new GetCourseNotifyRequest());
+        }
+
+        @Override
+        protected void onPostExecute(GetCourseNotifyResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                LogHelper.e(TAG, resp.getErrorMessage());
+                return;
+            }
+
+            CourseNotifyCell courseNotifyCell = (CourseNotifyCell) mMainPageAdapter.getItem(1);
+            courseNotifyCell.setCourseNotify(resp.getCourseNotifies());
             mMainPageAdapter.notifyDataSetChanged();
         }
     }

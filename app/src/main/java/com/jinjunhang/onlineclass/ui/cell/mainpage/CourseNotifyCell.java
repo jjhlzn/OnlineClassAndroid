@@ -21,21 +21,24 @@ import java.util.List;
 
 public class CourseNotifyCell extends BaseListViewCell {
 
+    private List<String> mCourseNotifies = new ArrayList<>();
+
     public CourseNotifyCell(Activity activity) {super(activity);}
+
+    public void setCourseNotify(List<String> courseNotifies) {
+        mCourseNotifies = courseNotifies;
+    }
 
     @Override
     public ViewGroup getView() {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_course_notify, null);
 
         MarqueeView advTextView = (MarqueeView)v.findViewById(R.id.course_notifyt_text);
-        String advContent = "434324234";
-        advTextView.startWithText(advContent);
 
-        if ("".equals(advContent)) {
-            //advTextView.setBackgroundColor(0x000000);
+        if (mCourseNotifies.size() == 0) {
             advTextView.setVisibility(View.INVISIBLE);
         } else {
-            //advTextView.setBackgroundColor(0xefeef3);
+            advTextView.startWithList(mCourseNotifies);
             advTextView.setVisibility(View.VISIBLE);
         }
 

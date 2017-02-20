@@ -83,6 +83,20 @@ public class ShareManager {
         setup();
     }
 
+    private void setLowerLayer(boolean status) {
+        View lowerLayer = v.findViewById(R.id.listView);
+        if (lowerLayer != null) {
+            lowerLayer.setEnabled(status);
+        }
+        View bottom_comment_tip = v.findViewById(R.id.bottom_comment_tip);
+        if (bottom_comment_tip != null) {
+            bottom_comment_tip.setEnabled(status);
+        }
+
+
+
+    }
+
     protected void  setup() {
         View customView = mActivity.getSupportActionBar().getCustomView();
         ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
@@ -97,6 +111,7 @@ public class ShareManager {
             public void onClick(View v) {
                 LogHelper.d(TAG, "shareButton clicked");
                 shareView.setVisibility(View.VISIBLE);
+                setLowerLayer(false);
             }
         });
 
@@ -162,6 +177,7 @@ public class ShareManager {
             @Override
             public void onClick(View view) {
                 shareView.setVisibility(View.INVISIBLE);
+                setLowerLayer(true);
             }
         });
     }
