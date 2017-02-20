@@ -116,6 +116,7 @@ public class WeiboShareService implements IWeiboHandler.Response {
 
                 @Override
                 public void onCancel() {
+
                 }
             });
         }
@@ -133,6 +134,7 @@ public class WeiboShareService implements IWeiboHandler.Response {
         mediaObject.identify = Utility.generateGUID();
         mediaObject.title = mShareManager.getShareTitle();
         mediaObject.description = "";
+
 
         if (mShareManager.isUseQrCodeImage()) {
             Bitmap bitmap = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);

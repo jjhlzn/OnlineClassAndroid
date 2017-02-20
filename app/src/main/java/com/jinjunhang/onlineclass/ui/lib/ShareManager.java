@@ -46,10 +46,14 @@ public class ShareManager {
     private boolean mIsUseQrCodeImage;
 
     public void setShareUrl(String shareUrl) {
+        if (shareUrl == null || shareUrl.isEmpty())
+            return;
         mShareUrl = shareUrl;
     }
 
     public void setShareTitle(String shareTitle) {
+        if (shareTitle == null || shareTitle.isEmpty())
+            return;
         mShareTitle = shareTitle;
     }
 
