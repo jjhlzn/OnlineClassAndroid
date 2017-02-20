@@ -29,10 +29,12 @@ public class QQShareService {
     private Activity mActivity;
 
     public static final String QQ_APP_ID = "1105870136";
+    private ShareManager mShareManager;
 
-    public QQShareService(Activity activity) {
+    public QQShareService(Activity activity, ShareManager shareManager) {
         mTencent = Tencent.createInstance(QQ_APP_ID, CustomApplication.get());
         this.mActivity = activity;
+        this.mShareManager = shareManager;
     }
 
     public void shareToFriends() {
@@ -46,10 +48,9 @@ public class QQShareService {
     private void share(boolean isQzone) {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
-        params.putString(QQShare.SHARE_TO_QQ_TITLE, "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！");
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  "扫一扫下载安装【巨方助手】");
-        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL,
-                ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName());
+        params.putString(QQShare.SHARE_TO_QQ_TITLE, mShareManager.getShareTitle());
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  "");
+        params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, mShareManager.getShareUrl());
         ArrayList<String> imageUrls = new ArrayList<>();
 
         String imageUrl = QrImageDao.getInstance(mActivity).getCodeImageUrl();

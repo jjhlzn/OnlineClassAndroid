@@ -1,5 +1,8 @@
 package com.jinjunhang.onlineclass.ui.lib;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -38,14 +41,45 @@ public class ShareManager {
     protected WeiboShareService mWeiboShareService;
     protected QQShareService mQQShareService;
 
+    private String mShareTitle;
+    private String mShareUrl;
+    private boolean mIsUseQrCodeImage;
+
+    public void setShareUrl(String shareUrl) {
+        mShareUrl = shareUrl;
+    }
+
+    public void setShareTitle(String shareTitle) {
+        mShareTitle = shareTitle;
+    }
+
+    public void setUseQrCodeImage(boolean useQrCodeImage) {
+        mIsUseQrCodeImage = useQrCodeImage;
+    }
+
+    public String getShareTitle() {
+        return mShareTitle;
+    }
+
+    public String getShareUrl() {
+        return mShareUrl;
+    }
+
+    public boolean isUseQrCodeImage() {
+        return mIsUseQrCodeImage;
+    }
+
     public ShareManager(AppCompatActivity activity, View v) {
+        mShareTitle = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
+        mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
+                "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
         this.mActivity = activity;
         this.v = v;
         api = WXAPIFactory.createWXAPI(mActivity, Utils.WEIXIN_SHERE_APP_ID, true);
         api.registerApp(Utils.WEIXIN_SHERE_APP_ID);
         qrImageDao = QrImageDao.getInstance(activity);
-        this.mWeiboShareService = new WeiboShareService(activity);
-        mQQShareService = new QQShareService(activity);
+        this.mWeiboShareService = new WeiboShareService(activity, this);
+        mQQShareService = new QQShareService(activity, this);
         setup();
     }
 
@@ -66,13 +100,6 @@ public class ShareManager {
             }
         });
 
-        Button closeShareViewButton = (Button) v.findViewById(R.id.close_button);
-        closeShareViewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareView.setVisibility(View.GONE);
-            }
-        });
 
         View shareFriendButton = shareView.findViewById(R.id.weixinhaoyou_button);
         shareFriendButton.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +120,7 @@ public class ShareManager {
         });
 
         View weiboButton = shareView.findViewById(R.id.weibo_button);
-        weiboButton.setOnClickListener(new View.OnClickListener(){
+        weiboButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LogHelper.d(TAG, "share weibo button Clicked");
@@ -101,16 +128,58 @@ public class ShareManager {
                 mWeiboShareService.share();
             }
         });
+
+        View qqFriendsButton = shareView.findViewById(R.id.qqFriends_button);
+        qqFriendsButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mQQShareService.shareToFriends();
+            }
+        });
+
+        View qzoneButton = shareView.findViewById(R.id.qzone_button);
+        qzoneButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                mQQShareService.shareToQzone();
+            }
+        });
+
+        View copyLinkButton = shareView.findViewById(R.id.copylink_button);
+        copyLinkButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
+                String url = ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
+                ClipData clip = ClipData.newPlainText("Text Label", url);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(mActivity, "复制成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button closeButton = (Button) shareView.findViewById(R.id.close_button);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareView.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     protected void shareUrl(boolean isPengyouquan) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
+        webpage.webpageUrl = mShareUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
+        msg.title = mShareTitle;
         msg.description = "description";
-        Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);
-        msg.thumbData = Util.bmpToByteArray(thumb, true);
+
+        if (mIsUseQrCodeImage) {
+            Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);
+            msg.thumbData = Util.bmpToByteArray(thumb, true);
+        } else {
+            Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.log);
+            msg.thumbData = Util.bmpToByteArray(thumb, true);
+        }
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
@@ -163,11 +232,7 @@ public class ShareManager {
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = imgObj;
         msg.description = "二维码";
-        /*
-        Bitmap thumbBmp = Bitmap.createScaledBitmap(bmp, THUMB_SIZE, THUMB_SIZE, true);
-        bmp.recycle();
-        msg.thumbData = Util.bmpToByteArray(thumbBmp, true); */
-        // msg.description = "二维码";
+
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("img");
         req.message = msg;

@@ -24,7 +24,7 @@
 
         <include layout="@layout/share_menu" android:id="@+id/share_menu"
                  android:layout_width="match_parent"
-                 android:layout_height="131dp"
+                 android:layout_height="228dp"
                  android:layout_marginTop="40dp"
                  android:layout_alignParentBottom="true"
             />

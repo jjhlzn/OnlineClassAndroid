@@ -23,6 +23,7 @@ import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager2;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 

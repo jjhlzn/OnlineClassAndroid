@@ -66,5 +66,25 @@
                  android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/share_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/background_shadow"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <include layout="@layout/share_menu" android:id="@+id/share_menu"
+                 android:layout_width="match_parent"
+                 android:layout_height="229dp"
+                 android:layout_marginTop="40dp"
+                 android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.jinjunhang.onlineclass.ui.cell.WideSectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.player.PlayerCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
 
@@ -56,6 +58,9 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
 
     protected List<String> mCommentChars;
     private String oldCommentString;
+
+
+    protected ShareManager mShareManager;
 
     abstract protected PlayerCell createPlayerCell();
     abstract protected  View.OnClickListener createSendOnClickListener();
@@ -145,7 +150,6 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                LogHelper.d(TAG, "s = " + s + ", s.length = "+s.length()+", start = " + start + ", before = " + before + ", count = " + count);
 
                 try {
                     if (s.length() > oldCommentString.length()) {
@@ -218,6 +222,13 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
         mListView.setAdapter(mAdapter);
 
         setupUI4HideKeybaord(v, getActivity());
+
+
+        mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
+        mShareManager.setShareTitle(mSong.getShareTitle());
+        mShareManager.setShareUrl(mSong.getShareUrl());
+        mShareManager.setUseQrCodeImage(false);
+
         return v;
     }
 

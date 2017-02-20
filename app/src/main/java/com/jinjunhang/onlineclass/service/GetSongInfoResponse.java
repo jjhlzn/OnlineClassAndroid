@@ -86,10 +86,19 @@ public class GetSongInfoResponse extends ServerResponse {
         song.setUrl(json.getString("url"));
         song.setId(json.getString("id"));
         song.setImageUrl(json.getString("image"));
+
+        if (json.has("shareTitle")) {
+            song.setShareTitle(json.getString("shareTitle"));
+        }
+        if (json.has("shareUrl")) {
+            song.setShareUrl(json.getString("shareUrl"));
+        }
+
         SongSetting songSetting = new SongSetting();
         JSONObject settingJson =  json.getJSONObject("settings");
         songSetting.setCanComment(settingJson.getBoolean("canComment"));
         songSetting.setMaxCommentWord(settingJson.getInt("maxCommentWord"));
+
         song.setSettings(songSetting);
     }
 

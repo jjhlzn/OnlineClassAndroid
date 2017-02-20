@@ -7,17 +7,13 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.db.LoginUserDao;
-import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.sina.weibo.sdk.api.TextObject;
 import com.sina.weibo.sdk.api.WebpageObject;
 import com.sina.weibo.sdk.api.WeiboMultiMessage;
 import com.sina.weibo.sdk.api.share.BaseResponse;
 import com.sina.weibo.sdk.api.share.IWeiboHandler;
 import com.sina.weibo.sdk.api.share.IWeiboShareAPI;
-import com.sina.weibo.sdk.api.share.SendMessageToWeiboRequest;
 import com.sina.weibo.sdk.api.share.SendMultiMessageToWeiboRequest;
 import com.sina.weibo.sdk.api.share.WeiboShareSDK;
 import com.sina.weibo.sdk.auth.AuthInfo;
@@ -42,7 +38,10 @@ public class WeiboShareService implements IWeiboHandler.Response {
     /** 微博微博分享接口实例 */
     private IWeiboShareAPI mWeiboShareAPI = null;
 
-    public WeiboShareService(Activity activity) {
+    private ShareManager mShareManager;
+
+    public WeiboShareService(Activity activity, ShareManager shareManager) {
+        mShareManager = shareManager;
         this.mActivity = activity;
         this.mWeiboShareAPI = WeiboShareSDK.createWeiboAPI(mActivity, APP_KEY);
 
@@ -132,24 +131,25 @@ public class WeiboShareService implements IWeiboHandler.Response {
     private WebpageObject getWebpageObj() {
         WebpageObject mediaObject = new WebpageObject();
         mediaObject.identify = Utility.generateGUID();
-        mediaObject.title = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
+        mediaObject.title = mShareManager.getShareTitle();
         mediaObject.description = "";
 
-        Bitmap bitmap = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);
-        // 设置 Bitmap 类型的图片到视频对象里         设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
-        mediaObject.setThumbImage(bitmap);
-        mediaObject.actionUrl = ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
+        if (mShareManager.isUseQrCodeImage()) {
+            Bitmap bitmap = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);
+            // 设置 Bitmap 类型的图片到视频对象里         设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
+            mediaObject.setThumbImage(bitmap);
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.log);
+            // 设置 Bitmap 类型的图片到视频对象里         设置缩略图。 注意：最终压缩过的缩略图大小不得超过 32kb。
+            mediaObject.setThumbImage(bitmap);
+        }
+
+        mediaObject.actionUrl = mShareManager.getShareUrl();
         mediaObject.defaultText = "";
         return mediaObject;
     }
 
 
-
-    private TextObject getTextObj() {
-        TextObject textObject = new TextObject();
-        textObject.text = "test";
-        return textObject;
-    }
 
 
 }

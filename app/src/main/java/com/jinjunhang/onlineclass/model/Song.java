@@ -13,6 +13,8 @@ public class Song extends BaseModelObject {
     private String imageUrl;
     private SongSetting settings = new SongSetting();
     private Album album;
+    private String mShareTitle = "";
+    private String mShareUrl = "";
 
     public String getId() {
         return mId;
@@ -82,5 +84,21 @@ public class Song extends BaseModelObject {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getShareTitle() {
+        return mShareTitle;
+    }
+
+    public String getShareUrl() {
+        return mShareUrl;
+    }
+
+    public void setShareTitle(String shareTitle) {
+        this.mShareTitle = shareTitle;
+    }
+
+    public void setShareUrl(String shareUrl) {
+        mShareUrl = shareUrl;
     }
 }
