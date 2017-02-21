@@ -52,6 +52,10 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
                 album.setPlayTimeDesc(json.getString("playTimeDesc"));
             }
 
+            if (json.has("isAgent")) {
+                album.setAgent(json.getBoolean("isAgent"));
+            }
+
             mResultSet.add(album);
         }
 

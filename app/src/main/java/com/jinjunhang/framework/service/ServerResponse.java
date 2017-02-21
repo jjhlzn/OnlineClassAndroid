@@ -12,6 +12,8 @@ public abstract class ServerResponse {
     public final static int FAIL = -1;
     public final static int NO_PERMISSION = -10;
     public final static int TOKEN_INVALID  =  -11;
+    public final static int NOT_PAY_COURSE_NO_PERMISSION = -12; //对于不能支付的课程，没有权限
+
 
     public ServerResponse() {}
     private int mStatus;

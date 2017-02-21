@@ -191,7 +191,7 @@ public class ShareManager {
         webpage.webpageUrl = mShareUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = mShareTitle;
-        msg.description = "description";
+        msg.description = "巨方助手";
 
         if (mIsUseQrCodeImage) {
             Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);

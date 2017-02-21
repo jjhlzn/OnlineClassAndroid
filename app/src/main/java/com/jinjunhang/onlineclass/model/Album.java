@@ -21,6 +21,7 @@ public class Album extends BaseModelObject {
     private boolean isReady;
     private List<Song> mSongs;
     private String playTimeDesc = "";
+    private boolean mIsAgent = false;
 
 
     /**
@@ -148,8 +149,13 @@ public class Album extends BaseModelObject {
         return playTimeDesc != null && playTimeDesc.trim().length() > 0;
     }
 
+    public boolean isAgent() {
+        return mIsAgent;
+    }
 
-    
+    public void setAgent(boolean agent) {
+        mIsAgent = agent;
+    }
 }
 
 

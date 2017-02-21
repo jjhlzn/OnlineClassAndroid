@@ -156,7 +156,7 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
                   }
               }
               for(int i = 0; i < albumList.size(); i++) {
-                  if (albumList.get(i).getAlbumType().getTypeCode().equals(AlbumType.AgentEducationAlbumType.getTypeCode())) {
+                  if (albumList.get(i).isAgent()) {
                       albumList.add(i, Album.AgentAlbum);
                       break;
                   }
@@ -192,6 +192,11 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
             mLoading.hide();
             if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
                 Utils.showVipBuyMessage(getActivity(), resp.getErrorMessage());
+                return;
+            }
+
+            if (resp.getStatus() == ServerResponse.NOT_PAY_COURSE_NO_PERMISSION) {
+                Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
                 return;
             }
 
