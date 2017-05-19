@@ -57,7 +57,7 @@ public class KeyValueDao {
                 do{
                     String column1 = cursor.getString(0);
                     String column2 = cursor.getString(1);
-                    LogHelper.d(TAG, "key = " + column1 + ", value = " + column2);
+                    //LogHelper.d(TAG, "key = " + column1 + ", value = " + column2);
 
                 }while(cursor.moveToNext());
             }
@@ -74,7 +74,7 @@ public class KeyValueDao {
         Cursor cursor = db.rawQuery("select M_KEY, M_VALUE from KEY_VALUE WHERE M_KEY = '" + key + "'" , null);
         //LogHelper.d(TAG, "select M_KEY, M_VALUE from KEY_VALUE WHERE M_KEY = '" + key + "'");
         if (cursor.getCount() == 0) {
-            LogHelper.d(TAG, "count = " + cursor.getCount());
+            //LogHelper.d(TAG, "count = " + cursor.getCount());
             return defaultValue;
         }
         try {

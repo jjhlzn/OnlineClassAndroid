@@ -2,12 +2,14 @@ package com.jinjunhang.onlineclass.ui.cell.mainpage;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
@@ -21,6 +23,8 @@ import java.util.List;
  */
 
 public class FooterCell extends BaseListViewCell {
+
+    private static final String TAG = LogHelper.makeLogTag(FooterCell.class);
 
     public FooterCell(Activity activity) {super(activity);}
 
@@ -54,10 +58,17 @@ public class FooterCell extends BaseListViewCell {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            LogHelper.d(TAG, "adv.url : " + adv.getUrl());
+            //快速下卡的链接在外部浏览器打开
+            if (!"".equals(adv.getUrl()) && "快速下卡".equals(adv.getTitle())) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adv.getUrl()));
+                mActivity.startActivity(intent);
+            } else {
                 Intent i = new Intent(mActivity, WebBrowserActivity.class)
                         .putExtra(WebBrowserActivity.EXTRA_TITLE, adv.getTitle())
                         .putExtra(WebBrowserActivity.EXTRA_URL, adv.getUrl());
                 mActivity.startActivity(i);
+            }
             }
         });
     }

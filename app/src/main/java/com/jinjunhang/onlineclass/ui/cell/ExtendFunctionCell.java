@@ -28,9 +28,7 @@ public class ExtendFunctionCell extends BaseListViewCell {
         functionList.add(func);
     }
 
-    public List<ExtendFunctionManager.ExtendFunction> getFunctionList() {
-        return functionList;
-    }
+
 
     public ExtendFunctionCell(Activity activity) {
         super(activity);

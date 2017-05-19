@@ -169,7 +169,7 @@ public class ShareManager {
             @Override
             public void onClick(View view) {
                 ClipboardManager clipboard = (ClipboardManager) mActivity.getSystemService(Context.CLIPBOARD_SERVICE);
-                String url = ServiceLinkManager.ShareQrImageUrl() + "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
+                String url = mShareUrl;
                 ClipData clip = ClipData.newPlainText("Text Label", url);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(mActivity, "复制成功", Toast.LENGTH_SHORT).show();

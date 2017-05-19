@@ -20,7 +20,7 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 =  "192.168.31.175"; //"jf.yhkamani.com"; //"192.168.1.108";
+    private final static String serverName1 =  "192.168.1.112"; //"jf.yhkamani.com"; //"192.168.1.108";
     private final static int port1 = 5000;
 
 
@@ -168,6 +168,10 @@ public class ServiceConfiguration {
 
     public static String GetFunctionMessageUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/getfunctionmessage";
+    }
+
+    public static String GetExtendFunctionInfoUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getfunctioninfos";
     }
 
     public static String ClearFunctionMessageUrl() {
