@@ -21,6 +21,8 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager2;
@@ -36,9 +38,13 @@ public class WebBrowserActivity extends AppCompatActivity {
 
     public final static String EXTRA_URL = "EXTRA_URL";
     public final static String EXTRA_TITLE = "EXTRA_TITLE";
+    public final static String EXTRA_BACK_TO_MAIN_ACTIVITY = "EXTRA_BACK_TO_MAIN_ACTIVITY";
+
+    private LoginUserDao mLoginUserDao = LoginUserDao.getInstance(this);
 
     private String mUrl;
     private String mTitle;
+    private boolean mIsBackToMainActivity = false;
     private WebView mWebView;
     private TextView mCloseButton;
     private IWXAPI mWXAPI;
@@ -61,6 +67,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         LogHelper.d(TAG, mUrl);
         mTitle = getIntent().getStringExtra(EXTRA_TITLE);
         LogHelper.d(TAG, "title = " + mTitle);
+        mIsBackToMainActivity = getIntent().getBooleanExtra(EXTRA_BACK_TO_MAIN_ACTIVITY, false);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customView = getLayoutInflater().inflate(R.layout.actionbar_browser, null);
@@ -75,6 +82,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LogHelper.d(TAG, "mWebView.canGoBack() = " + mWebView.canGoBack());
                 if (mWebView.canGoBack()) {
                     mWebView.goBack();
                 } else {
@@ -100,6 +108,24 @@ public class WebBrowserActivity extends AppCompatActivity {
         openURL();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (this.mIsBackToMainActivity) {
+            checkLogin();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void checkLogin() {
+        Intent i;
+        if (mLoginUserDao.get() == null) {
+            i = new Intent(this, LoginActivity.class);
+        } else {
+            i = new Intent(this, MainActivity.class);
+        }
+        startActivity(i);
+    }
 
     private void  setWeixinShareIfNeed(View v) {
        if ("提额秘诀".equals(mTitle)) {
