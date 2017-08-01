@@ -41,6 +41,11 @@ import com.jinjunhang.onlineclass.ui.lib.ShareManager2;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,6 +134,11 @@ public class WebBrowserActivity extends AppCompatActivity {
         WebSettings settings = mWebView.getSettings();
         settings.setDomStorageEnabled(true);
         openURL();
+
+        mShareManager = new ShareManager(this, this.findViewById(R.id.rootView));
+        mShareManager.setUseQrCodeImage(false);
+
+        new ParseHtmlPageTask().execute(mUrl);
     }
 
     @Override
@@ -214,6 +224,35 @@ public class WebBrowserActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+        }
+    }
+
+    private class ParseHtmlPageTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... strings) {
+            String url = strings[0];
+            try {
+                Document doc = Jsoup.connect(url).get();
+                String title = doc.title();
+                LogHelper.d(TAG, "title: ", title);
+
+                if (title != null && title != "") {
+                    mShareManager.setShareTitle(title);
+                }
+
+                Elements metas = doc.select("meta");
+                for (Element meta : metas) {
+                    LogHelper.d(TAG, meta.tagName() + ",  " + meta.attr("name") + ", " + meta.attr("content"));
+                    if ( "shareurl".equals(meta.attr("name")) && meta.attr("content") != null && !"".equals(meta.attr("content")) ) {
+                        mShareManager.setShareUrl(meta.attr("content"));
+                    }
+                }
+
+            }
+            catch (Exception ex) {
+                LogHelper.e(TAG, ex);
+            }
+            return null;
         }
     }
 
