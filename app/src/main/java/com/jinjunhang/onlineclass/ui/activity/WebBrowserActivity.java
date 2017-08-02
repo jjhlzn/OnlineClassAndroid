@@ -110,7 +110,9 @@ public class WebBrowserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 LogHelper.d(TAG, "mWebView.canGoBack() = " + mWebView.canGoBack());
                 if (mWebView.canGoBack()) {
+
                     mWebView.goBack();
+
                 } else {
                     onBackPressed();
                 }
@@ -236,6 +238,8 @@ public class WebBrowserActivity extends AppCompatActivity {
                 String title = doc.title();
                 LogHelper.d(TAG, "title: ", title);
 
+                mShareManager.resetSetting();
+
                 if (title != null && title != "") {
                     mShareManager.setShareTitle(title);
                 }
@@ -245,6 +249,9 @@ public class WebBrowserActivity extends AppCompatActivity {
                     LogHelper.d(TAG, meta.tagName() + ",  " + meta.attr("name") + ", " + meta.attr("content"));
                     if ( "shareurl".equals(meta.attr("name")) && meta.attr("content") != null && !"".equals(meta.attr("content")) ) {
                         mShareManager.setShareUrl(meta.attr("content"));
+                    }
+                    if ( "description".equals(meta.attr("name")) && meta.attr("content") != null && !"".equals(meta.attr("content")) ) {
+                        mShareManager.setDescription(meta.attr("content"));
                     }
                 }
 
@@ -298,13 +305,18 @@ public class WebBrowserActivity extends AppCompatActivity {
                 return true;
             }
 
+            new ParseHtmlPageTask().execute(url);
+
             view.loadUrl(url);
             return true;
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            LogHelper.d(TAG, "onPageFinished: ", url);
             super.onPageFinished(view, url);
+            //这里是重新执行一遍是为了goback的时候，只有这个位置是可以的（对于没个链接，new ParseHtmlPageTask().execute()都被执行了两遍）
+            new ParseHtmlPageTask().execute(url);
             if (mWebView.canGoBack()) {
                 mCloseButton.setVisibility(View.VISIBLE);
             }

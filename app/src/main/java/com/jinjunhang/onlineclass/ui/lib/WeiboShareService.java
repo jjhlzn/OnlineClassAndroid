@@ -133,7 +133,7 @@ public class WeiboShareService implements IWeiboHandler.Response {
         WebpageObject mediaObject = new WebpageObject();
         mediaObject.identify = Utility.generateGUID();
         mediaObject.title = mShareManager.getShareTitle();
-        mediaObject.description = "";
+        mediaObject.description = mShareManager.getDescription();
 
 
         if (mShareManager.isUseQrCodeImage()) {

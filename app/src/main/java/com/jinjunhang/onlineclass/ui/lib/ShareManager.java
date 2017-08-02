@@ -6,7 +6,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ public class ShareManager {
 
     private String mShareTitle;
     private String mShareUrl;
+    private String mDescription;
     private boolean mIsUseQrCodeImage;
 
     public void setShareUrl(String shareUrl) {
@@ -57,9 +60,18 @@ public class ShareManager {
         mShareTitle = shareTitle;
     }
 
+    public void setDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            return;
+        }
+        mDescription = description;
+    }
+
     public void setUseQrCodeImage(boolean useQrCodeImage) {
         mIsUseQrCodeImage = useQrCodeImage;
     }
+
+
 
     public String getShareTitle() {
         return mShareTitle;
@@ -69,14 +81,24 @@ public class ShareManager {
         return mShareUrl;
     }
 
+    public String getDescription() { return mDescription; }
+
     public boolean isUseQrCodeImage() {
         return mIsUseQrCodeImage;
+    }
+
+    public void resetSetting() {
+        mShareTitle = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
+        mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
+                "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
+        mDescription = "巨方助手";
     }
 
     public ShareManager(AppCompatActivity activity, View v) {
         mShareTitle = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
         mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
                 "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
+        mDescription = "巨方助手";
         this.mActivity = activity;
         this.v = v;
         api = WXAPIFactory.createWXAPI(mActivity, Utils.WEIXIN_SHERE_APP_ID, true);
@@ -87,10 +109,20 @@ public class ShareManager {
         setup();
     }
 
-    private void setLowerLayer(boolean status) {
+    private void setLowerLayer(final  boolean status) {
         View lowerLayer = v.findViewById(R.id.listView);
         if (lowerLayer != null) {
             lowerLayer.setEnabled(status);
+        }
+        WebView webViewLayer = (WebView)v.findViewById(R.id.webview);
+        if (webViewLayer != null) {
+            webViewLayer.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return !status;
+                }
+            });
+            LogHelper.d(TAG, "set webviewlayer to: ", status);
         }
         View bottom_comment_tip = v.findViewById(R.id.bottom_comment_tip);
         if (bottom_comment_tip != null) {
@@ -191,7 +223,7 @@ public class ShareManager {
         webpage.webpageUrl = mShareUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = mShareTitle;
-        msg.description = "巨方助手";
+        msg.description = mDescription;
 
         if (mIsUseQrCodeImage) {
             Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);

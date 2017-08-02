@@ -11,7 +11,7 @@ android {
         applicationId "com.jinjunhang.onlineclass"
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 14
+        versionCode 15
         versionName "2.1"
         multiDexEnabled true
     }

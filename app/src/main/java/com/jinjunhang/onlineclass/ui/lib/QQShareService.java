@@ -49,7 +49,7 @@ public class QQShareService {
         final Bundle params = new Bundle();
         params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
         params.putString(QQShare.SHARE_TO_QQ_TITLE, mShareManager.getShareTitle());
-        params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  "");
+        params.putString(QQShare.SHARE_TO_QQ_SUMMARY,  mShareManager.getDescription());
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, mShareManager.getShareUrl());
         ArrayList<String> imageUrls = new ArrayList<>();
 
