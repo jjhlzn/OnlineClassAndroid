@@ -48,6 +48,8 @@ public class ShareManager {
     private String mDescription;
     private boolean mIsUseQrCodeImage;
 
+    private boolean mIsShareButtonVisible = true;
+
     public void setShareUrl(String shareUrl) {
         if (shareUrl == null || shareUrl.isEmpty())
             return;
@@ -129,8 +131,16 @@ public class ShareManager {
             bottom_comment_tip.setEnabled(status);
         }
 
+    }
 
+    public void setShareButtonVisible(boolean isVisible) {
+        final ImageButton shareButton = (ImageButton) mActivity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);
+        this.mIsShareButtonVisible = isVisible;
 
+        if (!mIsShareButtonVisible)
+            shareButton.setVisibility(View.INVISIBLE);
+        else
+            shareButton.setVisibility(View.VISIBLE);
     }
 
     protected void  setup() {
@@ -140,6 +150,10 @@ public class ShareManager {
         rightButton.setVisibility(View.VISIBLE);
 
         final ImageButton shareButton = (ImageButton) mActivity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);
+
+        if (!mIsShareButtonVisible)
+            shareButton.setVisibility(View.INVISIBLE);
+
         final View shareView = v.findViewById(R.id.share_view);
 
         shareButton.setOnClickListener(new View.OnClickListener() {

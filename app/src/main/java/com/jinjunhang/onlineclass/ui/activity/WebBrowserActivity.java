@@ -35,6 +35,7 @@ import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
+import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager2;
@@ -140,7 +141,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         mShareManager = new ShareManager(this, this.findViewById(R.id.rootView));
         mShareManager.setUseQrCodeImage(false);
 
-        new ParseHtmlPageTask().execute(mUrl);
+        new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
     }
 
     @Override
@@ -229,40 +230,6 @@ public class WebBrowserActivity extends AppCompatActivity {
         }
     }
 
-    private class ParseHtmlPageTask extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... strings) {
-            String url = strings[0];
-            try {
-                Document doc = Jsoup.connect(url).get();
-                String title = doc.title();
-                LogHelper.d(TAG, "title: ", title);
-
-                mShareManager.resetSetting();
-
-                if (title != null && title != "") {
-                    mShareManager.setShareTitle(title);
-                }
-
-                Elements metas = doc.select("meta");
-                for (Element meta : metas) {
-                    LogHelper.d(TAG, meta.tagName() + ",  " + meta.attr("name") + ", " + meta.attr("content"));
-                    if ( "shareurl".equals(meta.attr("name")) && meta.attr("content") != null && !"".equals(meta.attr("content")) ) {
-                        mShareManager.setShareUrl(meta.attr("content"));
-                    }
-                    if ( "description".equals(meta.attr("name")) && meta.attr("content") != null && !"".equals(meta.attr("content")) ) {
-                        mShareManager.setDescription(meta.attr("content"));
-                    }
-                }
-
-            }
-            catch (Exception ex) {
-                LogHelper.e(TAG, ex);
-            }
-            return null;
-        }
-    }
-
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -305,7 +272,7 @@ public class WebBrowserActivity extends AppCompatActivity {
                 return true;
             }
 
-            new ParseHtmlPageTask().execute(url);
+            new ParseHtmlPageTask().setShareManager(mShareManager).execute(url);
 
             view.loadUrl(url);
             return true;
@@ -316,7 +283,7 @@ public class WebBrowserActivity extends AppCompatActivity {
             LogHelper.d(TAG, "onPageFinished: ", url);
             super.onPageFinished(view, url);
             //这里是重新执行一遍是为了goback的时候，只有这个位置是可以的（对于没个链接，new ParseHtmlPageTask().execute()都被执行了两遍）
-            new ParseHtmlPageTask().execute(url);
+            new ParseHtmlPageTask().setShareManager(mShareManager).execute(url);
             if (mWebView.canGoBack()) {
                 mCloseButton.setVisibility(View.VISIBLE);
             }

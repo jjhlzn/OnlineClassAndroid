@@ -22,6 +22,8 @@ import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
@@ -39,6 +41,9 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
     private WebView mWebView;
     private ImageButton mBackButton;
     private IWXAPI mWXAPI;
+
+    private ShareManager mShareManager;
+
 
     @Nullable
     @Override
@@ -79,9 +84,25 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
         settings.setDomStorageEnabled(true);
         openURL();
 
+        mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
+        mShareManager.setUseQrCodeImage(false);
+        mShareManager.setShareButtonVisible(false);
+
+        new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
         return v;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mShareManager.setShareButtonVisible(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShareManager.setShareButtonVisible(true);
+    }
 
     /** Opens the URL in a browser */
     private void openURL() {
@@ -113,6 +134,7 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            new ParseHtmlPageTask().setShareManager(mShareManager).execute(url);
             if (mWebView.canGoBack()) {
                 mBackButton.setVisibility(View.VISIBLE);
             } else {

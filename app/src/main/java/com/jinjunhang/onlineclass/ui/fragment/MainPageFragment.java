@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.CourseNotifyCell;
@@ -35,6 +37,7 @@ import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinVariableInfoManager;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -77,6 +80,8 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
 
     private boolean mIsLoading = false;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,6 +131,9 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
 
         //开始定时刷新主图
         scheduleUpdateHeaderAdv();
+
+
+
         return v;
     }
 
@@ -249,7 +257,6 @@ public class MainPageFragment extends android.support.v4.app.Fragment implements
             GetHeaderAdvRequest request = new GetHeaderAdvRequest();
             return new BasicService().sendRequest(request);
         }
-
 
 
         @Override

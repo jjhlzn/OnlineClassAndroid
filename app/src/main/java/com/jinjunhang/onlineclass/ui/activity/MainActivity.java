@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -66,6 +68,8 @@ public class MainActivity extends BaseMusicActivity  {
 
     private LoginUserDao mLoginUserDao;
 
+//    private ShareManager mShareManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +83,11 @@ public class MainActivity extends BaseMusicActivity  {
         setCommonActionBar();
 
         //LogHelper.d(TAG, "has navigation bar: ", Utils.hasNavigationBar(this));
+
+        /*
+        mShareManager = new ShareManager(this, findViewById(R.id.fragmentContainer));
+        mShareManager.setUseQrCodeImage(false);
+        mShareManager.setShareButtonVisible(false); */
 
         fragmentMap = new HashMap();
         mBottomBar = BottomBar.attach(this, savedInstanceState);
@@ -94,23 +103,29 @@ public class MainActivity extends BaseMusicActivity  {
                         title = "巨方助手";
                         fragment = getFragment(MainPageFragment.class);
                         setCommonActionBar();
+                        //mShareManager.setShareButtonVisible(false);
                         break;
                     case R.id.bottomBarSearch:
                         title = "申请";
                         fragment = getFragment(ShopWebBrowserFragment.class);
+                        //((ShopWebBrowserFragment)fragment).setShareManager(mShareManager);
                         setCommonActionBar();
+                       // mShareManager.setShareButtonVisible(true);
                         break;
                     case R.id.bottomBarEmpty:
+                        //mShareManager.setShareButtonVisible(false);
                         break;
                     case R.id.bottomBarMe:
                         title = "";
                         fragment = getFragment(MeFragment.class);
                         setCommonActionBar();
+                        //mShareManager.setShareButtonVisible(false);
                         break;
                     case R.id.bottomBarSetting:
                         title = "设置";
                         setCommonActionBar();
                         fragment = getFragment(SettingsFragment.class);
+                        //mShareManager.setShareButtonVisible(false);
                         break;
                 }
 
@@ -150,6 +165,8 @@ public class MainActivity extends BaseMusicActivity  {
         mPlayerController.attachToView(mBottomBar);
 
         new CheckUpgradeTask().execute();
+
+
 
 
     }
