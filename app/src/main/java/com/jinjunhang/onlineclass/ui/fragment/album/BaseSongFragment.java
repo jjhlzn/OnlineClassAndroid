@@ -2,11 +2,13 @@ package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -194,6 +196,8 @@ public abstract class BaseSongFragment  extends BaseFragment implements MusicPla
                     params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                     mCommentEditText.requestFocus();
                     imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
+                    //设置为数字键盘
+                    mCommentEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
                     keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
                 } else {
                     imm.hideSoftInputFromWindow(mCommentEditText.getWindowToken(), 0);

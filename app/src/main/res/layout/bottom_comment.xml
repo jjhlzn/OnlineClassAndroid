@@ -19,7 +19,9 @@
            android:layout_marginRight="4dp"
            android:gravity="bottom"
            android:textSize="16dp"
-           android:textStyle="normal" />
+           android:textStyle="normal"
+           android:inputType="number"
+           />
 
     <ImageButton
         android:id="@+id/emojikeyboard_switch_button"
