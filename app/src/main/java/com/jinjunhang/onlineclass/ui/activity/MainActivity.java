@@ -26,6 +26,7 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
+import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment2;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseMusicActivity  {
                 switch (menuItemId) {
                     case R.id.bottomBarHome:
                         title = "巨方助手";
-                        fragment = getFragment(MainPageFragment.class);
+                        fragment = getFragment(MainPageFragment2.class);
                         setCommonActionBar();
                         //mShareManager.setShareButtonVisible(false);
                         break;
@@ -136,8 +137,8 @@ public class MainActivity extends BaseMusicActivity  {
                     transaction.commit();
                 }
 
-                if (menuItemId != R.id.bottomBarSearch && title != null)
-                    ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+                //if (menuItemId != R.id.bottomBarSearch && title != null)
+                //    ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
             }
 
             @Override
@@ -166,15 +167,12 @@ public class MainActivity extends BaseMusicActivity  {
 
         new CheckUpgradeTask().execute();
 
-
-
-
     }
 
     private void setCommonActionBar() {
         getSupportActionBar().show();
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        final View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        final View customView = getLayoutInflater().inflate(R.layout.actionbar_main, null);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
 
@@ -188,17 +186,6 @@ public class MainActivity extends BaseMusicActivity  {
         parent.setContentInsetsAbsolute(0, 0);
 
     }
-
-    /*
-    private void setSearchActionBar() {
-        getSupportActionBar().show();
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar_search, null);
-        getSupportActionBar().setCustomView(customView);
-        Toolbar parent =(Toolbar) customView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-    }*/
-
 
     private <T extends Fragment> Fragment getFragment(Class<T> fragmentClass) {
         Fragment fragment = fragmentMap.get(fragmentClass);
