@@ -105,8 +105,19 @@
             </intent-filter>
         </activity>
 
+
+
         <activity android:name=".ui.activity.MainActivity"
                   android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity android:name=".ui.activity.BottomTabLayoutActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->
+                <action android:name="android.intent.action" />
+            </intent-filter>
 
         </activity>
 

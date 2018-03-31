@@ -59,6 +59,7 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
         LogHelper.d(TAG, mUrl);
 
         //设置返回按键
+        /*
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         mBackButton = (ImageButton) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
         ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText("申请");
@@ -73,7 +74,7 @@ public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
                     mBackButton.setVisibility(View.INVISIBLE);
                 }
             }
-        });
+        });*/
 
         mWebView = (WebView) v.findViewById(R.id.webview);
 

@@ -184,7 +184,7 @@ public class LaunchActivity extends Activity {
         if (mLoginUserDao.get() == null) {
             i = new Intent(this, LoginActivity.class);
         } else {
-            i = new Intent(this, MainActivity.class);
+            i = new Intent(this, BottomTabLayoutActivity.class);
         }
         startActivity(i);
     }

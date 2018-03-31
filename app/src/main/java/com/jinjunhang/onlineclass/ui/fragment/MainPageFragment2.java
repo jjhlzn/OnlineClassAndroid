@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
@@ -38,8 +39,8 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
     private Page rongziPage;
     private Page touziPage;
 
-    private Button touziBtn;
-    private Button rongziBtn;
+    private ImageButton touziBtn;
+    private ImageButton rongziBtn;
     private ViewGroup rongziView;
     private ViewGroup touziView;
 
@@ -47,8 +48,8 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.frag_main, container, false);
 
-        touziBtn = (Button)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.touzi_btn);
-        rongziBtn = (Button)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.rongzi_btn);
+        touziBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.touzi_btn);
+        rongziBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.rongzi_btn);
 
         rongziView = (ViewGroup)v.findViewById(R.id.frag_1);
         touziView = (ViewGroup)v.findViewById(R.id.frag_2);
@@ -56,14 +57,19 @@ public class MainPageFragment2 extends android.support.v4.app.Fragment {
         touziBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                touziBtn.setImageDrawable(getContext().getDrawable(R.drawable.touzi_btn_s));
+                rongziBtn.setImageDrawable(getContext().getDrawable(R.drawable.rongzi_btn));
                 rongziView.setVisibility(View.VISIBLE);
                 touziView.setVisibility(View.INVISIBLE);
+
             }
         });
 
         rongziBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                touziBtn.setImageDrawable(getContext().getDrawable(R.drawable.touzi_btn));
+                rongziBtn.setImageDrawable(getContext().getDrawable(R.drawable.rongzi_btn_s));
                 rongziView.setVisibility(View.INVISIBLE);
                 touziView.setVisibility(View.VISIBLE);
             }

@@ -144,6 +144,7 @@ public class ShareManager {
     }
 
     protected void  setup() {
+
         View customView = mActivity.getSupportActionBar().getCustomView();
         ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
         rightButton.setImageResource(R.drawable.share);
@@ -153,6 +154,8 @@ public class ShareManager {
 
         if (!mIsShareButtonVisible)
             shareButton.setVisibility(View.INVISIBLE);
+
+
 
         final View shareView = v.findViewById(R.id.share_view);
 
