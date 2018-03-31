@@ -5,12 +5,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
@@ -97,6 +101,26 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         new GetUserStatDataTask().execute();
     }
 
+    @Override
+    public void changeActionBar() {
+        AppCompatActivity activity = (AppCompatActivity)getActivity();
+        if (activity != null) {
+            LogHelper.d(TAG, "activity = " + activity);
+            activity.getSupportActionBar().show();
+            activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar, null);
+            activity.getSupportActionBar().setCustomView(customView);
+            Toolbar parent = (Toolbar) customView.getParent();
+
+            parent.setContentInsetsAbsolute(0, 0);
+
+            TextView text = (TextView)customView.findViewById(R.id.actionbar_text);
+            text.setText("我的");
+
+            setLightStatusBar(customView, activity);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -162,6 +186,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
            new GetUserStatDataTask().execute();
         }
 
+        changeActionBar();
         return v;
     }
 

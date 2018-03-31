@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.activity;
+package com.jinjunhang.onlineclass.ui.activity.mainpage;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,7 +20,8 @@ import android.widget.TextView;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment2;
+import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
@@ -33,39 +34,36 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
     private static String TAG = LogHelper.makeLogTag(BottomTabLayoutActivity.class);
 
     private TabLayout mTabLayout;
-    private Fragment[]mFragmensts;
+    private BaseFragment[] mFragmensts;
+
+    private boolean isInited = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCommonActionBar();
         setContentView(R.layout.activity_main_tablayout);
         mFragmensts = DataGenerator.getFragments("TabLayout Tab");
-
+        setActionBar();
         initView();
-
+        isInited = true;
     }
 
-    private void setCommonActionBar() {
-        getSupportActionBar().show();
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        final View customView = getLayoutInflater().inflate(R.layout.actionbar_main, null);
-        getSupportActionBar().setCustomView(customView);
+
+    public void setActionBar() {
+        AppCompatActivity activity = this;
+        LogHelper.d(TAG, "activity = " + activity);
+        activity.getSupportActionBar().show();
+        activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_main, null);
+        activity.getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
 
-        customView.post(new Runnable(){
-            public void run(){
-                int height = customView.findViewById(R.id.action_bar).getHeight();
-                int heightInPixel = Utils.dip2px(BottomTabLayoutActivity.this, height);
-                LogHelper.d(TAG, "action bar = " + height);
-            }
-        });
         parent.setContentInsetsAbsolute(0, 0);
 
-        setLightStatusBar(customView, this);
-
+        setLightStatusBar(customView, activity);
     }
 
-    public void setLightStatusBar(View view, Activity activity) {
+    protected void setLightStatusBar(View view, Activity activity) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -75,6 +73,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             activity.getWindow().setStatusBarColor(Color.WHITE);
         }
     }
+
 
     private void initView() {
         mTabLayout = (TabLayout) findViewById(R.id.bottom_tab_layout);
@@ -120,9 +119,9 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
     }
 
-    private Fragment currentFragment;
+    private BaseFragment currentFragment;
     private void onTabItemSelected(int position){
-        Fragment fragment = null;
+        BaseFragment fragment = null;
         switch (position){
             case 0:
                 fragment = mFragmensts[0];
@@ -130,7 +129,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             case 1:
                 fragment = mFragmensts[1];
                 break;
-
             case 2:
                 fragment = mFragmensts[2];
                 break;
@@ -140,6 +138,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         }
 
         if(fragment!=null) {
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             if (currentFragment != null) {
@@ -159,6 +158,9 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             currentFragment = fragment;
 
             transaction.commit();
+
+            if (isInited)
+                currentFragment.changeActionBar();
         }
     }
 
@@ -169,11 +171,10 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         public static final int []mTabResPressed = new int[]{R.drawable.icon_home_s,R.drawable.icon_shop_s,R.drawable.icon_my_s,R.drawable.icon_study_s};
         public static final String []mTabTitle = new String[]{"首页","商城","我的","直播"};
 
-        public static Fragment[] getFragments(String from){
-            Fragment fragments[] = new Fragment[4];
+        public static BaseFragment[] getFragments(String from){
+            BaseFragment fragments[] = new BaseFragment[4];
             try {
-
-                fragments[0] = MainPageFragment2.class.newInstance();
+                fragments[0] = MainPageFragment.class.newInstance();
                 fragments[1] = ShopWebBrowserFragment.class.newInstance();
                 fragments[2] = MeFragment.class.newInstance();
                 fragments[3] = SettingsFragment.class.newInstance();

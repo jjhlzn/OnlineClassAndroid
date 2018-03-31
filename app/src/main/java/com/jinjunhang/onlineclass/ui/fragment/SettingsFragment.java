@@ -28,7 +28,7 @@ import org.w3c.dom.Text;
 /**
  * Created by lzn on 16/6/28.
  */
-public class SettingsFragment extends android.support.v4.app.Fragment  {
+public class SettingsFragment extends BaseFragment  {
 
     private LoadingAnimation mLoading;
     private LoginUserDao mLoginUserDao;

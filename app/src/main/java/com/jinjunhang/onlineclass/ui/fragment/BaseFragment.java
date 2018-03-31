@@ -1,5 +1,8 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
+import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -45,6 +48,21 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
 
     protected void setTitle(String title) {
         ((BaseMusicSingleFragmentActivity)getActivity()).setActivityTitle(title);
+    }
+
+    public void changeActionBar() {
+
+    }
+
+    protected void setLightStatusBar(View view, Activity activity) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+            activity.getWindow().setStatusBarColor(Color.WHITE);
+        }
     }
 
 }

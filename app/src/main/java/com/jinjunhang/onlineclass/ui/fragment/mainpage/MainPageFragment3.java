@@ -1,19 +1,14 @@
-package com.jinjunhang.onlineclass.ui.fragment;
+package com.jinjunhang.onlineclass.ui.fragment.mainpage;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
@@ -29,7 +24,6 @@ import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
 import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.CourseNotifyCell;
@@ -37,11 +31,7 @@ import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinVariableInfoManager;
-import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 
-import java.io.FileOutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -52,9 +42,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lzn on 16/6/10.
  */
-public class MainPageFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MainPageFragment3 extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = LogHelper.makeLogTag(MainPageFragment.class);
+    private static final String TAG = LogHelper.makeLogTag(MainPageFragment3.class);
 
     private List<ListViewCell> mCells = new ArrayList<>();
     private ExtendFunctionManager mFunctionManager;

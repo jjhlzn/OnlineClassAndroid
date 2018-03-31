@@ -112,7 +112,7 @@
 
         </activity>
 
-        <activity android:name=".ui.activity.BottomTabLayoutActivity"
+        <activity android:name=".ui.activity.mainpage.BottomTabLayoutActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->

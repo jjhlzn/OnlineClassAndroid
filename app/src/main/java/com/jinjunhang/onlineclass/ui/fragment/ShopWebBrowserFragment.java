@@ -31,7 +31,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
  * Created by lzn on 2016/9/25.
  */
 
-public class ShopWebBrowserFragment extends android.support.v4.app.Fragment {
+public class ShopWebBrowserFragment extends BaseFragment {
     private final static String TAG = LogHelper.makeLogTag(ShopWebBrowserFragment.class);
 
     public final static String EXTRA_URL = "EXTRA_URL";

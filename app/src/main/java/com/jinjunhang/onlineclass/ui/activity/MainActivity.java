@@ -13,10 +13,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -25,13 +23,11 @@ import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
-import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment;
-import com.jinjunhang.onlineclass.ui.fragment.MainPageFragment2;
+import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
 import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -102,7 +98,7 @@ public class MainActivity extends BaseMusicActivity  {
                 switch (menuItemId) {
                     case R.id.bottomBarHome:
                         title = "巨方助手";
-                        fragment = getFragment(MainPageFragment2.class);
+                        fragment = getFragment(MainPageFragment.class);
                         setCommonActionBar();
                         //mShareManager.setShareButtonVisible(false);
                         break;
