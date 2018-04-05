@@ -20,6 +20,7 @@ import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.LoginRequest;
 import com.jinjunhang.onlineclass.service.LoginResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ConfigurationActivity;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.tencent.android.tpush.XGIOperateCallback;
@@ -173,7 +174,7 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
             mLoginUserDao.save(loginUser);
 
             mLoading.hide();
-            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            Intent i = new Intent(LoginActivity.this, BottomTabLayoutActivity.class);
             startActivity(i);
         }
     }

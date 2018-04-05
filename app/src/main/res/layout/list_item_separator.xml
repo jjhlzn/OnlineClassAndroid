@@ -6,7 +6,7 @@
               android:orientation="horizontal">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@color/fragment_background"/>
+        android:layout_height="8dp"
+        android:background="@color/fragment_background2"/>
 
 </LinearLayout>

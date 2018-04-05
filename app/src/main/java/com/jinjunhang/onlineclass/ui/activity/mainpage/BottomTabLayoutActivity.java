@@ -112,7 +112,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         });
 
         // 提供自定义的布局添加Tab
-        for(int i=0;i<4;i++){
+        for(int i=0;i<5;i++){
             mTabLayout.addTab(mTabLayout.newTab().setCustomView(DataGenerator.getTabView(this,i)));
         }
 
@@ -121,6 +121,8 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
     private BaseFragment currentFragment;
     private void onTabItemSelected(int position){
+
+
         BaseFragment fragment = null;
         switch (position){
             case 0:
@@ -128,12 +130,16 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
                 break;
             case 1:
                 fragment = mFragmensts[1];
+                //((ShopWebBrowserFragment)fragment).setTabChanged();
                 break;
             case 2:
                 fragment = mFragmensts[2];
                 break;
             case 3:
                 fragment = mFragmensts[3];
+                break;
+            case 4:
+                fragment = mFragmensts[4];
                 break;
         }
 
@@ -142,16 +148,13 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             if (currentFragment != null) {
-                transaction
-                        .hide(currentFragment);
+                transaction.hide(currentFragment);
             }
             //如果之前没有添加过
             if(!fragment.isAdded()){
-                transaction
-                        .add(R.id.home_container,fragment);
+                transaction.add(R.id.home_container,fragment);
             }else{
-                transaction
-                        .show(fragment);
+                transaction.show(fragment);
             }
 
             //全局变量，记录当前显示的fragment
@@ -167,17 +170,18 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
     public static class DataGenerator {
 
-        public static final int []mTabRes = new int[]{R.drawable.icon_home,R.drawable.icon_shop,R.drawable.icon_my,R.drawable.icon_study};
-        public static final int []mTabResPressed = new int[]{R.drawable.icon_home_s,R.drawable.icon_shop_s,R.drawable.icon_my_s,R.drawable.icon_study_s};
-        public static final String []mTabTitle = new String[]{"首页","商城","我的","直播"};
+        public static final int []mTabRes = new int[]{R.drawable.icon_home,R.drawable.icon_study, R.drawable.icon_live, R.drawable.icon_shop,R.drawable.icon_my,};
+        public static final int []mTabResPressed = new int[]{R.drawable.icon_home_s, R.drawable.icon_study_s, R.drawable.icon_live_s, R.drawable.icon_shop_s,R.drawable.icon_my_s,};
+        public static final String []mTabTitle = new String[]{"首页", "学习", "直播", "商城","我的"};
 
         public static BaseFragment[] getFragments(String from){
-            BaseFragment fragments[] = new BaseFragment[4];
+            BaseFragment fragments[] = new BaseFragment[5];
             try {
                 fragments[0] = MainPageFragment.class.newInstance();
                 fragments[1] = ShopWebBrowserFragment.class.newInstance();
                 fragments[2] = MeFragment.class.newInstance();
-                fragments[3] = SettingsFragment.class.newInstance();
+                fragments[3] = ShopWebBrowserFragment.class.newInstance();
+                fragments[4] = MeFragment.class.newInstance();
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);
             }

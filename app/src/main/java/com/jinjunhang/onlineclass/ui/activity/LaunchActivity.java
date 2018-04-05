@@ -19,6 +19,7 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.GetLaunchAdvRequest;
 import com.jinjunhang.onlineclass.service.GetLaunchAdvResponse;
 import com.jinjunhang.onlineclass.service.GetServiceLocatorRequest;
@@ -170,18 +171,24 @@ public class LaunchActivity extends Activity {
     }
 
     private void checkLogin() {
+        LogHelper.d(TAG, "check login");
         if (this.checkingLogin)
             return;
 
         this.checkingLogin = true;
 
         Intent i;
-        if (mLoginUserDao.get() == null) {
+        LoginUser user = mLoginUserDao.get();
+        LogHelper.d(TAG, "loginUser = " + user);
+
+
+        if (user == null) {
             i = new Intent(this, LoginActivity.class);
         } else {
             i = new Intent(this, BottomTabLayoutActivity.class);
         }
         startActivity(i);
+
     }
 
     private void scheduleSkipAdv() {

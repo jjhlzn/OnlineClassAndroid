@@ -105,21 +105,21 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.mainpage.BottomTabLayoutActivity"
+                  android:screenOrientation="portrait">
 
+        </activity>
 
         <activity android:name=".ui.activity.MainActivity"
                   android:screenOrientation="portrait">
 
         </activity>
 
-        <activity android:name=".ui.activity.mainpage.BottomTabLayoutActivity"
+        <activity android:name=".ui.activity.search.SearchActivity"
                   android:screenOrientation="portrait">
-            <intent-filter>
-                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action"-->
-                <action android:name="android.intent.action" />
-            </intent-filter>
 
         </activity>
+
 
         <activity android:name=".ui.activity.user.LoginActivity"
                   android:screenOrientation="portrait">

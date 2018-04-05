@@ -273,6 +273,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
             FirstSectionCell firstCell = (FirstSectionCell)mCells.get(0);
             LoginUser loginUser = LoginUserDao.getInstance(getActivity()).get();
+            LogHelper.d(TAG, "loginUser = " + loginUser);
             loginUser.setName(resp.getName());
             loginUser.setNickName(resp.getNickName());
             loginUser.setLevel(resp.getLevel());

@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,7 @@ import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import android.os.Bundle;
 
 /**
  * Created by lzn on 2016/9/25.
@@ -44,53 +48,92 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
     private ShareManager mShareManager;
 
+    private boolean isTabChanged;
+    private boolean loadCompleted;
+
+    private Bundle webViewBundle;
+
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+        LogHelper.d(TAG, "onCreateView called");
+
         View v = inflater.inflate(R.layout.web_browser, container, false);
 
         mWXAPI = WXAPIFactory.createWXAPI(getActivity(), null);
         mWXAPI.registerApp("wx73653b5260b24787");
 
         mUrl = ServiceLinkManager.ShenqingUrl();
+        //mUrl = "http://www.baidu.com";
         mUrl = Util.addUserInfo(mUrl);
         mUrl = Util.addDeviceInfo(mUrl);
         LogHelper.d(TAG, mUrl);
-
-        //设置返回按键
-        /*
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        mBackButton = (ImageButton) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
-        ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText("申请");
-        mBackButton.setVisibility(View.INVISIBLE);
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mWebView.canGoBack()) {
-                    mWebView.goBack();
-                } else {
-                    //onBackPressed();
-                    mBackButton.setVisibility(View.INVISIBLE);
-                }
-            }
-        });*/
 
         mWebView = (WebView) v.findViewById(R.id.webview);
 
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
         mWebView.setWebViewClient(new ShopWebBrowserFragment.MyWebViewClient());
 
+
         WebSettings settings = mWebView.getSettings();
         settings.setDomStorageEnabled(true);
         openURL();
+
+        changeActionBar();
 
         mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
         mShareManager.setUseQrCodeImage(false);
         mShareManager.setShareButtonVisible(false);
 
+
+
         new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
         return v;
+    }
+
+    @Override
+    public void changeActionBar() {
+        AppCompatActivity activity = (AppCompatActivity)getActivity();
+        LogHelper.d(TAG, "activity = " + activity);
+        if (activity != null) {
+
+            activity.getSupportActionBar().show();
+            activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_browser, null);
+            activity.getSupportActionBar().setCustomView(customView);
+            Toolbar parent = (Toolbar) customView.getParent();
+
+            parent.setContentInsetsAbsolute(0, 0);
+
+            //设置返回按键
+            mBackButton = (ImageButton) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
+            ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText("申请");
+
+            if (mWebView.canGoBack()) {
+                mWebView.goBack();
+            } else {
+                //onBackPressed();
+                mBackButton.setVisibility(View.INVISIBLE);
+            }
+
+            mBackButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mWebView.canGoBack()) {
+                        mWebView.goBack();
+                    } else {
+                        //onBackPressed();
+                        mBackButton.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+
+            setLightStatusBar(customView, activity);
+        }
     }
 
     @Override
@@ -99,22 +142,52 @@ public class ShopWebBrowserFragment extends BaseFragment {
         mShareManager.setShareButtonVisible(false);
     }
 
+
     @Override
     public void onResume() {
+        LogHelper.d(TAG, "onResume called");
         super.onResume();
         mShareManager.setShareButtonVisible(true);
+
     }
 
     /** Opens the URL in a browser */
     private void openURL() {
+        LogHelper.d(TAG, "openURL called");
         mWebView.loadUrl(mUrl);
         mWebView.requestFocus();
+    }
+
+    public void setTabChanged() {
+        isTabChanged = true;
+        /*
+        if (mWebView != null) {
+            webViewBundle = new Bundle();
+            mWebView.saveState(webViewBundle);
+        }*/
     }
 
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
             LogHelper.d(TAG, "url = " + url);
+            LogHelper.d(TAG, "isTabChanged = " + isTabChanged + ", loadCompleted = " + loadCompleted);
+
+            /*
+            if (isTabChanged && loadCompleted) {
+                isTabChanged = false;
+                return true;
+            }*/
+
+            /*
+            LogHelper.d(TAG, "webViewBundle = " + webViewBundle);
+            if (webViewBundle != null && mWebView != null) {
+                mWebView.restoreState(webViewBundle);
+                webViewBundle = null;
+                return true;
+            }*/
+
             if (url.contains("/app/jfzs")) {
                 view.getContext().startActivity(
                         new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
@@ -141,11 +214,13 @@ public class ShopWebBrowserFragment extends BaseFragment {
             } else {
                 mBackButton.setVisibility(View.INVISIBLE);
             }
+            loadCompleted = true;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            loadCompleted = false;
             if (mWebView.canGoBack()) {
                 mBackButton.setVisibility(View.VISIBLE);
             } else {

@@ -120,6 +120,8 @@ public class WebBrowserActivity extends AppCompatActivity {
             }
         });
 
+        Utils.setLightStatusBar(customView, this);
+
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

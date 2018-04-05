@@ -2,12 +2,14 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#ff7b00</color>
+    <color name="colorAccent">#000000</color>
     <color name="textColorPrimary">#ff7b00</color>
     <color name="statusBarColor">#ffffff</color>
     <color name="color_secondary">#000000</color>
 
     <color name="tab_selected_color">#cf9b56</color>
+
+    <color name="transparent">#00000000</color>
 
     <color name="tv_branding">#ffff5722</color>
     <color name="tv_branding_dark">#ffbf360c</color>
@@ -28,10 +30,14 @@
     <color name="default_background">#0096a6</color>
 
 
-    <color name="statusbar_background">#ff7b00</color>
+    <color name="statusbar_background">#ffffff</color>
     <color name="statusbar_background2">#ffffff</color>
     <color name="fragment_background">#EEECE9</color>
+    <color name="fragment_background2">#f0f0f0</color>
     <color name="login_buton_background">#f0861b</color>
+
+    <color name="keyword_color">#9b9b9b</color>
+    <color name="keyword_btn_bg">#e2e2e2</color>
 
     <color name="hint_color">#ccc</color>
     <color name="black">#000</color>

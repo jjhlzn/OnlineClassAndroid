@@ -1,4 +1,4 @@
-package com.jinjunhang.onlineclass.ui.fragment.mainpage;
+package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -86,7 +86,7 @@ public class MainPageFragment3 extends android.support.v4.app.Fragment implement
 
         int maxShowRows = 10;
 
-        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows, getActivity(), true);
+        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows, getActivity(), false, ExtendFunctionManager.RONGZI_TYPE);
 
         if (mCells.size() == 0) {
             mCells.add(new HeaderAdvCell(getActivity(), mLoading));

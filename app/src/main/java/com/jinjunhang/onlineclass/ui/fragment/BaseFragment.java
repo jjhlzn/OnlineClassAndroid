@@ -54,6 +54,7 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
 
     }
 
+
     protected void setLightStatusBar(View view, Activity activity) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

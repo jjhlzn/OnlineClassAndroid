@@ -49,6 +49,9 @@ import java.util.Objects;
 public class ExtendFunctionManager {
     private final String TAG = LogHelper.makeLogTag(ExtendFunctionManager.class);
 
+    public static final String RONGZI_TYPE = "rongzi";
+    public static final String TOUZI_TYPE = "touzi";
+
     private final int itemCountEachRow = 4;
     private int mShowMaxRow = 100;
     private Context mContext;
@@ -56,16 +59,17 @@ public class ExtendFunctionManager {
     private ClickListener mNotSupportListener;
     private ExtendFunctoinVariableInfoManager mMessageManager;
     private boolean mIsNeedMore;
+    private String type;
 
-    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context) {
-        this(messageManager, 100, context, true);
+    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, String type) {
+        this(messageManager, 100, context, true, type);
     }
 
-    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, boolean isNeedMore) {
-        this(messageManager, 100, context, isNeedMore);
+    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, boolean isNeedMore, String type) {
+        this(messageManager, 100, context, isNeedMore, type);
     }
 
-    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, int showMaxRow, final Context context, boolean isNeedMore) {
+    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, int showMaxRow, final Context context, boolean isNeedMore, String type) {
         this.mMessageManager = messageManager;
         mShowMaxRow = showMaxRow;
         mContext = context;
@@ -74,13 +78,14 @@ public class ExtendFunctionManager {
 
         this.mIsNeedMore = isNeedMore;
         this.mShowMaxRow = showMaxRow;
-
+        this.type = type;
         reload();
     }
 
     public void reload() {
-        makeFunctions(this.mMessageManager, this.mContext);
+        makeFunctions(this.mMessageManager, this.mContext, this.type);
 
+        /*
         if (this.mIsNeedMore) {
             int lastIndex = this.mShowMaxRow * itemCountEachRow - 1;
             if (lastIndex >= functions.size() - 1) {
@@ -88,16 +93,26 @@ public class ExtendFunctionManager {
             } else {
                 functions.set(lastIndex, moreFunction);
             }
-        }
+        }*/
     }
 
     private List<ExtendFunction> functions = new ArrayList<>();
     private ExtendFunction moreFunction;
 
-    private void makeFunctions(ExtendFunctoinVariableInfoManager messageManager, final Context context) {
+    private void makeFunctions(ExtendFunctoinVariableInfoManager messageManager, final Context context, String type) {
+        this.type = type;
+        if (type.equals(TOUZI_TYPE)) {
+            initData4Touzi(messageManager, context);
+        } else {
+            initData4Rongzi(messageManager, context);
+        }
+
+    }
+
+    private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
         functions = new ArrayList<>();
         functions.add(new ExtendFunction(R.drawable.f_paybycard,
-                messageManager.getFunctionName("f_paybycard", "刷卡"), "f_paybycard", "", new BaseClickListener() {
+                messageManager.getFunctionName("f_paybycard", "无卡支付"), "f_paybycard", "", new BaseClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
                 super.onClick(function);
@@ -115,6 +130,16 @@ public class ExtendFunctionManager {
                 }
             }
         }, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_makecard,
+                messageManager.getFunctionName("f_makecard", "办卡提额"), "f_makecard", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
+
+        functions.add(new ExtendFunction(R.drawable.f_loan,
+                messageManager.getFunctionName("f_loan", "快速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
+
+        functions.add(new ExtendFunction(R.drawable.f_user,
+                messageManager.getFunctionName("f_user0", "金融学习"), "f_user0", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+
+        /*
         functions.add(new ExtendFunction(R.drawable.f_live,
                 messageManager.getFunctionName("f_class", "直播课堂"), "f_class", ServiceLinkManager.FunctionUpUrl(), new BaseClickListener() {
             @Override
@@ -124,17 +149,15 @@ public class ExtendFunctionManager {
                 mContext.startActivity(i);
             }
         }, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_makecard,
-                messageManager.getFunctionName("f_makecard", "快速办卡"), "f_makecard", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_loan,
-                messageManager.getFunctionName("f_loan", "快速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
+        */
 
-        functions.add(new ExtendFunction(R.drawable.f_market,
-                messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.FunctionShopUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_car,
-                messageManager.getFunctionName("f_car", "汽车分期"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
+
+
+        /*
         functions.add(new ExtendFunction(R.drawable.f_cardmanager,
                 messageManager.getFunctionName("f_cardmanager", "卡片管理"), "f_cardmanager",ServiceLinkManager.FunctionCardManagerUrl(), mWebListener, messageManager));
+        */
+        /*
         functions.add(new ExtendFunction(R.drawable.f_chongzhi,
                 messageManager.getFunctionName("f_chongzhi", "我要充值"), "f_chongzhi", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener, messageManager));
 
@@ -147,9 +170,18 @@ public class ExtendFunctionManager {
                 mContext.startActivity(i);
             }
         }, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_user,
-                messageManager.getFunctionName("f_user", "客服"), "f_user", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+        */
 
+        functions.add(new ExtendFunction(R.drawable.f_user,
+                messageManager.getFunctionName("f_user1", "融资军火库"), "f_user1", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_user,
+                messageManager.getFunctionName("f_user2", "金融工具"), "f_user2", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_car,
+                messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_market,
+                messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.FunctionShopUrl(), mWebListener, messageManager));
+
+        /*
         moreFunction =  new ExtendFunction(R.drawable.f_more,
                 messageManager.getFunctionName("f_more", "更多"), "f_more", "", new BaseClickListener() {
             @Override
@@ -158,7 +190,93 @@ public class ExtendFunctionManager {
                 Intent i = new Intent(context, ExtendFunctionActivity.class);
                 context.startActivity(i);
             }
-        }, messageManager);
+        }, messageManager); */
+    }
+
+    private void initData4Touzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
+
+        functions = new ArrayList<>();
+        functions.add(new ExtendFunction(R.drawable.f_paybycard,
+                messageManager.getFunctionName("f_qiye", "企业"), "f_qiye", "", new BaseClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                super.onClick(function);
+                PackageManager packageManager = mContext.getPackageManager();
+                Intent intent = packageManager.getLaunchIntentForPackage("com.jfzf.oem");
+                if(intent == null){
+                    LogHelper.d(TAG, "APP not found!");
+                    Intent downloadIntent = new Intent();
+                    downloadIntent.setAction("android.intent.action.VIEW");
+                    Uri content_url = Uri.parse("https://uenpay.com/downloadcopy/jfjr/down-jfjr.html#rd");
+                    downloadIntent.setData(content_url);
+                    mContext.startActivity(downloadIntent);
+                } else {
+                    mContext.startActivity(intent);
+                }
+            }
+        }, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_makecard,
+                messageManager.getFunctionName("f_project", "项目"), "f_project", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
+
+        functions.add(new ExtendFunction(R.drawable.f_loan,
+                messageManager.getFunctionName("f_guquan", "股权"), "f_guquan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
+
+        functions.add(new ExtendFunction(R.drawable.f_user,
+                messageManager.getFunctionName("f_vip_touzi", "VIP专区"), "f_vip_touzi", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+
+        /*
+        functions.add(new ExtendFunction(R.drawable.f_live,
+                messageManager.getFunctionName("f_class", "直播课堂"), "f_class", ServiceLinkManager.FunctionUpUrl(), new BaseClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                super.onClick(function);
+                Intent i = new Intent(mContext, AlbumListActivity.class);
+                mContext.startActivity(i);
+            }
+        }, messageManager));
+        */
+
+
+
+        /*
+        functions.add(new ExtendFunction(R.drawable.f_cardmanager,
+                messageManager.getFunctionName("f_cardmanager", "卡片管理"), "f_cardmanager",ServiceLinkManager.FunctionCardManagerUrl(), mWebListener, messageManager));
+        */
+        /*
+        functions.add(new ExtendFunction(R.drawable.f_chongzhi,
+                messageManager.getFunctionName("f_chongzhi", "我要充值"), "f_chongzhi", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener, messageManager));
+
+        functions.add(new ExtendFunction(R.drawable.f_share,
+                messageManager.getFunctionName("f_share", "分享"), "f_share", ServiceLinkManager.FunctionUpUrl(), new BaseClickListener(){
+            @Override
+            public void onClick(ExtendFunction function) {
+                super.onClick(function);
+                Intent i = new Intent(mContext, QRImageActivity.class);
+                mContext.startActivity(i);
+            }
+        }, messageManager));
+        */
+
+        functions.add(new ExtendFunction(R.drawable.f_user,
+                messageManager.getFunctionName("f_jijin", "基金"), "f_jijin", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_user,
+                messageManager.getFunctionName("f_stock", "股票"), "f_stock", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_car,
+                messageManager.getFunctionName("f_zcpz", "资产配置"), "f_zcpz", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
+        functions.add(new ExtendFunction(R.drawable.f_market,
+                messageManager.getFunctionName("f_toolslib", "工具库"), "f_toolslib", ServiceLinkManager.FunctionShopUrl(), mWebListener, messageManager));
+
+        /*
+        moreFunction =  new ExtendFunction(R.drawable.f_more,
+                messageManager.getFunctionName("f_more", "更多"), "f_more", "", new BaseClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                super.onClick(function);
+                Intent i = new Intent(context, ExtendFunctionActivity.class);
+                context.startActivity(i);
+            }
+        }, messageManager); */
+
     }
 
     public List<ExtendFunction> getFunctions() {

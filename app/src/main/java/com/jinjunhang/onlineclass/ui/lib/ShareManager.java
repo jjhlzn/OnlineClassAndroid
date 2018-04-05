@@ -137,17 +137,19 @@ public class ShareManager {
         final ImageButton shareButton = (ImageButton) mActivity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);
         this.mIsShareButtonVisible = isVisible;
 
-        if (!mIsShareButtonVisible)
-            shareButton.setVisibility(View.INVISIBLE);
-        else
-            shareButton.setVisibility(View.VISIBLE);
+        if (shareButton != null) {
+            if (!mIsShareButtonVisible)
+                shareButton.setVisibility(View.INVISIBLE);
+            else
+                shareButton.setVisibility(View.VISIBLE);
+        }
     }
 
     protected void  setup() {
 
         View customView = mActivity.getSupportActionBar().getCustomView();
         ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
-        rightButton.setImageResource(R.drawable.share);
+        rightButton.setImageResource(R.drawable.share_black);
         rightButton.setVisibility(View.VISIBLE);
 
         final ImageButton shareButton = (ImageButton) mActivity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);

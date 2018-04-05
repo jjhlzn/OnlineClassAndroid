@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+
+              android:layout_width="match_parent"
+              android:id="@+id/list_item_course"
+              android:layout_height="220dp"
+              android:orientation="vertical"
+              android:background="@color/white">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center|center_vertical"
+            android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/course_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="0dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/course"/>
+
+                <TextView
+                    android:id="@+id/course_name_txt"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/course_image"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="bottom"
+                    android:text="个人信用融资公开课"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"/>
+
+                <TextView
+                    android:id="@+id/course_time_txt"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/course_image"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:textAlignment="textEnd"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="bottom"
+                    android:text="2018/03/20"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"/>
+        </RelativeLayout>
+</LinearLayout>

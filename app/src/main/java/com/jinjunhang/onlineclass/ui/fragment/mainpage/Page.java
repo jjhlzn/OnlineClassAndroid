@@ -14,8 +14,10 @@ import android.widget.ListView;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.ui.cell.CourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
+import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.CourseNotifyCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
@@ -39,8 +41,11 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private MainPageAdapter mMainPageAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<ListViewCell> mCells = new ArrayList<>();
+    private String mType;
 
-    public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
+        this.mType = type;
+
         v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
@@ -54,19 +59,25 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         int maxShowRows = 10;
 
         mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows,
-                activity, true);
+                activity, false, type);
 
         if (mCells.size() == 0) {
             mCells.add(new HeaderAdvCell(activity, mLoading));
 
-            mCells.add(new CourseNotifyCell(activity));
+            //mCells.add(new CourseNotifyCell(activity));
+            mCells.add(new SectionSeparatorCell(activity));
 
             int functionRowCount = mFunctionManager.getRowCount();
             for (int i = 0; i < functionRowCount; i++) {
                 mCells.add(mFunctionManager.getCell(i));
             }
-            mCells.add(new MainPageWhiteSeparatorCell(activity));
-            mCells.add(new FooterCell(activity));
+            mCells.add(new SectionSeparatorCell(activity));
+
+            mCells.add(new CourseCell(activity));
+            mCells.add(new CourseCell(activity));
+
+            //mCells.add(new MainPageWhiteSeparatorCell(activity));
+            //mCells.add(new FooterCell(activity));
         }
 
         mMainPageAdapter = new MainPageAdapter(activity, mCells);

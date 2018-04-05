@@ -26,10 +26,12 @@ public class ExtendFunctoinVariableInfoManager {
     public void reload() {
         LogHelper.d(TAG, "ExtendFunctoinVariableInfoManager.reload() called");
         this.map = new HashMap<>();
-        ExtendFunctionManager manager = new ExtendFunctionManager(this, CustomApplication.get());
+        ExtendFunctionManager manager = new ExtendFunctionManager(this, CustomApplication.get(), ExtendFunctionManager.RONGZI_TYPE);
         List<ExtendFunctionManager.ExtendFunction> funcList = manager.getFunctions();
         Date start = Calendar.getInstance().getTime();
+        LogHelper.d(TAG, "funcList.size = " + funcList.size());
         for (ExtendFunctionManager.ExtendFunction func : funcList) {
+            LogHelper.d(TAG, "code = " + func.getCode());
             String code = func.getCode();
             Integer value = Integer.parseInt(mKeyValueDao.getValue(func.getCode(), "0"));
             //LogHelper.d(TAG, code, ": ", value);

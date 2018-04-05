@@ -1,17 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:id="@+id/list_item_viewgroup"
-              android:layout_height="160dp"
-              android:orientation="horizontal"
+              android:layout_height="210dp"
+              android:orientation="vertical"
               android:background="@drawable/bottom_border">
-
+        <!--
         <ImageView
             android:id="@+id/list_mainpage_header_image"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:scaleType="fitXY"
-            android:src="@drawable/header_ditu"
-            />
+            android:src="@drawable/header_ditu"/> -->
 
+        <com.stx.xhb.xbanner.XBanner
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/xbanner"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            app:AutoPlayTime="3000"
+            app:pointsContainerBackground="#44aaaaaa"
+            app:pointsPosition="RIGHT"
+            app:tipTextSize="12sp"
+            app:isShowNumberIndicator="true"
+            app:isShowIndicatorOnlyOne="true"
+            app:pageChangeDuration="800"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center|center_vertical">
+
+                <ImageView
+                    android:id="@+id/tt_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/icon_tt"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toLeftOf="@+id/haoyou_btn"
+                    android:layout_toRightOf="@+id/tt_img"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:text="中信银行银联标准IC信用卡周三周六消费半价, 刷卡免费"/>
+
+                <ImageButton
+                    android:id="@+id/haoyou_btn"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/icon_haoyou"/>
+        </RelativeLayout>
 </LinearLayout>

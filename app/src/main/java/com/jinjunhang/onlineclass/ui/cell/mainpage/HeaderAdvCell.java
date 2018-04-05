@@ -27,6 +27,7 @@ import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
+import com.stx.xhb.xbanner.XBanner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ import java.util.List;
  * Created by jinjunhang on 17/1/6.
  */
 
-public class HeaderAdvCell extends BaseListViewCell {
+public class HeaderAdvCell extends BaseListViewCell implements XBanner.XBannerAdapter {
     private static final String TAG = LogHelper.makeLogTag(HeaderAdvCell.class);
 
     private ImageView mImageView;
@@ -46,31 +47,60 @@ public class HeaderAdvCell extends BaseListViewCell {
         this.mLoading = loading;
     }
 
+    List<String> imgesUrl = new ArrayList<>();
+    public void loadBanner(XBanner var1, Object var2, View view, int position) {
+        Glide.with(mActivity).load(imgesUrl.get(position)).into((ImageView) view);
+    }
+
     @Override
     public ViewGroup getView() {
+        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
+
+        XBanner mXBanner = (XBanner)view.findViewById(R.id.xbanner);
+
+        imgesUrl = new ArrayList<>();
+        imgesUrl.add("http://imageprocess.yitos.net/images/public/20160910/99381473502384338.jpg");
+        imgesUrl.add("http://imageprocess.yitos.net/images/public/20160910/77991473496077677.jpg");
+        imgesUrl.add("http://imageprocess.yitos.net/images/public/20160906/1291473163104906.jpg");
+
+        //添加广告数据
+        mXBanner.setData(imgesUrl,null);//第二个参数为提示文字资源集合
+
+        mXBanner.startAutoPlay();
+
+        LogHelper.d(TAG, "set xbanner");
+        mXBanner.setmAdapter(this);
+
+
+        /*
         HeaderAdvManager manager = HeaderAdvManager.getInstance();
         final GetHeaderAdvResponse.HeaderAdvImage adv = manager.getHeaderAdv();
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
+
         mImageView = (ImageView) view.findViewById(R.id.list_mainpage_header_image);
         if (!"".equals(adv.getImageUrl())) {
             Glide.with(mActivity).load(adv.getImageUrl()).into(mImageView);
 
         }
+        */
+
+        /*
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LogHelper.d(TAG, "head adv cell clicked");
                 if (GetHeaderAdvResponse.HeaderAdvImage.TYPE_SONG.equals(adv.getType())) {
-                    new GetSongInfoTask().execute();
+                    //new GetSongInfoTask().execute();
                 } else {
                     Intent i = new Intent(mActivity, AlbumListActivity.class);
                     mActivity.startActivity(i);
                 }
             }
-        });
+        }); */
+
         return (LinearLayout)view.findViewById(R.id.list_item_viewgroup);
     }
 
+    /*
     private class GetSongInfoTask extends AsyncTask<Void, Void, GetSongInfoResponse> {
         @Override
         protected GetSongInfoResponse doInBackground(Void... params) {
@@ -122,5 +152,5 @@ public class HeaderAdvCell extends BaseListViewCell {
             super.onPreExecute();
             mLoading.show("");
         }
-    }
+    } */
 }

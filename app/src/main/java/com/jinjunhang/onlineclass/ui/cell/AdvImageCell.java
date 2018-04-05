@@ -43,9 +43,10 @@ public class AdvImageCell extends BaseListViewCell {
     }
 
     private int getHeight() {
+        /*
         int actionBarHeight = Utils.px2dip( mActivity, Utils.getActionBarHeight(mActivity) );
         int statusBarHeight = Utils.px2dip(mActivity, Utils.getStatusBarHeight(mActivity));
-        int albumTypeListHeight = 76 * 2; //152
+        int albumTypeListHeight = 76 * 2; //152øø
         int separatorHeight =  4;
 
         ExtendFunctionManager manager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), mActivity);
@@ -92,7 +93,8 @@ public class AdvImageCell extends BaseListViewCell {
         } else {
             LogHelper.d(TAG, "adv height should be " + result + ", " + result);
             return result;
-        }
+        } */
+        return 0;
     }
 
     @Override

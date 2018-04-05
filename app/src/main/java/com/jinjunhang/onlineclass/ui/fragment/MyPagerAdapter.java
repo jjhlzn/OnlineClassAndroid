@@ -21,9 +21,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.frag_1, container, false);
-
-            return v;
+            return  null;
         }
 
         @Override
@@ -48,9 +46,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.frag_2, container, false);
-
-            return v;
+            return  null;
         }
     }
 

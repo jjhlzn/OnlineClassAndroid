@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="74dp"
+              android:orientation="horizontal"
+              android:background="@drawable/bottom_border">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.22"
+            android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/album_list_item_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"
+                    android:gravity="center_vertical|left"
+                    android:src="@drawable/albumimage_default"
+                    />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.78"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/album_list_item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="2dp"
+
+                    android:layout_weight="0.4"
+                    android:gravity="center_vertical|left"
+                    android:text="如何从0到1找到自己的商业模式"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"/>
+
+
+
+                <TextView
+                    android:id="@+id/album_list_item_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginLeft="0dp"
+
+                    android:textSize="12sp"
+                    android:gravity="center_vertical|left"
+                    android:text="2018-04-04 09:00:00"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_marginBottom="10dp"/>
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>
+
