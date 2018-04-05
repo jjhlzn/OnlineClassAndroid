@@ -68,6 +68,8 @@ public class MainPageFragment extends BaseFragment {
         LogHelper.d(TAG, "activity = " + activity);
         activity.getSupportActionBar().show();
         activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        //删除actionbar下面的阴影
+        activity.getSupportActionBar().setElevation(0);
         final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_main, null);
         activity.getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();

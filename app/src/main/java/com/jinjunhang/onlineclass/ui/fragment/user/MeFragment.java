@@ -107,6 +107,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         if (activity != null) {
             LogHelper.d(TAG, "activity = " + activity);
             activity.getSupportActionBar().show();
+            activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar, null);
             activity.getSupportActionBar().setCustomView(customView);

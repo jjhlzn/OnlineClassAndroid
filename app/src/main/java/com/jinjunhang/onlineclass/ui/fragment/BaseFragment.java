@@ -23,6 +23,8 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MusicPlayer.getInstance(getActivity()).addListener(this);
+
+
     }
 
     @Override

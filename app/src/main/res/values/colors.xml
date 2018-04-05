@@ -34,6 +34,7 @@
     <color name="statusbar_background2">#ffffff</color>
     <color name="fragment_background">#EEECE9</color>
     <color name="fragment_background2">#f0f0f0</color>
+    <color name="actionbar_line_color">#9b9b9b</color>
     <color name="login_buton_background">#f0861b</color>
 
     <color name="keyword_color">#9b9b9b</color>
