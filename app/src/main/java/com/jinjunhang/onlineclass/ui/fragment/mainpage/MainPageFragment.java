@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,18 @@ public class MainPageFragment extends BaseFragment {
     private boolean isrongziSelected = true;
 
     private View v;
+
+    @Override
+    public void initView() {
+        v = getActivity().getLayoutInflater().inflate(R.layout.frag_main, null, false);
+        LogHelper.d(TAG, "v = " + v);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.frag_main, container, false);
+        if (v == null) {
+            initView();
+        }
 
         rongziView = (ViewGroup)v.findViewById(R.id.frag_1);
         touziView = (ViewGroup)v.findViewById(R.id.frag_2);
@@ -55,7 +65,7 @@ public class MainPageFragment extends BaseFragment {
         touziPage = new Page(getActivity(), inflater, container, savedInstanceState, ExtendFunctionManager.TOUZI_TYPE);
         touziView.addView(touziPage.v);
 
-        changeActionBar();
+        //changeActionBar();
         return v;
     }
 

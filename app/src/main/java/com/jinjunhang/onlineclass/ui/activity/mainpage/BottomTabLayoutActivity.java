@@ -8,12 +8,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,21 +39,44 @@ import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 public class BottomTabLayoutActivity extends AppCompatActivity {
     private static String TAG = LogHelper.makeLogTag(BottomTabLayoutActivity.class);
 
+    private ViewPager mViewPager;
+
     private TabLayout mTabLayout;
     private BaseFragment[] mFragmensts;
 
     private boolean isInited = false;
+    private MyPagerAdapter mMyPagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tablayout);
-        mFragmensts = DataGenerator.getFragments("TabLayout Tab");
+        mFragmensts = DataGenerator.getFragments(this, "TabLayout Tab");
         setActionBar();
         initView();
-        isInited = true;
-    }
+        mMyPagerAdapter = new BottomTabLayoutActivity.MyPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager)findViewById(R.id.viewpager);
+        mViewPager.setAdapter(mMyPagerAdapter);
+        mViewPager.setCurrentItem(0);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mTabLayout.getTabAt(position).select();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        isInited = true;
+        mViewPager.setOffscreenPageLimit(4);
+        setActionBar();
+    }
 
     public void setActionBar() {
         AppCompatActivity activity = this;
@@ -77,12 +106,9 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
     private void initView() {
         mTabLayout = (TabLayout) findViewById(R.id.bottom_tab_layout);
-
-
         mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 onTabItemSelected(tab.getPosition());
                 // Tab 选中之后，改变各个Tab的状态
                 for (int i=0;i<mTabLayout.getTabCount();i++){
@@ -97,17 +123,14 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
                         text.setTextColor(getResources().getColor(android.R.color.darker_gray));
                     }
                 }
-
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -116,13 +139,20 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             mTabLayout.addTab(mTabLayout.newTab().setCustomView(DataGenerator.getTabView(this,i)));
         }
 
-
     }
 
     private BaseFragment currentFragment;
     private void onTabItemSelected(int position){
 
+        LogHelper.d(TAG, "tab selected position = " + position);
 
+
+        if (mViewPager != null) {
+            mViewPager.setCurrentItem(position);
+        }
+
+        mFragmensts[position].changeActionBar();
+        /*
         BaseFragment fragment = null;
         switch (position){
             case 0:
@@ -141,8 +171,9 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             case 4:
                 fragment = mFragmensts[4];
                 break;
-        }
+        }*/
 
+        /*
         if(fragment!=null) {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -164,7 +195,65 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
             if (isInited)
                 currentFragment.changeActionBar();
+        } */
+    }
+
+    public class MyPagerAdapter extends FragmentPagerAdapter{
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmensts[position];
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmensts.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "";
+        }
+
+        /*
+        @Override
+        public int getCount() {
+            return mFragmensts.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            LogHelper.d(TAG, "posotion = " + position);
+
+            View view = mFragmensts[position].v;
+
+            if (view != null) {
+                container.addView(view);
+            }
+            return view;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "";
+        }*/
+
     }
 
 
@@ -174,14 +263,20 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         public static final int []mTabResPressed = new int[]{R.drawable.icon_home_s, R.drawable.icon_study_s, R.drawable.icon_live_s, R.drawable.icon_shop_s,R.drawable.icon_my_s,};
         public static final String []mTabTitle = new String[]{"首页", "学习", "直播", "商城","我的"};
 
-        public static BaseFragment[] getFragments(String from){
+        public static BaseFragment[] getFragments(Activity activity, String from){
             BaseFragment fragments[] = new BaseFragment[5];
             try {
+
                 fragments[0] = MainPageFragment.class.newInstance();
+                //fragments[0].initView();
                 fragments[1] = ShopWebBrowserFragment.class.newInstance();
+                //fragments[1].initView();
                 fragments[2] = MeFragment.class.newInstance();
+                //fragments[2].initView();
                 fragments[3] = ShopWebBrowserFragment.class.newInstance();
+                //fragments[3].initView();
                 fragments[4] = MeFragment.class.newInstance();
+                //fragments[4].initView();
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);
             }

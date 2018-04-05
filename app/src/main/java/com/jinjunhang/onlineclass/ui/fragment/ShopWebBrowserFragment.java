@@ -40,7 +40,7 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
     public final static String EXTRA_URL = "EXTRA_URL";
     public final static String EXTRA_TITLE = "EXTRA_TITLE";
-
+    public View v;
     private String mUrl;
     private WebView mWebView;
     private ImageButton mBackButton;
@@ -53,12 +53,15 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
     private Bundle webViewBundle;
 
-
+   // private boolean isInited;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LogHelper.d(TAG, "onCreateView called");
+
+        v = getActivity().getLayoutInflater().inflate(R.layout.activity_fragment_pushdownrefresh, null, false);
 
         LogHelper.d(TAG, "onCreateView called");
 
@@ -83,22 +86,17 @@ public class ShopWebBrowserFragment extends BaseFragment {
         settings.setDomStorageEnabled(true);
         openURL();
 
-        changeActionBar();
+        //changeActionBar();
 
-        mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
-        mShareManager.setUseQrCodeImage(false);
-        mShareManager.setShareButtonVisible(false);
+        //isInited = true;
 
-
-
-        new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
         return v;
     }
 
     @Override
     public void changeActionBar() {
         AppCompatActivity activity = (AppCompatActivity)getActivity();
-        LogHelper.d(TAG, "activity = " + activity);
+        //LogHelper.d(TAG, "activity = " + activity);
         if (activity != null) {
 
             activity.getSupportActionBar().show();
@@ -113,8 +111,9 @@ public class ShopWebBrowserFragment extends BaseFragment {
             mBackButton = (ImageButton) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
             ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText("申请");
 
+
             if (mWebView.canGoBack()) {
-                mWebView.goBack();
+                //mWebView.goBack();
             } else {
                 //onBackPressed();
                 mBackButton.setVisibility(View.INVISIBLE);
@@ -134,20 +133,31 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
             setLightStatusBar(customView, activity);
         }
+
+        if (mShareManager == null) {
+            mShareManager = new ShareManager((AppCompatActivity) getActivity(), getView());
+            mShareManager.setUseQrCodeImage(false);
+            mShareManager.setShareButtonVisible(false);
+
+            new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mShareManager.setShareButtonVisible(false);
+        LogHelper.d(TAG, "onPause called");
+        if (mShareManager != null)
+            mShareManager.setShareButtonVisible(false);
     }
 
 
     @Override
     public void onResume() {
-        LogHelper.d(TAG, "onResume called");
         super.onResume();
-        mShareManager.setShareButtonVisible(true);
+        LogHelper.d(TAG, "onResume called");
+        if (mShareManager != null)
+            mShareManager.setShareButtonVisible(true);
 
     }
 
@@ -158,14 +168,6 @@ public class ShopWebBrowserFragment extends BaseFragment {
         mWebView.requestFocus();
     }
 
-    public void setTabChanged() {
-        isTabChanged = true;
-        /*
-        if (mWebView != null) {
-            webViewBundle = new Bundle();
-            mWebView.saveState(webViewBundle);
-        }*/
-    }
 
     private class MyWebViewClient extends WebViewClient {
         @Override
@@ -209,10 +211,12 @@ public class ShopWebBrowserFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             new ParseHtmlPageTask().setShareManager(mShareManager).execute(url);
-            if (mWebView.canGoBack()) {
-                mBackButton.setVisibility(View.VISIBLE);
-            } else {
-                mBackButton.setVisibility(View.INVISIBLE);
+            if (mBackButton != null) {
+                if (mWebView.canGoBack()) {
+                    mBackButton.setVisibility(View.VISIBLE);
+                } else {
+                    mBackButton.setVisibility(View.INVISIBLE);
+                }
             }
             loadCompleted = true;
         }
@@ -221,10 +225,12 @@ public class ShopWebBrowserFragment extends BaseFragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             loadCompleted = false;
-            if (mWebView.canGoBack()) {
-                mBackButton.setVisibility(View.VISIBLE);
-            } else {
-                mBackButton.setVisibility(View.INVISIBLE);
+            if (mBackButton != null) {
+                if (mWebView.canGoBack()) {
+                    mBackButton.setVisibility(View.VISIBLE);
+                } else {
+                    mBackButton.setVisibility(View.INVISIBLE);
+                }
             }
         }
 

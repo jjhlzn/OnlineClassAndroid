@@ -19,6 +19,7 @@ import com.jinjunhang.player.MusicPlayer;
  */
 public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener  {
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,10 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
     }
 
     public void changeActionBar() {
+
+    }
+
+    public void initView() {
 
     }
 

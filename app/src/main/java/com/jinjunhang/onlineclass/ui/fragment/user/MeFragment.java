@@ -62,6 +62,8 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     private List<LineRecord> mFifthSections = new ArrayList<>();
     private WebBroserClickListener webBroserClickListener = new WebBroserClickListener();
 
+    public View v;
+
     private void initSections() {
         if (mThirdSections.size() == 0) {
             mThirdSections.add(new LineRecord(R.drawable.me_tuijian, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
@@ -125,7 +127,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        v = getActivity().getLayoutInflater().inflate(R.layout.activity_fragment_pushdownrefresh, null, false);
         mKeyValueDao = KeyValueDao.getInstance(getActivity());
         initSections();
         mListView = (ListView) v.findViewById(R.id.listView);
@@ -187,7 +189,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
            new GetUserStatDataTask().execute();
         }
 
-        changeActionBar();
+        //changeActionBar();
         return v;
     }
 
