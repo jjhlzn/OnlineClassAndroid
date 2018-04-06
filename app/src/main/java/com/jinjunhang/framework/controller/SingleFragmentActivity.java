@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 
 
@@ -30,11 +31,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     public void setActivityTitle(String title) {
         ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
+
+
     }
 
     protected void createActionBar() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
         View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
+        Utils.setLightStatusBar(customView, this);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent = (Toolbar) customView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
