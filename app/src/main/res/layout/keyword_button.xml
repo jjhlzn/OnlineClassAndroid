@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<Button
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keyword_btn"
+    android:layout_width="55dp"
+    android:layout_height="30dp"
+    android:text="财务"
+    android:background="@color/keyword_btn_bg"
+    android:textColor="@color/black"
+    android:textSize="13dp"
+    android:layout_marginLeft="16dp"/>

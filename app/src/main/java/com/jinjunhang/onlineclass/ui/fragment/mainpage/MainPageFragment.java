@@ -43,6 +43,7 @@ public class MainPageFragment extends BaseFragment {
 
     private boolean isrongziSelected = true;
 
+    private boolean isIntied;
     private View v;
 
     @Override
@@ -65,7 +66,10 @@ public class MainPageFragment extends BaseFragment {
         touziPage = new Page(getActivity(), inflater, container, savedInstanceState, ExtendFunctionManager.TOUZI_TYPE);
         touziView.addView(touziPage.v);
 
-        //changeActionBar();
+        if (!isIntied) {
+            changeActionBar();
+            isIntied = true;
+        }
         return v;
     }
 
@@ -146,8 +150,6 @@ public class MainPageFragment extends BaseFragment {
                 getContext().startActivity(i);
             }
         });
-
-
 
     }
 

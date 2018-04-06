@@ -14,8 +14,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="12dp"
             android:textSize="13dp"
             android:textColor="@color/keyword_color"
             android:textAlignment="textStart"
@@ -23,59 +23,69 @@
             android:text="热门搜索"/>
 
         <LinearLayout
+            android:id="@+id/keywords_container"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="400dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
+            <!--
+           <LinearLayout
+               android:orientation="horizontal"
 
-                <Button
-                    android:layout_width="55dp"
-                    android:layout_height="30dp"
-                    android:text="财务"
-                    android:background="@color/keyword_btn_bg"
-                    android:textColor="@color/black"
-                    android:textSize="13dp"
-                    android:layout_marginLeft="16dp"/>
-
-                <Button
-                    android:layout_width="55dp"
-                    android:layout_height="30dp"
-                    android:text="个人"
-                    android:background="@color/keyword_btn_bg"
-                    android:textColor="@color/black"
-                    android:textSize="13dp"
-                    android:layout_marginLeft="16dp"/>
+               android:layout_width="match_parent"
+               android:layout_height="50dp">
 
 
-                <Button
-                    android:layout_width="55dp"
-                    android:layout_height="30dp"
-                    android:text="产品"
-                    android:background="@color/keyword_btn_bg"
-                    android:textColor="@color/black"
-                    android:textSize="13dp"
-                    android:layout_marginLeft="16dp"/>
+               <Button
+                   android:layout_width="55dp"
+                   android:layout_height="30dp"
+                   android:text="财务"
+                   android:background="@color/keyword_btn_bg"
+                   android:textColor="@color/black"
+                   android:textSize="13dp"
+                   android:layout_marginLeft="16dp"/>
 
-                <Button
-                    android:layout_width="55dp"
-                    android:layout_height="30dp"
-                    android:text="创业"
-                    android:background="@color/keyword_btn_bg"
-                    android:textColor="@color/black"
-                    android:textSize="13dp"
-                    android:layout_marginLeft="16dp"/>
+               <Button
+                   android:layout_width="55dp"
+                   android:layout_height="30dp"
+                   android:text="个人"
+                   android:background="@color/keyword_btn_bg"
+                   android:textColor="@color/black"
+                   android:textSize="13dp"
+                   android:layout_marginLeft="16dp"/>
 
-                <Button
-                    android:layout_width="55dp"
-                    android:layout_height="30dp"
-                    android:text="商业"
-                    android:background="@color/keyword_btn_bg"
-                    android:textColor="@color/black"
-                    android:textSize="13dp"
-                    android:layout_marginLeft="16dp"/>
+
+               <Button
+                   android:layout_width="55dp"
+                   android:layout_height="30dp"
+                   android:text="产品"
+                   android:background="@color/keyword_btn_bg"
+                   android:textColor="@color/black"
+                   android:textSize="13dp"
+                   android:layout_marginLeft="16dp"/>
+
+               <Button
+                   android:layout_width="55dp"
+                   android:layout_height="30dp"
+                   android:text="创业"
+                   android:background="@color/keyword_btn_bg"
+                   android:textColor="@color/black"
+                   android:textSize="13dp"
+                   android:layout_marginLeft="16dp"/>
+
+               <Button
+                   android:layout_width="55dp"
+                   android:layout_height="30dp"
+                   android:text="商业"
+                   android:background="@color/keyword_btn_bg"
+                   android:textColor="@color/black"
+                   android:textSize="13dp"
+                   android:layout_marginLeft="16dp"/>
+
+
             </LinearLayout>
+                 -->
+
 
         </LinearLayout>
 
