@@ -48,12 +48,6 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
     private ShareManager mShareManager;
 
-    private boolean isTabChanged;
-    private boolean loadCompleted;
-
-    private Bundle webViewBundle;
-
-   // private boolean isInited;
 
     @Nullable
     @Override
@@ -87,8 +81,6 @@ public class ShopWebBrowserFragment extends BaseFragment {
         openURL();
 
         //changeActionBar();
-
-        //isInited = true;
 
         return v;
     }
@@ -174,21 +166,6 @@ public class ShopWebBrowserFragment extends BaseFragment {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
             LogHelper.d(TAG, "url = " + url);
-            LogHelper.d(TAG, "isTabChanged = " + isTabChanged + ", loadCompleted = " + loadCompleted);
-
-            /*
-            if (isTabChanged && loadCompleted) {
-                isTabChanged = false;
-                return true;
-            }*/
-
-            /*
-            LogHelper.d(TAG, "webViewBundle = " + webViewBundle);
-            if (webViewBundle != null && mWebView != null) {
-                mWebView.restoreState(webViewBundle);
-                webViewBundle = null;
-                return true;
-            }*/
 
             if (url.contains("/app/jfzs")) {
                 view.getContext().startActivity(
@@ -205,8 +182,6 @@ public class ShopWebBrowserFragment extends BaseFragment {
         }
 
 
-
-
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
@@ -218,13 +193,11 @@ public class ShopWebBrowserFragment extends BaseFragment {
                     mBackButton.setVisibility(View.INVISIBLE);
                 }
             }
-            loadCompleted = true;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            loadCompleted = false;
             if (mBackButton != null) {
                 if (mWebView.canGoBack()) {
                     mBackButton.setVisibility(View.VISIBLE);
