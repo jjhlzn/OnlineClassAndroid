@@ -111,7 +111,7 @@ public class ExtendFunctionManager {
 
     private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
         functions = new ArrayList<>();
-        functions.add(new ExtendFunction(R.drawable.f_paybycard,
+        functions.add(new ExtendFunction(R.drawable.icon1,
                 messageManager.getFunctionName("f_paybycard", "无卡支付"), "f_paybycard", "", new BaseClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
@@ -130,13 +130,13 @@ public class ExtendFunctionManager {
                 }
             }
         }, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_makecard,
+        functions.add(new ExtendFunction(R.drawable.icon2,
                 messageManager.getFunctionName("f_makecard", "办卡提额"), "f_makecard", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
 
-        functions.add(new ExtendFunction(R.drawable.f_loan,
+        functions.add(new ExtendFunction(R.drawable.icon3,
                 messageManager.getFunctionName("f_loan", "快速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
 
-        functions.add(new ExtendFunction(R.drawable.f_user,
+        functions.add(new ExtendFunction(R.drawable.icon4,
                 messageManager.getFunctionName("f_user0", "金融学习"), "f_user0", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
 
         /*
@@ -172,13 +172,13 @@ public class ExtendFunctionManager {
         }, messageManager));
         */
 
-        functions.add(new ExtendFunction(R.drawable.f_user,
+        functions.add(new ExtendFunction(R.drawable.icon5,
                 messageManager.getFunctionName("f_user1", "融资军火库"), "f_user1", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_user,
+        functions.add(new ExtendFunction(R.drawable.icon6,
                 messageManager.getFunctionName("f_user2", "金融工具"), "f_user2", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_car,
+        functions.add(new ExtendFunction(R.drawable.icon7,
                 messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_market,
+        functions.add(new ExtendFunction(R.drawable.icon8,
                 messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.FunctionShopUrl(), mWebListener, messageManager));
 
         /*
@@ -196,7 +196,7 @@ public class ExtendFunctionManager {
     private void initData4Touzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
 
         functions = new ArrayList<>();
-        functions.add(new ExtendFunction(R.drawable.f_paybycard,
+        functions.add(new ExtendFunction(R.drawable.icon9,
                 messageManager.getFunctionName("f_qiye", "企业"), "f_qiye", "", new BaseClickListener() {
             @Override
             public void onClick(ExtendFunction function) {
@@ -215,13 +215,13 @@ public class ExtendFunctionManager {
                 }
             }
         }, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_makecard,
+        functions.add(new ExtendFunction(R.drawable.icon10,
                 messageManager.getFunctionName("f_project", "项目"), "f_project", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
 
-        functions.add(new ExtendFunction(R.drawable.f_loan,
+        functions.add(new ExtendFunction(R.drawable.icon11,
                 messageManager.getFunctionName("f_guquan", "股权"), "f_guquan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
 
-        functions.add(new ExtendFunction(R.drawable.f_user,
+        functions.add(new ExtendFunction(R.drawable.icon12,
                 messageManager.getFunctionName("f_vip_touzi", "VIP专区"), "f_vip_touzi", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
 
         /*
@@ -257,13 +257,13 @@ public class ExtendFunctionManager {
         }, messageManager));
         */
 
-        functions.add(new ExtendFunction(R.drawable.f_user,
+        functions.add(new ExtendFunction(R.drawable.icon13,
                 messageManager.getFunctionName("f_jijin", "基金"), "f_jijin", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_user,
+        functions.add(new ExtendFunction(R.drawable.icon14,
                 messageManager.getFunctionName("f_stock", "股票"), "f_stock", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_car,
+        functions.add(new ExtendFunction(R.drawable.icon15,
                 messageManager.getFunctionName("f_zcpz", "资产配置"), "f_zcpz", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.f_market,
+        functions.add(new ExtendFunction(R.drawable.icon16,
                 messageManager.getFunctionName("f_toolslib", "工具库"), "f_toolslib", ServiceLinkManager.FunctionShopUrl(), mWebListener, messageManager));
 
         /*

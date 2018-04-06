@@ -6,33 +6,13 @@
               android:layout_height="210dp"
               android:orientation="vertical"
               android:background="@drawable/bottom_border">
-        <!--
-        <ImageView
-            android:id="@+id/list_mainpage_header_image"
-            android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/header_ditu"/> -->
+
 
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             />
-        <!--
-        <com.stx.xhb.xbanner.XBanner
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/xbanner"
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            app:AutoPlayTime="3000"
-            app:pointsContainerBackground="#44aaaaaa"
-            app:pointsPosition="RIGHT"
-            app:tipTextSize="12sp"
-            app:isShowNumberIndicator="true"
-            app:isShowIndicatorOnlyOne="true"
-            app:pageChangeDuration="800"/>
-           -->
 
         <RelativeLayout
             android:layout_width="match_parent"

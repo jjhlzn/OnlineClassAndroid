@@ -35,7 +35,6 @@ import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.mainpage.CustomSliderView;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
-import com.stx.xhb.xbanner.XBanner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +44,7 @@ import java.util.List;
  * Created by jinjunhang on 17/1/6.
  */
 
-public class HeaderAdvCell extends BaseListViewCell implements XBanner.XBannerAdapter, BaseSliderView.OnSliderClickListener {
+public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.OnSliderClickListener {
     private static final String TAG = LogHelper.makeLogTag(HeaderAdvCell.class);
 
     private ImageView mImageView;
@@ -54,11 +53,6 @@ public class HeaderAdvCell extends BaseListViewCell implements XBanner.XBannerAd
     public HeaderAdvCell(Activity activity, LoadingAnimation loading) {
         super(activity);
         this.mLoading = loading;
-    }
-
-    List<String> imgesUrl = new ArrayList<>();
-    public void loadBanner(XBanner var1, Object var2, View view, int position) {
-        Glide.with(mActivity).load(imgesUrl.get(position)).into((ImageView) view);
     }
 
     @Override
