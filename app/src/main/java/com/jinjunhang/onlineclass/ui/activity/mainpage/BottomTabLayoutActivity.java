@@ -58,6 +58,8 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         mViewPager = (ViewPager)findViewById(R.id.viewpager);
         mViewPager.setAdapter(mMyPagerAdapter);
         mViewPager.setCurrentItem(0);
+
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -218,42 +220,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return "";
         }
-
-        /*
-        @Override
-        public int getCount() {
-            return mFragmensts.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            LogHelper.d(TAG, "posotion = " + position);
-
-            View view = mFragmensts[position].v;
-
-            if (view != null) {
-                container.addView(view);
-            }
-            return view;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "";
-        }*/
-
     }
 
 
@@ -268,15 +234,10 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             try {
 
                 fragments[0] = MainPageFragment.class.newInstance();
-                //fragments[0].initView();
                 fragments[1] = ShopWebBrowserFragment.class.newInstance();
-                //fragments[1].initView();
                 fragments[2] = MeFragment.class.newInstance();
-                //fragments[2].initView();
                 fragments[3] = ShopWebBrowserFragment.class.newInstance();
-                //fragments[3].initView();
                 fragments[4] = MeFragment.class.newInstance();
-                //fragments[4].initView();
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);
             }

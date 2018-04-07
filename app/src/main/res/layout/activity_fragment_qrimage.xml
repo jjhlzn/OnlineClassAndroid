@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+    <!--
+    <FrameLayout
+        android:id="@+id/home_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+    </FrameLayout> -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+    </android.support.v4.view.ViewPager>
+
+
+
+    <LinearLayout
+        android:id="@+id/overlay_bg"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="@color/overlay_bg">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/share_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="一键分享"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:background="@color/share_btn_bg"/>
+
+    <RelativeLayout
+        android:id="@+id/share_view"
+        android:layout_width="match_parent"
+        android:layout_height="186dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_above="@+id/share_btn"
+        android:visibility="invisible"
+        >
+
+        <include layout="@layout/share_menu_1" android:id="@+id/sharez_menu"
+                 android:layout_width="match_parent"
+                 android:layout_height="186dp"
+                 android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
+
+<!--
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
                 android:background="@color/code_image_background"
-    android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_height="match_parent">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,8 +83,12 @@
             android:layout_marginTop="-100dp"
             />
     </LinearLayout>
+    -->
 
 
+
+
+<!--
     <RelativeLayout
         android:id="@+id/share_view"
         android:layout_width="match_parent"
@@ -35,5 +105,4 @@
             />
     </RelativeLayout>
 
-
-</RelativeLayout>
+</LinearLayout> -->
