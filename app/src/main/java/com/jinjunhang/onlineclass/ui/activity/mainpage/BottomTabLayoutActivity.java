@@ -27,6 +27,7 @@ import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.fragment.CourseListFragment;
 import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
@@ -54,7 +55,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         mFragmensts = DataGenerator.getFragments(this, "TabLayout Tab");
         setActionBar();
         initView();
-        mMyPagerAdapter = new BottomTabLayoutActivity.MyPagerAdapter(getSupportFragmentManager());
+        mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager)findViewById(R.id.viewpager);
         mViewPager.setAdapter(mMyPagerAdapter);
         mViewPager.setCurrentItem(0);
@@ -235,7 +236,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
                 fragments[0] = MainPageFragment.class.newInstance();
                 fragments[1] = ShopWebBrowserFragment.class.newInstance();
-                fragments[2] = MeFragment.class.newInstance();
+                fragments[2] = CourseListFragment.class.newInstance();
                 fragments[3] = ShopWebBrowserFragment.class.newInstance();
                 fragments[4] = MeFragment.class.newInstance();
             }catch (Exception  ex) {

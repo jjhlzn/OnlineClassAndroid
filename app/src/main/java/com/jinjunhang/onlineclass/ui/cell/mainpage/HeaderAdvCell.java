@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,16 +25,25 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.HeaderAdvManager;
+import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsRequest;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
 import com.jinjunhang.onlineclass.service.GetSongInfoRequest;
 import com.jinjunhang.onlineclass.service.GetSongInfoResponse;
+import com.jinjunhang.onlineclass.service.GetTouTiaoRequest;
+import com.jinjunhang.onlineclass.service.GetTouTiaoResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.mainpage.CustomSliderView;
+import com.jinjunhang.onlineclass.ui.fragment.user.QRImageFragment;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
 
@@ -48,114 +59,145 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
     private static final String TAG = LogHelper.makeLogTag(HeaderAdvCell.class);
 
     private ImageView mImageView;
+    private TextView mToutiaoTextView;
+    private ImageButton mFriendBtn;
     private LoadingAnimation mLoading;
+    private List<Advertise> mAdvertises;
+    private SliderLayout mSlider;
+    private GetTouTiaoResponse mTouTiaoResp;
 
     public HeaderAdvCell(Activity activity, LoadingAnimation loading) {
         super(activity);
         this.mLoading = loading;
+        mAdvertises = new ArrayList<>();
+        mTouTiaoResp = new GetTouTiaoResponse();
     }
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        Toast.makeText(mActivity,slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mActivity,slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
+        String title = (String)slider.getBundle().get("title");
+        String clickUrl = (String)slider.getBundle().get("clickUrl");
+        Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                .putExtra(WebBrowserActivity.EXTRA_TITLE, title)
+                .putExtra(WebBrowserActivity.EXTRA_URL, clickUrl);
+        mActivity.startActivity(i);
     }
 
-    @Override
-    public ViewGroup getView() {
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
+    public void updateAds() {
+        new GetHeaderAdvTask().execute();
+    }
 
+    public void updateTouTiao() {
+        new GetToutiaoTask().execute();
+    }
 
-        SliderLayout slider = (SliderLayout)view.findViewById(R.id.slider);
-
-        HashMap<String,String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "http://imageprocess.yitos.net/images/public/20160910/99381473502384338.jpg");
-        url_maps.put("Big Bang Theory", "http://imageprocess.yitos.net/images/public/20160910/77991473496077677.jpg");
-        url_maps.put("House of Cards", "http://imageprocess.yitos.net/images/public/20160906/1291473163104906.jpg");
-
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("Hannibal",R.drawable.actionbar_bg);
-        file_maps.put("Big Bang Theory",R.drawable.actionbar_bg);
-        file_maps.put("House of Cards",R.drawable.actionbar_bg);
-        file_maps.put("Game of Thrones", R.drawable.actionbar_bg);
-
-        for(String name : url_maps.keySet()){
+    private void setSlider() {
+        for (Advertise adv : mAdvertises) {
             CustomSliderView textSliderView = new CustomSliderView(mActivity);
             // initialize a SliderLayout
             textSliderView
                     ///.description(name)
-                    .image(url_maps.get(name))
+                    .image(adv.getImageUrl())
                     //.image(file_maps.get(name))
                     .setScaleType(BaseSliderView.ScaleType.Fit)
-                    .setOnSliderClickListener(this);
+                    .setOnSliderClickListener(HeaderAdvCell.this);
 
             //add your extra information
             textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra",name);
+            textSliderView.getBundle().putString("title",adv.getTitle());
+            textSliderView.getBundle().putString("clickUrl",adv.getClickUrl());
 
-            slider.addSlider(textSliderView);
+            mSlider.addSlider(textSliderView);
         }
-        slider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
 
-        slider.setPresetIndicator(SliderLayout.PresetIndicators.Right_Bottom);
-        slider.setDuration(4000);
+        mSlider.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Invisible);
 
+        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Right_Bottom);
+        mSlider.setDuration(4000);
+    }
 
+    private void setTouTiao() {
+        mToutiaoTextView.setText(mTouTiaoResp.getContent());
+        LogHelper.d(TAG, "content = " + mTouTiaoResp.getContent());
+        mToutiaoTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, mTouTiaoResp.getTitle())
+                        .putExtra(WebBrowserActivity.EXTRA_URL, mTouTiaoResp.getClickUrl());
+                mActivity.startActivity(i);
+            }
+        });
+    }
 
+    @Override
+    public ViewGroup getView() {
+
+        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
+        mSlider = (SliderLayout)view.findViewById(R.id.slider);
+        mToutiaoTextView = (TextView)view.findViewById(R.id.toutiaoTxt);
+        mFriendBtn = (ImageButton) view.findViewById(R.id.haoyou_btn);
+        mFriendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mActivity, QRImageActivity.class);
+                mActivity.startActivity(i);
+            }
+        });
+        setSlider();
+        setTouTiao();
         return (LinearLayout)view.findViewById(R.id.list_item_viewgroup);
     }
 
-    /*
-    private class GetSongInfoTask extends AsyncTask<Void, Void, GetSongInfoResponse> {
-        @Override
-        protected GetSongInfoResponse doInBackground(Void... params) {
-            Song song = new Song();
-            HeaderAdvManager manager = HeaderAdvManager.getInstance();
-            final GetHeaderAdvResponse.HeaderAdvImage adv = manager.getHeaderAdv();
-            if (GetHeaderAdvResponse.HeaderAdvImage.TYPE_SONG.equals(adv.getType())) {
-                song.setId(adv.getParams().get(GetHeaderAdvResponse.HeaderAdvImage.PARAM_KEY_SONG));
-                GetSongInfoRequest request = new GetSongInfoRequest(song);
-                return new BasicService().sendRequest(request);
-            } else {
-                GetSongInfoResponse resp = new GetSongInfoResponse();
-                resp.setStatus(ServerResponse.FAIL);
-                resp.setErrorMessage("");
-                return resp;
-            }
-        }
+    private class GetHeaderAdvTask extends AsyncTask<Void, Void, GetMainPageAdsResponse> {
 
         @Override
-        protected void onPostExecute(GetSongInfoResponse resp) {
-            super.onPostExecute(resp);
-            mLoading.hide();
-            if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
-                Utils.showVipBuyMessage(mActivity, resp.getErrorMessage());
+        protected GetMainPageAdsResponse doInBackground(Void... voids) {
+            GetMainPageAdsRequest request = new GetMainPageAdsRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+
+        @Override
+        protected void onPostExecute(GetMainPageAdsResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+            List<Advertise> advs = response.getAdvertises();
+            if (advs.size() == 0) {
                 return;
             }
 
-            if (resp.isSuccess()) {
-                MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity);
-                ExoPlayerNotificationManager notificationManager = ExoPlayerNotificationManager.getInstance(mActivity);
-                LiveSong song = (LiveSong) resp.getSong();
-                List<Song> songs = new ArrayList<>();
-                songs.add(song);
-                if (!musicPlayer.isPlay(song)) {
-                    musicPlayer.pause();
-                    musicPlayer.play(songs, 0);
-                    notificationManager.display();
-                }
-                Intent i = new Intent(mActivity, SongActivity.class)
-                        .putExtra(BaseSongFragment.EXTRA_SONG, song);
-                mActivity.startActivity(i);
-            } else {
-                Utils.showErrorMessage(mActivity, resp.getErrorMessage());
-            }
+            mAdvertises = advs;
+            setSlider();
+        }
+    }
+
+    private class GetToutiaoTask extends AsyncTask<Void, Void, GetTouTiaoResponse> {
+
+        @Override
+        protected GetTouTiaoResponse doInBackground(Void... voids) {
+            GetTouTiaoRequest request = new GetTouTiaoRequest();
+            return new BasicService().sendRequest(request);
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoading.show("");
+        protected void onPostExecute(final GetTouTiaoResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+
+            mTouTiaoResp = response;
+
+            setTouTiao();
+
         }
-    } */
+    }
 }

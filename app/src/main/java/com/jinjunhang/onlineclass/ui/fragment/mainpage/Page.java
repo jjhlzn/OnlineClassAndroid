@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment.mainpage;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,7 +14,17 @@ import android.widget.ListView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Advertise;
+import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
+import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsRequest;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
+import com.jinjunhang.onlineclass.service.GetTouTiaoRequest;
+import com.jinjunhang.onlineclass.service.GetTouTiaoResponse;
+import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
+import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.ui.cell.CourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
@@ -42,8 +53,13 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private List<ListViewCell> mCells = new ArrayList<>();
     private String mType;
+    private HeaderAdvCell mHeaderAdvCell;
+    private List<GetTuijianCoursesResponse.TuijianCourse> mCourses;
+    private FragmentActivity mActivity;
 
     public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
+        mActivity = activity;
+        mCourses = new ArrayList<>();
         this.mType = type;
 
         v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
@@ -62,7 +78,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 activity, false, type);
 
         if (mCells.size() == 0) {
-            mCells.add(new HeaderAdvCell(activity, mLoading));
+            mHeaderAdvCell = new HeaderAdvCell(activity, mLoading);
+            mCells.add(mHeaderAdvCell);
 
             //mCells.add(new CourseNotifyCell(activity));
             mCells.add(new SectionSeparatorCell(activity));
@@ -73,12 +90,12 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
             mCells.add(new SectionSeparatorCell(activity));
 
-            mCells.add(new CourseCell(activity));
-            mCells.add(new CourseCell(activity));
-
             //mCells.add(new MainPageWhiteSeparatorCell(activity));
             //mCells.add(new FooterCell(activity));
         }
+
+        mHeaderAdvCell.updateAds();
+        mHeaderAdvCell.updateTouTiao();
 
         mMainPageAdapter = new MainPageAdapter(activity, mCells);
         mListView.setAdapter(mMainPageAdapter);
@@ -93,6 +110,23 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 LogHelper.d(TAG, "mList onItemClick: ", position);
             }
         });
+
+        new GetTuijianCoursesTask().execute();
+    }
+
+    private void setCoursesView() {
+        if (mCells.size() > 4) {
+            int size = mCells.size();
+            for(int i = 0; i < size - 4; i++) {
+                mCells.remove(4);
+            }
+        }
+
+        for(GetTuijianCoursesResponse.TuijianCourse course : mCourses) {
+            mCells.add(new CourseCell(mActivity, course));
+        }
+
+        mMainPageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -121,8 +155,31 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ListViewCell item = getItem(position);
-
             return item.getView();
         }
     }
+
+    private class GetTuijianCoursesTask extends AsyncTask<Void, Void, GetTuijianCoursesResponse> {
+
+        @Override
+        protected GetTuijianCoursesResponse doInBackground(Void... voids) {
+            GetTuijianCoursesRequest request = new GetTuijianCoursesRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(final GetTuijianCoursesResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+
+            mCourses = response.getCourses();
+            setCoursesView();
+        }
+    }
+
+
 }

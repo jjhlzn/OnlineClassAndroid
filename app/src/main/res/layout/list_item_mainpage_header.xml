@@ -29,6 +29,7 @@
                     android:src="@drawable/icon_tt"/>
 
                 <TextView
+                    android:id="@+id/toutiaoTxt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
@@ -37,7 +38,7 @@
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
                     android:textSize="14dp"
-                    android:text="中信银行银联标准IC信用卡周三周六消费半价, 刷卡免费"/>
+                    android:text=""/>
 
                 <ImageButton
                     android:id="@+id/haoyou_btn"

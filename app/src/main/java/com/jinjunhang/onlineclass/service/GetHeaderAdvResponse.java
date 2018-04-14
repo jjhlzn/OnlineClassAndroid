@@ -41,7 +41,6 @@ public class GetHeaderAdvResponse extends ServerResponse {
                 adv.params.put(paramJson.getString("key"), paramJson.getString("value"));
             }
         }
-
     }
 
     public static class HeaderAdvImage {
