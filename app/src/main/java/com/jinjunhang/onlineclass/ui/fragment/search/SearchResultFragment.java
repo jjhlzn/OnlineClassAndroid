@@ -18,7 +18,7 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
-import com.jinjunhang.onlineclass.service.SearchCourseRequest;
+import com.jinjunhang.onlineclass.service.SearchRequest;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
@@ -101,7 +101,7 @@ public class SearchResultFragment extends BottomPlayerFragment implements  Singl
     private class SearchCouseHanlder implements PagableController.PagableRequestHandler {
         @Override
         public PagedServerResponse handle() {
-            SearchCourseRequest request = new SearchCourseRequest();
+            SearchRequest request = new SearchRequest();
             request.setKeyword(mKeyword);
             request.setPageIndex(mPagableController.getPageIndex());
             return new BasicService().sendRequest(request);

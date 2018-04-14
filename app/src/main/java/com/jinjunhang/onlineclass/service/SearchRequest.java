@@ -1,14 +1,13 @@
 package com.jinjunhang.onlineclass.service;
 
 import com.jinjunhang.framework.service.PagedServerRequest;
-import com.jinjunhang.framework.service.ServerRequest;
 
 import java.util.Map;
 
 /**
  * Created by lzn on 16/6/29.
  */
-public class SearchCourseRequest extends PagedServerRequest {
+public class SearchRequest extends PagedServerRequest {
 
     private String mKeyword;
 
@@ -27,7 +26,7 @@ public class SearchCourseRequest extends PagedServerRequest {
 
     @Override
     public Class getServerResponseClass() {
-        return SearchCourseResponse.class;
+        return SearchResponse.class;
     }
 
     @Override

@@ -140,7 +140,7 @@ public class SearchFragment extends BaseFragment {
 
     public void performSearch() {
         showSearchView(false);
-        mSearchResultPage.showResult();
+        mSearchResultPage.executeSearch();
     }
 
     public void keywordButtonClick(String keyword) {

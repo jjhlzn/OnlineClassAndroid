@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment.search;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -15,8 +16,14 @@ import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Advertise;
+import com.jinjunhang.onlineclass.service.GetHotSearchWordsRequest;
+import com.jinjunhang.onlineclass.service.GetHotSearchWordsResponse;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsRequest;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 
 import java.util.ArrayList;
@@ -38,23 +45,14 @@ public class SearchPage {
     private SearchFragment mSearchFragment;
 
     public SearchPage(SearchFragment searchFragment, FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         this.mSearchFragment = searchFragment;
         this.mActivity = activity;
         this.mInflater = inflater;
         view = inflater.inflate(R.layout.activity_fragment_search_frag1, container, false);
         keywordsContainer = (ViewGroup)view.findViewById(R.id.keywords_container);
         mkeywords = new ArrayList<>();
-        mkeywords.add("经济");
-        mkeywords.add("经济学");
-        mkeywords.add("财务1");
-        mkeywords.add("abc");
-        mkeywords.add("财务3");
-        mkeywords.add("我");
-        mkeywords.add("你");
-        mkeywords.add("他");
-        mkeywords.add("她");
-        makeKeywordButtons();
+        //makeKeywordButtons();
+        new GetSearchWordsTask().execute();
     }
 
 
@@ -133,5 +131,28 @@ public class SearchPage {
 
         rowLength += button.getLayoutParams().width + Utils.dip2px(mActivity, 16);
         return v;
+    }
+
+    private class GetSearchWordsTask extends AsyncTask<Void, Void, GetHotSearchWordsResponse> {
+
+        @Override
+        protected GetHotSearchWordsResponse doInBackground(Void... voids) {
+            GetHotSearchWordsRequest request = new GetHotSearchWordsRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+
+        @Override
+        protected void onPostExecute(GetHotSearchWordsResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+
+            mkeywords = response.getKeywords();
+            makeKeywordButtons();
+        }
     }
 }
