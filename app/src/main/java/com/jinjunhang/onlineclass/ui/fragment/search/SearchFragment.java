@@ -160,26 +160,4 @@ public class SearchFragment extends BaseFragment {
         }
     }
 
-
-    private class GetHotSearchWordsTask extends AsyncTask<Void, Void, GetHotSearchWordsResponse> {
-
-        @Override
-        protected GetHotSearchWordsResponse doInBackground(Void... params) {
-            GetHotSearchWordsRequest req = new GetHotSearchWordsRequest();
-            return new BasicService().sendRequest(req);
-        }
-
-        @Override
-        protected void onPostExecute(GetHotSearchWordsResponse resp) {
-            super.onPostExecute(resp);
-            if (resp.getStatus() != ServerResponse.SUCCESS) {
-                LogHelper.e(TAG, resp.getErrorMessage());
-                return;
-            }
-
-            //mKeywords = resp.getKeywords();
-            //makeKeywordButtons();
-        }
-    }
-
 }

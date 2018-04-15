@@ -6,54 +6,11 @@
               android:id="@+id/list_item_course"
               android:layout_height="280dp"
               android:orientation="vertical"
+              android:paddingBottom="8dp"
               android:background="@color/white">
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center|center_vertical"
-            android:background="@color/white">
-
-                <ImageView
-                    android:id="@+id/course_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/course"/>
-
-                <TextView
-                    android:id="@+id/course_name_txt"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_above="@id/course_image"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="bottom"
-                    android:text="个人信用融资公开课"
-                    android:textColor="@color/white"
-                    android:textSize="14dp"/>
-
-                <TextView
-                    android:id="@+id/course_time_txt"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:layout_above="@id/course_image"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:textAlignment="textEnd"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="bottom"
-                    android:text="2018/03/20"
-                    android:textColor="@color/white"
-                    android:textSize="14dp"/>
-        </RelativeLayout>
+        <include layout="@layout/course_item" android:id="@+id/course_item"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -68,39 +25,49 @@
                     android:gravity="center|center_horizontal|center_vertical"
                     android:layout_height="match_parent">
                         <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_marginBottom="1dp"
-                            android:layout_marginRight="2dp"
+                            android:layout_marginRight="4dp"
                             android:src="@drawable/play"/>
 
                         <TextView
+                            android:id="@+id/status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
+                            android:textColor="@color/red"
                             android:text="正在直播"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="100dp"
-                    android:gravity="right|center_vertical"
+                    android:gravity="center|center_vertical"
                     android:layout_toRightOf="@+id/first_section"
                     android:layout_toLeftOf="@+id/third_section"
                     android:layout_height="match_parent">
 
                         <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_marginBottom="1dp"
-                            android:layout_marginRight="2dp"
-                            android:src="@drawable/play"/>
+                            android:layout_marginRight="4dp"
+                            android:src="@drawable/u"/>
 
                         <TextView
-                            android:layout_width="98dp"
+                            android:id="@+id/listenerCount"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="right|center_vertical"
-                            android:text="11239在线"
+                            android:text="11239"
                             android:textSize="12dp"
+                            android:textColor="@color/red"
+                            android:textAlignment="textStart"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="在线"
+                            android:textSize="12dp"
+                            android:textColor="@color/black"
                             android:textAlignment="textStart"/>
                 </LinearLayout>
 
@@ -112,13 +79,14 @@
                     android:layout_alignParentRight="true"
                     android:layout_height="match_parent">
                         <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
                             android:layout_marginBottom="0dp"
-                            android:layout_marginRight="2dp"
+                            android:layout_marginRight="4dp"
                             android:src="@drawable/time"/>
 
                         <TextView
+                            android:id="@+id/liveTime"
                             android:gravity="right|center_vertical"
                             android:textAlignment="textStart"
                             android:layout_width="match_parent"

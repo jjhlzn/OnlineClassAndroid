@@ -1,24 +1,15 @@
 package com.jinjunhang.onlineclass.ui.cell;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.daimajia.slider.library.SliderLayout;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
-import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,16 +17,16 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/20.
  */
-public class CourseCell extends BaseListViewCell {
+public class MainPageCourseCell extends BaseListViewCell {
 
-    private static final String TAG = LogHelper.makeLogTag(CourseCell.class);
+    private static final String TAG = LogHelper.makeLogTag(MainPageCourseCell.class);
 
-    private ViewGroup mView;
-    private GetTuijianCoursesResponse.TuijianCourse mCourse;
-    private Activity mActivity;
+    protected ViewGroup mView;
+    protected GetTuijianCoursesResponse.Course mCourse;
+    protected Activity mActivity;
     private List<ImageView> mStars;
 
-    public CourseCell(Activity activity, GetTuijianCoursesResponse.TuijianCourse course) {
+    public MainPageCourseCell(Activity activity, GetTuijianCoursesResponse.Course course) {
         super(activity);
         mCourse = course;
         mActivity = activity;
@@ -51,6 +42,12 @@ public class CourseCell extends BaseListViewCell {
     public ViewGroup getView() {
         View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_course, null);
         ViewGroup g = (ViewGroup)view.findViewById(R.id.list_item_course);
+        setCourseView(view);
+        return g;
+    }
+
+    protected void setCourseView(View view) {
+
         TextView nameText = (TextView)view.findViewById(R.id.course_name_txt);
         TextView timeText = (TextView)view.findViewById(R.id.course_time_txt);
         TextView starText = (TextView)view.findViewById(R.id.starsText);
@@ -67,10 +64,10 @@ public class CourseCell extends BaseListViewCell {
 
         ImageView imageView = (ImageView)view.findViewById(R.id.course_image);
         Glide
-            .with(mActivity)
-            .load(mCourse.getImageUrl())
-            .placeholder(R.drawable.course)
-            .into(imageView);
+                .with(mActivity)
+                .load(mCourse.getImageUrl())
+                .placeholder(R.drawable.course)
+                .into(imageView);
 
         double stars = mCourse.getStars();
         for(int i = 0; i < 5; i++) {
@@ -83,8 +80,5 @@ public class CourseCell extends BaseListViewCell {
             }
             stars -= 1;
         }
-
-
-        return g;
     }
 }

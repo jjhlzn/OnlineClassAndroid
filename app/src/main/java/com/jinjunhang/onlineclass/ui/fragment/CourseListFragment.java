@@ -1,11 +1,9 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -22,7 +20,11 @@ import android.widget.TextView;
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.service.GetCoursesRequest;
+import com.jinjunhang.onlineclass.service.GetCoursesResponse;
+import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.LiveCourseCell;
 
@@ -42,8 +44,6 @@ public class CourseListFragment extends BaseFragment  {
 
     private ListView mListView;
     private LoadingAnimation mLoading;
-    private ViewPager mViewPager;
-    private BaseFragment[] mFragmensts;
     private ImageButton everydayBtn, vipBtn, agentBtn;
     private CoursePage[] pages;
     private ViewGroup[] mViewGroups;
@@ -55,13 +55,6 @@ public class CourseListFragment extends BaseFragment  {
         everydayBtn = (ImageButton) v.findViewById(R.id.everyday_btn);
         vipBtn = (ImageButton) v.findViewById(R.id.vip_btn);
         agentBtn = (ImageButton) v.findViewById(R.id.agent_btn);
-
-        mFragmensts = DataGenerator.getFragments(getActivity(), "");
-
-        //MyPagerAdapter pagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
-
-        //mViewPager = (ViewPager) v.findViewById(R.id.viewpager);
-        //mViewPager.setAdapter(pagerAdapter);
 
         pages = new CoursePage[3];
         mViewGroups = new ViewGroup[3];
@@ -112,7 +105,6 @@ public class CourseListFragment extends BaseFragment  {
 
 
         showPage(0);
-        LogHelper.d(TAG, "mfragment.length = " + mFragmensts.length);
         return v;
     }
 
@@ -120,16 +112,16 @@ public class CourseListFragment extends BaseFragment  {
 
         for(int i = 0; i < 3; i++) {
             if (i == index) {
-                //mFragmensts[i].getView().setVisibility(View.VISIBLE);
                 mViewGroups[i].setVisibility(View.VISIBLE);
                 pages[i].v.setVisibility(View.VISIBLE);
+                if (!pages[i].loadCompleted) {
+                    pages[i].loadCourses();
+                }
             } else {
-                //mFragmensts[i].getView().setVisibility(View.INVISIBLE);
                 mViewGroups[i].setVisibility(View.INVISIBLE);
                 pages[i].v.setVisibility(View.INVISIBLE);
             }
         }
-        //mViewPager.setCurrentItem(index);
     }
 
     @Override
@@ -152,44 +144,6 @@ public class CourseListFragment extends BaseFragment  {
         }
     }
 
-    public class MyPagerAdapter extends FragmentPagerAdapter {
-
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmensts[position];
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmensts.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "";
-        }
-    }
-
-
-    public static class DataGenerator {
-
-        public static BaseFragment[] getFragments(Activity activity, String from){
-            BaseFragment fragments[] = new BaseFragment[3];
-            try {
-
-                fragments[0] = ChildCourseListFragment.class.newInstance();
-                fragments[1] = ShopWebBrowserFragment.class.newInstance();
-                fragments[2] = ChildCourseListFragment.class.newInstance();
-            }catch (Exception  ex) {
-                LogHelper.e("DataGenerator", ex);
-            }
-            return fragments;
-        }
-    }
 
     private class CoursePage  {
 
@@ -199,10 +153,12 @@ public class CourseListFragment extends BaseFragment  {
         private MyAdapter mMyAdapter;
         private SwipeRefreshLayout mSwipeRefreshLayout;
         private List<ListViewCell> mCells = new ArrayList<>();
+        private List<GetTuijianCoursesResponse.Course> mCourses = new ArrayList<>();
+        public boolean loadCompleted = false;
 
 
         public CoursePage(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+            v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_white, container, false);
 
 
             mListView = (ListView)v.findViewById(R.id.listView);
@@ -212,15 +168,22 @@ public class CourseListFragment extends BaseFragment  {
             mListView.setDivider(null);
 
             mCells = new ArrayList<>();
-            mCells.add(new LiveCourseCell(getActivity()));
-            mCells.add(new LiveCourseCell(getActivity()));
-            mCells.add(new LiveCourseCell(getActivity()));
-            mCells.add(new LiveCourseCell(getActivity()));
-
 
             mMyAdapter = new MyAdapter(getActivity(), mCells);
             mListView.setAdapter(mMyAdapter);
 
+        }
+
+        public void loadCourses() {
+            new GetCoursesTask().execute();
+        }
+
+        public void SetCourseListView() {
+            mCells.clear();
+            for (GetTuijianCoursesResponse.Course course : mCourses) {
+                mCells.add(new LiveCourseCell(getActivity(), course));
+            }
+            mMyAdapter.notifyDataSetChanged();
         }
 
         private class MyAdapter extends ArrayAdapter<ListViewCell> {
@@ -246,6 +209,29 @@ public class CourseListFragment extends BaseFragment  {
                 ListViewCell item = getItem(position);
 
                 return item.getView();
+            }
+        }
+
+        private class GetCoursesTask extends AsyncTask<Void, Void, GetCoursesResponse> {
+
+            @Override
+            protected GetCoursesResponse doInBackground(Void... voids) {
+                GetCoursesRequest request = new GetCoursesRequest();
+                return new BasicService().sendRequest(request);
+            }
+
+
+            @Override
+            protected void onPostExecute(GetCoursesResponse response) {
+                super.onPostExecute(response);
+
+                if (!response.isSuccess()) {
+                    LogHelper.e(TAG, response.getErrorMessage());
+                    return;
+                }
+                loadCompleted = true;
+                mCourses = response.getCourses();
+                SetCourseListView();
             }
         }
     }

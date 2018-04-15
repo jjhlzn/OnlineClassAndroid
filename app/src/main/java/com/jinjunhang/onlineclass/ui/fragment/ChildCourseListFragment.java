@@ -13,9 +13,6 @@ import android.widget.ListView;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.LiveCourseCell;
-import com.jinjunhang.onlineclass.ui.fragment.mainpage.Page;
-import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 
 import java.util.ArrayList;
 import java.util.List;

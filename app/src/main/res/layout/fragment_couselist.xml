@@ -15,8 +15,8 @@
         <ImageButton
             android:id="@+id/everyday_btn"
 
-            android:layout_width="60dp"
-            android:layout_height="26dp"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/everyday_s"/>
@@ -24,8 +24,8 @@
         <ImageButton
             android:id="@+id/vip_btn"
 
-            android:layout_width="80dp"
-            android:layout_height="26dp"
+            android:layout_width="90dp"
+            android:layout_height="32dp"
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/vip"/>
@@ -33,8 +33,8 @@
         <ImageButton
             android:id="@+id/agent_btn"
 
-            android:layout_width="70dp"
-            android:layout_height="26dp"
+            android:layout_width="80dp"
+            android:layout_height="32dp"
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/agent"/>
@@ -43,25 +43,29 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <LinearLayout
             android:id="@+id/frag_1"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:visibility="visible"
+            android:background="@color/white"
             android:layout_height="match_parent"></LinearLayout>
         <LinearLayout
             android:id="@+id/frag_2"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:visibility="invisible"
+            android:background="@color/white"
             android:layout_height="match_parent"></LinearLayout>
         <LinearLayout
             android:id="@+id/frag_3"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:visibility="invisible"
+            android:background="@color/white"
             android:layout_height="match_parent"></LinearLayout>
     </RelativeLayout>
 

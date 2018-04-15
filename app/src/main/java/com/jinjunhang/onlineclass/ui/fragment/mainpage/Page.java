@@ -16,21 +16,11 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.Advertise;
-import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
-import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
-import com.jinjunhang.onlineclass.service.GetMainPageAdsRequest;
-import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
-import com.jinjunhang.onlineclass.service.GetTouTiaoRequest;
-import com.jinjunhang.onlineclass.service.GetTouTiaoResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
-import com.jinjunhang.onlineclass.ui.cell.CourseCell;
+import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
-import com.jinjunhang.onlineclass.ui.cell.mainpage.CourseNotifyCell;
-import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinVariableInfoManager;
@@ -54,7 +44,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private List<ListViewCell> mCells = new ArrayList<>();
     private String mType;
     private HeaderAdvCell mHeaderAdvCell;
-    private List<GetTuijianCoursesResponse.TuijianCourse> mCourses;
+    private List<GetTuijianCoursesResponse.Course> mCourses;
     private FragmentActivity mActivity;
 
     public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
@@ -122,8 +112,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
         }
 
-        for(GetTuijianCoursesResponse.TuijianCourse course : mCourses) {
-            mCells.add(new CourseCell(mActivity, course));
+        for(GetTuijianCoursesResponse.Course course : mCourses) {
+            mCells.add(new MainPageCourseCell(mActivity, course));
         }
 
         mMainPageAdapter.notifyDataSetChanged();

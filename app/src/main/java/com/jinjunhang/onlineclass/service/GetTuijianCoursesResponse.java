@@ -1,21 +1,14 @@
 package com.jinjunhang.onlineclass.service;
 
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
-import com.jinjunhang.onlineclass.model.Advertise;
-import com.jinjunhang.onlineclass.model.LiveSong;
-import com.jinjunhang.onlineclass.model.Song;
-import com.jinjunhang.onlineclass.model.SongSetting;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,13 +18,13 @@ public class GetTuijianCoursesResponse extends ServerResponse {
 
     private static final String TAG = LogHelper.makeLogTag(GetTuijianCoursesResponse.class);
 
-    private List<GetTuijianCoursesResponse.TuijianCourse> mCourses = new ArrayList<>();
+    private List<Course> mCourses = new ArrayList<>();
 
     public GetTuijianCoursesResponse() {
 
     }
 
-    public List<TuijianCourse> getCourses() {
+    public List<Course> getCourses() {
         return mCourses;
     }
 
@@ -39,13 +32,13 @@ public class GetTuijianCoursesResponse extends ServerResponse {
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
         //super.parse(request, jsonObject);
 
-        List<TuijianCourse> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
 
         JSONArray jsonArray = jsonObject.getJSONArray("courses");
         for( int i = 0; i < jsonArray.length(); i++ ) {
             JSONObject json = jsonArray.getJSONObject(i);
 
-            TuijianCourse course = new TuijianCourse();
+            Course course = new Course();
 
             course.setId(json.getString("id"));
             course.setName(json.getString("name"));
@@ -55,11 +48,13 @@ public class GetTuijianCoursesResponse extends ServerResponse {
             course.setStatus(json.getString("status"));
             course.setStars(json.getDouble("stars"));
             course.setUrl(json.getString("url"));
+            course.setListenerCount(json.getInt("listenerCount"));
+            course.setLiveTime(json.getString("liveTime"));
             mCourses.add(course);
         }
     }
 
-    public class TuijianCourse {
+    public class Course {
         private String mId;
         private String mName;
         private String mDesc;
@@ -68,6 +63,8 @@ public class GetTuijianCoursesResponse extends ServerResponse {
         private String mStatus;
         private double  mStars;
         private String mUrl;
+        private String mLiveTime;
+        private int mListenerCount;
 
         public String getId() {
             return mId;
@@ -131,6 +128,22 @@ public class GetTuijianCoursesResponse extends ServerResponse {
 
         public void setUrl(String url) {
             mUrl = url;
+        }
+
+        public String getLiveTime() {
+            return mLiveTime;
+        }
+
+        public int getListenerCount() {
+            return mListenerCount;
+        }
+
+        public void setLiveTime(String liveTime) {
+            mLiveTime = liveTime;
+        }
+
+        public void setListenerCount(int listenerCount) {
+            mListenerCount = listenerCount;
         }
     }
 }
