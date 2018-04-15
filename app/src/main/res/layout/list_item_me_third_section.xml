@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_container"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="100dp"
+              android:paddingTop="14dp"
+              android:paddingBottom="14dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|center"
+                android:layout_alignParentLeft="true"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:text="会员有效期"
+                    android:textColor="#7d7e80"
+                    android:textAlignment="textStart"
+                    />
+
+                <TextView
+                    android:id="@+id/jifen_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:text="2018-03-23"
+                    android:textColor="@color/black"
+                    android:textAlignment="textStart"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:text="续费"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:background="#cc9c5e"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.001"
+            android:orientation="vertical"
+            android:gravity="center_vertical|center"
+            android:background="@drawable/top_right_border">
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical|center"
+                android:layout_alignParentLeft="true"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:text="我的代理等级"
+                    android:textColor="#7d7e80"
+                    android:textAlignment="textStart"
+                    />
+
+                <TextView
+                    android:id="@+id/jifen_label1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:text="普通代理"
+                    android:textColor="@color/black"
+                    android:textAlignment="textStart"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:text="升级"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:background="#cc9c5e"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

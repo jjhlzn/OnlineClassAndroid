@@ -48,6 +48,7 @@ public class SecondSectionCell extends BaseListViewCell {
         mChaiFuLabel = (TextView) v.findViewById(R.id.caifu_label);
         mTeamPeopleLabel = (TextView) v.findViewById(R.id.tuandui_label);
 
+        /*
         LinearLayout jifenButton = (LinearLayout) v.findViewById(R.id.jifenButton);
         LinearLayout chaifuButton = (LinearLayout) v.findViewById(R.id.chaifuButton);
         LinearLayout tuanduiButton = (LinearLayout) v.findViewById(R.id.tuanduiButton);
@@ -79,7 +80,7 @@ public class SecondSectionCell extends BaseListViewCell {
                         .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.MyTeamUrl2());
                 mActivity.startActivity(i);
             }
-        });
+        }); */
 
 
         updateView();

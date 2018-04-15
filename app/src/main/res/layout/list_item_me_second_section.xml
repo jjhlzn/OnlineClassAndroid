@@ -1,93 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_container"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/white"
-    android:layout_height="55dp">
+    android:layout_height="140dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical|center"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="我的财富"
+                android:textColor="#7d7e80"
+                android:textAlignment="textStart"
+                />
+
+            <TextView
+                android:id="@+id/caifu_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="30.00"
+                android:textAlignment="textStart"
+                android:textColor="@color/red"
+                android:textSize="24dp"
+
+                />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical|center"
+            android:text="提现"
+            android:textColor="@color/black"
+            android:background="@drawable/textview_border_tixian"
+
+            android:textSize="12dp"/>
+
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/jifenButton"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.33"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:text="积分"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center"
+        android:background="@drawable/top_border">
 
-        <TextView
-            android:id="@+id/jifen_label"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:textSize="13dp"
-            android:layout_marginTop="4dp"
-            android:text="1000"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical|center">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="我的积分"
+                android:textColor="#7d7e80"
+                android:textAlignment="textStart"
+                />
+
+            <TextView
+                android:id="@+id/jifen_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="1000"
+                android:textColor="@color/black"
+                android:textAlignment="textStart"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.001"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical|center"
+            android:background="@drawable/top_right_border"
+            android:paddingBottom="10dp">
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical|center">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="我的团队"
+                android:textColor="#7d7e80"
+                android:textAlignment="textStart"
+                />
+
+            <TextView
+                android:id="@+id/tuandui_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:text="1000"
+                android:textColor="@color/black"
+                android:textAlignment="textStart"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/chaifuButton"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.33"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:text="财富"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
-
-        <TextView
-            android:id="@+id/caifu_label"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:textSize="13dp"
-            android:layout_marginTop="4dp"
-            android:text="1000"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/tuanduiButton"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.33"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"
-            android:text="团队"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
-
-        <TextView
-            android:id="@+id/tuandui_label"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:textSize="13dp"
-            android:layout_marginTop="4dp"
-            android:text="1000"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            />
-    </LinearLayout>
 
 </LinearLayout>

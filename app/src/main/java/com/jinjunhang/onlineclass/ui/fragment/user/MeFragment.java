@@ -28,6 +28,7 @@ import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.PersonalInfoActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.SettingsActivity;
 import com.jinjunhang.onlineclass.ui.cell.CellClickListener;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
@@ -35,6 +36,7 @@ import com.jinjunhang.onlineclass.ui.cell.me.CommonCell;
 import com.jinjunhang.onlineclass.ui.cell.me.FirstSectionCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.cell.me.SecondSectionCell;
+import com.jinjunhang.onlineclass.ui.cell.me.ThirdSectionCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.framework.lib.LogHelper;
@@ -57,30 +59,32 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
     private KeyValueDao mKeyValueDao;
 
-    private List<LineRecord> mThirdSections = new ArrayList<LineRecord>();
-    private List<LineRecord> mFourthSections = new ArrayList<>();
+    private List<LineRecord> mFourthSections = new ArrayList<LineRecord>();
     private List<LineRecord> mFifthSections = new ArrayList<>();
+    private List<LineRecord> mSixSections = new ArrayList<>();
     private WebBroserClickListener webBroserClickListener = new WebBroserClickListener();
 
     public View v;
 
     private void initSections() {
-        if (mThirdSections.size() == 0) {
-            mThirdSections.add(new LineRecord(R.drawable.me_tuijian, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
-            mThirdSections.add(new LineRecord(R.drawable.me_order, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
-            mThirdSections.add(new LineRecord(R.drawable.me_team, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
-            mThirdSections.add(new LineRecord(R.drawable.me_tixian, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
+        if (mFourthSections.size() == 0) {
+            mFourthSections.add(new LineRecord(R.drawable.user1, "邀请好友", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
+            mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
+            mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
+
+            //mFourthSections.add(new LineRecord(R.drawable.me_tixian, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
         }
 
-        if (mFourthSections.size() == 0) {
-            mFourthSections.add(new LineRecord(R.drawable.me_ziliao, "我的资料", new CellClickListener() {
+        if (mFifthSections.size() == 0) {
+            mFourthSections.add(new LineRecord(R.drawable.user4, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
+            mFifthSections.add(new LineRecord(R.drawable.user5, "我的资料", new CellClickListener() {
                 @Override
                 public void onClick(ListViewCell cell) {
                     Intent i = new Intent(getActivity(), PersonalInfoActivity.class);
                     getActivity().startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_PERSONAL_INFO);
                 }
             }, "", ""));
-            mFourthSections.add(new LineRecord(R.drawable.me_qrcode, "我的二维码", new CellClickListener() {
+            mFifthSections.add(new LineRecord(R.drawable.user6, "我的二维码", new CellClickListener() {
                 @Override
                 public void onClick(ListViewCell cell) {
                     Intent i = new Intent(getActivity(), QRImageActivity.class);
@@ -89,8 +93,9 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             }, "", ""));
         }
 
-        if (mFifthSections.size() == 0) {
-            mFifthSections.add(new LineRecord(R.drawable.me_agent, "我要申请", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
+        if (mSixSections.size() == 0) {
+            mSixSections.add(new LineRecord(R.drawable.user7, "我要合作", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
+            mSixSections.add(new LineRecord(R.drawable.user8, "设置", new SettingsClickListener(), ServiceLinkManager.MyAgentUrl(), ""));
         }
     }
 
@@ -139,7 +144,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         if (mCells.size() == 0) {
             FirstSectionCell item = new FirstSectionCell(getActivity());
             mCells.add(item);
-
+            mCells.add(new SectionSeparatorCell(getActivity()));
             SecondSectionCell secondSectionCell = new SecondSectionCell(getActivity());
             secondSectionCell.setJiFen(mKeyValueDao.getValue(KeyValueDao.KEY_USER_JIFEN, "0"));
             secondSectionCell.setChaiFu(mKeyValueDao.getValue(KeyValueDao.KEY_USER_CAFIFU, "0"));
@@ -147,10 +152,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mCells.add(secondSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
-            for(int i = 0; i < mThirdSections.size(); i++) {
-                CommonCell cell = new CommonCell(getActivity(), mThirdSections.get(i));
-                mCells.add(cell);
-            }
+            mCells.add(new ThirdSectionCell(getActivity()));
             mCells.add(new SectionSeparatorCell(getActivity()));
 
             for(int i = 0; i < mFourthSections.size(); i++) {
@@ -161,6 +163,12 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
             for(int i = 0; i < mFifthSections.size(); i++) {
                 CommonCell cell = new CommonCell(getActivity(), mFifthSections.get(i));
+                mCells.add(cell);
+            }
+            mCells.add(new SectionSeparatorCell(getActivity()));
+
+            for(int i = 0; i < mSixSections.size(); i++) {
+                CommonCell cell = new CommonCell(getActivity(), mSixSections.get(i));
                 mCells.add(cell);
             }
             mCells.add(new SectionSeparatorCell(getActivity()));
@@ -239,6 +247,14 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
     }
 
+    private class SettingsClickListener implements CellClickListener {
+        @Override
+        public void onClick(ListViewCell cell) {
+            Intent i = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(i);
+        }
+    }
+
 
     private class GetUserStatDataTask extends AsyncTask<Void, Void, GetUserStatDataResponse> {
         @Override
@@ -253,7 +269,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
                 return;
             }
 
-            SecondSectionCell cell = (SecondSectionCell) mCells.get(1);
+            SecondSectionCell cell = (SecondSectionCell) mCells.get(2);
             cell.setJiFen(resp.getJifen());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_JIFEN, resp.getJifen());
             cell.setChaiFu(resp.getChaiFu());
@@ -262,9 +278,9 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_TEAMPEOPLE, resp.getTeamPeople());
             cell.updateView();
 
-            CommonCell cell0  = (CommonCell)mCells.get(3);
-            CommonCell cell1 = (CommonCell)mCells.get(4);
-            CommonCell cell2 = (CommonCell)mCells.get(5);
+            CommonCell cell0  = (CommonCell)mCells.get(6);
+            CommonCell cell1 = (CommonCell)mCells.get(7);
+            CommonCell cell2 = (CommonCell)mCells.get(8);
             cell0.getRecord().setOtherInfo(resp.getTuiJianPeople());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_TUIJIAN, resp.getTuiJianPeople());
             cell0.updateView();

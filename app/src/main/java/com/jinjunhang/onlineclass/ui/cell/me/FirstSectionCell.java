@@ -57,6 +57,8 @@ public class FirstSectionCell extends BaseListViewCell {
                 mActivity.startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_USER_IAMGE);
             }
         });
+        mUserImage.setBorderColor(0x000000);
+        mUserImage.setBorderWidth(2.0f);
 
         mNameLabel = (TextView) v.findViewById(R.id.name_label);
         mLevelLabel = (TextView) v.findViewById(R.id.level_label);
@@ -69,9 +71,9 @@ public class FirstSectionCell extends BaseListViewCell {
     public void update() {
         LoginUser loginUser = mLoginUserDao.get();
         if (loginUser != null) {
-            mNameLabel.setText(loginUser.getName() + "（"+loginUser.getNickName()+"）");
-            mLevelLabel.setText("等级:   "+loginUser.getLevel());
-             mBossLabel.setText("上级:   "+loginUser.getBoss());
+            mNameLabel.setText(loginUser.getName());
+            mLevelLabel.setText(loginUser.getLevel());
+             mBossLabel.setText("我的上级: "+loginUser.getBoss());
             String url = ServiceConfiguration.GetUserProfileImage(loginUser.getUserName());
             //Glide.with(mActivity).load(url).asBitmap().into(mUserImage);
             //mUserImage.setImageResource(R.drawable.log);

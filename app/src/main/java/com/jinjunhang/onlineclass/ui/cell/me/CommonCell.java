@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
@@ -34,7 +35,10 @@ public class CommonCell extends BaseListViewCell {
         ImageView image = (ImageView) v.findViewById(R.id.icon_image);
         image.setImageResource(mRecord.getImage()
         );
-        return (LinearLayout)v.findViewById(R.id.root_container);
+
+        RelativeLayout layout = (RelativeLayout)v.findViewById(R.id.root_container);
+        //layout.setMinimumHeight(40);
+        return layout;
     }
 
     @Override
