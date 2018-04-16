@@ -68,7 +68,13 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
     private void initSections() {
         if (mFourthSections.size() == 0) {
-            mFourthSections.add(new LineRecord(R.drawable.user1, "邀请好友", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
+            mFourthSections.add(new LineRecord(R.drawable.user1, "邀请好友", new CellClickListener() {
+                @Override
+                public void onClick(ListViewCell cell) {
+                    Intent i = new Intent(getActivity(), QRImageActivity.class);
+                    startActivity(i);
+                }
+            }, "", ""));
             mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
 
@@ -94,7 +100,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
 
         if (mSixSections.size() == 0) {
-            mSixSections.add(new LineRecord(R.drawable.user7, "我要合作", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
+          //  mSixSections.add(new LineRecord(R.drawable.user7, "我要合作", webBroserClickListener, ServiceLinkManager.MyAgentUrl(), ""));
             mSixSections.add(new LineRecord(R.drawable.user8, "设置", new SettingsClickListener(), ServiceLinkManager.MyAgentUrl(), ""));
         }
     }

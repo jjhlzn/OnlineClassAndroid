@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -81,6 +82,17 @@ public class SecondSectionCell extends BaseListViewCell {
                 mActivity.startActivity(i);
             }
         }); */
+
+        Button tixianBtn = (Button)v.findViewById(R.id.tixianBtn);
+        tixianBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "提现")
+                        .putExtra(WebBrowserActivity.EXTRA_URL,  ServiceLinkManager.MyExchangeUrl());
+                mActivity.startActivity(i);
+            }
+        });
 
 
         updateView();

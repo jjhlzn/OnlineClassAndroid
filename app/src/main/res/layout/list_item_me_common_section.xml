@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_container"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="60dp"
     android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
 
@@ -12,7 +12,7 @@
     <LinearLayout
         android:id="@+id/imagePart"
         android:layout_width="45dp"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:layout_alignParentLeft="true"
         android:gravity="center_vertical"
         android:layout_marginRight="0dp">
@@ -29,7 +29,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
         android:layout_toRightOf="@+id/imagePart"
         android:background="@drawable/textview_bottom_border">
 

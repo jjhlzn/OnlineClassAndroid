@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.fragment.user.SetPasswordFragment;
 
@@ -24,6 +25,7 @@ public class SetPasswordActivity extends SingleFragmentActivity {
         return new SetPasswordFragment();
     }
 
+
     @Override
     protected void createActionBar() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -31,5 +33,6 @@ public class SetPasswordActivity extends SingleFragmentActivity {
         getSupportActionBar().setCustomView(customView);
         Toolbar parent = (Toolbar) customView.getParent();
         parent.setContentInsetsAbsolute(0, 0);
+        Utils.setLightStatusBar(customView, this);
     }
 }

@@ -45,6 +45,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/tixianBtn"
             android:layout_width="70dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
