@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    
+     <ImageView
+         android:id="@+id/courseImage"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src="@drawable/course_demo"
+        android:scaleType="fitXY"/>
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/back_white_2"
+        android:background="@null"
+        android:scaleType="fitXY"
+        />
+
+    <ImageButton
+        android:id="@+id/share_button"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/share_white"
+        android:background="@null"
+        android:scaleType="fitXY"
+
+        />
+
+    <RelativeLayout
+        android:layout_below="@+id/courseImage"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:background="#F1F2F4"
+        android:layout_height="44dp">
+        <ImageButton
+            android:id="@+id/playBtn"
+            android:layout_alignParentStart="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/play"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="25dp"/>
+        <TextView
+            android:layout_toRightOf="@+id/playBtn"
+            android:gravity="center_vertical"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="开始直播"
+            android:textColor="@color/black"
+            android:textSize="13dp"/>
+
+
+        <ImageView
+            android:layout_toLeftOf="@+id/listenerCount"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/u"/>
+        <TextView
+            android:id="@+id/listenerCount"
+            android:layout_toLeftOf="@+id/ren"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="10000"
+            android:textColor="@color/red"
+            android:textSize="13dp"
+            android:layout_marginLeft="4dp"/>
+        <TextView
+            android:layout_alignParentRight="true"
+            android:id="@+id/ren"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="人在线"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            android:layout_marginRight="25dp"/>
+    </RelativeLayout>
+</RelativeLayout>

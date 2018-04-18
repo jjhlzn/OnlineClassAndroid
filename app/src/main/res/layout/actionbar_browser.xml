@@ -55,8 +55,8 @@
             android:layout_alignParentRight="true">
             <ImageButton
                 android:id="@+id/actionbar_right_button"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/back"
                 android:background="@null"
                 android:visibility="invisible"

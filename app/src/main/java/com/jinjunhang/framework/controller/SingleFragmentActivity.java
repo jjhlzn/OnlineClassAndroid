@@ -55,7 +55,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setElevation(0);
 
         setContentView(R.layout.activity_fragment);
 
@@ -71,8 +70,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                     .commit();
         }
 
-
+        Utils.setLightStatusBar(findViewById(R.id.fragmentContainer), this);
         if (hasActionBar()) {
+            getSupportActionBar().setElevation(0);
             Log.d(TAG, "has action bar");
             createActionBar();
             ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(getActivityTitle());

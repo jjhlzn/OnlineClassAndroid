@@ -45,4 +45,8 @@ public abstract class BaseListViewCell implements ListViewCell {
     public void onClick() {
 
     }
+
+    public int getMeasuredHeight() {
+        return getView().getMeasuredHeight();
+    }
 }

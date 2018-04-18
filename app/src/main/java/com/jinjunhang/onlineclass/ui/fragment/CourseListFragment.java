@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -25,6 +27,7 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.service.GetCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetCoursesResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
+import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.LiveCourseCell;
 
@@ -163,6 +166,8 @@ public class CourseListFragment extends BaseFragment  {
 
             mListView = (ListView)v.findViewById(R.id.listView);
 
+
+
             //去掉列表的分割线
             mListView.setDividerHeight(0);
             mListView.setDivider(null);
@@ -171,6 +176,14 @@ public class CourseListFragment extends BaseFragment  {
 
             mMyAdapter = new MyAdapter(getActivity(), mCells);
             mListView.setAdapter(mMyAdapter);
+
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(getActivity(), NewLiveSongActivity.class);
+                    getActivity().startActivity(intent);
+                }
+            });
 
         }
 

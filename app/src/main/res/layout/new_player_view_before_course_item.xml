@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/container"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+               >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/textview_bottom_border">
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="1."
+            android:textSize="18dp"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_toRightOf="@+id/number"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="李善友：如何成为更利害的人？"
+            android:textSize="18dp"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_toRightOf="@+id/title"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAlignment="textEnd"
+
+            android:text="10分钟"
+            android:textSize="18dp"
+            android:textColor="@color/ccl_grey600"/>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
