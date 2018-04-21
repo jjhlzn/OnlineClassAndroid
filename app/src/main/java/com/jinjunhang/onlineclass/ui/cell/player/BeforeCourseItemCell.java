@@ -7,16 +7,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.BeforeCourse;
+import com.jinjunhang.onlineclass.model.Course;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 
 public class BeforeCourseItemCell extends BaseListViewCell {
 
-    private BeforeCourse mBeforeCourse;
+    private Course mCourse;
 
-    public BeforeCourseItemCell(Activity activity, BeforeCourse beforeCourse) {
+    public BeforeCourseItemCell(Activity activity, Course course) {
         super(activity);
-        this.mBeforeCourse = beforeCourse;
+        this.mCourse = course;
     }
 
     @Override
@@ -26,9 +26,9 @@ public class BeforeCourseItemCell extends BaseListViewCell {
         TextView title = (TextView) v.findViewById(R.id.title);
         TextView time = (TextView) v.findViewById(R.id.time);
 
-        sequence.setText(mBeforeCourse.getSequence()+".");
-        title.setText(mBeforeCourse.getTitle());
-        time.setText(mBeforeCourse.getTime());
+        sequence.setText(mCourse.getSequence()+".");
+        title.setText(mCourse.getTitle());
+        time.setText(mCourse.getTime());
 
         return (RelativeLayout)v.findViewById(R.id.container);
     }

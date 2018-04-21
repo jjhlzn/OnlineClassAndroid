@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  */
 
 public class LiveCourseCell extends MainPageCourseCell {
-    public LiveCourseCell(Activity activity, GetTuijianCoursesResponse.Course course) {
+    public LiveCourseCell(Activity activity, Album course) {
         super(activity, course);
     }
 
@@ -34,15 +35,15 @@ public class LiveCourseCell extends MainPageCourseCell {
         liveTime.setText(mCourse.getLiveTime());
 
         if ("正在直播".equals(mCourse.getStatus())) {
-            status.setTextColor(0xBE1520);
+            status.setTextColor(mActivity.getResources().getColor(R.color.red));
         } else {
-            status.setTextColor(0x000000);
+            status.setTextColor(mActivity.getResources().getColor(R.color.black));
         }
 
         if (mCourse.getListenerCount() == 0) {
-            listener.setTextColor(0x000000);
+            listener.setTextColor(mActivity.getResources().getColor(R.color.black));
         } else {
-            listener.setTextColor(0xBE1520);
+            listener.setTextColor(mActivity.getResources().getColor(R.color.red));
         }
         return g;
     }

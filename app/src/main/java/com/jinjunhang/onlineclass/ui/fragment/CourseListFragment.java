@@ -18,18 +18,36 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
+import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
+import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
+import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
 import com.jinjunhang.onlineclass.service.GetCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetCoursesResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.LiveCourseCell;
+import com.jinjunhang.onlineclass.ui.fragment.album.AlbumDetailFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
+import com.jinjunhang.player.ExoPlayerNotificationManager;
+import com.jinjunhang.player.MusicPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,21 +57,20 @@ import java.util.List;
  */
 
 public class CourseListFragment extends BaseFragment  {
-    //public final static String EXTRA_ALBUMTYPE = "extra_albumtype";
-
     private final static String TAG = LogHelper.makeLogTag(CourseListFragment.class);
-
-    private PagableController mPagableController;
 
     private ListView mListView;
     private LoadingAnimation mLoading;
     private ImageButton everydayBtn, vipBtn, agentBtn;
     private CoursePage[] pages;
     private ViewGroup[] mViewGroups;
+    private ExoPlayerNotificationManager mNotificationManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mNotificationManager = ExoPlayerNotificationManager.getInstance(getActivity());
+        mLoading = new LoadingAnimation(getActivity());
         View v = inflater.inflate(R.layout.fragment_couselist, container, false);
         everydayBtn = (ImageButton) v.findViewById(R.id.everyday_btn);
         vipBtn = (ImageButton) v.findViewById(R.id.vip_btn);
@@ -81,6 +98,7 @@ public class CourseListFragment extends BaseFragment  {
                 agentBtn.setImageDrawable(getActivity().getDrawable(R.drawable.agent));
 
                 showPage(0);
+
             }
         });
 
@@ -110,6 +128,8 @@ public class CourseListFragment extends BaseFragment  {
         showPage(0);
         return v;
     }
+
+
 
     private void showPage(int index) {
 
@@ -148,26 +168,38 @@ public class CourseListFragment extends BaseFragment  {
     }
 
 
-    private class CoursePage  {
+    private class CoursePage implements SwipeRefreshLayout.OnRefreshListener {
 
         public View v;
-        private LoadingAnimation mLoading;
+        //private LoadingAnimation mLoading;
         private ListView mListView;
         private MyAdapter mMyAdapter;
         private SwipeRefreshLayout mSwipeRefreshLayout;
         private List<ListViewCell> mCells = new ArrayList<>();
-        private List<GetTuijianCoursesResponse.Course> mCourses = new ArrayList<>();
+        private List<Album> mCourses = new ArrayList<>();
+        private boolean mIsLoading = false;
         public boolean loadCompleted = false;
+        //private GetAlbumSongsTask mGetAlbumSongsTask;
+
+        @Override
+        public void onRefresh() {
+            if (mIsLoading) {
+                return;
+            }
+            mIsLoading = true;
+
+            loadCourses();
+        }
 
 
         public CoursePage(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_white, container, false);
 
+            mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+            mSwipeRefreshLayout.setOnRefreshListener(this);
 
+            //mGetAlbumSongsTask = new GetAlbumSongsTask();
             mListView = (ListView)v.findViewById(R.id.listView);
-
-
-
             //去掉列表的分割线
             mListView.setDividerHeight(0);
             mListView.setDivider(null);
@@ -180,20 +212,25 @@ public class CourseListFragment extends BaseFragment  {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getActivity(), NewLiveSongActivity.class);
-                    getActivity().startActivity(intent);
+                    final Album album = mCourses.get(i);
+                    //Utils.showErrorMessage(getActivity(), "clicked");
+                    mLoading.show("");
+                    GetAlbumSongsRequest request = new GetAlbumSongsRequest();
+                    request.setAlbum(album);
+                    new GetAlbumSongsTask().execute(request);
                 }
             });
 
         }
 
         public void loadCourses() {
-            new GetCoursesTask().execute();
+            GetAlbumsRequest request = new GetAlbumsRequest(AlbumType.LiveAlbumType);
+            new GetAlbumsTask().execute(request);
         }
 
         public void SetCourseListView() {
             mCells.clear();
-            for (GetTuijianCoursesResponse.Course course : mCourses) {
+            for (Album course : mCourses) {
                 mCells.add(new LiveCourseCell(getActivity(), course));
             }
             mMyAdapter.notifyDataSetChanged();
@@ -225,26 +262,88 @@ public class CourseListFragment extends BaseFragment  {
             }
         }
 
-        private class GetCoursesTask extends AsyncTask<Void, Void, GetCoursesResponse> {
+
+        public class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
+
+            private GetAlbumSongsRequest request;
+            private CoursePage mPage;
 
             @Override
-            protected GetCoursesResponse doInBackground(Void... voids) {
-                GetCoursesRequest request = new GetCoursesRequest();
+            protected GetAlbumSongsResponse doInBackground(GetAlbumSongsRequest... params) {
+                request = params[0];
+                LogHelper.d(TAG, "GetAlbumSongsTask.GetAlbumSongsTask() called");
                 return new BasicService().sendRequest(request);
             }
 
-
             @Override
-            protected void onPostExecute(GetCoursesResponse response) {
-                super.onPostExecute(response);
+            protected void onPostExecute(GetAlbumSongsResponse resp) {
+                super.onPostExecute(resp);
+                mLoading.hide();
 
-                if (!response.isSuccess()) {
-                    LogHelper.e(TAG, response.getErrorMessage());
+                if (!resp.isSuccess()) {
+                    LogHelper.e(TAG, resp.getErrorMessage());
+                    Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
                     return;
                 }
-                loadCompleted = true;
-                mCourses = response.getCourses();
+
+                if (resp.getResultSet().size() >= 1) {
+
+
+                    LiveSong song = (LiveSong) resp.getResultSet().get(0);
+                    MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
+                    if (!musicPlayer.isPlay(song)) {
+                        musicPlayer.pause();
+                        musicPlayer.play(resp.getResultSet(), 0);
+                        //mNotificationManager.display();
+                    }
+                    Intent i = new Intent(getActivity(), NewLiveSongActivity.class);
+                            //.putExtra(BaseSongFragment.EXTRA_SONG, song);
+                    startActivity(i);
+
+                    /*
+                    Intent i = new Intent(getActivity(), WebBrowserActivity.class)
+                            .putExtra(WebBrowserActivity.EXTRA_URL, "http://www.baidu.com")
+                            .putExtra(WebBrowserActivity.EXTRA_TITLE, "测试");
+                    startActivity(i); */
+                    return;
+                } else {
+                    Utils.showErrorMessage(getActivity(), "服务端出错");
+                    return;
+                }
+            }
+        }
+
+
+        private class GetAlbumsTask extends AsyncTask<GetAlbumsRequest, Void, GetAlbumsResponse> {
+
+            private GetAlbumsRequest request;
+            @Override
+            protected GetAlbumsResponse doInBackground(GetAlbumsRequest... params) {
+                request = params[0];
+                return new BasicService().sendRequest(request);
+            }
+
+            @Override
+            protected void onPostExecute(GetAlbumsResponse resp) {
+                super.onPostExecute(resp);
+                //mLoading.hide();
+                mSwipeRefreshLayout.setRefreshing(false);
+                mIsLoading = false;
+
+                if (!resp.isSuccess()) {
+                    LogHelper.e(TAG, resp.getErrorMessage());
+                    Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
+                    return;
+                }
+
+                mCourses = resp.getResultSet();
                 SetCourseListView();
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                //mLoading.show("");
             }
         }
     }

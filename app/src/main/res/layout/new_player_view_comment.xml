@@ -3,79 +3,87 @@
               android:id="@+id/container"
               android:layout_width="match_parent"
               android:layout_height="86dp"
-              android:background="@drawable/bottom_border"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="55dp"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal|top">
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/comment_user_image"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/comment_user"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="0.65"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+                  android:layout_width="match_parent"
+                  android:layout_height="86dp"
+                  android:background="@drawable/textview_bottom_border"
+                  android:orientation="horizontal"
+                  android:layout_marginLeft="18dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="12dp"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|top">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/comment_user_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="-5dp"
+                android:src="@drawable/comment_user"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.65"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/comment_username"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/comment_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical|left"
+                    android:text="漫天飞雪"
+
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:id="@+id/comment_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="7dp"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical|left"
+                    android:text="00:00:00"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/darker_gray"/>
+
+            </LinearLayout>
+
+
+            <com.jinjunhang.onlineclass.ui.lib.MyEmojiTextView
+                android:id="@+id/comment_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:textSize="14sp"
-                android:gravity="center_vertical|left"
-                android:text="漫天飞雪"
-
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="8dp"
+                android:text="有谁知道房地产有哪些核心进口零部件."
+                android:singleLine="false"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@android:color/black"/>
 
-            <TextView
-                android:id="@+id/comment_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="7dp"
-                android:textSize="14sp"
-                android:gravity="center_vertical|left"
-                android:text="00:00:00"
-                android:textAlignment="textStart"
-                android:textColor="@android:color/darker_gray"/>
+
 
         </LinearLayout>
 
 
-        <com.jinjunhang.onlineclass.ui.lib.MyEmojiTextView
-            android:id="@+id/comment_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
-            android:text="有谁知道房地产有哪些核心进口零部件."
-            android:singleLine="false"
-            android:textSize="15dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@android:color/black"/>
-
-
-
     </LinearLayout>
-
-
-
 
 
 </LinearLayout>

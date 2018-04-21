@@ -16,6 +16,7 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
@@ -44,8 +45,9 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private List<ListViewCell> mCells = new ArrayList<>();
     private String mType;
     private HeaderAdvCell mHeaderAdvCell;
-    private List<GetTuijianCoursesResponse.Course> mCourses;
+    private List<Album> mCourses;
     private FragmentActivity mActivity;
+    private boolean mIsLoading;
 
     public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
         mActivity = activity;
@@ -112,7 +114,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
         }
 
-        for(GetTuijianCoursesResponse.Course course : mCourses) {
+        for(Album course : mCourses) {
             mCells.add(new MainPageCourseCell(mActivity, course));
         }
 
@@ -121,7 +123,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
     public void onRefresh() {
-
+        new GetTuijianCoursesTask().execute();
     }
 
     private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
@@ -167,6 +169,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
 
             mCourses = response.getCourses();
+            LogHelper.d("mCourse.size() = " + mCourses.size());
             setCoursesView();
         }
     }

@@ -3,6 +3,8 @@ package com.jinjunhang.onlineclass.service;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.AlbumType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,39 +20,56 @@ public class GetTuijianCoursesResponse extends ServerResponse {
 
     private static final String TAG = LogHelper.makeLogTag(GetTuijianCoursesResponse.class);
 
-    private List<Course> mCourses = new ArrayList<>();
+    private List<Album> mCourses = new ArrayList<>();
 
     public GetTuijianCoursesResponse() {
 
     }
 
-    public List<Course> getCourses() {
+    public List<Album> getCourses() {
         return mCourses;
     }
 
     @Override
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
-        //super.parse(request, jsonObject);
 
-        List<Course> courses = new ArrayList<>();
+        JSONArray jsonArray = jsonObject.getJSONArray("albums");
 
-        JSONArray jsonArray = jsonObject.getJSONArray("courses");
-        for( int i = 0; i < jsonArray.length(); i++ ) {
+        for(int i = 0 ; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.getJSONObject(i);
+            Album album = new Album();
+            album.setId(json.getString("id"));
+            album.setName(json.getString("name"));
+            album.setAuthor(json.getString("author"));
+            album.setDesc(json.getString("desc"));
+            album.setCount(json.getInt("count"));
+            album.setImage(json.getString("image"));
+            album.setListenCount(json.getString("listenCount"));
+            album.setAlbumType(AlbumType.getAlbumTypeByCode(json.getString("type")));
+            if (json.has("playing")) {
+                album.setPlaying(json.getBoolean("playing"));
+            }
 
-            Course course = new Course();
+            if (json.has("isReady")) {
+                album.setReady(json.getBoolean("isReady"));
+            } else {
+                album.setReady(true);
+            }
 
-            course.setId(json.getString("id"));
-            course.setName(json.getString("name"));
-            course.setDesc(json.getString("desc"));
-            course.setDate(json.getString("date"));
-            course.setImageUrl(json.getString("image"));
-            course.setStatus(json.getString("status"));
-            course.setStars(json.getDouble("stars"));
-            course.setUrl(json.getString("url"));
-            course.setListenerCount(json.getInt("listenerCount"));
-            course.setLiveTime(json.getString("liveTime"));
-            mCourses.add(course);
+            if (json.has("playTimeDesc")) {
+                album.setPlayTimeDesc(json.getString("playTimeDesc"));
+            }
+
+            if (json.has("isAgent")) {
+                album.setAgent(json.getBoolean("isAgent"));
+            }
+
+            album.setStatus(json.getString("status"));
+            album.setStars(json.getDouble("stars"));
+            album.setListenerCount(json.getInt("listenerCount"));
+            album.setLiveTime(json.getString("liveTime"));
+
+            mCourses.add(album);
         }
     }
 
@@ -65,6 +84,8 @@ public class GetTuijianCoursesResponse extends ServerResponse {
         private String mUrl;
         private String mLiveTime;
         private int mListenerCount;
+        private String mShareTitle;
+        private String mShareUrl;
 
         public String getId() {
             return mId;
@@ -144,6 +165,22 @@ public class GetTuijianCoursesResponse extends ServerResponse {
 
         public void setListenerCount(int listenerCount) {
             mListenerCount = listenerCount;
+        }
+
+        public String getShareTitle() {
+            return mShareTitle;
+        }
+
+        public String getShareUrl() {
+            return mShareUrl;
+        }
+
+        public void setShareTitle(String shareTitle) {
+            mShareTitle = shareTitle;
+        }
+
+        public void setShareUrl(String shareUrl) {
+            mShareUrl = shareUrl;
         }
     }
 }

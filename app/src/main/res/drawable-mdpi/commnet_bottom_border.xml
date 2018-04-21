@@ -3,7 +3,7 @@
     <!-- Border -->
     <item>
         <shape>
-            <solid android:color="@color/colorPrimary"></solid>
+            <solid android:color="@color/ccl_grey600"></solid>
         </shape>
     </item>
     <!-- Body -->

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ public class MainPageCourseCell extends BaseListViewCell {
     private static final String TAG = LogHelper.makeLogTag(MainPageCourseCell.class);
 
     protected ViewGroup mView;
-    protected GetTuijianCoursesResponse.Course mCourse;
+    protected Album mCourse;
     protected Activity mActivity;
     private List<ImageView> mStars;
 
-    public MainPageCourseCell(Activity activity, GetTuijianCoursesResponse.Course course) {
+    public MainPageCourseCell(Activity activity, Album course) {
         super(activity);
         mCourse = course;
         mActivity = activity;
@@ -65,7 +66,7 @@ public class MainPageCourseCell extends BaseListViewCell {
         ImageView imageView = (ImageView)view.findViewById(R.id.course_image);
         Glide
                 .with(mActivity)
-                .load(mCourse.getImageUrl())
+                .load(mCourse.getImage())
                 .placeholder(R.drawable.course)
                 .into(imageView);
 

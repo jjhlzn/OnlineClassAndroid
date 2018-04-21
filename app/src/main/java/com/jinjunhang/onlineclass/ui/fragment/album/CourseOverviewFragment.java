@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,9 +12,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.model.Course;
+import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.service.GetCourseInfoRequest;
+import com.jinjunhang.onlineclass.service.GetCourseInfoResponse;
+import com.jinjunhang.onlineclass.service.GetCoursesRequest;
+import com.jinjunhang.onlineclass.service.GetCoursesResponse;
+import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
+import com.jinjunhang.onlineclass.service.GetLiveCommentsResponse;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.comment.CommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.player.CourseOverViewCell;
@@ -40,32 +52,31 @@ public class CourseOverviewFragment extends BaseFragment {
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
-
         //去掉列表的分割线
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
 
-        mCells.add(new CourseOverViewCell(getActivity()));
+        mCells.add(new CourseOverViewCell(getActivity(), new Course()));
         mCells.add(new NewCommentHeaderCell(getActivity()));
-        setComments();
 
         mListAdapter = new MyListAdapter(getActivity(), mCells);
         mListView.setAdapter(mListAdapter);
 
         if (mSongFragment != null)
              mSongFragment.resetViewPagerHeight(0);
+
+        new GetLiveSongCommentsTask().execute();
+        new GetCourseInfoTask().execute();
         return v;
     }
 
     private void setComments() {
-        for(int i = 0; i < 10; i++) {
-            Comment comment = new Comment();
-            comment.setContent("1111111");
-            comment.setNickName("test");
-            comment.setTime("47分钟前");
-            mComments.add(comment);
+        for (Comment comment : mComments) {
             mCells.add(new NewCommentCell(getActivity(), comment));
         }
+        mListAdapter.notifyDataSetChanged();
+        if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
+            mSongFragment.resetViewPagerHeight(0);
     }
 
     private class MyListAdapter extends ArrayAdapter<ListViewCell> {
@@ -96,5 +107,64 @@ public class CourseOverviewFragment extends BaseFragment {
     public int getListViewHeightBasedOnChildren() {
         return Utils.getListViewHeightBasedOnChildren(mListView);
     }
+
+
+    public
+    String mLastCommentId = "-1";
+    private class GetLiveSongCommentsTask extends AsyncTask<Void, Void, GetLiveCommentsResponse> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected GetLiveCommentsResponse doInBackground(Void... params) {
+            GetLiveCommentsRequest req = new GetLiveCommentsRequest();
+            req.setSong(new Song());
+            req.setLastId(mLastCommentId);
+            return new BasicService().sendRequest(req);
+        }
+
+        @Override
+        protected void onPostExecute(GetLiveCommentsResponse resp) {
+            if (resp.getStatus() != ServerResponse.SUCCESS) {
+                return;
+            }
+            //commentCount += resp.getCommentList().size();
+            if (resp.getCommentList().size() > 0) {
+                mLastCommentId = resp.getCommentList().get(0).getId() + "";
+            }
+
+            mComments = resp.getCommentList();
+            setComments();
+        }
+    }
+
+    private class GetCourseInfoTask extends AsyncTask<Void, Void, GetCourseInfoResponse> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected GetCourseInfoResponse doInBackground(Void... params) {
+            GetCourseInfoRequest req = new GetCourseInfoRequest();
+            req.setId("");
+            return new BasicService().sendRequest(req);
+        }
+
+        @Override
+        protected void onPostExecute(GetCourseInfoResponse resp) {
+            if (resp.getStatus() != ServerResponse.SUCCESS) {
+                return;
+            }
+
+            Course course = resp.getCourse();
+            CourseOverViewCell cell = (CourseOverViewCell) mListView.getItemAtPosition(0);
+            cell.setCourse(course);
+            mListAdapter.notifyDataSetChanged();
+        }
+    }
+
 
 }

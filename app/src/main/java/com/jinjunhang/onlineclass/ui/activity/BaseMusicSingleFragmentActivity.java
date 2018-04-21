@@ -23,27 +23,27 @@ import com.jinjunhang.player.MusicPlayer;
  */
 public abstract class BaseMusicSingleFragmentActivity extends SingleFragmentActivity {
 
-    protected BottomPlayerController mPlayerController;
+    //protected BottomPlayerController mPlayerController;
     protected MusicPlayer mMusicPlayer = MusicPlayer.getInstance(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPlayerController = BottomPlayerController.getInstance(this);
+        //mPlayerController = BottomPlayerController.getInstance(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mMusicPlayer.addListener(mPlayerController);
-        mPlayerController.updateView();
+        //mMusicPlayer.addListener(mPlayerController);
+        //mPlayerController.updateView();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mMusicPlayer.removeListener(mPlayerController);
-        mPlayerController.updateView();
+        //mMusicPlayer.removeListener(mPlayerController);
+        //mPlayerController.updateView();
     }
 
 }

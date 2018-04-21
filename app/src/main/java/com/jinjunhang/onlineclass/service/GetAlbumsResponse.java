@@ -56,8 +56,15 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
                 album.setAgent(json.getBoolean("isAgent"));
             }
 
+            album.setStatus(json.getString("status"));
+            album.setStars(json.getDouble("stars"));
+            album.setListenerCount(json.getInt("listenerCount"));
+            album.setLiveTime(json.getString("liveTime"));
+
             mResultSet.add(album);
         }
 
     }
+
+
 }

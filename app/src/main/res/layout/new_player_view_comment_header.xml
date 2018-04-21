@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:text="课程评论    4.9分"
-            android:textSize="22dp"
+            android:textSize="21dp"
             android:textColor="@color/black"/>
 
     </LinearLayout>

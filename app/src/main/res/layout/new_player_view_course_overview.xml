@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:text="个人信用融资公开课"
-            android:textSize="22dp"
+            android:textSize="21dp"
             android:textColor="@color/black"/>
 
     </LinearLayout>
@@ -38,7 +38,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="德约科维奇次盘开局直落四球保发，以1-0领先。减少失误的拉约维奇同样拿下发球局，终于赢得比赛开始以来的第一局。不过塞尔维亚球王没有受影响，挽救破发点后再次保发，就带着2-1的微弱优势进入局间休息。重返球场的9号种子开始在底线发力，虽然浪费了3个破发点，但还是把握住第4次机会完成破发。随后顶住压力拿下发球局，就把优势扩大到4-1。火力全开的小德随后直落四球再度破发得手，在比赛最后阶段挽救两个破发点后完成保发，他就以6-1取得大胜，晋级第二轮。"
+        android:text=""
         android:maxLines="100"
         android:textSize="19dp"
         android:textColor="@color/ccl_grey600"

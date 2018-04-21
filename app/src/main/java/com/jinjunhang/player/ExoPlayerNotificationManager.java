@@ -101,7 +101,8 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         String author = "";
         if (song != null) {
             songName = song.getName();
-            author = song.getAlbum().getAuthor();
+            //author = song.getAlbum().getAuthor();
+            author = song.getAuthor();
         }
 
 
@@ -123,7 +124,8 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         notification.flags |= Notification.FLAG_NO_CLEAR;
         mNotificationManager.notify(NOTIFICATION_ID, notification);
 
-        fetchArtUrl = song.getAlbum().getImage();
+        //fetchArtUrl = song.getAlbum().getImage();
+        fetchArtUrl = song.getImageUrl();
         LogHelper.d(TAG, "imageUrl = " + fetchArtUrl);
         fetchBitmapFromURLAsync(fetchArtUrl, notificationBuilder);
     }

@@ -51,17 +51,6 @@ public class LiveSongListViewCellAdapter extends SongListViewCellAdapter {
         mCells.add(mPlayerCell);
         mCells.add(mSeparatorCell);
 
-        /*
-        LogHelper.d(TAG, "recreateCells: hasAdvImage = " + mSong.hasAdvImage());
-        if (mSong.hasAdvImage()) {
-            if (mSongAdvCell == null) {
-                mSongAdvCell = new SongAdvCell(mActivity, mSong);
-            }
-            mCells.add(mSongAdvCell);
-            mCells.add(mSeparatorCell);
-        } */
-
-       // mCells.add(mCommentHeaderCell);
         if (mCommentCells.size() == 0) {
             mCells.add(mNoCommentCell);
         }

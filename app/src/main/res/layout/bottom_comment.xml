@@ -21,6 +21,7 @@
            android:textSize="16dp"
            android:textStyle="normal"
            android:inputType="number"
+           android:textColor="@color/black"
            />
 
     <ImageButton
@@ -38,7 +39,7 @@
           android:layout_width="50dp"
           android:layout_height="match_parent"
           android:textSize="17dp"
-          android:textColor="@color/colorPrimary"
+          android:textColor="@color/black"
           android:gravity="bottom"
           android:layout_marginLeft="10dp"
           android:paddingRight="8dp"

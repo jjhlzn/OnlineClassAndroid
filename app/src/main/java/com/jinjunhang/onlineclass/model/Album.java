@@ -24,6 +24,13 @@ public class Album extends BaseModelObject {
     private boolean mIsAgent = false;
 
 
+    private String mDate;
+    private String mStatus;
+    private double mStars;
+    private String mLiveTime;
+    private int mListenerCount;
+
+
     /**
      * 用于在课程列表中，辅助展示课程类型
      * @return
@@ -41,6 +48,49 @@ public class Album extends BaseModelObject {
         AgentAlbum = new Album();
         AgentAlbum.setName("代理培训课程");
         AgentAlbum.setAlbumType(AlbumType.DummyAlbumType);
+    }
+
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public double getStars() {
+        return mStars;
+    }
+
+    public String getLiveTime() {
+        return mLiveTime;
+    }
+
+    public int getListenerCount() {
+        return mListenerCount;
+    }
+
+    public void setStatus(String status) {
+        mStatus = status;
+    }
+
+    public void setStars(double stars) {
+        mStars = stars;
+    }
+
+    public void setLiveTime(String liveTime) {
+        mLiveTime = liveTime;
+    }
+
+
+
+    public void setListenerCount(int listenerCount) {
+        mListenerCount = listenerCount;
+    }
+
+    public String getDate() {
+        return mDate;
+    }
+
+    public void setDate(String date) {
+        mDate = date;
     }
 
     public String getId() {
@@ -156,6 +206,10 @@ public class Album extends BaseModelObject {
     public void setAgent(boolean agent) {
         mIsAgent = agent;
     }
+
+
+
+
 }
 
 

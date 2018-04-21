@@ -27,8 +27,8 @@
         android:id="@+id/share_button"
         android:layout_marginTop="12dp"
         android:layout_marginRight="12dp"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/share_white"
         android:background="@null"
@@ -45,10 +45,11 @@
         <ImageButton
             android:id="@+id/playBtn"
             android:layout_alignParentStart="true"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/play"
-            android:layout_marginTop="7dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/icon_play"
+            android:background="@color/transparent"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="25dp"/>
         <TextView
             android:layout_toRightOf="@+id/playBtn"
@@ -57,13 +58,13 @@
             android:layout_height="match_parent"
             android:text="开始直播"
             android:textColor="@color/black"
-            android:textSize="13dp"/>
+            android:textSize="14dp"/>
 
 
         <ImageView
             android:layout_toLeftOf="@+id/listenerCount"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/u"/>
         <TextView
@@ -74,7 +75,7 @@
             android:layout_height="match_parent"
             android:text="10000"
             android:textColor="@color/red"
-            android:textSize="13dp"
+            android:textSize="14dp"
             android:layout_marginLeft="4dp"/>
         <TextView
             android:layout_alignParentRight="true"
@@ -84,7 +85,7 @@
             android:layout_height="match_parent"
             android:text="人在线"
             android:textColor="@color/black"
-            android:textSize="13dp"
+            android:textSize="14dp"
             android:layout_marginRight="25dp"/>
     </RelativeLayout>
 </RelativeLayout>
