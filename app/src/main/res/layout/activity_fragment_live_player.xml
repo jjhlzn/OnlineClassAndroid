@@ -62,4 +62,34 @@
 
              android:visibility="gone"
         />
+
+
+    <RelativeLayout
+        android:id="@+id/share_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/background_shadow"
+        android:visibility="gone"
+        >
+
+        <LinearLayout
+            android:id="@+id/overlay_bg"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <include layout="@layout/share_menu" android:id="@+id/share_menu"
+                 android:layout_width="match_parent"
+                 android:layout_height="229dp"
+                 android:layout_marginTop="40dp"
+                 android:layout_alignParentBottom="true"
+            />
+    </RelativeLayout>
+
 </RelativeLayout>

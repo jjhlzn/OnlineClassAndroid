@@ -11,10 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +32,16 @@ import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.service.GetLiveListenerRequest;
+import com.jinjunhang.onlineclass.service.GetLiveListenerResponse;
 import com.jinjunhang.onlineclass.service.JoinRoomRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
@@ -43,6 +50,7 @@ import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
 import com.jinjunhang.onlineclass.ui.fragment.album.player.SendLiveCommentTask;
 import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
+import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
 
@@ -53,6 +61,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import io.socket.client.Ack;
 import io.socket.client.IO;
@@ -63,8 +75,6 @@ import io.socket.emitter.Emitter;
  * Created by jjh on 2016-7-2.
  */
 public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Listener {
-
-
 
     private final static String TAG = LogHelper.makeLogTag(NewLiveSongFragment.class);
 
@@ -77,6 +87,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     private BaseFragment[] mFragmensts;
     private MyPagerAdapter mMyPagerAdapter;
     private Button couseOverViewBtn, otherCourseBtn, signUpBtn;
+    private TextView mListenerTextView;
 
     public int getCurrentSelectPage() {
         return mViewPager.getCurrentItem();
@@ -85,6 +96,72 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
     private ChatManager mChatManager;
 
+    protected ShareManager mShareManager;
+
+    //定时获取评论、回复播放
+    private static final long CHAT_UPDATE_INTERNAL = 10000;
+    private static final long CHAT_UPDATE_INITIAL_INTERVAL = 2000;
+    private final Handler mHandler = new Handler();
+    private ScheduledFuture<?> mScheduleFuture;
+    private final ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private final Runnable mUpdateChatTask = new Runnable() {
+        @Override
+        public void run() {
+            updateChat();
+        }
+    };
+
+    private void stopChatUpdate() {
+        if (mScheduleFuture != null) {
+            mScheduleFuture.cancel(false);
+        }
+    }
+
+    protected void scheduleChatUpdate() {
+        stopChatUpdate();
+        if (!mExecutorService.isShutdown()) {
+            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mHandler.post(mUpdateChatTask);
+                        }
+                    }, CHAT_UPDATE_INITIAL_INTERVAL,
+                    CHAT_UPDATE_INTERNAL, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private int mUpdateChatCount = 0;
+    private void updateChat() {
+        mUpdateChatCount++;
+        if (mUpdateChatCount % 6 == 0) {
+            new GetLiveListenerTask().execute();
+        }
+    }
+
+    private  class GetLiveListenerTask extends AsyncTask<Void ,Void, GetLiveListenerResponse> {
+        @Override
+        protected GetLiveListenerResponse doInBackground(Void... params) {
+            GetLiveListenerRequest request = new GetLiveListenerRequest();
+            request.setSong(mMusicPlayer.getCurrentPlaySong());
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetLiveListenerResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                return;
+            }
+
+            int listenerCount = resp.getListernerCount();
+            LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
+            if (song != null) {
+                song.setListenPeople(listenerCount+"");
+            }
+            mListenerTextView.setText(song.getListenPeople());
+        }
+    }
 
     @Nullable
     @Override
@@ -92,7 +169,13 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
         mChatManager = new ChatManager(NewLiveSongFragment.this);
 
-        View v = inflater.inflate(R.layout.activity_fragment_live_player, container, false);
+        LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
+
+        final View v = inflater.inflate(R.layout.activity_fragment_live_player, container, false);
+        final ScrollView scrollView = (ScrollView) v.findViewById(R.id.scrollView);
+        mListenerTextView = (TextView)v.findViewById(R.id.listenerCount);
+        mListenerTextView.setText(song.getListenPeople());
+
 
         ImageButton backBtn = (ImageButton)v.findViewById(R.id.back_button);
         LogHelper.d(TAG, "backBtn = " + backBtn);
@@ -103,6 +186,12 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
                 getActivity().finish();
             }
         });
+
+
+        mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
+        mShareManager.setShareTitle(song.getShareTitle());
+        mShareManager.setShareUrl(song.getShareUrl());
+        mShareManager.setUseQrCodeImage(false);
 
         mPlayButton  = (ImageButton)v.findViewById(R.id.playBtn);
 
@@ -159,8 +248,34 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         buttonClicked(0);
         setPlayerView(v);
 
+        ImageButton shareBtn = (ImageButton)v.findViewById(R.id.share_button);
+        final ViewGroup shareView = (ViewGroup)v.findViewById(R.id.share_view);
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        View overlay = v.findViewById(R.id.overlay_bg);
+        overlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareView.setVisibility(View.INVISIBLE);
+            }
+        });
+        //这段代码不能删除，否则按在空白的地方会把
+        v.findViewById(R.id.share_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         mChatManager.setBottomCommentView(v);
         //mChatManager.loadComments();
+
+        scheduleChatUpdate();
 
         mInited = true;
         return v;
@@ -269,7 +384,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     public void onDestroy() {
         super.onDestroy();
         mChatManager.releaseChat();
-        //stopChatUpdate();
+        stopChatUpdate();
     }
 
 

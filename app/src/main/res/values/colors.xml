@@ -33,6 +33,7 @@
     <color name="background_gradient_end">#DDDDDD</color>
     <color name="default_background">#0096a6</color>
 
+    <color name="shareButtonWordColor">#555753</color>
 
     <color name="statusbar_background">#ffffff</color>
     <color name="statusbar_background2">#ffffff</color>

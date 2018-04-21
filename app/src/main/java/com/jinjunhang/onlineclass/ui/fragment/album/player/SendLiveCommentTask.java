@@ -33,6 +33,7 @@ public class SendLiveCommentTask extends AsyncTask<SendLiveCommentRequest, Void,
     public SendLiveCommentTask(NewLiveSongFragment fragment, ChatManager chatManager) {
         mFragment = fragment;
         mChatManager = chatManager;
+        mSocket = chatManager.getSocket();
     }
 
     @Override

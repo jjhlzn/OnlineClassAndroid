@@ -145,30 +145,31 @@ public class ShareManager {
         }
     }
 
+
+
     protected void  setup() {
-
-        View customView = mActivity.getSupportActionBar().getCustomView();
-        ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
-        rightButton.setImageResource(R.drawable.share_black);
-        rightButton.setVisibility(View.VISIBLE);
-
-        final ImageButton shareButton = (ImageButton) mActivity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);
-
-        if (!mIsShareButtonVisible)
-            shareButton.setVisibility(View.INVISIBLE);
-
-
 
         final View shareView = v.findViewById(R.id.share_view);
 
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogHelper.d(TAG, "shareButton clicked");
-                shareView.setVisibility(View.VISIBLE);
-                setLowerLayer(false);
-            }
-        });
+        if (mActivity.getSupportActionBar() != null) {
+            View customView = mActivity.getSupportActionBar().getCustomView();
+            ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
+            rightButton.setImageResource(R.drawable.share_black);
+            rightButton.setVisibility(View.VISIBLE);
+            final ImageButton shareButton = (ImageButton) mActivity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);
+            if (!mIsShareButtonVisible)
+                shareButton.setVisibility(View.INVISIBLE);
+
+
+            shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogHelper.d(TAG, "shareButton clicked");
+                    shareView.setVisibility(View.VISIBLE);
+                    setLowerLayer(false);
+                }
+            });
+        }
 
 
         View shareFriendButton = shareView.findViewById(R.id.weixinhaoyou_button);

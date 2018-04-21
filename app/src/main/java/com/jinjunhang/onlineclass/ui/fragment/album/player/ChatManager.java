@@ -53,8 +53,14 @@ public class ChatManager {
     public static String CHAT_JOIN_ROOM = "join room";
 
     public ChatManager(NewLiveSongFragment fragment) {
+        mCommentChars = new ArrayList<>();
         mFragment = fragment;
         mMusicPlayer = MusicPlayer.getInstance(mFragment.getActivity());
+    }
+
+
+    public Socket getSocket() {
+        return mSocket;
     }
 
     public void initChat() {
@@ -247,8 +253,8 @@ public class ChatManager {
                     return;
                 }
 
-                //Song song = mMusicPlayer.getCurrentPlaySong();
-                Song song = new Song();
+                Song song = mMusicPlayer.getCurrentPlaySong();
+                //Song song = new Song();
                 SendLiveCommentRequest request = new SendLiveCommentRequest();
 
                 //LogHelper.d(TAG, "comment0 = [" + comment + "], length = " + comment.length());
@@ -267,6 +273,8 @@ public class ChatManager {
             }
         };
     }
+
+
 
     protected void closeCommentWindow() {
         Utils.hideSoftKeyboard(mFragment.getActivity());

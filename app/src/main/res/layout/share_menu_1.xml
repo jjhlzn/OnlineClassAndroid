@@ -49,6 +49,7 @@
             android:layout_height="30dp"
             android:textAlignment="center"
             android:textSize="11dp"
+            android:textColor="@color/shareButtonWordColor"
             android:text="微信好友"/>
 
     </LinearLayout>
@@ -73,6 +74,7 @@
             android:layout_height="30dp"
             android:textAlignment="center"
             android:textSize="11dp"
+            android:textColor="@color/shareButtonWordColor"
             android:text="微信朋友圈"/>
     </LinearLayout>
 
@@ -97,6 +99,7 @@
             android:layout_height="30dp"
             android:textAlignment="center"
             android:textSize="11dp"
+            android:textColor="@color/shareButtonWordColor"
             android:text="QQ好友"/>
     </LinearLayout>
 </LinearLayout>
@@ -133,6 +136,7 @@
                 android:layout_height="30dp"
                 android:textAlignment="center"
                 android:textSize="11dp"
+                android:textColor="@color/shareButtonWordColor"
                 android:text="QQ空间"/>
 
         </LinearLayout>
@@ -157,6 +161,7 @@
                 android:layout_height="30dp"
                 android:textAlignment="center"
                 android:textSize="11dp"
+                android:textColor="@color/shareButtonWordColor"
                 android:text="新浪微博"/>
         </LinearLayout>
 
@@ -181,6 +186,7 @@
                 android:layout_height="30dp"
                 android:textAlignment="center"
                 android:textSize="11dp"
+                android:textColor="@color/shareButtonWordColor"
                 android:text="复制链接"/>
         </LinearLayout>
     </LinearLayout>

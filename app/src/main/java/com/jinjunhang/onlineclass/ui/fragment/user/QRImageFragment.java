@@ -98,6 +98,12 @@ public class QRImageFragment extends BaseFragment {
                 mViewPager.setEnabled(true);
                 mShareView.setVisibility(View.INVISIBLE);
             }
+        }) ;
+        mView.findViewById(R.id.sharez_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
         });
 
         /*
