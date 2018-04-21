@@ -40,6 +40,8 @@ import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
+import com.jinjunhang.onlineclass.ui.fragment.album.player.SendLiveCommentTask;
 import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -62,7 +64,7 @@ import io.socket.emitter.Emitter;
  */
 public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Listener {
 
-    public final static int MAX_COMMENT_COUNT = 10;
+
 
     private final static String TAG = LogHelper.makeLogTag(NewLiveSongFragment.class);
 
@@ -80,17 +82,15 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         return mViewPager.getCurrentItem();
     }
 
-    //chat
-    private Socket mSocket;
-    public static String CHAT_MESSAGE_CMD = "chat message";
-    public static String CHAT_JOIN_ROOM = "join room";
 
+    private ChatManager mChatManager;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
+        mChatManager = new ChatManager(NewLiveSongFragment.this);
 
         View v = inflater.inflate(R.layout.activity_fragment_live_player, container, false);
 
@@ -157,9 +157,10 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         });
 
         buttonClicked(0);
-        setBottomCommentView(v);
-
         setPlayerView(v);
+
+        mChatManager.setBottomCommentView(v);
+        //mChatManager.loadComments();
 
         mInited = true;
         return v;
@@ -196,167 +197,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         updatePlayButton();
     }
 
-
-    protected View mCommentTip;
-    protected View mCommentWindow;
-    protected EditText mCommentEditText;
-    private ViewGroup mEmojiKeyBoardView;
-    private ImageButton keyboardSwitchButton;
-
-    protected List<String> mCommentChars;
-    private String oldCommentString;
-    private void setBottomCommentView(View v) {
-        //设置emoji切换按钮
-        keyboardSwitchButton = (ImageButton) v.findViewById(R.id.emojikeyboard_switch_button);
-
-        //control comment editor
-        mCommentTip = v.findViewById(R.id.bottom_comment_tip);
-        mCommentTip.setVisibility(View.VISIBLE);
-        mCommentWindow = v.findViewById(R.id.bottom_comment);
-        mCommentEditText = (EditText) v.findViewById(R.id.comment_edittext);
-        mCommentTip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCommentWindow.setVisibility(View.VISIBLE);
-                mCommentEditText.requestFocus();
-                keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
-            }
-        });
-
-        mCommentEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mEmojiKeyBoardView.setVisibility(View.GONE);
-                keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
-                params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            }
-        });
-
-        mCommentEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                try {
-                    if (s.length() > oldCommentString.length()) {
-                        mCommentChars.add(s.subSequence(start + before, s.length()).toString());
-                        LogHelper.d(TAG, "add char = " + s.subSequence(start + before, s.length()).toString());
-                    } else {
-                        if (mCommentChars.size() > 0) {
-                            mCommentChars.remove(mCommentChars.size() - 1);
-                            LogHelper.d(TAG, "remove char");
-                        }
-                    }
-                    oldCommentString = s.toString();
-                }catch (Exception ex){
-                    LogHelper.e(TAG, ex);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        TextView sendButton = (TextView) v.findViewById(R.id.send_button);
-        sendButton.setOnClickListener(createSendOnClickListener());
-
-        mEmojiKeyBoardView = (ViewGroup) v.findViewById(R.id.emojikeyboard);
-        final View emojiKeyboard = new EmojiKeyboard(getActivity(), mCommentEditText).getView();
-        mEmojiKeyBoardView.addView(emojiKeyboard);
-
-
-        keyboardSwitchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (mEmojiKeyBoardView.getVisibility() == View.VISIBLE) {
-                    //Utils.hideSoftKeyboard(getActivity());
-                    LogHelper.d(TAG, "emojiboard will hide");
-                    mEmojiKeyBoardView.setVisibility(View.GONE);
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
-                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                    mCommentEditText.requestFocus();
-                    imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
-                    //设置为数字键盘
-                    mCommentEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-                    keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
-                } else {
-                    imm.hideSoftInputFromWindow(mCommentEditText.getWindowToken(), 0);
-                    LogHelper.d(TAG, "emojiboard will show");
-
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mEmojiKeyBoardView.setVisibility(View.VISIBLE);
-                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
-                            params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                            keyboardSwitchButton.setImageResource(R.drawable.keybaord_keyboard);
-                        }
-                    }, 100);
-                }
-            }
-        });
-    }
-
-    protected View.OnClickListener createSendOnClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String comment =  mCommentEditText.getText().toString();
-
-                if (comment.trim().length() == 0)  {
-                    Utils.showErrorMessage(getActivity(), "不能发送空评论");
-                    return;
-                }
-
-                //Song song = mMusicPlayer.getCurrentPlaySong();
-                Song song = new Song();
-                SendLiveCommentRequest request = new SendLiveCommentRequest();
-
-                //LogHelper.d(TAG, "comment0 = [" + comment + "], length = " + comment.length());
-                String newComment = "";
-                for(String each : mCommentChars) {
-                    newComment += MyEmojiParse.convertToCheatCode(each);
-                }
-                comment = newComment;
-
-                request.setComment(comment);
-                request.setSong(song);
-                CourseOverviewFragment fragement = (CourseOverviewFragment)mFragmensts[0];
-                request.setLastId(fragement.mLastCommentId);
-                resetComment();
-                closeCommentWindow();
-                new SendLiveCommentTask().execute(request);
-            }
-        };
-    }
-
-    protected void closeCommentWindow() {
-        Utils.hideSoftKeyboard(getActivity());
-        mCommentWindow.setVisibility(View.INVISIBLE);
-
-        mEmojiKeyBoardView.setVisibility(View.GONE);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-    }
-
-    protected void resetComment() {
-        mCommentEditText.setText("");
-        mCommentChars = new ArrayList<>();
-        oldCommentString = "";
-    }
-    
 
     public void resetViewPagerHeight(int index) {
         ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
@@ -400,6 +240,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
                 fragments[0] = CourseOverviewFragment.class.newInstance();
                 ((CourseOverviewFragment)fragments[0]).mSongFragment = fragment;
+                ((CourseOverviewFragment)fragments[0]).setChatManager(fragment.mChatManager);
                 fragments[1] = BeforeCoursesFragment.class.newInstance();
                 ((BeforeCoursesFragment)fragments[1]).mSongFragment = fragment;
             }catch (Exception  ex) {
@@ -409,86 +250,12 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         }
     }
 
-    private class SendLiveCommentTask extends AsyncTask<SendLiveCommentRequest, Void, SendLiveCommentResponse> {
-        private SendLiveCommentRequest mRequest;
 
-        @Override
-        protected SendLiveCommentResponse doInBackground(SendLiveCommentRequest... params) {
-            if (!mSocket.connected()) {
-                LogHelper.d(TAG, "reconect to socket");
-                mSocket.off();
-                mSocket = null;
-                initChat();
-            }
-
-            mRequest = params[0];
-            LogHelper.d(TAG, "send comment to socket");
-            mSocket.emit(CHAT_MESSAGE_CMD, mRequest.getRequestJson(), new Ack() {
-                @Override
-                public void call(Object... args) {
-                    LogHelper.d(TAG, "server received.");
-                    final JSONObject resultJson = (JSONObject)args[0];
-                    LogHelper.d(TAG, resultJson);
-                    int status = -1;
-                    try {
-                        status = resultJson.getInt("status");
-                        if (status != 0) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Utils.showErrorMessage(getActivity(), resultJson.getString("errorMessage"));
-                                    }catch (JSONException ex) {
-                                        LogHelper.e(TAG, ex);
-                                    }
-                                }
-                            });
-                            return;
-                        }
-                    } catch (JSONException ex) {
-                        LogHelper.e(TAG, ex);
-                        return;
-                    }
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), "发送成功", Toast.LENGTH_SHORT).show();
-
-                            //make comment
-                            final Comment comment = new Comment();
-                            comment.setContent(mRequest.getComment());
-                            Date now = new Date();
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                            comment.setTime(sdf.format(now));
-                            comment.setId("1");
-                            LoginUser user = LoginUserDao.getInstance(getActivity()).get();
-                            comment.setNickName(user.getNickName());
-                            comment.setUserId(user.getUserName());
-
-                            addCommentToList(comment);
-
-                            mCommentEditText.setText("");
-                        }
-                    });
-
-                }
-            });
-            return null;
-        }
-    }
-
-    private void releaseChat() {
-        if (mSocket != null) {
-            mSocket.disconnect();
-            mSocket.off();
-        }
-    }
 
     @Override
     public void onResume() {
         super.onResume();
-        initChat();
+        mChatManager.initChat();
         //mMusicPlayer.addMusicPlayerControlListener(this);
     }
 
@@ -501,7 +268,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     @Override
     public void onDestroy() {
         super.onDestroy();
-        releaseChat();
+        mChatManager.releaseChat();
         //stopChatUpdate();
     }
 
@@ -549,71 +316,22 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
 
-    private void initChat() {
-        if (mSocket != null)
-            return;
-        try {
-            mSocket = IO.socket(ServiceLinkManager.ChatServerUrl());
-            setSocketEvent();
-            mSocket.connect();
-        }catch (Exception ex) {
-            LogHelper.e(TAG, ex);
-        }
+    public synchronized void commentSentHandler(Comment comment) {
+
     }
 
+    public synchronized void commentReceiveHandler(final Comment comment) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((CourseOverviewFragment)mFragmensts[0]).newCommentHanlder(comment);
+            }
+        });
 
-    private void setSocketEvent() {
-        try {
-            if (mSocket == null)
-                return;
-            mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    LogHelper.d(TAG, "socket connected");
-                    Song song = new Song();
-                    //JoinRoomRequest request = new JoinRoomRequest(mMusicPlayer.getCurrentPlaySong());
-                    JoinRoomRequest request = new JoinRoomRequest(song);
-                    LogHelper.d(TAG, "send join room request");
-                    mSocket.emit(CHAT_JOIN_ROOM, request.getRequestJson());
-                }
-
-            }).on(CHAT_MESSAGE_CMD, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    LogHelper.d(TAG, "get a new message");
-
-                    final Comment comment = new Comment();
-                    try {
-                        JSONObject json = new JSONObject((String)args[0]);
-                        comment.setContent(json.getString("content"));
-                        comment.setTime(json.getString("time"));
-                        comment.setId(json.getString("id"));
-                        comment.setNickName(json.getString("name"));
-                        comment.setUserId(json.getString("userId"));
-                        Object isManager = json.get("isManager");
-                        if (isManager instanceof Boolean) {
-                            comment.setManager((Boolean)isManager);
-                        }
-                    } catch (Exception ex) {
-                        LogHelper.e(TAG, ex);
-                        return;
-                    }
-                    addCommentToList(comment);
-                }
-            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                @Override
-                public void call(Object... args) {
-                    LogHelper.d(TAG, "socket disconnected");
-                }
-            });
-            mSocket.connect();
-        }catch (Exception ex) {
-            LogHelper.e(TAG, ex);
-        }
     }
 
-    private void addCommentToList(Comment comment) {
-        //
+    public void getCommentsHandler(List<Comment> comments) {
+        ((CourseOverviewFragment)mFragmensts[0]).setCommentsView(comments);
     }
 }
 

@@ -32,18 +32,26 @@ import com.jinjunhang.onlineclass.ui.cell.player.CourseOverViewCell;
 import com.jinjunhang.onlineclass.ui.cell.player.NewCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.NewCommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CourseOverviewFragment extends BaseFragment {
 
+    public final static int MAX_COMMENT_COUNT = 10;
 
     private MyListAdapter mListAdapter;
     private ListView mListView;
     private List<Comment> mComments = new ArrayList<>();
     private List<ListViewCell> mCells = new ArrayList<>();
     public NewLiveSongFragment mSongFragment;
+    private ChatManager mChatManager;
+
+    public void setChatManager(ChatManager chatManager) {
+        mChatManager = chatManager;
+    }
+
 
     @Nullable
     @Override
@@ -65,22 +73,57 @@ public class CourseOverviewFragment extends BaseFragment {
         if (mSongFragment != null)
              mSongFragment.resetViewPagerHeight(0);
 
-        new GetLiveSongCommentsTask().execute();
+        mChatManager.loadComments();
         new GetCourseInfoTask().execute();
         return v;
     }
 
-    private void setComments() {
+    public void setCommentsView(List<Comment> comments) {
+        mComments = comments;
+        setCommentsView0(mCells);
+    }
+
+    private void setCommentsView0(List<ListViewCell> cells) {
         for (Comment comment : mComments) {
-            mCells.add(new NewCommentCell(getActivity(), comment));
+            cells.add(new NewCommentCell(getActivity(), comment));
         }
+        mListAdapter.setCells(cells);
         mListAdapter.notifyDataSetChanged();
         if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
             mSongFragment.resetViewPagerHeight(0);
     }
 
+    public void newCommentHanlder(Comment comment) {
+
+        //shiftComments();
+        mComments.add(0, comment);
+        if (mComments.size() > MAX_COMMENT_COUNT) {
+            mComments.remove(mComments.size() -1);
+        }
+
+        List<ListViewCell> newCells = new ArrayList<>();
+        newCells.add(mCells.get(0));
+        newCells.add(mCells.get(1));
+        setCommentsView0(newCells);
+    }
+
+    /*
+    private void shiftComments() {
+        List<Comment> comments = new ArrayList<>();
+        comments.add(new Comment());
+        for(int i = 0; i < mComments.size(); i++) {
+            comments.add(mComments.get(i));
+        }
+        mComments = comments;
+    }*/
+
     private class MyListAdapter extends ArrayAdapter<ListViewCell> {
         private List<ListViewCell> mViewCells;
+
+        public void setCells(List<ListViewCell> cells) {
+            mViewCells = cells;
+
+        }
 
         public MyListAdapter(Activity activity, List<ListViewCell> cells) {
             super(activity, 0, cells);
@@ -109,36 +152,6 @@ public class CourseOverviewFragment extends BaseFragment {
     }
 
 
-    public
-    String mLastCommentId = "-1";
-    private class GetLiveSongCommentsTask extends AsyncTask<Void, Void, GetLiveCommentsResponse> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected GetLiveCommentsResponse doInBackground(Void... params) {
-            GetLiveCommentsRequest req = new GetLiveCommentsRequest();
-            req.setSong(new Song());
-            req.setLastId(mLastCommentId);
-            return new BasicService().sendRequest(req);
-        }
-
-        @Override
-        protected void onPostExecute(GetLiveCommentsResponse resp) {
-            if (resp.getStatus() != ServerResponse.SUCCESS) {
-                return;
-            }
-            //commentCount += resp.getCommentList().size();
-            if (resp.getCommentList().size() > 0) {
-                mLastCommentId = resp.getCommentList().get(0).getId() + "";
-            }
-
-            mComments = resp.getCommentList();
-            setComments();
-        }
-    }
 
     private class GetCourseInfoTask extends AsyncTask<Void, Void, GetCourseInfoResponse> {
         @Override

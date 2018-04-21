@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/container"
               android:layout_width="match_parent"
-              android:layout_height="86dp"
+              android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:background="@color/white">
 
     <LinearLayout
                   android:layout_width="match_parent"
-                  android:layout_height="86dp"
+                  android:layout_height="wrap_content"
                   android:background="@drawable/textview_bottom_border"
                   android:orientation="horizontal"
                   android:layout_marginLeft="18dp">
