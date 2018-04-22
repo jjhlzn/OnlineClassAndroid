@@ -222,6 +222,10 @@ public class ServiceConfiguration {
     public static String GetCourseInfoUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/getCourseInfo";
     }
+
+    public static String GetShareImagesUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getShareImages";
+    }
 }
 
 

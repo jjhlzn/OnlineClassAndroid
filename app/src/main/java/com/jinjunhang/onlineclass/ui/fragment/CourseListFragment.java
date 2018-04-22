@@ -60,7 +60,6 @@ import java.util.List;
 public class CourseListFragment extends BaseFragment  {
     private final static String TAG = LogHelper.makeLogTag(CourseListFragment.class);
 
-    private ListView mListView;
     private LoadingAnimation mLoading;
     private ImageButton everydayBtn, vipBtn, agentBtn;
     private CoursePage[] pages;
@@ -234,11 +233,8 @@ public class CourseListFragment extends BaseFragment  {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if(mLoading.isShow()) {
-                        return;
-                    }
                     final Album album = mCourses.get(i);
-                    mLoading.show("加载中");
+                    mLoading.show("");
                     GetAlbumSongsRequest request = new GetAlbumSongsRequest();
                     request.setAlbum(album);
                     new GetAlbumSongsTask().execute(request);

@@ -124,7 +124,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             activity.getSupportActionBar().show();
             activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar, null);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_courselist, null);
             activity.getSupportActionBar().setCustomView(customView);
             Toolbar parent = (Toolbar) customView.getParent();
 

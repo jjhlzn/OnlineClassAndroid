@@ -24,9 +24,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.db.QrImageDao;
+import com.jinjunhang.onlineclass.service.GetShareImagesRequest;
+import com.jinjunhang.onlineclass.service.GetShareImagesResponse;
+import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
+import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
@@ -37,7 +42,9 @@ import com.jinjunhang.framework.lib.BitmapHelper;
 import com.jinjunhang.framework.lib.LogHelper;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by jjh on 2016-7-1.
@@ -49,9 +56,7 @@ public class QRImageFragment extends BaseFragment {
     private QrImageDao qrImageDao;
     private ShareManager mShareManager;
 
-
     private ViewPager mViewPager;
-
     private BaseFragment[] mFragmensts;
 
     private MyPagerAdapter mMyPagerAdapter;
@@ -59,7 +64,8 @@ public class QRImageFragment extends BaseFragment {
     private ViewGroup mOverlayBg;
     private Button mShareBtn;
     private ViewGroup mShareView;
-
+    private List<String> mShareImageUrls = new ArrayList<>();
+    //private String selectUrl = "";
 
     @Nullable
     @Override
@@ -69,13 +75,11 @@ public class QRImageFragment extends BaseFragment {
         mShareBtn = (Button)mView.findViewById(R.id.share_btn);
         mShareView = (ViewGroup)mView.findViewById(R.id.share_view);
 
-        mFragmensts = DataGenerator.getFragments(getActivity());
-
+        mFragmensts = DataGenerator.getFragments();
         mMyPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
         mViewPager = (ViewPager)mView.findViewById(R.id.viewpager);
         mViewPager.setAdapter(mMyPagerAdapter);
-        mViewPager.setCurrentItem(0);
-
+       // mViewPager.setCurrentItem(0);
         mViewPager.setClipToPadding(false);
         mViewPager.setPadding(120,0,120,0);
         mViewPager.setPageMargin(80);
@@ -106,15 +110,40 @@ public class QRImageFragment extends BaseFragment {
             }
         });
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position < mShareImageUrls.size()) {
+                    //selectUrl = mShareImageUrls.get(position);
+                    mShareManager.setShareUrl( mShareImageUrls.get(position));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        new GetShareImagesTask().execute();
+
+        mShareManager = new ShareManager2((AppCompatActivity) getActivity(), mView);
+
+
         /*
-        mShareManager = new ShareManager2((AppCompatActivity) getActivity(), v);
         qrImageDao = QrImageDao.getInstance(getActivity());
 
         final ImageView qrImage = (ImageView) v.findViewById(R.id.qr_image);
         if (qrImageDao.get() != null) {
             qrImage.setImageBitmap(qrImageDao.get());
-        }
+        } */
 
+        /*
         final String qrImageUrl = LoginUserDao.getInstance(getActivity()).get().getCodeImageUrl();
 
 
@@ -138,6 +167,14 @@ public class QRImageFragment extends BaseFragment {
         }).execute(); */
 
         return mView;
+    }
+
+    private void loadShareImages() {
+        mFragmensts = DataGenerator.getFragments(mShareImageUrls);
+        mMyPagerAdapter.notifyDataSetChanged();
+        if (mShareImageUrls.size()> 0) {
+            mShareManager.setShareUrl(mShareImageUrls.get(0));
+        }
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
@@ -165,14 +202,22 @@ public class QRImageFragment extends BaseFragment {
 
     public static class DataGenerator {
 
-        public static BaseFragment[] getFragments(Activity activity){
-            BaseFragment fragments[] = new BaseFragment[4];
-            try {
+        public static BaseFragment[] getFragments(){
+            BaseFragment fragments[] = new BaseFragment[0];
+            return fragments;
+        }
 
-                fragments[0] = ShareImageFragment.class.newInstance();
-                fragments[1] = ShareImageFragment.class.newInstance();
-                fragments[2] = ShareImageFragment.class.newInstance();
-                fragments[3] = ShareImageFragment.class.newInstance();
+        public static BaseFragment[] getFragments(List<String> urls){
+            int count = urls.size();
+            BaseFragment fragments[] = new BaseFragment[count];
+            try {
+                for(int i = 0; i < count ; i++) {
+                    fragments[i] = new  ShareImageFragment();
+                    Bundle args = new Bundle();
+                    args.putString("url", urls.get(i));
+                    fragments[i].setArguments(args);
+                    ((ShareImageFragment)fragments[i]).setUrl(urls.get(i));
+                }
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);
             }
@@ -181,6 +226,28 @@ public class QRImageFragment extends BaseFragment {
 
     }
 
+
+    private class GetShareImagesTask extends AsyncTask<Void, Void, GetShareImagesResponse> {
+
+        @Override
+        protected GetShareImagesResponse doInBackground(Void... voids) {
+            GetShareImagesRequest request = new GetShareImagesRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(final GetShareImagesResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+
+            mShareImageUrls = response.getShareImageUrls();
+            loadShareImages();
+        }
+    }
 
 
 }

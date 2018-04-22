@@ -19,13 +19,12 @@ import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 public class ShareManager2 extends ShareManager {
     private final static String TAG = LogHelper.makeLogTag(ShareManager2.class);
 
-
-
     public ShareManager2(AppCompatActivity activity, View v) {
         super(activity, v);
     }
 
     protected void  setup() {
+
         View customView = mActivity.getSupportActionBar().getCustomView();
         ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
         rightButton.setImageResource(R.drawable.share);

@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment.mainpage;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,18 +15,26 @@ import android.widget.ListView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
+import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
+import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
+import com.jinjunhang.onlineclass.ui.fragment.CourseListFragment;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinVariableInfoManager;
+import com.jinjunhang.player.ExoPlayerNotificationManager;
+import com.jinjunhang.player.MusicPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +58,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private List<Album> mCourses;
     private FragmentActivity mActivity;
     private boolean mIsLoading;
+    private ExoPlayerNotificationManager mNotificationManager;
 
     public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
+        mNotificationManager = ExoPlayerNotificationManager.getInstance(activity);
         mActivity = activity;
         mCourses = new ArrayList<>();
         this.mType = type;
@@ -59,7 +70,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
-        mLoading = new LoadingAnimation(activity);
+        mLoading = new LoadingAnimation(activity, (ViewGroup)v.findViewById(R.id.fragmentContainer));
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);
@@ -82,9 +93,6 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 mCells.add(mFunctionManager.getCell(i));
             }
             mCells.add(new SectionSeparatorCell(activity));
-            //mCells.add(new SectionSeparatorCell(activity));
-            //mCells.add(new MainPageWhiteSeparatorCell(activity));
-            //mCells.add(new FooterCell(activity));
         }
 
         mHeaderAdvCell.updateAds();
@@ -100,8 +108,14 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LogHelper.d(TAG, "mList onItemClick: ", position);
-                //mLoading.show("");
+                if (position < 5) {
+                    return;
+                }
+                final Album album = mCourses.get(position - 5);
+                mLoading.show("");
+                GetAlbumSongsRequest request = new GetAlbumSongsRequest();
+                request.setAlbum(album);
+                new GetAlbumSongsTask().execute(request);
             }
         });
 
@@ -121,6 +135,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         }
 
         mMainPageAdapter.notifyDataSetChanged();
+    }
+
+    public void onStopHandler() {
+        mLoading.hide();
     }
 
     @Override
@@ -164,7 +182,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         protected void onPostExecute(final GetTuijianCoursesResponse response) {
             super.onPostExecute(response);
-
+            mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess()) {
                 LogHelper.e(TAG, response.getErrorMessage());
                 return;
@@ -172,6 +190,48 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
             mCourses = response.getCourses();
             setCoursesView();
+        }
+    }
+
+    public class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
+
+        private GetAlbumSongsRequest request;
+
+        @Override
+        protected GetAlbumSongsResponse doInBackground(GetAlbumSongsRequest... params) {
+            request = params[0];
+            LogHelper.d(TAG, "GetAlbumSongsTask.GetAlbumSongsTask() called");
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetAlbumSongsResponse resp) {
+            super.onPostExecute(resp);
+
+            if (!resp.isSuccess()) {
+                mLoading.hide();
+                LogHelper.e(TAG, resp.getErrorMessage());
+                Utils.showErrorMessage(mActivity, resp.getErrorMessage());
+                return;
+            }
+
+            if (resp.getResultSet().size() >= 1) {
+                LiveSong song = (LiveSong) resp.getResultSet().get(0);
+                MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity);
+                if (!musicPlayer.isPlay(song)) {
+                    musicPlayer.pause();
+                    musicPlayer.play(resp.getResultSet(), 0);
+                    mNotificationManager.display();
+                }
+                Intent i = new Intent(mActivity, NewLiveSongActivity.class);
+                mActivity.startActivity(i);
+                return;
+            } else {
+                mLoading.hide();
+                Utils.showErrorMessage(mActivity, "服务端出错");
+                return;
+            }
+
         }
     }
 

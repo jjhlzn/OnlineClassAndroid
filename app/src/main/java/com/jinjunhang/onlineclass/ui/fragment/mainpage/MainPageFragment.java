@@ -74,6 +74,13 @@ public class MainPageFragment extends BaseFragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        rongziPage.onStopHandler();
+        touziPage.onStopHandler();
+    }
+
+    @Override
     public void changeActionBar() {
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         if (activity == null)
