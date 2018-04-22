@@ -50,8 +50,8 @@
             android:layout_weight="0.3"
             android:layout_height="match_parent"
             android:layout_marginLeft="0dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="13sp"
+            android:textColor="@color/ccl_grey600"
+            android:textSize="14sp"
             android:gravity="center_vertical|right"
             android:text="10"/>
 

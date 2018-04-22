@@ -76,7 +76,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
                     Intent i = new Intent(getActivity(), QRImageActivity.class);
                     startActivity(i);
                 }
-            }, "", ""));
+            }, "", mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
 
@@ -184,7 +184,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
+        //mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mMeAdapter = new MeAdapter(mCells);

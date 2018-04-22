@@ -105,7 +105,7 @@
             android:id="@+id/login_button"
             android:text="登     录"
             style="@style/button"
-            android:background="@color/login_buton_background"/>
+            android:background="@color/tab_selected_color"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -122,7 +122,7 @@
             android:layout_marginLeft="5dp"
             android:textSize="14dp"
             android:background="@null"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/ccl_grey600"/>
 
         <Button
             android:id="@+id/forget_password_button"
@@ -133,7 +133,7 @@
             android:layout_marginRight="5dp"
             android:textSize="14dp"
             android:background="@null"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/ccl_grey600"
             />
 
     </RelativeLayout>

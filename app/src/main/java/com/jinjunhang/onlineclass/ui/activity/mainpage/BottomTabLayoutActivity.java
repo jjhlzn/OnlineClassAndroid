@@ -45,7 +45,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
     private BaseFragment[] mFragmensts;
 
-    private boolean isInited = false;
     private MyPagerAdapter mMyPagerAdapter;
 
     @Override
@@ -76,7 +75,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        isInited = true;
         mViewPager.setOffscreenPageLimit(4);
         setActionBar();
     }
@@ -105,7 +103,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             activity.getWindow().setStatusBarColor(Color.WHITE);
         }
     }
-
 
     private void initView() {
         mTabLayout = (TabLayout) findViewById(R.id.bottom_tab_layout);
@@ -148,57 +145,11 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
     private void onTabItemSelected(int position){
 
         LogHelper.d(TAG, "tab selected position = " + position);
-
-
         if (mViewPager != null) {
             mViewPager.setCurrentItem(position);
         }
 
         mFragmensts[position].changeActionBar();
-        /*
-        BaseFragment fragment = null;
-        switch (position){
-            case 0:
-                fragment = mFragmensts[0];
-                break;
-            case 1:
-                fragment = mFragmensts[1];
-                //((ShopWebBrowserFragment)fragment).setTabChanged();
-                break;
-            case 2:
-                fragment = mFragmensts[2];
-                break;
-            case 3:
-                fragment = mFragmensts[3];
-                break;
-            case 4:
-                fragment = mFragmensts[4];
-                break;
-        }*/
-
-        /*
-        if(fragment!=null) {
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            if (currentFragment != null) {
-                transaction.hide(currentFragment);
-            }
-            //如果之前没有添加过
-            if(!fragment.isAdded()){
-                transaction.add(R.id.home_container,fragment);
-            }else{
-                transaction.show(fragment);
-            }
-
-            //全局变量，记录当前显示的fragment
-            currentFragment = fragment;
-
-            transaction.commit();
-
-            if (isInited)
-                currentFragment.changeActionBar();
-        } */
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter{
@@ -235,9 +186,17 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             try {
 
                 fragments[0] = MainPageFragment.class.newInstance();
-                fragments[1] = ShopWebBrowserFragment.class.newInstance();
+                ShopWebBrowserFragment frag1 = new ShopWebBrowserFragment();
+                Bundle args = new Bundle();
+                args.putString("title", mTabTitle[1]);
+                frag1.setArguments(args);
+                fragments[1] = frag1;
                 fragments[2] = CourseListFragment.class.newInstance();
-                fragments[3] = ShopWebBrowserFragment.class.newInstance();
+                ShopWebBrowserFragment frag3 = new ShopWebBrowserFragment();
+                Bundle args3 = new Bundle();
+                args3.putString("title", mTabTitle[3]);
+                frag3.setArguments(args3);
+                fragments[3] = frag3;
                 fragments[4] = MeFragment.class.newInstance();
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);

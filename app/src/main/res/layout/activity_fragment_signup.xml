@@ -160,6 +160,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:id="@+id/singup_button"
+                android:textColor="@color/white"
+                android:background="@color/tab_selected_color"
                 android:text="注     册"
                 style="@style/button"/>
         </LinearLayout>

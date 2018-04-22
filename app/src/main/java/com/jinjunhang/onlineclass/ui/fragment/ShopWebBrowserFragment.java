@@ -49,11 +49,16 @@ public class ShopWebBrowserFragment extends BaseFragment {
     private ShareManager mShareManager;
 
 
+    private String mTitle = "";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         LogHelper.d(TAG, "onCreateView called");
+
+        if (getArguments() != null && getArguments().getString("title") != null) {
+            mTitle = getArguments().getString("title");
+        }
 
         v = getActivity().getLayoutInflater().inflate(R.layout.activity_fragment_pushdownrefresh, null, false);
 
@@ -101,7 +106,9 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
             //设置返回按键
             mBackButton = (ImageButton) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
-            ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText("申请");
+
+            if (!"".equals(mTitle))
+                ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(mTitle);
 
 
             if (mWebView.canGoBack()) {

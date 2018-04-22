@@ -46,6 +46,7 @@ import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.LiveCourseCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumDetailFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
@@ -66,6 +67,15 @@ public class CourseListFragment extends BaseFragment  {
     private ViewGroup[] mViewGroups;
     private ExoPlayerNotificationManager mNotificationManager;
 
+    private AlbumType getAlbumType(int index) {
+        if (index == 0)
+            return AlbumType.LiveAlbumType;
+        else if (index == 1)
+            return AlbumType.VipAlbumType;
+        else
+            return AlbumType.AgentEducationAlbumType;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,7 +92,7 @@ public class CourseListFragment extends BaseFragment  {
         pages = new CoursePage[3];
         mViewGroups = new ViewGroup[3];
         for(int i = 0; i < 3; i++) {
-            pages[i] = new CoursePage(inflater, container, savedInstanceState);
+            pages[i] = new CoursePage(getAlbumType(i), inflater, container, savedInstanceState);
         }
 
         mViewGroups[0] = (ViewGroup)v.findViewById(R.id.frag_1);
@@ -92,8 +102,6 @@ public class CourseListFragment extends BaseFragment  {
         mViewGroups[0].addView(pages[0].v);
         mViewGroups[1].addView(pages[1].v);
         mViewGroups[2].addView(pages[2].v);
-
-
 
 
         everydayBtn.setOnClickListener(new View.OnClickListener() {
@@ -200,6 +208,7 @@ public class CourseListFragment extends BaseFragment  {
         private List<Album> mCourses = new ArrayList<>();
         private boolean mIsLoading = false;
         public boolean loadCompleted = false;
+        private AlbumType mAlbumType;
         //private GetAlbumSongsTask mGetAlbumSongsTask;
 
         @Override
@@ -213,7 +222,8 @@ public class CourseListFragment extends BaseFragment  {
         }
 
 
-        public CoursePage(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        public CoursePage(AlbumType albumType, LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            mAlbumType = albumType;
             v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_white, container, false);
 
             mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
@@ -233,10 +243,18 @@ public class CourseListFragment extends BaseFragment  {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    final Album album = mCourses.get(i);
+                    Album album = mCourses.get(i);
+                    if (!album.isReady()) {
+                        Utils.showErrorMessage(getActivity(), "该课程未上线，敬请期待！");
+                        return;
+                    }
+
                     mLoading.show("");
+
                     GetAlbumSongsRequest request = new GetAlbumSongsRequest();
                     request.setAlbum(album);
+                    request.setPageIndex(0);
+                    request.setPageSize(200);
                     new GetAlbumSongsTask().execute(request);
                 }
             });
@@ -244,7 +262,7 @@ public class CourseListFragment extends BaseFragment  {
         }
 
         public void loadCourses() {
-            GetAlbumsRequest request = new GetAlbumsRequest(AlbumType.LiveAlbumType);
+            GetAlbumsRequest request = new GetAlbumsRequest(mAlbumType);
             new GetAlbumsTask().execute(request);
         }
 
@@ -286,7 +304,6 @@ public class CourseListFragment extends BaseFragment  {
         public class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
 
             private GetAlbumSongsRequest request;
-            private CoursePage mPage;
 
             @Override
             protected GetAlbumSongsResponse doInBackground(GetAlbumSongsRequest... params) {
@@ -298,6 +315,18 @@ public class CourseListFragment extends BaseFragment  {
             @Override
             protected void onPostExecute(GetAlbumSongsResponse resp) {
                 super.onPostExecute(resp);
+
+                if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
+                    mLoading.hide();
+                    Utils.showVipBuyMessage(getActivity(), resp.getErrorMessage());
+                    return;
+                }
+
+                if (resp.getStatus() == ServerResponse.NOT_PAY_COURSE_NO_PERMISSION) {
+                    mLoading.hide();
+                    Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
+                    return;
+                }
 
                 if (!resp.isSuccess()) {
                     mLoading.hide();

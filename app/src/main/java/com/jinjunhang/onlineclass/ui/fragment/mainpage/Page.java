@@ -17,6 +17,7 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.LiveSong;
@@ -111,10 +112,18 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 if (position < 5) {
                     return;
                 }
-                final Album album = mCourses.get(position - 5);
+                Album album = mCourses.get(position - 5);
+                if (!album.isReady()) {
+                    Utils.showErrorMessage(mActivity, "该课程未上线，敬请期待！");
+                    return;
+                }
+
                 mLoading.show("");
+
                 GetAlbumSongsRequest request = new GetAlbumSongsRequest();
                 request.setAlbum(album);
+                request.setPageIndex(0);
+                request.setPageSize(200);
                 new GetAlbumSongsTask().execute(request);
             }
         });
@@ -207,6 +216,17 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         protected void onPostExecute(GetAlbumSongsResponse resp) {
             super.onPostExecute(resp);
+            if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
+                mLoading.hide();
+                Utils.showVipBuyMessage(mActivity, resp.getErrorMessage());
+                return;
+            }
+
+            if (resp.getStatus() == ServerResponse.NOT_PAY_COURSE_NO_PERMISSION) {
+                mLoading.hide();
+                Utils.showErrorMessage(mActivity, resp.getErrorMessage());
+                return;
+            }
 
             if (!resp.isSuccess()) {
                 mLoading.hide();
