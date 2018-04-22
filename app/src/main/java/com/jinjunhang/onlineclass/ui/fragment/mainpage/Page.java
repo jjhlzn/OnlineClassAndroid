@@ -21,6 +21,7 @@ import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
@@ -81,7 +82,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 mCells.add(mFunctionManager.getCell(i));
             }
             mCells.add(new SectionSeparatorCell(activity));
-
+            //mCells.add(new SectionSeparatorCell(activity));
             //mCells.add(new MainPageWhiteSeparatorCell(activity));
             //mCells.add(new FooterCell(activity));
         }
@@ -108,10 +109,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     }
 
     private void setCoursesView() {
-        if (mCells.size() > 4) {
+        if (mCells.size() > 5) {
             int size = mCells.size();
-            for(int i = 0; i < size - 4; i++) {
-                mCells.remove(4);
+            for(int i = 0; i < size - 5; i++) {
+                mCells.remove(5);
             }
         }
 
@@ -170,7 +171,6 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
 
             mCourses = response.getCourses();
-            LogHelper.d("mCourse.size() = " + mCourses.size());
             setCoursesView();
         }
     }

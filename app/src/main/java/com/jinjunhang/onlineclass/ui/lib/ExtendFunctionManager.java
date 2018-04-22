@@ -348,7 +348,7 @@ public class ExtendFunctionManager {
 
         imageParams.width = (int)(width / 4 * 0.7);
         imageParams.height = (int)(width / 4 * 0.7);
-        imageView.setPadding(0, 20, 0, 0);
+        imageView.setPadding(0, 20, 0, 5);
 
 
         imageView.setLayoutParams(imageParams);
@@ -359,12 +359,14 @@ public class ExtendFunctionManager {
 
         ViewGroup.LayoutParams textParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         textParams.width = width / 4;
+
         TextView textView = new TextView(mContext);
         textView.setLayoutParams(textParams);
         textView.setText(function.getName());
         textView.setWidth(width / 4);
         textView.setTextSize(12);
         textView.setGravity(Gravity.CENTER);
+        textView.setPadding(0, 0, 0, 20);
 
         layout.addView(textView);
 
