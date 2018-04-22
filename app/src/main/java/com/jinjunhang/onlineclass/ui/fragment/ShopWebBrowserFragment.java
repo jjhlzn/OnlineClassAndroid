@@ -106,6 +106,7 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
             if (mWebView.canGoBack()) {
                 //mWebView.goBack();
+                mBackButton.setVisibility(View.VISIBLE);
             } else {
                 //onBackPressed();
                 mBackButton.setVisibility(View.INVISIBLE);

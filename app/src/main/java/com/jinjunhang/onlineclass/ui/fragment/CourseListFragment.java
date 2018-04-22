@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,8 +71,11 @@ public class CourseListFragment extends BaseFragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mNotificationManager = ExoPlayerNotificationManager.getInstance(getActivity());
-        mLoading = new LoadingAnimation(getActivity());
-        View v = inflater.inflate(R.layout.fragment_couselist, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_couselist, null, false);
+
+        mLoading = new LoadingAnimation(getActivity(), (ViewGroup)v.findViewById(R.id.fragmentContainer));
+
         everydayBtn = (ImageButton) v.findViewById(R.id.everyday_btn);
         vipBtn = (ImageButton) v.findViewById(R.id.vip_btn);
         agentBtn = (ImageButton) v.findViewById(R.id.agent_btn);
@@ -89,6 +93,9 @@ public class CourseListFragment extends BaseFragment  {
         mViewGroups[0].addView(pages[0].v);
         mViewGroups[1].addView(pages[1].v);
         mViewGroups[2].addView(pages[2].v);
+
+
+
 
         everydayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,13 +155,27 @@ public class CourseListFragment extends BaseFragment  {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        //放在这里为了防止双击
+        mLoading.hide();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //changeActionBar();
+    }
+
+    @Override
     public void changeActionBar() {
+        LogHelper.d(TAG, "changeActionBar called");
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         if (activity != null) {
             activity.getSupportActionBar().show();
             activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar, null);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_courselist, null);
             activity.getSupportActionBar().setCustomView(customView);
             Toolbar parent = (Toolbar) customView.getParent();
 
@@ -162,6 +183,7 @@ public class CourseListFragment extends BaseFragment  {
 
             TextView text = (TextView)customView.findViewById(R.id.actionbar_text);
             text.setText("直播");
+            //customView.findViewById(R.id.actionbar_right_button).setVisibility(View.INVISIBLE);
 
             setLightStatusBar(customView, activity);
         }
@@ -212,9 +234,11 @@ public class CourseListFragment extends BaseFragment  {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    if(mLoading.isShow()) {
+                        return;
+                    }
                     final Album album = mCourses.get(i);
-                    //Utils.showErrorMessage(getActivity(), "clicked");
-                    mLoading.show("");
+                    mLoading.show("加载中");
                     GetAlbumSongsRequest request = new GetAlbumSongsRequest();
                     request.setAlbum(album);
                     new GetAlbumSongsTask().execute(request);
@@ -278,38 +302,31 @@ public class CourseListFragment extends BaseFragment  {
             @Override
             protected void onPostExecute(GetAlbumSongsResponse resp) {
                 super.onPostExecute(resp);
-                mLoading.hide();
 
                 if (!resp.isSuccess()) {
+                    mLoading.hide();
                     LogHelper.e(TAG, resp.getErrorMessage());
                     Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
                     return;
                 }
 
                 if (resp.getResultSet().size() >= 1) {
-
-
                     LiveSong song = (LiveSong) resp.getResultSet().get(0);
                     MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
                     if (!musicPlayer.isPlay(song)) {
                         musicPlayer.pause();
                         musicPlayer.play(resp.getResultSet(), 0);
-                        //mNotificationManager.display();
+                        mNotificationManager.display();
                     }
                     Intent i = new Intent(getActivity(), NewLiveSongActivity.class);
-                            //.putExtra(BaseSongFragment.EXTRA_SONG, song);
                     startActivity(i);
-
-                    /*
-                    Intent i = new Intent(getActivity(), WebBrowserActivity.class)
-                            .putExtra(WebBrowserActivity.EXTRA_URL, "http://www.baidu.com")
-                            .putExtra(WebBrowserActivity.EXTRA_TITLE, "测试");
-                    startActivity(i); */
                     return;
                 } else {
+                    mLoading.hide();
                     Utils.showErrorMessage(getActivity(), "服务端出错");
                     return;
                 }
+
             }
         }
 

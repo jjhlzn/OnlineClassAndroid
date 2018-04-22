@@ -97,6 +97,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         mIsBackToMainActivity = getIntent().getBooleanExtra(EXTRA_BACK_TO_MAIN_ACTIVITY, false);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setElevation(0);
         View customView = getLayoutInflater().inflate(R.layout.actionbar_browser, null);
         ((TextView)customView.findViewById(R.id.actionbar_text)).setText(mTitle);
         getSupportActionBar().setCustomView(customView);

@@ -25,10 +25,10 @@
 
     <ImageButton
         android:id="@+id/share_button"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="12dp"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/share_white"
         android:background="@null"

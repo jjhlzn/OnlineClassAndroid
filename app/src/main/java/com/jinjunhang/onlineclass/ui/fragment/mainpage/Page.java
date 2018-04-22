@@ -100,6 +100,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LogHelper.d(TAG, "mList onItemClick: ", position);
+                //mLoading.show("");
             }
         });
 

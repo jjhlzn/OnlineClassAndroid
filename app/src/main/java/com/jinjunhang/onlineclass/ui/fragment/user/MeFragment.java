@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
@@ -65,6 +66,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     private WebBroserClickListener webBroserClickListener = new WebBroserClickListener();
 
     public View v;
+    private LoadingAnimation mLoading;
 
     private void initSections() {
         if (mFourthSections.size() == 0) {
@@ -146,6 +148,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         //去掉列表的分割线
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
+        mLoading = new LoadingAnimation(getActivity(), (ViewGroup) v.findViewById(R.id.fragmentContainer));
 
         if (mCells.size() == 0) {
             FirstSectionCell item = new FirstSectionCell(getActivity());
@@ -190,6 +193,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 if (position > 2) {
                     BaseListViewOnItemClickListener.onItemClickEffect(parent, view, position, id);
                     ListViewCell cell = mMeAdapter.getItem(position);
@@ -203,6 +207,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
            new GetUserStatDataTask().execute();
         }
 
+        //mLoading.show("");
         //changeActionBar();
         return v;
     }

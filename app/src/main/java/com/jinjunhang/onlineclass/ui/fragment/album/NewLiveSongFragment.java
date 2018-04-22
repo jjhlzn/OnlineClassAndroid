@@ -261,7 +261,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         overlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shareView.setVisibility(View.INVISIBLE);
+                //shareView.setVisibility(View.INVISIBLE);
             }
         });
         //这段代码不能删除，否则按在空白的地方会把
