@@ -89,7 +89,7 @@ public class MainPageFragment3 extends android.support.v4.app.Fragment implement
         mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows, getActivity(), false, ExtendFunctionManager.RONGZI_TYPE);
 
         if (mCells.size() == 0) {
-            mCells.add(new HeaderAdvCell(getActivity(), mLoading));
+            mCells.add(new HeaderAdvCell(getActivity(), mLoading, ""));
 
             mCells.add(new CourseNotifyCell(getActivity()));
 

@@ -83,7 +83,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 activity, false, type);
 
         if (mCells.size() == 0) {
-            mHeaderAdvCell = new HeaderAdvCell(activity, mLoading);
+            mHeaderAdvCell = new HeaderAdvCell(activity, mLoading, mType);
             mCells.add(mHeaderAdvCell);
 
             //mCells.add(new CourseNotifyCell(activity));
@@ -185,6 +185,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         protected GetTuijianCoursesResponse doInBackground(Void... voids) {
             GetTuijianCoursesRequest request = new GetTuijianCoursesRequest();
+            request.setType(mType);
             return new BasicService().sendRequest(request);
         }
 

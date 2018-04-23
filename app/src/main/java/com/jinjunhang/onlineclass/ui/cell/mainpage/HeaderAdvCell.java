@@ -65,12 +65,14 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
     private List<Advertise> mAdvertises;
     private SliderLayout mSlider;
     private GetTouTiaoResponse mTouTiaoResp;
+    private String mType = "";
 
-    public HeaderAdvCell(Activity activity, LoadingAnimation loading) {
+    public HeaderAdvCell(Activity activity, LoadingAnimation loading, String type) {
         super(activity);
         this.mLoading = loading;
         mAdvertises = new ArrayList<>();
         mTouTiaoResp = new GetTouTiaoResponse();
+        this.mType = type;
     }
 
     @Override
@@ -155,6 +157,7 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
         @Override
         protected GetMainPageAdsResponse doInBackground(Void... voids) {
             GetMainPageAdsRequest request = new GetMainPageAdsRequest();
+            request.setType(mType);
             return new BasicService().sendRequest(request);
         }
 

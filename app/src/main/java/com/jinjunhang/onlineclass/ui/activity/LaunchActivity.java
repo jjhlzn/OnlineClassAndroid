@@ -51,7 +51,7 @@ public class LaunchActivity extends Activity {
     private static final String APP_ID = "wx73653b5260b24787";
     private IWXAPI api;
 
-    BottomBar  mBottomBar;
+    //BottomBar  mBottomBar;
     private KeyValueDao mKeyValueDao;
 
     private boolean checkingLogin = false;
@@ -95,6 +95,7 @@ public class LaunchActivity extends Activity {
         TextView advTipText = (TextView) findViewById(R.id.advTipText);
         advTipText.setVisibility(View.INVISIBLE);
 
+        /*
         if (height == -1) {
             LogHelper.d(TAG, "compute bottom bar height");
             //下面这段代码是为了获取BottomBar的高度
@@ -125,7 +126,7 @@ public class LaunchActivity extends Activity {
         } else {
             Utils.BOTTOM_BAR_HEIGHT = height;
             LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT + ", " + height);
-        }
+        } */
 
         int apiLevel = 0;
         try {

@@ -13,6 +13,12 @@ import java.util.Map;
 public class GetTuijianCoursesRequest extends ServerRequest {
 
 
+    private String mType = "";
+
+    public void setType(String type) {
+        mType = type;
+    }
+
     @Override
     public String getServiceUrl() {
         return ServiceConfiguration.GetTuijianCoursesUrl();
@@ -24,5 +30,11 @@ public class GetTuijianCoursesRequest extends ServerRequest {
     }
 
 
+    @Override
+    public Map<String, Object> getParams() {
+        Map<String, Object> params = super.getParams();
+        params.put("type", mType);
+        return params;
+    }
 
 }
