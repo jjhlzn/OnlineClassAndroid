@@ -21,6 +21,7 @@ public class LoginUser implements Serializable {
     private String mToken;
     private String mLevel;
     private String mBoss;
+    private String mVipEndDate = "";
 
     public LoginUser() {}
     public LoginUser(LoginResponse resp) {
@@ -31,6 +32,7 @@ public class LoginUser implements Serializable {
         mToken = resp.getToken();
         mLevel = resp.getLevel();
         mBoss = resp.getBoss();
+
     }
 
     public String getUserName() {
@@ -103,5 +105,13 @@ public class LoginUser implements Serializable {
 
     public void setBoss(String boss) {
         mBoss = boss;
+    }
+
+    public String getVipEndDate() {
+        return mVipEndDate;
+    }
+
+    public void setVipEndDate(String vipEndDate) {
+        mVipEndDate = vipEndDate;
     }
 }

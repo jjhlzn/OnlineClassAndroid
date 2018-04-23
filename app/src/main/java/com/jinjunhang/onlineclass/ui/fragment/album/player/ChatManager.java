@@ -139,6 +139,8 @@ public class ChatManager {
     protected List<String> mCommentChars;
     private String oldCommentString;
     public void setBottomCommentView(View v) {
+
+
         //设置emoji切换按钮
         keyboardSwitchButton = (ImageButton) v.findViewById(R.id.emojikeyboard_switch_button);
 
@@ -240,6 +242,7 @@ public class ChatManager {
                 }
             }
         });
+        resetComment();
     }
 
     protected View.OnClickListener createSendOnClickListener() {

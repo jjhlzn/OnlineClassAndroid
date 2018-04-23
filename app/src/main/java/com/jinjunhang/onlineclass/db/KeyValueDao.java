@@ -17,6 +17,9 @@ public class KeyValueDao {
     public static final String KEY_USER_CAFIFU = "USER_CAIFU";
     public static final String KEY_USER_TEAMPEOPLE = "USER_TEAMPEOPLE";
 
+    public static final String KEY_USER_VIP_END_DATE = "USER_VIP_END_DATE";
+    public static final String KEY_USER_AGENT_LEVEL = "USER_AGENT_LEVEL";
+
     public static final String KEY_USER_MY_TUIJIAN = "USER_MY_TUIJIAN";
     public static final String KEY_USER_MY_ORDER = "USER_MY_ORDER";
     public static final String KEY_USER_MY_TEAM = "USER_MY_TEAM";

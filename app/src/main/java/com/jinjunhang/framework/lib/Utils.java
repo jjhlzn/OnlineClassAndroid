@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 import com.afollestad.materialdialogs.AlertDialogWrapper;
@@ -305,7 +306,7 @@ public class Utils {
         return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
     }
 
-    public static int getListViewHeightBasedOnChildren(ListView listView) {
+    public static int getListViewHeightBasedOnChildren2(ListView listView) {
         // 获取ListView对应的Adapter
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -316,15 +317,56 @@ public class Utils {
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0); // 计算子项View 的宽高
             totalHeight += listItem.getMeasuredHeight(); // 统计所有子项的总高度
+
+            TextView textView = (TextView) listItem.findViewById(R.id.comment_content);
+            TextView nameTV = (TextView) listItem.findViewById(R.id.comment_username);
+            if (textView != null) {
+                int h = getTextViewHeight(textView, listView.getContext());
+                LogHelper.d(TAG, "h = " + h);
+                totalHeight += h - getTextViewHeight(nameTV, listView.getContext());
+            }
         }
-        //ViewGroup.LayoutParams params = listView.getLayoutParams();
-        //params.height = totalHeight
-        //       + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        // listView.getDividerHeight()获取子项间分隔符占用的高度
-        // params.height最后得到整个ListView完整显示需要的高度
-        //listView.setLayoutParams(params);
-        return totalHeight
-                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        return totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+    }
+
+    public static int getListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return 0;
+        }
+        int totalHeight = 0;
+        int screedWidth = getScreenWidth(listView.getContext());
+        int listViewWidth = screedWidth; // - dip2px(listView.getContext(), 10);//listView在布局时的宽度
+        int widthSpec = View.MeasureSpec.makeMeasureSpec(listViewWidth, View.MeasureSpec.AT_MOST);
+
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(widthSpec, 0);
+
+            int itemHeight = listItem.getMeasuredHeight();
+            totalHeight += itemHeight;
+
+            TextView textView = (TextView) listItem.findViewById(R.id.comment_content);
+            TextView nameTV = (TextView) listItem.findViewById(R.id.comment_username);
+            if (textView != null) {
+                int h = getTextViewHeight(textView, listView.getContext());
+                LogHelper.d(TAG, "h = " + h);
+                totalHeight += h - getTextViewHeight(nameTV, listView.getContext());
+            }
+        }
+        // 减掉底部分割线的高度
+        int historyHeight = totalHeight + (listView.getDividerHeight() * listAdapter.getCount() - 1);
+
+
+        return historyHeight;
+    }
+
+    public static int getTextViewHeight(TextView textView, Context context) {
+        int screedWidth = getScreenWidth(context);
+        int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(screedWidth, View.MeasureSpec.AT_MOST);
+        int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        textView.measure(widthMeasureSpec, heightMeasureSpec);
+        return textView.getMeasuredHeight();
     }
 
 }

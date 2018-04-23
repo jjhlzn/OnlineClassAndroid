@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.data5tream.emojilib.EmojiParser;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
@@ -16,11 +17,13 @@ import com.ppi.emoji.EmojiTextView;
 
 public class NewCommentCell extends BaseListViewCell {
 
+    private final static String TAG = LogHelper.makeLogTag(NewCommentCell.class);
+
+
     private Comment mComment;
     public NewCommentCell(Activity activity, Comment comment) {
         super(activity);
         this.mComment = comment;
-
     }
 
     @Override
@@ -32,6 +35,9 @@ public class NewCommentCell extends BaseListViewCell {
         image.setOval(true);
         image.setBorderWidth(0.5f);
         image.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600));
+
+
+
 
         /*
         if (mComment.isManager()) {
@@ -50,8 +56,6 @@ public class NewCommentCell extends BaseListViewCell {
         contentView.setText(EmojiParser.parseEmojis(mComment.getContent()));
 
         ViewGroup.LayoutParams params =  container.getLayoutParams();
-
-
 
         //container.setLayoutParams(params);
         //container.getLayoutParams().height =  params.height = contentView.getMeasuredHeight() + Utils.dip2px(mActivity, 86);

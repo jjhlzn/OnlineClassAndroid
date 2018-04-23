@@ -52,11 +52,10 @@ public class CourseOverviewFragment extends BaseFragment {
         mChatManager = chatManager;
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_nestedlistview, container, false);
+        View v = inflater.inflate(R.layout.activity_fragment_listview, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
@@ -94,7 +93,6 @@ public class CourseOverviewFragment extends BaseFragment {
     }
 
     public void newCommentHanlder(Comment comment) {
-
         //shiftComments();
         mComments.add(0, comment);
         if (mComments.size() > MAX_COMMENT_COUNT) {
@@ -107,15 +105,6 @@ public class CourseOverviewFragment extends BaseFragment {
         setCommentsView0(newCells);
     }
 
-    /*
-    private void shiftComments() {
-        List<Comment> comments = new ArrayList<>();
-        comments.add(new Comment());
-        for(int i = 0; i < mComments.size(); i++) {
-            comments.add(mComments.get(i));
-        }
-        mComments = comments;
-    }*/
 
     private class MyListAdapter extends ArrayAdapter<ListViewCell> {
         private List<ListViewCell> mViewCells;
@@ -150,7 +139,6 @@ public class CourseOverviewFragment extends BaseFragment {
     public int getListViewHeightBasedOnChildren() {
         return Utils.getListViewHeightBasedOnChildren(mListView);
     }
-
 
 
     private class GetCourseInfoTask extends AsyncTask<Void, Void, GetCourseInfoResponse> {

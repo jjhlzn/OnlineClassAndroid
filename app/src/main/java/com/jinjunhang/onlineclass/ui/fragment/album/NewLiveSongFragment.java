@@ -319,7 +319,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             params.height= ((CourseOverviewFragment)mFragmensts[index]).getListViewHeightBasedOnChildren();
         else
             params.height= ((BeforeCoursesFragment)mFragmensts[index]).getListViewHeightBasedOnChildren();
-        params.height = (int)(1.4 * params.height);
         LogHelper.d(TAG, "set viewpager height = " + params.height);
         mViewPager.setLayoutParams(params);
     }
@@ -431,8 +430,13 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
 
-    public synchronized void commentSentHandler(Comment comment) {
-
+    public synchronized void commentSentHandler(final Comment comment) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((CourseOverviewFragment)mFragmensts[0]).newCommentHanlder(comment);
+            }
+        });
     }
 
     public synchronized void commentReceiveHandler(final Comment comment) {

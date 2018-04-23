@@ -23,6 +23,7 @@ public class GetUserStatDataResponse extends ServerResponse {
     private String mBoss;
     private String mSex;
     private String mCodeImageUrl;
+    private String mVipEndDate = "";
 
     public String getJifen() {
         return mJifen;
@@ -68,6 +69,14 @@ public class GetUserStatDataResponse extends ServerResponse {
         return mCodeImageUrl;
     }
 
+    public String getVipEndDate() {
+        return mVipEndDate;
+    }
+
+    public void setVipEndDate(String vipEndDate) {
+        mVipEndDate = vipEndDate;
+    }
+
     @Override
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
         mJifen = json.getString("jifen");
@@ -82,5 +91,6 @@ public class GetUserStatDataResponse extends ServerResponse {
         mBoss = json.getString("boss");
         mSex = json.getString("sex");
         mCodeImageUrl = json.getString("codeImageUrl");
+        mVipEndDate = json.getString("vipEndDate");
     }
 }

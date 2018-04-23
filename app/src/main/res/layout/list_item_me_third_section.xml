@@ -39,7 +39,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/jifen_label"
+                    android:id="@+id/vipEndDate_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13dp"
@@ -50,6 +50,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/buyVipBtn"
                 android:layout_width="60dp"
                 android:layout_height="25dp"
                 android:text="续费"
@@ -93,7 +94,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/jifen_label1"
+                    android:id="@+id/agentLevel_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="13dp"
@@ -104,6 +105,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/upgradeAgentBtn"
                 android:layout_width="60dp"
                 android:layout_height="25dp"
                 android:text="升级"

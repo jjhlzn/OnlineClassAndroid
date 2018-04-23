@@ -76,7 +76,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
                     Intent i = new Intent(getActivity(), QRImageActivity.class);
                     startActivity(i);
                 }
-            }, "", mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
+            }, "", ""));
             mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
 
@@ -161,7 +161,10 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mCells.add(secondSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
-            mCells.add(new ThirdSectionCell(getActivity()));
+            ThirdSectionCell thirdSectionCell = new ThirdSectionCell(getActivity());
+            thirdSectionCell.setAgentLevel(mKeyValueDao.getValue(KeyValueDao.KEY_USER_AGENT_LEVEL, ""));
+            thirdSectionCell.setVipEndDate(mKeyValueDao.getValue(KeyValueDao.KEY_USER_VIP_END_DATE, ""));
+            mCells.add(thirdSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
             for(int i = 0; i < mFourthSections.size(); i++) {
@@ -208,7 +211,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
 
         //mLoading.show("");
-        //changeActionBar();
         return v;
     }
 
@@ -288,18 +290,26 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             cell.setTeamPeople(resp.getTeamPeople());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_TEAMPEOPLE, resp.getTeamPeople());
             cell.updateView();
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_VIP_END_DATE, resp.getVipEndDate());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_AGENT_LEVEL, resp.getLevel());
 
-            CommonCell cell0  = (CommonCell)mCells.get(6);
-            CommonCell cell1 = (CommonCell)mCells.get(7);
-            CommonCell cell2 = (CommonCell)mCells.get(8);
+            CommonCell cell0  = (CommonCell)mCells.get(7);
+            CommonCell cell1 = (CommonCell)mCells.get(8);
+            CommonCell cell2 = (CommonCell)mCells.get(9);
+
+
+            ThirdSectionCell cell3 = (ThirdSectionCell) mCells.get(4);
+            cell3.setVipEndDate(resp.getVipEndDate());
+            cell3.setAgentLevel(resp.getLevel());
+
             cell0.getRecord().setOtherInfo(resp.getTuiJianPeople());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_TUIJIAN, resp.getTuiJianPeople());
-            cell0.updateView();
+            //cell0.updateView();
             cell1.getRecord().setOtherInfo(resp.getOrderCount());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_ORDER, resp.getOrderCount());
-            cell1.updateView();
+            //cell1.updateView();
             cell2.getRecord().setOtherInfo(resp.getTeamPeople());
-            cell2.updateView();
+            //cell2.updateView();
 
             FirstSectionCell firstCell = (FirstSectionCell)mCells.get(0);
             LoginUser loginUser = LoginUserDao.getInstance(getActivity()).get();
@@ -310,8 +320,11 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             loginUser.setBoss(resp.getBoss());
             loginUser.setCodeImageUrl(resp.getCodeImageUrl());
             loginUser.setSex(resp.getSex());
+            loginUser.setVipEndDate(resp.getVipEndDate());
             LoginUserDao.getInstance(getActivity()).save(loginUser);
-            firstCell.update();
+            //firstCell.update();
+
+            mMeAdapter.notifyDataSetChanged();
 
             mSwipeRefreshLayout.setRefreshing(false);
             isLoading = false;

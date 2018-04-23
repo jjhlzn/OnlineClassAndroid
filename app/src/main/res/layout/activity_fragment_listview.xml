@@ -14,11 +14,11 @@
             android:layout_height="match_parent"></LinearLayout> -->
 
 
-        <ListView
+        <com.jinjunhang.onlineclass.ui.lib.MyListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView"
             android:background="@color/fragment_background">
-        </ListView>
+        </com.jinjunhang.onlineclass.ui.lib.MyListView>
 
 </LinearLayout>
