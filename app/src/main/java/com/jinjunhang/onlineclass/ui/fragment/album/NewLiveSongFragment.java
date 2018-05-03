@@ -23,11 +23,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.MyEmojiParse;
@@ -89,6 +91,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     private Button couseOverViewBtn, otherCourseBtn, signUpBtn;
     private TextView mListenerTextView;
     private TextView mPlayTextView;
+    private ImageView mCourseImage;
     public int getCurrentSelectPage() {
         return mViewPager.getCurrentItem();
     }
@@ -176,6 +179,11 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         mListenerTextView = (TextView)v.findViewById(R.id.listenerCount);
         mListenerTextView.setText(song.getListenPeople());
         mPlayTextView = (TextView)v.findViewById(R.id.playTextView);
+        mCourseImage = (ImageView)v.findViewById(R.id.courseImage);
+
+        Glide.with(this)
+                .load(song.getImageUrl())
+                .into(mCourseImage);
 
 
         ImageButton backBtn = (ImageButton)v.findViewById(R.id.back_button);

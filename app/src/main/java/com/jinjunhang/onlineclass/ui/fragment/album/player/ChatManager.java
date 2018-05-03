@@ -137,7 +137,7 @@ public class ChatManager {
     private ImageButton keyboardSwitchButton;
 
     protected List<String> mCommentChars;
-    private String oldCommentString;
+    private String oldCommentString = "";
     public void setBottomCommentView(View v) {
 
 

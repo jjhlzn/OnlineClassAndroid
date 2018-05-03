@@ -80,7 +80,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
 
-            //mFourthSections.add(new LineRecord(R.drawable.me_tixian, "我要提现", webBroserClickListener, ServiceLinkManager.MyExchangeUrl(), ""));
         }
 
         if (mFifthSections.size() == 0) {
@@ -277,6 +276,8 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
         @Override
         protected void onPostExecute(GetUserStatDataResponse resp) {
+            mSwipeRefreshLayout.setRefreshing(false);
+
             if (!resp.isSuccess()) {
                 LogHelper.e(TAG, resp.getErrorMessage());
                 return;
@@ -326,7 +327,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
             mMeAdapter.notifyDataSetChanged();
 
-            mSwipeRefreshLayout.setRefreshing(false);
+
             isLoading = false;
         }
     }

@@ -11,6 +11,7 @@ import com.jinjunhang.onlineclass.model.Course;
 
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.fragment.album.NewLiveSongFragment;
 import com.jinjunhang.player.MusicPlayer;
 
 public class CourseOverViewCell extends BaseListViewCell {
@@ -18,12 +19,14 @@ public class CourseOverViewCell extends BaseListViewCell {
     private Course mCourse;
     private TextView mContentView;
     private String mTitle = "";
+    private NewLiveSongFragment mSongFragment;
 
-    public CourseOverViewCell(Activity activity, Course course) {
+    public CourseOverViewCell(Activity activity, Course course, NewLiveSongFragment songFragment) {
         super(activity);
         mCourse = course;
         MusicPlayer musicPlayer = MusicPlayer.getInstance(activity);
         mTitle = musicPlayer.getCurrentPlaySong().getName();
+        mSongFragment = songFragment;
     }
 
     public void setCourse(Course course) {
@@ -37,7 +40,10 @@ public class CourseOverViewCell extends BaseListViewCell {
         mContentView.setText(mCourse.getIntroduction());
         TextView titleTextView = (TextView) v.findViewById(R.id.title);
         titleTextView.setText(mTitle);
+        //if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
+          //  mSongFragment.resetViewPagerHeight(0);
         return (RelativeLayout)v.findViewById(R.id.container);
+
     }
 
     public int getMeasuredHeight() {

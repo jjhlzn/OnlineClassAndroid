@@ -33,6 +33,7 @@ import com.jinjunhang.onlineclass.ui.cell.player.NewCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.NewCommentHeaderCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
+import com.jinjunhang.player.MusicPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class CourseOverviewFragment extends BaseFragment {
     private List<ListViewCell> mCells = new ArrayList<>();
     public NewLiveSongFragment mSongFragment;
     private ChatManager mChatManager;
+    private MusicPlayer mMusicPlayer;
 
     public void setChatManager(ChatManager chatManager) {
         mChatManager = chatManager;
@@ -55,6 +57,7 @@ public class CourseOverviewFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mMusicPlayer = MusicPlayer.getInstance(getActivity());
         View v = inflater.inflate(R.layout.activity_fragment_listview, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
@@ -63,7 +66,7 @@ public class CourseOverviewFragment extends BaseFragment {
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
 
-        mCells.add(new CourseOverViewCell(getActivity(), new Course()));
+        mCells.add(new CourseOverViewCell(getActivity(), new Course(), mSongFragment));
         mCells.add(new NewCommentHeaderCell(getActivity()));
 
         mListAdapter = new MyListAdapter(getActivity(), mCells);
@@ -150,7 +153,8 @@ public class CourseOverviewFragment extends BaseFragment {
         @Override
         protected GetCourseInfoResponse doInBackground(Void... params) {
             GetCourseInfoRequest req = new GetCourseInfoRequest();
-            req.setId("");
+            Song song = mMusicPlayer.getCurrentPlaySong();
+            req.setId(song.getId());
             return new BasicService().sendRequest(req);
         }
 
@@ -164,6 +168,8 @@ public class CourseOverviewFragment extends BaseFragment {
             CourseOverViewCell cell = (CourseOverViewCell) mListView.getItemAtPosition(0);
             cell.setCourse(course);
             mListAdapter.notifyDataSetChanged();
+            if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
+                mSongFragment.resetViewPagerHeight(0);
         }
     }
 

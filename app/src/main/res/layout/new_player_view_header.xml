@@ -8,7 +8,7 @@
          android:id="@+id/courseImage"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:src="@drawable/course_demo"
+        android:src="@drawable/course"
         android:scaleType="fitXY"/>
 
     <ImageButton

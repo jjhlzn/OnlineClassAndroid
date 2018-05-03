@@ -128,7 +128,8 @@ public class BeforeCoursesFragment extends BaseFragment {
         @Override
         protected GetCourseInfoResponse doInBackground(Void... params) {
             GetCourseInfoRequest req = new GetCourseInfoRequest();
-            req.setId("");
+            Song song = mMusicPlayer.getCurrentPlaySong();
+            req.setId(song.getId());
             return new BasicService().sendRequest(req);
         }
 
