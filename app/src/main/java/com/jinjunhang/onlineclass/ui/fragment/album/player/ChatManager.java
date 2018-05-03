@@ -294,7 +294,7 @@ public class ChatManager {
         oldCommentString = "";
     }
 
-    private String mLastCommentId = "";
+    private String mLastCommentId = "-1";
     private class GetLiveSongCommentsTask extends AsyncTask<GetLiveCommentsRequest, Void, GetLiveCommentsResponse> {
 
         @Override
