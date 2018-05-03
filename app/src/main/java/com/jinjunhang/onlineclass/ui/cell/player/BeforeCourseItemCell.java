@@ -14,6 +14,12 @@ public class BeforeCourseItemCell extends BaseListViewCell {
 
     private Course mCourse;
 
+    private boolean isSelected;
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public BeforeCourseItemCell(Activity activity, Course course) {
         super(activity);
         this.mCourse = course;
@@ -29,6 +35,14 @@ public class BeforeCourseItemCell extends BaseListViewCell {
         sequence.setText(mCourse.getSequence()+".");
         title.setText(mCourse.getTitle());
         time.setText(mCourse.getTime());
+
+        if (isSelected) {
+            sequence.setTextColor(mActivity.getResources().getColor(R.color.tab_selected_color));
+            title.setTextColor(mActivity.getResources().getColor(R.color.tab_selected_color));
+        } else {
+            sequence.setTextColor(mActivity.getResources().getColor(R.color.black));
+            title.setTextColor(mActivity.getResources().getColor(R.color.black));
+        }
 
         return (RelativeLayout)v.findViewById(R.id.container);
     }

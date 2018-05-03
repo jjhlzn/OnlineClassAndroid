@@ -60,6 +60,7 @@ public class GetAlbumsResponse extends PagedServerResponse<Album> {
             album.setStars(json.getDouble("stars"));
             album.setListenerCount(json.getInt("listenerCount"));
             album.setLiveTime(json.getString("liveTime"));
+            album.setDate(json.getString("date"));
 
             mResultSet.add(album);
         }

@@ -88,7 +88,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     private MyPagerAdapter mMyPagerAdapter;
     private Button couseOverViewBtn, otherCourseBtn, signUpBtn;
     private TextView mListenerTextView;
-
+    private TextView mPlayTextView;
     public int getCurrentSelectPage() {
         return mViewPager.getCurrentItem();
     }
@@ -175,6 +175,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         final ScrollView scrollView = (ScrollView) v.findViewById(R.id.scrollView);
         mListenerTextView = (TextView)v.findViewById(R.id.listenerCount);
         mListenerTextView.setText(song.getListenPeople());
+        mPlayTextView = (TextView)v.findViewById(R.id.playTextView);
 
 
         ImageButton backBtn = (ImageButton)v.findViewById(R.id.back_button);
@@ -395,17 +396,25 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             mPlayButton.setImageResource(R.drawable.icon_play);
         }
 
-        /*
+
         if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {
-            mBufferCircle.setVisibility(View.VISIBLE);
-            load_animations();
+            //mBufferCircle.setVisibility(View.VISIBLE);
+            //load_animations();
+            mPlayTextView.setText("缓冲中");
         } else {
+            /*
             if (mRotation != null) {
                 mRotation.cancel();
             }
             mBufferCircle.setAnimation(null);
-            mBufferCircle.setVisibility(View.INVISIBLE);
-        }*/
+            mBufferCircle.setVisibility(View.INVISIBLE); */
+        }
+
+        if (state == ExoPlayer.STATE_READY) {
+            mPlayTextView.setText("播放中");
+        } else if (state == ExoPlayer.STATE_ENDED || state == ExoPlayer.STATE_IDLE) {
+            mPlayTextView.setText("开始播放");
+        }
     }
 
     private int lastPlayerState = ExoPlayer.STATE_IDLE;

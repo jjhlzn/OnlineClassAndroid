@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
@@ -48,6 +49,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -170,7 +173,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
     }
 
-    private BaseFragment currentFragment;
     private void onTabItemSelected(int position){
 
         LogHelper.d(TAG, "tab selected position = " + position);
@@ -248,6 +250,25 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             tabText.setText(mTabTitle[position]);
             return view;
         }
+    }
+
+    private long lastPressBack = 0;
+
+    @Override
+    public void onBackPressed() {
+
+        long now = Calendar.getInstance().getTime().getTime();
+        long delta = now - lastPressBack;
+        lastPressBack = now;
+        if (delta < 3000) {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+        } else {
+            Toast.makeText(this, "再按一次退回键退出", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
 

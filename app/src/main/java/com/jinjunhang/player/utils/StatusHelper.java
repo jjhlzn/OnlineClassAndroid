@@ -13,29 +13,11 @@ public class StatusHelper {
 
     private static final String TAG = LogHelper.makeLogTag(StatusHelper.class);
 
-    public static int convertExo2Media(int state, int playWhenReady) {
-        int resultState;
-        switch (state) {
-            case ExoPlayer.STATE_IDLE:
-                resultState = PlaybackState.STATE_NONE;
-                break;
-            case ExoPlayer.STATE_BUFFERING:
-                resultState = PlaybackState.STATE_BUFFERING;
-                break;
-            case ExoPlayer.STATE_PREPARING:
-                //resultState = PlaybackState.STATE
-                break;
-            case ExoPlayer.STATE_ENDED:
-                break;
-            case ExoPlayer.STATE_READY:
-                break;
-        }
-        return 0;
-    }
 
     public static boolean isPlayingForUI(MusicPlayer musicPlayer) {
         int state = musicPlayer.getState();
-        boolean isPlayingForUI = musicPlayer.isPlaying() || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
+        boolean isPlayingForUI = musicPlayer.isPlaying()
+                || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
        // LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
         return isPlayingForUI;
     }

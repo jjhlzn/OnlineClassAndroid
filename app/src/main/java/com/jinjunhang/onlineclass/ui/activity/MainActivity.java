@@ -65,8 +65,6 @@ public class MainActivity extends BaseMusicActivity  {
 
     private LoginUserDao mLoginUserDao;
 
-//    private ShareManager mShareManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

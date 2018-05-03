@@ -9,6 +9,7 @@ public class Course {
     private String mTitle = "";
     private String mTime = "";
     private String mIntroduction = "";
+    private String mUrl = "";
     private List<Course> mBeforeCourses = new ArrayList<>();
 
     public int getSequence() {
@@ -57,5 +58,13 @@ public class Course {
 
     public void setBeforeCourses(List<Course> beforeCourses) {
         mBeforeCourses = beforeCourses;
+    }
+
+    public String getUrl() {
+        return mUrl;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
     }
 }

@@ -51,6 +51,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="25dp"/>
         <TextView
+            android:id="@+id/playTextView"
             android:layout_toRightOf="@+id/playBtn"
             android:gravity="center_vertical"
             android:layout_width="60dp"

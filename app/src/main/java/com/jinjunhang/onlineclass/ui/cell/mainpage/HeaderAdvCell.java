@@ -98,6 +98,7 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
         for (Advertise adv : mAdvertises) {
             CustomSliderView textSliderView = new CustomSliderView(mActivity);
             // initialize a SliderLayout
+            LogHelper.d(TAG, "imageUrl: " + adv.getImageUrl());
             textSliderView
                     ///.description(name)
                     .image(adv.getImageUrl())

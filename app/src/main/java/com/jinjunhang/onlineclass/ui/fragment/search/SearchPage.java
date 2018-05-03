@@ -80,7 +80,7 @@ public class SearchPage {
             View buttonView = createButton(keyword);
             row.addView(buttonView);
 
-            if (screenWidth - rowLength < 144) {
+            if (screenWidth - rowLength < 224) {
                 isNeedNewRow = true;
                 rowLength = 0;
             }

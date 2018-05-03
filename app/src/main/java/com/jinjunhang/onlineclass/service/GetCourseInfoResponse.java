@@ -43,6 +43,7 @@ public class GetCourseInfoResponse extends ServerResponse {
             child.setId(item.getString("id"));
             child.setTitle(item.getString("title"));
             child.setTime(item.getString("time"));
+            child.setUrl(item.getString("url"));
             beforeCourses.add(child);
         }
         mCourse.setBeforeCourses(beforeCourses);

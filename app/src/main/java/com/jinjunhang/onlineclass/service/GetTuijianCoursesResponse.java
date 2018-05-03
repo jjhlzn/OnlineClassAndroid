@@ -68,6 +68,7 @@ public class GetTuijianCoursesResponse extends ServerResponse {
             album.setStars(json.getDouble("stars"));
             album.setListenerCount(json.getInt("listenerCount"));
             album.setLiveTime(json.getString("liveTime"));
+            album.setDate(json.getString("date"));
 
             mCourses.add(album);
         }
