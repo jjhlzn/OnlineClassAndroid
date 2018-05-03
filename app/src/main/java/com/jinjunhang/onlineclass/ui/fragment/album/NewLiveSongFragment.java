@@ -397,6 +397,8 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
 
     protected void updatePlayButton() {
+        LogHelper.d(TAG, "updatePlayButton called, state = " + mMusicPlayer.getState());
+
         int state = mMusicPlayer.getState();
         if (StatusHelper.isPlayingForUI(mMusicPlayer) ) {
             mPlayButton.setImageResource(R.drawable.icon_stop);
@@ -416,13 +418,14 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             }
             mBufferCircle.setAnimation(null);
             mBufferCircle.setVisibility(View.INVISIBLE); */
+
+            if (mMusicPlayer.isPlaying()) {
+                mPlayTextView.setText("播放中");
+            } else {
+                mPlayTextView.setText("开始播放");
+            }
         }
 
-        if (state == ExoPlayer.STATE_READY) {
-            mPlayTextView.setText("播放中");
-        } else if (state == ExoPlayer.STATE_ENDED || state == ExoPlayer.STATE_IDLE) {
-            mPlayTextView.setText("开始播放");
-        }
     }
 
     private int lastPlayerState = ExoPlayer.STATE_IDLE;

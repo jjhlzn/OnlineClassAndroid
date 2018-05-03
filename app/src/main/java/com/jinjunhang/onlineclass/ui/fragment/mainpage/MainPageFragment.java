@@ -80,6 +80,14 @@ public class MainPageFragment extends BaseFragment {
         touziPage.onStopHandler();
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        rongziPage.onStopHandler();
+        touziPage.onStopHandler();
+    }
+
     @Override
     public void changeActionBar() {
         AppCompatActivity activity = (AppCompatActivity)getActivity();

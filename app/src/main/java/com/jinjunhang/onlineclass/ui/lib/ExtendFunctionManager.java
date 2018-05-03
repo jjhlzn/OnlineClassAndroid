@@ -137,7 +137,7 @@ public class ExtendFunctionManager {
                 messageManager.getFunctionName("f_loan", "快速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
 
         functions.add(new ExtendFunction(R.drawable.icon4,
-                messageManager.getFunctionName("f_user0", "金融学习"), "f_user0", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user0", "金融学习"), "f_user0", ServiceLinkManager.StudyUrl(), mWebListener, messageManager));
 
         /*
         functions.add(new ExtendFunction(R.drawable.f_live,
@@ -173,13 +173,13 @@ public class ExtendFunctionManager {
         */
 
         functions.add(new ExtendFunction(R.drawable.icon5,
-                messageManager.getFunctionName("f_user1", "融资军火库"), "f_user1", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user1", "融资军火库"), "f_user1", ServiceLinkManager.JunHuoKuUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon6,
-                messageManager.getFunctionName("f_user2", "金融工具"), "f_user2", ServiceLinkManager.FunctionCustomerServiceUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user2", "金融工具"), "f_user2", ServiceLinkManager.FinaceToolsUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon7,
                 messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon8,
-                messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.FunctionShopUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.MallUrl(), mWebListener, messageManager));
 
         /*
         moreFunction =  new ExtendFunction(R.drawable.f_more,

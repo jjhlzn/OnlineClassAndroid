@@ -172,6 +172,7 @@ public class CourseListFragment extends BaseFragment  {
     public void onResume() {
         super.onResume();
         //changeActionBar();
+        mLoading.hide();
     }
 
     @Override

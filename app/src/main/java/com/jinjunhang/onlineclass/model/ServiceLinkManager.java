@@ -129,5 +129,20 @@ public class ServiceLinkManager {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/images/liveSampleImage.png";
     }
 
+    public static String StudyUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/study";
+    }
+
+    public static String JunHuoKuUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/documents";
+    }
+
+    public static String FinaceToolsUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/financetools";
+    }
+
+    public static String MallUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/mall";
+    }
 }
 

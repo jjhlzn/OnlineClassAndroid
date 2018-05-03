@@ -70,6 +70,9 @@ public class ShopWebBrowserFragment extends BaseFragment {
         mWXAPI.registerApp("wx73653b5260b24787");
 
         mUrl = ServiceLinkManager.ShenqingUrl();
+        if (getArguments() != null && getArguments().getString("url") != null) {
+            mUrl = getArguments().getString("url");
+        }
         //mUrl = "http://www.baidu.com";
         mUrl = Util.addUserInfo(mUrl);
         mUrl = Util.addDeviceInfo(mUrl);
