@@ -26,7 +26,7 @@ public class ParseHtmlPageTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-        /*
+
         String url = strings[0];
         try {
             Document doc = Jsoup.connect(url).get();
@@ -53,7 +53,7 @@ public class ParseHtmlPageTask extends AsyncTask<String, Void, Void> {
         }
         catch (Exception ex) {
             LogHelper.e(TAG, ex);
-        }*/
+        }
         return null;
     }
 }
