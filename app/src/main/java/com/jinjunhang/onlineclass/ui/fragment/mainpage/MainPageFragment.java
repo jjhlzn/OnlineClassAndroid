@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
@@ -39,7 +41,7 @@ public class MainPageFragment extends BaseFragment {
     private ImageButton kefuBtn;
     private ImageButton searchBtn;
     private ViewGroup rongziView;
-    private ViewGroup touziView;
+    //private ViewGroup touziView;
 
     private boolean isrongziSelected = true;
 
@@ -59,12 +61,12 @@ public class MainPageFragment extends BaseFragment {
         }
 
         rongziView = (ViewGroup)v.findViewById(R.id.frag_1);
-        touziView = (ViewGroup)v.findViewById(R.id.frag_2);
+        //touziView = (ViewGroup)v.findViewById(R.id.frag_2);
 
         rongziPage = new Page(getActivity(), inflater, container, savedInstanceState, ExtendFunctionManager.RONGZI_TYPE);
         rongziView.addView(rongziPage.v);
-        touziPage = new Page(getActivity(), inflater, container, savedInstanceState, ExtendFunctionManager.TOUZI_TYPE);
-        touziView.addView(touziPage.v);
+        //touziPage = new Page(getActivity(), inflater, container, savedInstanceState, ExtendFunctionManager.TOUZI_TYPE);
+        //touziView.addView(touziPage.v);
 
         if (!isIntied) {
             changeActionBar();
@@ -77,7 +79,7 @@ public class MainPageFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         rongziPage.onStopHandler();
-        touziPage.onStopHandler();
+        //touziPage.onStopHandler();
     }
 
 
@@ -85,7 +87,7 @@ public class MainPageFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         rongziPage.onStopHandler();
-        touziPage.onStopHandler();
+        //touziPage.onStopHandler();
     }
 
     @Override
@@ -107,6 +109,16 @@ public class MainPageFragment extends BaseFragment {
 
         setLightStatusBar(customView, activity);
 
+        TextView searchField = (TextView) ((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.search_edit_field);
+        searchField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), SearchActivity.class);
+                getContext().startActivity(i);
+            }
+        });
+
+        /*
         rongziBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.rongzi_btn);
         touziBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.touzi_btn);
 
@@ -134,7 +146,6 @@ public class MainPageFragment extends BaseFragment {
         });
 
 
-
         LogHelper.d(TAG, "isrongziSelected = " + isrongziSelected);
         if (isrongziSelected) {
             touziBtn.setImageDrawable(getContext().getDrawable(R.drawable.touzi_btn));
@@ -144,6 +155,7 @@ public class MainPageFragment extends BaseFragment {
             touziBtn.setImageDrawable(getContext().getDrawable(R.drawable.touzi_btn_s));
             rongziBtn.setImageDrawable(getContext().getDrawable(R.drawable.rongzi_btn));
         }
+        */
 
         kefuBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.kefu_btn);
         searchBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.search_btn);

@@ -95,39 +95,6 @@ public class LaunchActivity extends Activity {
         TextView advTipText = (TextView) findViewById(R.id.advTipText);
         advTipText.setVisibility(View.INVISIBLE);
 
-        /*
-        if (height == -1) {
-            LogHelper.d(TAG, "compute bottom bar height");
-            //下面这段代码是为了获取BottomBar的高度
-            mBottomBar = BottomBar.attach(this, savedInstanceState);
-            mBottomBar.setMaxFixedTabs(5);
-            mBottomBar.setItemsFromMenu(R.menu.bottombar, new OnMenuTabClickListener() {
-                @Override
-                public void onMenuTabSelected(@IdRes int menuItemId) {
-                }
-
-                @Override
-                public void onMenuTabReSelected(@IdRes int menuItemId) {
-
-                }
-            });
-            mBottomBar.noTopOffset();
-            mBottomBar.hideShadow();
-            mBottomBar.setVisibility(View.INVISIBLE);
-            mBottomBar.post(new Runnable() {
-                @Override
-                public void run() {
-                    int height = mBottomBar.getBar().getHeight();
-                    Utils.BOTTOM_BAR_HEIGHT = height;
-                    LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT + ", " + height);
-                    mKeyValueDao.saveOrUpdate(KeyValueDao.BOTTOM_BAR_HEIGHT, height + "");
-                }
-            });
-        } else {
-            Utils.BOTTOM_BAR_HEIGHT = height;
-            LogHelper.d(TAG, "bottom bar height = " + Utils.BOTTOM_BAR_HEIGHT + ", " + height);
-        } */
-
         int apiLevel = 0;
         try {
             apiLevel = Integer.parseInt(Build.VERSION.RELEASE ) ;
@@ -224,32 +191,6 @@ public class LaunchActivity extends Activity {
 
         if (mSeconds == 0) {
             checkLogin();
-        }
-    }
-
-    private class GetServiceLocatorTask extends AsyncTask<Void, Void, GetServiceLocatorResponse> {
-
-        @Override
-        protected GetServiceLocatorResponse doInBackground(Void... params) {
-            return new BasicService().sendRequest(new GetServiceLocatorRequest());
-        }
-
-        @Override
-        protected void onPostExecute(GetServiceLocatorResponse resp) {
-            if (resp.isSuccess()) {
-                mKeyValueDao.saveOrUpdate(KeyValueDao.SERVER_HTTP, resp.getHttp());
-                mKeyValueDao.saveOrUpdate(KeyValueDao.SERVER_HOST, resp.getServerName());
-                mKeyValueDao.saveOrUpdate(KeyValueDao.SERVER_PORT, resp.getPort()+"");
-                ServiceConfiguration.LOCATOR_HTTP = resp.getHttp();
-                ServiceConfiguration.LOCATOR_SERVERNAME = resp.getServerName();
-                try {
-                    ServiceConfiguration.LOCATOR_PORT = Integer.parseInt( resp.getPort() );
-                } catch (Exception ex){
-                    LogHelper.e(TAG, ex);
-                }
-            }
-
-            registerXinGeAndGoToNextActivity();
         }
     }
 

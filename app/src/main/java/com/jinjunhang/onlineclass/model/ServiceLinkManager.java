@@ -144,5 +144,13 @@ public class ServiceLinkManager {
     public static String MallUrl() {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/mall";
     }
+
+    public static String HezuoUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/hezuo";
+    }
+
+    public static String MyServiceUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/myservice";
+    }
 }
 

@@ -60,6 +60,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
     private KeyValueDao mKeyValueDao;
 
+    private List<LineRecord> mSeventSections = new ArrayList<LineRecord>();
     private List<LineRecord> mFourthSections = new ArrayList<LineRecord>();
     private List<LineRecord> mFifthSections = new ArrayList<>();
     private List<LineRecord> mSixSections = new ArrayList<>();
@@ -69,6 +70,10 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     private LoadingAnimation mLoading;
 
     private void initSections() {
+        if (mSeventSections.size() == 0) {
+            mSeventSections.add(new LineRecord(R.drawable.user2, "我的服务", webBroserClickListener, ServiceLinkManager.MyServiceUrl(), ""));
+        }
+
         if (mFourthSections.size() == 0) {
             mFourthSections.add(new LineRecord(R.drawable.user1, "邀请好友", new CellClickListener() {
                 @Override
@@ -79,11 +84,10 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             }, "", ""));
             mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
-
+            mFourthSections.add(new LineRecord(R.drawable.user4, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
         }
 
         if (mFifthSections.size() == 0) {
-            mFourthSections.add(new LineRecord(R.drawable.user4, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
             mFifthSections.add(new LineRecord(R.drawable.user5, "我的资料", new CellClickListener() {
                 @Override
                 public void onClick(ListViewCell cell) {
@@ -98,6 +102,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
                     startActivity(i);
                 }
             }, "", ""));
+            mFifthSections.add(new LineRecord(R.drawable.user5, "申请合作", webBroserClickListener, ServiceLinkManager.HezuoUrl(), ""));
         }
 
         if (mSixSections.size() == 0) {
@@ -166,6 +171,12 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mCells.add(thirdSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
+            for(int i = 0; i < mSeventSections.size(); i++) {
+                CommonCell cell = new CommonCell(getActivity(), mSeventSections.get(i));
+                mCells.add(cell);
+            }
+            mCells.add(new SectionSeparatorCell(getActivity()));
+
             for(int i = 0; i < mFourthSections.size(); i++) {
                 CommonCell cell = new CommonCell(getActivity(), mFourthSections.get(i));
                 mCells.add(cell);
@@ -186,7 +197,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
 
         mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
-        //mSwipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         mMeAdapter = new MeAdapter(mCells);
@@ -294,9 +304,9 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_VIP_END_DATE, resp.getVipEndDate());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_AGENT_LEVEL, resp.getLevel());
 
-            CommonCell cell0  = (CommonCell)mCells.get(7);
-            CommonCell cell1 = (CommonCell)mCells.get(8);
-            CommonCell cell2 = (CommonCell)mCells.get(9);
+            CommonCell cell0  = (CommonCell)mCells.get(9);
+            CommonCell cell1 = (CommonCell)mCells.get(10);
+            CommonCell cell2 = (CommonCell)mCells.get(11);
 
 
             ThirdSectionCell cell3 = (ThirdSectionCell) mCells.get(4);

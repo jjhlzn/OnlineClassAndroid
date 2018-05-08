@@ -247,7 +247,7 @@ public class ExtendFunctionManager {
             height = 190;
         }
         //LogHelper.d(TAG, "each row height in pixel = " + height);
-        return height;
+        return (int)(height * 0.79);
     }
 
     public ExtendFunctionCell getCell(int row) {
@@ -286,9 +286,9 @@ public class ExtendFunctionManager {
         ImageView imageView = new ImageView(mContext);
 
 
-        imageParams.width = (int)(width / 4 * 0.7);
-        imageParams.height = (int)(width / 4 * 0.7);
-        imageView.setPadding(0, 20, 0, 5);
+        imageParams.width = (int)(width / 4 * 0.7 * 0.70);
+        imageParams.height = (int)(width / 4 * 0.7  * 0.70);
+        imageView.setPadding(0, 12, 0, 4);
 
 
         imageView.setLayoutParams(imageParams);
@@ -304,9 +304,9 @@ public class ExtendFunctionManager {
         textView.setLayoutParams(textParams);
         textView.setText(function.getName());
         textView.setWidth(width / 4);
-        textView.setTextSize(12);
+        textView.setTextSize(11);
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(0, 0, 0, 20);
+        textView.setPadding(0, 0, 0, 0);
 
         layout.addView(textView);
 

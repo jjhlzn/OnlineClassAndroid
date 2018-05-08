@@ -21,17 +21,23 @@ import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
+import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
+import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
+import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.MainPageWhiteSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
-import com.jinjunhang.onlineclass.ui.fragment.CourseListFragment;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.TuijianCourseHeaderCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.ZhuanLanCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.ZhuanLanHeaderCell;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctoinVariableInfoManager;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
@@ -57,6 +63,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private String mType;
     private HeaderAdvCell mHeaderAdvCell;
     private List<Album> mCourses;
+    private List<ZhuanLan> mZhuanLans;
     private FragmentActivity mActivity;
     private boolean mIsLoading;
     private ExoPlayerNotificationManager mNotificationManager;
@@ -64,6 +71,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
         mNotificationManager = ExoPlayerNotificationManager.getInstance(activity);
         mActivity = activity;
+        mZhuanLans = new ArrayList<>();
         mCourses = new ArrayList<>();
         this.mType = type;
 
@@ -112,37 +120,56 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 if (position < 5) {
                     return;
                 }
-                Album album = mCourses.get(position - 5);
-                if (!album.isReady()) {
-                    Utils.showErrorMessage(mActivity, "该课程未上线，敬请期待！");
-                    return;
+
+                BaseListViewCell cell = (BaseListViewCell) mMainPageAdapter.getItem(position);
+                if (cell instanceof ZhuanLanCell) {
+                    ZhuanLanCell zhuanLanCell = (ZhuanLanCell)cell;
+                    ZhuanLan zhuanLan = zhuanLanCell.getZhuanLan();
+
+                    Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                            .putExtra(WebBrowserActivity.EXTRA_TITLE, zhuanLan.getName())
+                            .putExtra(WebBrowserActivity.EXTRA_URL, zhuanLan.getUrl());
+                    mActivity.startActivity(i);
+
+                } else if (cell instanceof MainPageCourseCell) {
+                    MainPageCourseCell courseCell = (MainPageCourseCell)cell;
+                    Album album = courseCell.getCourse();
+                    if (!album.isReady()) {
+                        Utils.showErrorMessage(mActivity, "该课程未上线，敬请期待！");
+                        return;
+                    }
+
+                    mLoading.show("");
+
+                    GetAlbumSongsRequest request = new GetAlbumSongsRequest();
+                    request.setAlbum(album);
+                    request.setPageIndex(0);
+                    request.setPageSize(200);
+                    new GetAlbumSongsTask().execute(request);
                 }
 
-                mLoading.show("");
 
-                GetAlbumSongsRequest request = new GetAlbumSongsRequest();
-                request.setAlbum(album);
-                request.setPageIndex(0);
-                request.setPageSize(200);
-                new GetAlbumSongsTask().execute(request);
             }
         });
 
-        new GetTuijianCoursesTask().execute();
+        new GetZhuanLanAndTuijianCoursesTask().execute();
     }
 
-    private void setCoursesView() {
+    private void setZhuanLanAndCoursesView() {
         if (mCells.size() > 5) {
             int size = mCells.size();
             for(int i = 0; i < size - 5; i++) {
                 mCells.remove(5);
             }
         }
-
+        mCells.add(new ZhuanLanHeaderCell(mActivity));
+        for(ZhuanLan zhuanLan : mZhuanLans) {
+            mCells.add(new ZhuanLanCell(mActivity, zhuanLan));
+        }
+        mCells.add(new TuijianCourseHeaderCell(mActivity));
         for(Album course : mCourses) {
             mCells.add(new MainPageCourseCell(mActivity, course));
         }
-
         mMainPageAdapter.notifyDataSetChanged();
     }
 
@@ -152,7 +179,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
     @Override
     public void onRefresh() {
-        new GetTuijianCoursesTask().execute();
+        new GetZhuanLanAndTuijianCoursesTask().execute();
     }
 
     private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
@@ -180,17 +207,16 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
-    private class GetTuijianCoursesTask extends AsyncTask<Void, Void, GetTuijianCoursesResponse> {
+    private class GetZhuanLanAndTuijianCoursesTask extends AsyncTask<Void, Void, GetZhuanLanAndTuijianCourseResponse> {
 
         @Override
-        protected GetTuijianCoursesResponse doInBackground(Void... voids) {
-            GetTuijianCoursesRequest request = new GetTuijianCoursesRequest();
-            request.setType(mType);
+        protected GetZhuanLanAndTuijianCourseResponse doInBackground(Void... voids) {
+            GetZhuanLanAndTuijianCourseRequest request = new GetZhuanLanAndTuijianCourseRequest();
             return new BasicService().sendRequest(request);
         }
 
         @Override
-        protected void onPostExecute(final GetTuijianCoursesResponse response) {
+        protected void onPostExecute(final GetZhuanLanAndTuijianCourseResponse response) {
             super.onPostExecute(response);
             mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess()) {
@@ -199,9 +225,11 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
 
             mCourses = response.getCourses();
-            setCoursesView();
+            mZhuanLans = response.getZhuanLans();
+            setZhuanLanAndCoursesView();
         }
     }
+
 
     public class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
 
@@ -210,7 +238,6 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         protected GetAlbumSongsResponse doInBackground(GetAlbumSongsRequest... params) {
             request = params[0];
-            LogHelper.d(TAG, "GetAlbumSongsTask.GetAlbumSongsTask() called");
             return new BasicService().sendRequest(request);
         }
 

@@ -41,6 +41,7 @@ import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.CourseListFragment;
+import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
 import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
@@ -211,7 +212,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
         public static final int []mTabRes = new int[]{R.drawable.icon_home,R.drawable.icon_study, R.drawable.icon_live, R.drawable.icon_shop,R.drawable.icon_my,};
         public static final int []mTabResPressed = new int[]{R.drawable.icon_home_s, R.drawable.icon_study_s, R.drawable.icon_live_s, R.drawable.icon_shop_s,R.drawable.icon_my_s,};
-        public static final String []mTabTitle = new String[]{"首页", "学习", "直播", "商城","我的"};
+        public static final String []mTabTitle = new String[]{"首页", "资讯", "直播", "订阅","我的"};
 
         public static BaseFragment[] getFragments(Activity activity, String from){
             BaseFragment fragments[] = new BaseFragment[5];
@@ -225,7 +226,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
                 frag1.setArguments(args);
                 fragments[1] = frag1;
                 fragments[2] = CourseListFragment.class.newInstance();
-                ShopWebBrowserFragment frag3 = new ShopWebBrowserFragment();
+                ZhuanLanListFragment frag3 = new ZhuanLanListFragment();
                 Bundle args3 = new Bundle();
                 args3.putString("title", mTabTitle[3]);
                 args3.putString("url", ServiceLinkManager.MallUrl());

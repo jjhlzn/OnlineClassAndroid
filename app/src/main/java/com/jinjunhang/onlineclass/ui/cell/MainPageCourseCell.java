@@ -34,6 +34,10 @@ public class MainPageCourseCell extends BaseListViewCell {
         mStars = new ArrayList<>();
     }
 
+    public Album getCourse() {
+        return mCourse;
+    }
+
     public void setView(ViewGroup view) {
         mView = view;
     }
@@ -72,7 +76,7 @@ public class MainPageCourseCell extends BaseListViewCell {
 
         double stars = mCourse.getStars();
         for(int i = 0; i < 5; i++) {
-            if (stars > 1) {
+            if (stars >= 1) {
                 mStars.get(i).setImageDrawable(mActivity.getDrawable(R.drawable.star1));
             } else if (stars <= 0) {
                 mStars.get(i).setImageDrawable(mActivity.getDrawable(R.drawable.star2));

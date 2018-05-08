@@ -3,7 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:id="@+id/list_item_viewgroup"
-              android:layout_height="210dp"
+              android:layout_height="156dp"
               android:orientation="vertical"
               android:background="@drawable/bottom_border">
 
@@ -11,19 +11,19 @@
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="120dp"
             />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="36dp"
             android:layout_gravity="center_vertical"
             android:gravity="center|center_vertical">
 
                 <ImageView
                     android:id="@+id/tt_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="32dp"
+                    android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"
                     android:src="@drawable/icon_tt"/>
@@ -37,13 +37,13 @@
                     android:layout_toRightOf="@+id/tt_img"
                     android:gravity="center_vertical"
                     android:textColor="@color/black"
-                    android:textSize="14dp"
-                    android:text=""/>
+                    android:textSize="11dp"
+                    android:text="中国"/>
 
                 <ImageButton
                     android:id="@+id/haoyou_btn"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
+                    android:layout_width="72dp"
+                    android:layout_height="27dp"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"

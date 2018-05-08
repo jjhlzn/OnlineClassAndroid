@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/container"
+              android:layout_width="match_parent"
+              android:layout_height="110dp"
+              android:orientation="vertical"
+              android:background="@color/white">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="10dp"
+            android:baselineAligned="false">
+
+                <LinearLayout
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal|top">
+                        <ImageView
+                            android:id="@+id/zhuanLanImage"
+                            android:layout_width="60dp"
+                            android:layout_height="80dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/course"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.65"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginRight="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginRight="12dp"
+                                    android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/nameLabel"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="0dp"
+                                            android:textSize="14sp"
+                                            android:gravity="center_vertical|left"
+                                            android:text="商业经典案例课"
+
+                                            android:textColor="@android:color/black"/>
+
+                                        <TextView
+                                            android:id="@+id/authorLabel"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="0dp"
+                                            android:layout_marginTop="3dp"
+                                            android:textSize="10sp"
+                                            android:gravity="center_vertical|left"
+                                            android:text="Zhang san fen"
+                                            android:textAlignment="textStart"
+                                            android:textColor="@android:color/darker_gray"/>
+
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/dingyueLabel"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginTop="3dp"
+
+                                    android:textSize="11sp"
+                                    android:gravity="center_vertical|left"
+                                    android:text="1999999"
+                                    android:textAlignment="textStart"
+                                    android:textColor="@android:color/darker_gray"/>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/latestLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="5dp"
+                            android:textSize="11dp"
+                            android:gravity="center_vertical|left"
+                            android:text="赢家的方法"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/shareButtonWordColor"/>
+
+                        <TextView
+                            android:id="@+id/priceInfoLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="4dp"
+                            android:textSize="11sp"
+                            android:gravity="center_vertical|left"
+                            android:text="199元/年"
+                            android:textAlignment="textStart"
+                            android:textStyle="normal"
+                            android:textColor="@color/tab_selected_color"/>
+
+
+
+
+
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+</LinearLayout>
