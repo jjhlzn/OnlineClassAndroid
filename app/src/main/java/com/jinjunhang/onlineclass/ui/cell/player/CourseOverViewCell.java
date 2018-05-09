@@ -24,7 +24,7 @@ public class CourseOverViewCell extends BaseListViewCell {
     public CourseOverViewCell(Activity activity, Course course, NewLiveSongFragment songFragment) {
         super(activity);
         mCourse = course;
-        MusicPlayer musicPlayer = MusicPlayer.getInstance(activity);
+        MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
         mTitle = musicPlayer.getCurrentPlaySong().getName();
         mSongFragment = songFragment;
     }

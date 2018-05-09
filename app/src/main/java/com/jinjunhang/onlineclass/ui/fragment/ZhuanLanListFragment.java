@@ -93,6 +93,7 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
             text.setText("订阅");
 
             setLightStatusBar(customView, activity);
+            Utils.setNavigationBarMusicButton(activity);
         }
     }
 

@@ -265,7 +265,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
             if (resp.getResultSet().size() >= 1) {
                 LiveSong song = (LiveSong) resp.getResultSet().get(0);
-                MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity);
+                LogHelper.d(TAG, "mActivity: " + mActivity);
+                MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity.getApplicationContext());
                 if (!musicPlayer.isPlay(song)) {
                     musicPlayer.pause();
                     musicPlayer.play(resp.getResultSet(), 0);

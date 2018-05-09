@@ -194,6 +194,7 @@ public class CourseListFragment extends BaseFragment  {
             //customView.findViewById(R.id.actionbar_right_button).setVisibility(View.INVISIBLE);
 
             setLightStatusBar(customView, activity);
+            Utils.setNavigationBarMusicButton(getActivity());
         }
     }
 

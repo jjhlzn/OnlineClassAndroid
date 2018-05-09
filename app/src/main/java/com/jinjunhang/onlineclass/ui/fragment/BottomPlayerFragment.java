@@ -13,11 +13,12 @@ import com.jinjunhang.player.MusicPlayer;
  */
 public class BottomPlayerFragment extends BaseFragment implements ExoPlayer.Listener{
     protected BottomPlayerController mPlayerController;
-    protected MusicPlayer mMusicPlayer = MusicPlayer.getInstance(getActivity());
+    protected MusicPlayer mMusicPlayer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MusicPlayer mMusicPlayer = MusicPlayer.getInstance(getActivity().getApplicationContext());
         mPlayerController = BottomPlayerController.getInstance(getActivity());
     }
 
@@ -39,14 +40,18 @@ public class BottomPlayerFragment extends BaseFragment implements ExoPlayer.List
     @Override
     public void onResume() {
         super.onResume();
-        mMusicPlayer.addListener(mPlayerController);
-        mPlayerController.updateView();
+        if (mMusicPlayer != null) {
+            mMusicPlayer.addListener(mPlayerController);
+            mPlayerController.updateView();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mMusicPlayer.removeListener(mPlayerController);
-        mPlayerController.updateView();
+        if (mMusicPlayer != null) {
+            mMusicPlayer.removeListener(mPlayerController);
+            mPlayerController.updateView();
+        }
     }
 }

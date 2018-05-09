@@ -24,7 +24,7 @@ public class SongActivity extends BaseMusicSingleFragmentActivity {
         Song song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
        // return new SongFragment();
         if (song == null) {  //从通知栏过来
-           song = MusicPlayer.getInstance(this).getCurrentPlaySong();
+           song = MusicPlayer.getInstance(this.getApplicationContext()).getCurrentPlaySong();
         }
 
         if (song == null) {

@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
@@ -138,6 +139,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             text.setText("我的");
 
             setLightStatusBar(customView, activity);
+            Utils.setNavigationBarMusicButton(activity);
         }
     }
 

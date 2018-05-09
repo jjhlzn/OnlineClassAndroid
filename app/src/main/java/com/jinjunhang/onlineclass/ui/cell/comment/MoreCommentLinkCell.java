@@ -50,7 +50,7 @@ public class MoreCommentLinkCell extends BaseListViewCell {
             public void onClick(View v) {
                 //LogHelper.d(TAG, "more button clicked");
                 Intent i = new Intent(mActivity, CommentListActivity.class);
-                i.putExtra(CommentListFragment.EXTRA_SONG, MusicPlayer.getInstance(mActivity).getCurrentPlaySong());
+                i.putExtra(CommentListFragment.EXTRA_SONG, MusicPlayer.getInstance(mActivity.getApplicationContext()).getCurrentPlaySong());
                 mActivity.startActivity(i);
             }
         });

@@ -97,4 +97,7 @@ dependencies {
 
     //html解析
     compile 'org.jsoup:jsoup:1.10.3'
+
+    //gif
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.12'
 }

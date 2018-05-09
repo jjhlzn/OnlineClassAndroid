@@ -14,7 +14,7 @@ import com.jinjunhang.player.MusicPlayer;
 public class BaseMusicActivity extends AppCompatActivity {
 
     protected BottomPlayerController mPlayerController;
-    protected MusicPlayer mMusicPlayer = MusicPlayer.getInstance(this);
+    protected MusicPlayer mMusicPlayer = MusicPlayer.getInstance(this.getApplicationContext());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

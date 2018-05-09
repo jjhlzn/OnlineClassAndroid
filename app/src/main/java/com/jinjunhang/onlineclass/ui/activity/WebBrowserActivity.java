@@ -156,6 +156,12 @@ public class WebBrowserActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Utils.setNavigationBarMusicButton(this);
+    }
+
     private void checkLogin() {
         Intent i;
         if (mLoginUserDao.get() == null) {

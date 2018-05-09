@@ -18,8 +18,8 @@
             <ImageButton
                 android:id="@+id/kefu_btn"
 
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_customer"/>
@@ -56,24 +56,14 @@
                 android:textSize="13dp"/>
         </LinearLayout>
 
+       <include layout="@layout/actionbar_rightpart"
+                android:id="@+id/rightPart"
+             android:layout_width="60dp"
+             android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+        />
 
 
-        <RelativeLayout
-            android:id="@+id/rightPart"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_alignParentRight="true">
-            <ImageButton
-                android:id="@+id/search_btn"
-
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@null"
-                android:scaleType="fitXY"
-                android:src="@drawable/icon_search"/>
-        </RelativeLayout>
 
     <!--
         <LinearLayout

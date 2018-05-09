@@ -2,11 +2,13 @@ package com.jinjunhang.framework.lib;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentProvider;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -27,7 +29,12 @@ import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
+import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.player.MusicPlayer;
+import com.jinjunhang.player.utils.StatusHelper;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -37,6 +44,8 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import pl.droidsonroids.gif.GifImageView;
 
 
 /**
@@ -367,6 +376,58 @@ public class Utils {
         int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         textView.measure(widthMeasureSpec, heightMeasureSpec);
         return textView.getMeasuredHeight();
+    }
+
+    public static void setNavigationBarMusicButton(final Activity activity) {
+        if (activity != null && activity instanceof AppCompatActivity) {
+            if (((AppCompatActivity)activity).getSupportActionBar() != null) {
+                View v = ((AppCompatActivity) activity).getSupportActionBar().getCustomView();
+                final GifImageView musicBtn = (GifImageView) v.findViewById(R.id.musicBtn);
+                if (musicBtn != null) {
+                    musicBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
+                            Song song = musicPlayer.getCurrentPlaySong();
+                            if (song != null) {
+                                Intent i = new Intent(activity, NewLiveSongActivity.class);
+                                activity.startActivity(i);
+                            }
+                        }
+                    });
+                }
+            }
+
+
+            Utils.updateNavigationBarButton(activity);
+
+        }
+
+    }
+
+    public static void updateNavigationBarButton(Activity activity) {
+        if (activity == null)
+            return;
+        LogHelper.d(TAG, "updateNavigationBarButton called");
+        MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
+        Boolean isPlay = StatusHelper.isPlayingForUI(musicPlayer);
+        setImage(isPlay, activity);
+    }
+
+    private static void setImage(boolean isPlay, Activity activity) {
+        if (activity != null && activity instanceof AppCompatActivity) {
+            if (((AppCompatActivity)activity).getSupportActionBar() != null) {
+                View v = ((AppCompatActivity) activity).getSupportActionBar().getCustomView();
+                GifImageView musicBtn = (GifImageView) v.findViewById(R.id.musicBtn);
+                if (musicBtn != null) {
+                    if (isPlay) {
+                        musicBtn.setImageResource(R.drawable.demo);
+                    } else {
+                        musicBtn.setImageResource(R.drawable.music_static);
+                    }
+                }
+            }
+        }
     }
 
 }

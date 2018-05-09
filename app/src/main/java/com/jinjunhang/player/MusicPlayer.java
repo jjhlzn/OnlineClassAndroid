@@ -60,6 +60,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
 
 
     private DemoPlayer.RendererBuilder getRendererBuilder(Uri contentUri, int contentType) {
+        LogHelper.d(TAG, "context: " + context);
         String userAgent = Util.getUserAgent(context, "ExoPlayerDemo");
         switch (contentType) {
             //case Util.TYPE_SS:

@@ -135,6 +135,7 @@ public class ShopWebBrowserFragment extends BaseFragment {
             });
 
             setLightStatusBar(customView, activity);
+            Utils.setNavigationBarMusicButton(activity);
         }
 
         if (mShareManager == null) {
