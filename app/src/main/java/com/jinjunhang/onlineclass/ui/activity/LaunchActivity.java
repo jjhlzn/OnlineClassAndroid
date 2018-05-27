@@ -85,7 +85,7 @@ public class LaunchActivity extends Activity {
         super.onCreate(savedInstanceState);
         Utils.getScreenHeight(this);
         mKeyValueDao = KeyValueDao.getInstance(this);
-        int height =  Integer.parseInt(mKeyValueDao.getValue(KeyValueDao.BOTTOM_BAR_HEIGHT, -1 + ""));
+        //int height =  Integer.parseInt(mKeyValueDao.getValue(KeyValueDao.BOTTOM_BAR_HEIGHT, -1 + ""));
 
         setContentView(R.layout.activity_fragment_launch_adv);
 

@@ -67,8 +67,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitXY"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:src="@drawable/share_black"
             android:background="@null"
             android:visibility="invisible"
@@ -77,8 +77,8 @@
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/musicBtn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="5dp"
             android:layout_marginRight="12dp"

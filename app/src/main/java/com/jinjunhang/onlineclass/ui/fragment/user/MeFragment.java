@@ -72,7 +72,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
     private void initSections() {
         if (mSeventSections.size() == 0) {
-            mSeventSections.add(new LineRecord(R.drawable.user2, "我的服务", webBroserClickListener, ServiceLinkManager.MyServiceUrl(), ""));
+            mSeventSections.add(new LineRecord(R.drawable.user10, "我的服务", webBroserClickListener, ServiceLinkManager.MyServiceUrl(), ""));
         }
 
         if (mFourthSections.size() == 0) {
@@ -103,7 +103,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
                     startActivity(i);
                 }
             }, "", ""));
-            mFifthSections.add(new LineRecord(R.drawable.user5, "申请合作", webBroserClickListener, ServiceLinkManager.HezuoUrl(), ""));
+            mFifthSections.add(new LineRecord(R.drawable.user9, "申请合作", webBroserClickListener, ServiceLinkManager.HezuoUrl(), ""));
         }
 
         if (mSixSections.size() == 0) {

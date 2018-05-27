@@ -280,9 +280,9 @@ public class PlayerCell extends BaseListViewCell implements ExoPlayer.Listener {
     protected void updatePlayButton() {
         int state = mMusicPlayer.getState();
         if (StatusHelper.isPlayingForUI(mMusicPlayer) ) {
-            mPlayButton.setImageResource(R.drawable.icon_ios_music_pause);
+            mPlayButton.setImageResource(R.drawable.dateicon);
         } else {
-            mPlayButton.setImageResource(R.drawable.icon_ios_music_play);
+            mPlayButton.setImageResource(R.drawable.dateicon);
         }
 
         if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {

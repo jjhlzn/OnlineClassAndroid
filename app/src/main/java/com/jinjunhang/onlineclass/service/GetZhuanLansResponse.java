@@ -20,7 +20,7 @@ public class GetZhuanLansResponse extends ServerResponse{
 
     @Override
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
-        JSONArray jsonArray = jsonObject.getJSONArray("zhuanlans");
+        JSONArray jsonArray = jsonObject.getJSONArray("zhuanLans");
         for(int i = 0 ; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.getJSONObject(i);
             ZhuanLan zhuanLan = new ZhuanLan();

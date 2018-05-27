@@ -28,7 +28,7 @@
             android:layout_height="22dp"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="22dp"
-            android:src="@drawable/user1_1"/>
+            android:src="@drawable/agent"/>
 
         <TextView
             android:id="@+id/listen_people_label"
@@ -115,7 +115,7 @@
             android:id="@+id/player_prev_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/icon_ios_music_backward"
+            android:src="@drawable/agent"
             android:scaleType="fitXY"
             android:background="@null"
             android:visibility="gone"
@@ -144,7 +144,7 @@
                 android:id="@+id/player_play_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/icon_ios_music_pause"
+                android:src="@drawable/agent"
                 android:scaleType="fitXY"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
@@ -160,7 +160,7 @@
             android:id="@+id/player_next_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/icon_ios_music_forward"
+            android:src="@drawable/agent"
             android:scaleType="fitXY"
             android:background="@null"
             android:visibility="gone"/>
@@ -180,7 +180,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/icon_ios_list"
+            android:src="@drawable/agent"
             android:scaleType="fitXY"
             android:background="@null"
             android:visibility="gone"/>
@@ -189,7 +189,7 @@
             android:id="@+id/player_hand"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/player_hand"
+            android:src="@drawable/agent"
             android:scaleType="fitXY"
             android:background="@null"
             android:layout_gravity="center_vertical"

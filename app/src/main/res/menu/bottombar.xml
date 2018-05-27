@@ -10,18 +10,18 @@
 
     <item
         android:id="@+id/bottomBarSearch"
-        android:icon="@drawable/shenqing"
+        android:icon="@drawable/agent"
         android:title="申请" />
 
     <item
         android:id="@+id/bottomBarEmpty"
-        android:icon="@drawable/me"
+        android:icon="@drawable/agent"
         android:title="" />
 
 
     <item
         android:id="@+id/bottomBarMe"
-        android:icon="@drawable/me"
+        android:icon="@drawable/agent"
         android:title="我的" />
 
     <item

@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:src="@drawable/playerbackground"
+            android:src="@drawable/agent"
             android:scaleType="fitXY"
             android:background="@null"
             android:layout_centerVertical="true"
@@ -36,7 +36,7 @@
             android:id="@+id/bottomPlayer_playImage"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:src="@drawable/icon_ios_music_play"
+            android:src="@drawable/agent"
             android:scaleType="fitXY"
             android:background="@null"
             android:layout_centerVertical="true"

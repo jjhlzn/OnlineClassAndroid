@@ -16,7 +16,7 @@
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/user2_1"
+            android:src="@drawable/agent"
             />
     </LinearLayout>
 

@@ -8,57 +8,70 @@
     android:background="@color/white">
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:background="@color/white">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:background="@color/white"
+                  android:layout_marginBottom="110dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/advImage"
-            android:layout_marginBottom="120dp"
-            />
+            android:layout_height="0dp"
+            android:layout_weight="0.9">
 
-        <TextView
-            android:id="@+id/skipAdvButton"
-            android:layout_width="96dp"
-            android:layout_height="30dp"
-            android:text="跳过广告  3"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="6dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:background="@color/fullscreen_secondary_line_color1"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/peopleImage"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="300dp"
+                android:src="@drawable/launch_txt"
+                android:id="@+id/advTxtImage"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
 
-        <TextView
-            android:id="@+id/advTipText"
-            android:layout_width="28dp"
-            android:layout_height="20dp"
-            android:text="广告"
-            android:layout_marginTop="8dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            android:gravity="center"
-            android:background="@color/fullscreen_secondary_line_color1"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="120dp"
-            android:layout_below="@+id/peopleImage"/>
-    </RelativeLayout>
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/advImage"
+                android:layout_marginBottom="120dp"
+                />
+
+            <TextView
+                android:id="@+id/skipAdvButton"
+                android:layout_width="96dp"
+                android:layout_height="30dp"
+                android:text="跳过广告  3"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="6dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:background="@color/fullscreen_secondary_line_color1"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/peopleImage"/>
+
+            <TextView
+                android:id="@+id/advTipText"
+                android:layout_width="28dp"
+                android:layout_height="20dp"
+                android:text="广告"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:background="@color/fullscreen_secondary_line_color1"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="120dp"
+                android:layout_below="@+id/peopleImage"/>
+        </RelativeLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
@@ -76,8 +89,7 @@
             android:src="@drawable/log"
             android:id="@+id/imageView"
             android:layout_gravity="bottom"
-
-            android:layout_marginRight="8dp"/>
+            />
 
 
 

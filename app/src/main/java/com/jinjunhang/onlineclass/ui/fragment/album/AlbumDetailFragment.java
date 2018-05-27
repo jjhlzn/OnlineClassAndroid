@@ -177,9 +177,9 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
             ImageView playImageView = (ImageView) convertView.findViewById(R.id.song_list_item_playimage);
             if (mMusicPlayer.isPlay(song)) {
                 LogHelper.d(TAG, "now player song.id = " + song.getId());
-                playImageView.setImageResource(R.drawable.smallpause);
+                playImageView.setImageResource(R.drawable.dateicon);
             } else {
-                playImageView.setImageResource(R.drawable.smallplay);
+                playImageView.setImageResource(R.drawable.dateicon);
             }
 
             return convertView;

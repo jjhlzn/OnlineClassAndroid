@@ -52,10 +52,10 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
 
         if (musicPlayer.isPlaying()) {
             label = "暂停";
-            icon = R.drawable.icon_ios_music_pause_80;
+            icon = R.drawable.dateicon;
         } else {
             label = "播放";
-            icon = R.drawable.icon_ios_music_play_80;
+            icon = R.drawable.dateicon;
         }
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
@@ -68,7 +68,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mContext, 100, switchIntent, 0);
 
         label = "上一首";
-        icon = R.drawable.icon_ios_music_backward_80;
+        icon = R.drawable.dateicon;
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
     }
@@ -80,7 +80,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(mContext, 100, switchIntent, 0);
 
         label = "下一首";
-        icon = R.drawable.icon_ios_music_forward_80;
+        icon = R.drawable.dateicon;
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
     }

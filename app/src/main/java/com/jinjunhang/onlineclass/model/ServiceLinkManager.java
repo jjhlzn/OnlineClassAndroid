@@ -152,5 +152,13 @@ public class ServiceLinkManager {
     public static String MyServiceUrl() {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/myservice";
     }
+
+    public static String CardPayUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/pay";
+    }
+
+    public static String HealthUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/health";
+    }
 }
 

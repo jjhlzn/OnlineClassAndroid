@@ -55,7 +55,7 @@ public class AlbumListAdapter extends PagableController.PagableArrayAdapter<Albu
             }
 
             if (!album.isReady()) {
-                ((ImageView)convertView.findViewById(R.id.user_image)).setImageResource(R.drawable.user1_1);
+                ((ImageView)convertView.findViewById(R.id.user_image)).setImageResource(R.drawable.dateicon);
             }
             if (album.isPlaying()) {
                 ((TextView)convertView.findViewById(R.id.album_list_playing_desc)).setVisibility(View.VISIBLE);

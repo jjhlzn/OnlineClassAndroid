@@ -23,7 +23,7 @@
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical|left"
-            android:src="@drawable/albumtype_live" />
+            android:src="@drawable/agent" />
     </LinearLayout>
 
 

@@ -112,70 +112,23 @@ public class ExtendFunctionManager {
     private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
         functions = new ArrayList<>();
         functions.add(new ExtendFunction(R.drawable.icon1,
-                messageManager.getFunctionName("f_paybycard", "无卡支付"), "f_paybycard", "", new BaseClickListener() {
-            @Override
-            public void onClick(ExtendFunction function) {
-                super.onClick(function);
-                PackageManager packageManager = mContext.getPackageManager();
-                Intent intent = packageManager.getLaunchIntentForPackage("com.jfzf.oem");
-                if(intent == null){
-                    LogHelper.d(TAG, "APP not found!");
-                    Intent downloadIntent = new Intent();
-                    downloadIntent.setAction("android.intent.action.VIEW");
-                    Uri content_url = Uri.parse("https://uenpay.com/downloadcopy/jfjr/down-jfjr.html#rd");
-                    downloadIntent.setData(content_url);
-                    mContext.startActivity(downloadIntent);
-                } else {
-                    mContext.startActivity(intent);
-                }
-            }
-        }, messageManager));
+                messageManager.getFunctionName("f_paybycard", "无卡支付"), "f_paybycard",
+                ServiceLinkManager.CardPayUrl(), mWebListener, messageManager));
+
         functions.add(new ExtendFunction(R.drawable.icon2,
-                messageManager.getFunctionName("f_makecard", "办卡提额"), "f_makecard", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_makecard", "极速下卡"), "f_makecard", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
 
         functions.add(new ExtendFunction(R.drawable.icon3,
-                messageManager.getFunctionName("f_loan", "快速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
+                messageManager.getFunctionName("f_loan", "极速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
 
         functions.add(new ExtendFunction(R.drawable.icon4,
-                messageManager.getFunctionName("f_user0", "金融学习"), "f_user0", ServiceLinkManager.StudyUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user0", "订阅专栏"), "f_dingyue", ServiceLinkManager.StudyUrl(), mWebListener, messageManager));
 
-        /*
-        functions.add(new ExtendFunction(R.drawable.f_live,
-                messageManager.getFunctionName("f_class", "直播课堂"), "f_class", ServiceLinkManager.FunctionUpUrl(), new BaseClickListener() {
-            @Override
-            public void onClick(ExtendFunction function) {
-                super.onClick(function);
-                Intent i = new Intent(mContext, AlbumListActivity.class);
-                mContext.startActivity(i);
-            }
-        }, messageManager));
-        */
-
-
-
-        /*
-        functions.add(new ExtendFunction(R.drawable.f_cardmanager,
-                messageManager.getFunctionName("f_cardmanager", "卡片管理"), "f_cardmanager",ServiceLinkManager.FunctionCardManagerUrl(), mWebListener, messageManager));
-        */
-        /*
-        functions.add(new ExtendFunction(R.drawable.f_chongzhi,
-                messageManager.getFunctionName("f_chongzhi", "我要充值"), "f_chongzhi", ServiceLinkManager.FunctionJiaoFeiUrl(), mWebListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.f_share,
-                messageManager.getFunctionName("f_share", "分享"), "f_share", ServiceLinkManager.FunctionUpUrl(), new BaseClickListener(){
-            @Override
-            public void onClick(ExtendFunction function) {
-                super.onClick(function);
-                Intent i = new Intent(mContext, QRImageActivity.class);
-                mContext.startActivity(i);
-            }
-        }, messageManager));
-        */
 
         functions.add(new ExtendFunction(R.drawable.icon5,
-                messageManager.getFunctionName("f_user1", "融资军火库"), "f_user1", ServiceLinkManager.JunHuoKuUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user1", "融资军火库"), "f_rzjhk", ServiceLinkManager.JunHuoKuUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon6,
-                messageManager.getFunctionName("f_user2", "金融工具"), "f_user2", ServiceLinkManager.FinaceToolsUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user2", "大健康"), "f_health", ServiceLinkManager.FinaceToolsUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon7,
                 messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon8,

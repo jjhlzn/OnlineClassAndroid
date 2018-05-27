@@ -50,7 +50,7 @@ public class NewCommentCell extends BaseListViewCell {
                 .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
                 .asBitmap()
                 .centerCrop()
-                .placeholder(R.drawable.comment_user)
+                .placeholder(R.drawable.dateicon)
                 .into(new BitmapImageViewTarget(image) {
                     @Override
                     protected void setResource(Bitmap resource) {
