@@ -126,6 +126,7 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
         mToutiaoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LogHelper.d(TAG, "clickUrl: " + mTouTiaoResp.getClickUrl());
                 Intent i = new Intent(mActivity, WebBrowserActivity.class)
                         .putExtra(WebBrowserActivity.EXTRA_TITLE, mTouTiaoResp.getTitle())
                         .putExtra(WebBrowserActivity.EXTRA_URL, mTouTiaoResp.getClickUrl());

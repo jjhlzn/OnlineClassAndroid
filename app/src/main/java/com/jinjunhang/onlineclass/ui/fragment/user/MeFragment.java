@@ -160,6 +160,8 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             FirstSectionCell item = new FirstSectionCell(getActivity());
             mCells.add(item);
             mCells.add(new SectionSeparatorCell(getActivity()));
+
+
             SecondSectionCell secondSectionCell = new SecondSectionCell(getActivity());
             secondSectionCell.setJiFen(mKeyValueDao.getValue(KeyValueDao.KEY_USER_JIFEN, "0"));
             secondSectionCell.setChaiFu(mKeyValueDao.getValue(KeyValueDao.KEY_USER_CAFIFU, "0"));
@@ -167,11 +169,12 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mCells.add(secondSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
+            /*
             ThirdSectionCell thirdSectionCell = new ThirdSectionCell(getActivity());
             thirdSectionCell.setAgentLevel(mKeyValueDao.getValue(KeyValueDao.KEY_USER_AGENT_LEVEL, ""));
             thirdSectionCell.setVipEndDate(mKeyValueDao.getValue(KeyValueDao.KEY_USER_VIP_END_DATE, ""));
             mCells.add(thirdSectionCell);
-            mCells.add(new SectionSeparatorCell(getActivity()));
+            mCells.add(new SectionSeparatorCell(getActivity())); */
 
             for(int i = 0; i < mSeventSections.size(); i++) {
                 CommonCell cell = new CommonCell(getActivity(), mSeventSections.get(i));
@@ -306,14 +309,14 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_VIP_END_DATE, resp.getVipEndDate());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_AGENT_LEVEL, resp.getLevel());
 
-            CommonCell cell0  = (CommonCell)mCells.get(9);
-            CommonCell cell1 = (CommonCell)mCells.get(10);
-            CommonCell cell2 = (CommonCell)mCells.get(11);
+            CommonCell cell0  = (CommonCell)mCells.get(7);
+            CommonCell cell1 = (CommonCell)mCells.get(8);
+            CommonCell cell2 = (CommonCell)mCells.get(9);
 
-
+            /*
             ThirdSectionCell cell3 = (ThirdSectionCell) mCells.get(4);
             cell3.setVipEndDate(resp.getVipEndDate());
-            cell3.setAgentLevel(resp.getLevel());
+            cell3.setAgentLevel(resp.getLevel()); */
 
             cell0.getRecord().setOtherInfo(resp.getTuiJianPeople());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_TUIJIAN, resp.getTuiJianPeople());

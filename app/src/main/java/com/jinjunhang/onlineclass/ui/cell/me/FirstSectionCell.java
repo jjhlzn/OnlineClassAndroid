@@ -32,7 +32,7 @@ public class FirstSectionCell extends BaseListViewCell {
     private RoundedImageView mUserImage;
     private TextView mNameLabel;
     private TextView mLevelLabel;
-    private TextView mBossLabel;
+    //private TextView mBossLabel;
 
     private Activity mActivity;
 
@@ -62,7 +62,7 @@ public class FirstSectionCell extends BaseListViewCell {
 
         mNameLabel = (TextView) v.findViewById(R.id.name_label);
         mLevelLabel = (TextView) v.findViewById(R.id.level_label);
-        mBossLabel = (TextView) v.findViewById(R.id.boss_label);
+        //mBossLabel = (TextView) v.findViewById(R.id.boss_label);
 
         update();
         return (LinearLayout)v.findViewById(R.id.root_container);
@@ -73,7 +73,7 @@ public class FirstSectionCell extends BaseListViewCell {
         if (loginUser != null) {
             mNameLabel.setText(loginUser.getName());
             mLevelLabel.setText(loginUser.getLevel());
-            mBossLabel.setText("我的上级: "+loginUser.getBoss());
+            //mBossLabel.setText("我的上级: "+loginUser.getBoss());
             String url = ServiceConfiguration.GetUserProfileImage(loginUser.getUserName());
             //Glide.with(mActivity).load(url).asBitmap().into(mUserImage);
             //mUserImage.setImageResource(R.drawable.log);

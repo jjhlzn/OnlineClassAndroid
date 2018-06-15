@@ -60,7 +60,7 @@
                 android:background="@drawable/textview_border"/>
         </RelativeLayout>
 
-
+        <!--
         <TextView
             android:id="@+id/boss_label"
             android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
             android:textSize="10dp"
             android:textColor="@color/black"
-            android:text="我的上级: 张三"/>
+            android:text="我的上级: 张三"/>-->
     </LinearLayout>
 
 </LinearLayout>

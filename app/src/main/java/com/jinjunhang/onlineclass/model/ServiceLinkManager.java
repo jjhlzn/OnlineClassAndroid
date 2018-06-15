@@ -33,11 +33,6 @@ public class ServiceLinkManager {
 
     }
 
-    public static String MyTeamUrl() {
-
-        return "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTeam";
-
-    }
 
     public static String FunctionCardManagerUrl() {
 
@@ -108,6 +103,10 @@ public class ServiceLinkManager {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyMoney";
     }
 
+    public static String MyTeamUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTeam";
+    }
+
     public static String MyTeamUrl2() {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/Center/MyTeam2";
     }
@@ -131,6 +130,10 @@ public class ServiceLinkManager {
 
     public static String StudyUrl() {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/study";
+    }
+
+    public static String ZhuanLanUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/getZhuanLans";
     }
 
     public static String JunHuoKuUrl() {

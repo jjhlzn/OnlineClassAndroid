@@ -24,6 +24,7 @@
             >
 
             <TextView
+                android:id="@+id/caifuTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
@@ -74,6 +75,7 @@
             android:paddingLeft="10dp"
             android:gravity="center_vertical|center">
             <TextView
+                android:id="@+id/jifenTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
@@ -112,6 +114,7 @@
             android:paddingLeft="10dp"
             android:gravity="center_vertical|center">
             <TextView
+                android:id="@+id/tuanduiTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12dp"

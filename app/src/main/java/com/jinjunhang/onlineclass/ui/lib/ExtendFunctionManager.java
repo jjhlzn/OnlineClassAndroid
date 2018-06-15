@@ -30,6 +30,7 @@ import com.jinjunhang.onlineclass.service.ClearFunctionMessageResponse;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.ZhuanLanListActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
@@ -121,14 +122,22 @@ public class ExtendFunctionManager {
         functions.add(new ExtendFunction(R.drawable.icon3,
                 messageManager.getFunctionName("f_loan", "极速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
 
-        functions.add(new ExtendFunction(R.drawable.icon4,
-                messageManager.getFunctionName("f_user0", "订阅专栏"), "f_dingyue", ServiceLinkManager.StudyUrl(), mWebListener, messageManager));
-
-
         functions.add(new ExtendFunction(R.drawable.icon5,
                 messageManager.getFunctionName("f_user1", "融资军火库"), "f_rzjhk", ServiceLinkManager.JunHuoKuUrl(), mWebListener, messageManager));
+
+        functions.add(new ExtendFunction(R.drawable.icon4,
+                messageManager.getFunctionName("f_user0", "订阅专栏"), "f_dingyue", ServiceLinkManager.ZhuanLanUrl(), new ClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                Intent i = new Intent(mContext, ZhuanLanListActivity.class);
+                context.startActivity(i);
+            }
+        }, messageManager));
+
+
+
         functions.add(new ExtendFunction(R.drawable.icon6,
-                messageManager.getFunctionName("f_user2", "大健康"), "f_health", ServiceLinkManager.FinaceToolsUrl(), mWebListener, messageManager));
+                messageManager.getFunctionName("f_user2", "大健康"), "f_health", ServiceLinkManager.HealthUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon7,
                 messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon8,
