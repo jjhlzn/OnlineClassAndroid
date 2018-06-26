@@ -109,16 +109,10 @@ public class LaunchActivity extends Activity {
 
         mLoginUserDao = LoginUserDao.getInstance(this);
 
-        /*
-        if (mKeyValueDao.getValue(KeyValueDao.IS_GET_SERVICE_LOCATOR, "1").equals("1")) {
-            new GetServiceLocatorTask().execute();
-        } else {
-            registerXinGeAndGoToNextActivity();
-        }*/
         registerXinGeAndGoToNextActivity();
 
         //NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
-        goToNextActivityHandler.postDelayed(goToNextActivityTask, 7000);
+        goToNextActivityHandler.postDelayed(goToNextActivityTask, 3000);
     }
 
     //注册信鸽，并进去下个页面

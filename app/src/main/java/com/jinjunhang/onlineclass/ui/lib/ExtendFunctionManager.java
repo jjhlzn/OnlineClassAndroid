@@ -113,7 +113,7 @@ public class ExtendFunctionManager {
     private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
         functions = new ArrayList<>();
         functions.add(new ExtendFunction(R.drawable.icon1,
-                messageManager.getFunctionName("f_paybycard", "无卡支付"), "f_paybycard",
+                messageManager.getFunctionName("f_paybycard", "刷卡"), "f_paybycard",
                 ServiceLinkManager.CardPayUrl(), mWebListener, messageManager));
 
         functions.add(new ExtendFunction(R.drawable.icon2,
