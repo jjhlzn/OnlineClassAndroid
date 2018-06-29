@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,20 +26,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.CheckUpgradeRequest;
 import com.jinjunhang.onlineclass.service.CheckUpgradeResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.CourseListFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
@@ -79,6 +86,8 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
     private BaseFragment[] mFragmensts;
 
     private MyPagerAdapter mMyPagerAdapter;
+    private boolean isPopupAdShow = false;
+    private Button closeBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,7 +105,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -111,6 +119,77 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         mViewPager.setOffscreenPageLimit(4);
         setActionBar();
         new CheckUpgradeTask().execute();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isPopupAdShow && closeBtn != null) {
+            isPopupAdShow = false;
+            closeBtn.performClick();
+
+        }
+
+    }
+
+
+    public void showPopupAd() {
+        LogHelper.d(TAG, "showPopupAd");
+
+        final View actionBarOverlay = getSupportActionBar().getCustomView().findViewById(R.id.actionbar_overlay_bg);
+        if (actionBarOverlay != null) {
+            actionBarOverlay.setVisibility(View.VISIBLE);
+            actionBarOverlay.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return true;
+                }
+            });
+        }
+
+        final View overlay = findViewById(R.id.overlay_bg);
+        overlay.setVisibility(View.VISIBLE);
+        overlay.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+
+        closeBtn = (Button)findViewById(R.id.close_ad_btn);
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogHelper.d(TAG, "close btn clicked");
+                overlay.setVisibility(View.INVISIBLE);
+                if (actionBarOverlay != null) {
+                    actionBarOverlay.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+
+        final ImageView imageView = (ImageView)findViewById(R.id.popupImage);
+        KeyValueDao dao = KeyValueDao.getInstance(this);
+        String imageUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_IMAGEURL, "");
+        final String title = dao.getValue(KeyValueDao.KEY_POPUPAD_TITLE, "");
+        final String clickUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_CLICKURL, "");
+        Glide
+                .with(this)
+                .load(imageUrl)
+                .into(imageView);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(BottomTabLayoutActivity.this, WebBrowserActivity.class);
+                i.putExtra(WebBrowserActivity.EXTRA_TITLE, title)
+                        .putExtra(WebBrowserActivity.EXTRA_URL, clickUrl);
+                BottomTabLayoutActivity.this.startActivity(i);
+            }
+        });
+
+        isPopupAdShow = true;
     }
 
     public void setActionBar() {

@@ -1,5 +1,6 @@
 package com.jinjunhang.onlineclass.service;
 
+import com.google.gson.JsonObject;
 import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.model.Advertise;
@@ -17,6 +18,7 @@ import java.util.List;
 public class GetMainPageAdsResponse extends ServerResponse {
 
     private List<Advertise> mAdvertises;
+    private Advertise popupAd = new Advertise();
 
     public List<Advertise> getAdvertises() {
         return mAdvertises;
@@ -24,6 +26,10 @@ public class GetMainPageAdsResponse extends ServerResponse {
 
     public GetMainPageAdsResponse() {
         mAdvertises = new ArrayList<>();
+    }
+
+    public Advertise getPopupAd() {
+        return popupAd;
     }
 
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
@@ -35,6 +41,14 @@ public class GetMainPageAdsResponse extends ServerResponse {
             adv.setClickUrl(json.getString("clickUrl"));
             adv.setImageUrl(json.getString("imageUrl"));
             mAdvertises.add(adv);
+        }
+
+        JSONObject popupJson = jsonObject.getJSONObject("popupAd");
+        if (popupJson.has("imageUrl")) {
+            popupAd.setTitle(popupJson.getString("title"));
+            popupAd.setClickUrl(popupJson.getString("clickUrl"));
+            popupAd.setImageUrl(popupJson.getString("imageUrl"));
+
         }
     }
 

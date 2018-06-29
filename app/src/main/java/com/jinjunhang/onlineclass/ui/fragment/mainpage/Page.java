@@ -75,7 +75,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mCourses = new ArrayList<>();
         this.mType = type;
 
-        v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_mainpage, container, false);
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
@@ -88,7 +88,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         int maxShowRows = 10;
 
         mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows,
-                activity, false, type);
+                activity, true, type);
 
         if (mCells.size() == 0) {
             mHeaderAdvCell = new HeaderAdvCell(activity, mLoading, mType);

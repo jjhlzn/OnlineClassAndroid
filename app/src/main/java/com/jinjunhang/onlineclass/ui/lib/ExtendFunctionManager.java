@@ -136,14 +136,24 @@ public class ExtendFunctionManager {
 
 
 
-        functions.add(new ExtendFunction(R.drawable.icon6,
-                messageManager.getFunctionName("f_user2", "大健康"), "f_health", ServiceLinkManager.HealthUrl(), mWebListener, messageManager));
+
         functions.add(new ExtendFunction(R.drawable.icon7,
                 messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon8,
                 messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.MallUrl(), mWebListener, messageManager));
 
         /*
+        functions.add(new ExtendFunction(R.drawable.icon6,
+                messageManager.getFunctionName("f_user2", "更多"), "f_health", ServiceLinkManager.HealthUrl(), new BaseClickListener() {
+            @Override
+            public void onClick(ExtendFunction function) {
+                super.onClick(function);
+                Intent i = new Intent(context, ExtendFunctionActivity.class);
+                context.startActivity(i);
+            }
+        }, messageManager)); */
+
+
         moreFunction =  new ExtendFunction(R.drawable.f_more,
                 messageManager.getFunctionName("f_more", "更多"), "f_more", "", new BaseClickListener() {
             @Override
@@ -152,7 +162,10 @@ public class ExtendFunctionManager {
                 Intent i = new Intent(context, ExtendFunctionActivity.class);
                 context.startActivity(i);
             }
-        }, messageManager); */
+        }, messageManager);
+
+        functions.add(moreFunction);
+
     }
 
     private void initData4Touzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
@@ -222,6 +235,10 @@ public class ExtendFunctionManager {
                 break;
             }
             ExtendFunction function = functions.get(index);
+
+            if (!mIsNeedMore && function.name == "更多") {
+                continue;
+            }
             cell.addFunction(function);
         }
         cell.setHeight(getHeight());

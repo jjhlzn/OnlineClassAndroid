@@ -25,6 +25,7 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.HeaderAdvManager;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
@@ -39,6 +40,7 @@ import com.jinjunhang.onlineclass.service.GetTouTiaoResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
@@ -66,9 +68,11 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
     private SliderLayout mSlider;
     private GetTouTiaoResponse mTouTiaoResp;
     private String mType = "";
+    private KeyValueDao dao;
 
     public HeaderAdvCell(Activity activity, LoadingAnimation loading, String type) {
         super(activity);
+        dao = KeyValueDao.getInstance(activity);
         this.mLoading = loading;
         mAdvertises = new ArrayList<>();
         mTouTiaoResp = new GetTouTiaoResponse();
@@ -173,8 +177,18 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
                 return;
             }
             List<Advertise> advs = response.getAdvertises();
-            if (advs.size() == 0) {
-                return;
+            if (response.getPopupAd() != null && !"".equals(response.getPopupAd().getImageUrl())) {
+                LogHelper.d(TAG, "reponse popad is not null");
+                Advertise popAd = response.getPopupAd();
+                String cacheImageUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_IMAGEURL, "");
+                if (  !popAd.getImageUrl().equals(cacheImageUrl) ) {
+                    dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_IMAGEURL, popAd.getImageUrl());
+                    dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_CLICKURL, popAd.getClickUrl());
+                    dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_TITLE, popAd.getTitle());
+                    ((BottomTabLayoutActivity)mActivity).showPopupAd();
+                }
+            } else {
+                LogHelper.d(TAG, "reponse popad is null");
             }
 
             mAdvertises = advs;

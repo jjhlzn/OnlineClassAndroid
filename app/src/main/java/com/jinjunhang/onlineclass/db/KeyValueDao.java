@@ -29,6 +29,11 @@ public class KeyValueDao {
     public static final String SERVER_PORT = "SERVER_PORT";
     public static final String IS_GET_SERVICE_LOCATOR = "IS_GET_SERVICE_LOCATOR";
 
+    public static final String KEY_POPUPAD_IMAGEURL = "KEY_POPUPAD_IMAGEURL";
+    public static final String KEY_POPUPAD_TITLE = "KEY_POPUPAD_TITLE";
+    public static final String KEY_POPUPAD_CLICKURL = "KEY_POPUPAD_CLICKURL";
+    public static final String KEY_POPUPAD_HASSHOW = "KEY_POPUPAD_HASSHOW";
+
     public static final String BOTTOM_BAR_HEIGHT = "bottom_bar_height";
 
     private DBOpenHelper dbOpenHelper;
