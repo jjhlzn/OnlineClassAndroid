@@ -4,7 +4,7 @@
 
               android:layout_width="match_parent"
               android:id="@+id/list_item_course"
-              android:layout_height="280dp"
+              android:layout_height="260dp"
               android:orientation="vertical"
               android:paddingBottom="8dp"
               android:background="@color/white">
