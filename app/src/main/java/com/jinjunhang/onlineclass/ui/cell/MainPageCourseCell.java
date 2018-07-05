@@ -58,7 +58,11 @@ public class MainPageCourseCell extends BaseListViewCell {
         TextView starText = (TextView)view.findViewById(R.id.starsText);
         nameText.setText(mCourse.getName());
         timeText.setText(mCourse.getDate());
-        starText.setText(mCourse.getStars() + "");
+        String starsStr = mCourse.getStars() + "";
+        if (starsStr.length() >= 3) {
+            starsStr = starsStr.substring(0, 3);
+        }
+        starText.setText(starsStr);
 
         mStars.clear();
         mStars.add((ImageView)view.findViewById(R.id.star1));

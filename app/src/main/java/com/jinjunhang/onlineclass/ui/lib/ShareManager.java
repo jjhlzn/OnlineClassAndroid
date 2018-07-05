@@ -90,17 +90,17 @@ public class ShareManager {
     }
 
     public void resetSetting() {
-        mShareTitle = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
+        mShareTitle = "扫一扫下载安装【知得】，即可免费在线学习、提额、办卡、贷款！";
         mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
                 "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
-        mDescription = "巨方助手";
+        mDescription = "知得";
     }
 
     public ShareManager(AppCompatActivity activity, View v) {
-        mShareTitle = "扫一扫下载安装【巨方助手】，即可免费在线学习、提额、办卡、贷款！";
+        mShareTitle = "扫一扫下载安装【知得】，即可免费在线学习、提额、办卡、贷款！";
         mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
                 "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
-        mDescription = "巨方助手";
+        mDescription = "知得";
         this.mActivity = activity;
         this.v = v;
         api = WXAPIFactory.createWXAPI(mActivity, Utils.WEIXIN_SHERE_APP_ID, true);
