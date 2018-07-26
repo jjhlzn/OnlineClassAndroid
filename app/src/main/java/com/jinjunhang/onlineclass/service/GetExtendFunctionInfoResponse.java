@@ -22,15 +22,19 @@ public class GetExtendFunctionInfoResponse extends ServerResponse {
         private String mCode = "";
         private String mImageUrl = "";
         private boolean mHasMessage = false;
+        private String mAction = "";
+        private String mClickUrl = "";
 
         public ExtendFunctionInfo() {
         }
 
-        public ExtendFunctionInfo(String code, String name, boolean hasMessage, String imageUrl) {
+        public ExtendFunctionInfo(String code, String name, boolean hasMessage, String imageUrl, String action, String clickUrl) {
             mName = name;
             mCode = code;
             mHasMessage = hasMessage;
             mImageUrl = imageUrl;
+            mAction = action;
+            mClickUrl = clickUrl;
         }
 
         public String getName() {
@@ -60,6 +64,22 @@ public class GetExtendFunctionInfoResponse extends ServerResponse {
         public void setImageUrl(String imageUrl) {
             mImageUrl = imageUrl;
         }
+
+        public String getAction() {
+            return mAction;
+        }
+
+        public String getClickUrl() {
+            return mClickUrl;
+        }
+
+        public void setAction(String action) {
+            mAction = action;
+        }
+
+        public void setClickUrl(String clickUrl) {
+            mClickUrl = clickUrl;
+        }
     }
 
     private List<ExtendFunctionInfo> mFunctions = new ArrayList<>();
@@ -74,7 +94,9 @@ public class GetExtendFunctionInfoResponse extends ServerResponse {
         for (int i = 0; i < array.length(); i++) {
             JSONObject functionJson = array.getJSONObject(i);
             ExtendFunctionInfo function = new ExtendFunctionInfo(functionJson.getString("code"), functionJson.getString("name"),
-                    functionJson.getInt("message") > 0, functionJson.getString("imageUrl"));
+                    functionJson.getInt("message") > 0, functionJson.getString("imageUrl"),
+                    functionJson.getString("action"),
+                    functionJson.getString("clickUrl"));
 
             mFunctions.add(function);
         }

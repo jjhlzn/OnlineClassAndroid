@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.LogManager;
 
 /**
  * Created by lzn on 16/6/20.
@@ -62,15 +64,56 @@ public class ExtendFunctionManager {
     private boolean mIsNeedMore;
     private String type;
 
-    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, String type) {
+    private List<ExtendFunction> functions = new ArrayList<>();
+    private ExtendFunction moreFunction;
+
+    private static ExtendFunctionManager instance = null;
+
+    public static ExtendFunctionManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new ExtendFunctionManager(null, 100, context, true, RONGZI_TYPE);
+        }
+        return instance;
+    }
+
+    public void setFunctions(List<ExtendFunction> functions) {
+        this.functions = functions;
+    }
+
+    public ExtendFunction makeExtendFunction(String imageUrl, String name, String code, String url, String action, boolean hasMessage) {
+        ClickListener listener = mWebListener;
+        if ("dingyueHandler".equals(action)) {
+            listener = new ClickListener() {
+                @Override
+                public void onClick(ExtendFunction function) {
+                    Intent i = new Intent(mContext, ZhuanLanListActivity.class);
+                    mContext.startActivity(i);
+                }
+            };
+
+        } else if ("moreHanlder".equals(action)) {
+            listener = new BaseClickListener() {
+                @Override
+                public void onClick(ExtendFunction function) {
+                    super.onClick(function);
+                    Intent i = new Intent(mContext, ExtendFunctionActivity.class);
+                    mContext.startActivity(i);
+                }
+            };
+        }
+        ExtendFunction func = new ExtendFunction(imageUrl, name, code, url, listener, hasMessage);
+        return func;
+    }
+
+    private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, String type) {
         this(messageManager, 100, context, true, type);
     }
 
-    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, boolean isNeedMore, String type) {
+    private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, boolean isNeedMore, String type) {
         this(messageManager, 100, context, isNeedMore, type);
     }
 
-    public ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, int showMaxRow, final Context context, boolean isNeedMore, String type) {
+    private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, int showMaxRow, final Context context, boolean isNeedMore, String type) {
         this.mMessageManager = messageManager;
         mShowMaxRow = showMaxRow;
         mContext = context;
@@ -84,7 +127,7 @@ public class ExtendFunctionManager {
     }
 
     public void reload() {
-        makeFunctions(this.mMessageManager, this.mContext, this.type);
+        //makeFunctions(this.mMessageManager, this.mContext, this.type);
 
         /*
         if (this.mIsNeedMore) {
@@ -97,8 +140,7 @@ public class ExtendFunctionManager {
         }*/
     }
 
-    private List<ExtendFunction> functions = new ArrayList<>();
-    private ExtendFunction moreFunction;
+
 
     private void makeFunctions(ExtendFunctoinVariableInfoManager messageManager, final Context context, String type) {
         this.type = type;
@@ -112,6 +154,7 @@ public class ExtendFunctionManager {
 
     private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
         functions = new ArrayList<>();
+        /*
         functions.add(new ExtendFunction(R.drawable.icon1,
                 messageManager.getFunctionName("f_paybycard", "刷卡"), "f_paybycard",
                 ServiceLinkManager.CardPayUrl(), mWebListener, messageManager));
@@ -134,25 +177,10 @@ public class ExtendFunctionManager {
             }
         }, messageManager));
 
-
-
-
         functions.add(new ExtendFunction(R.drawable.icon7,
                 messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
         functions.add(new ExtendFunction(R.drawable.icon8,
                 messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.MallUrl(), mWebListener, messageManager));
-
-        /*
-        functions.add(new ExtendFunction(R.drawable.icon6,
-                messageManager.getFunctionName("f_user2", "更多"), "f_health", ServiceLinkManager.HealthUrl(), new BaseClickListener() {
-            @Override
-            public void onClick(ExtendFunction function) {
-                super.onClick(function);
-                Intent i = new Intent(context, ExtendFunctionActivity.class);
-                context.startActivity(i);
-            }
-        }, messageManager)); */
-
 
         moreFunction =  new ExtendFunction(R.drawable.f_more,
                 messageManager.getFunctionName("f_more", "更多"), "f_more", "", new BaseClickListener() {
@@ -165,33 +193,11 @@ public class ExtendFunctionManager {
         }, messageManager);
 
         functions.add(moreFunction);
-
+        */
     }
 
     private void initData4Touzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
-
         functions = new ArrayList<>();
-        functions.add(new ExtendFunction(R.drawable.icon9,
-                messageManager.getFunctionName("f_qiye", "企业"), "f_qiye", "", mNotSupportListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.icon10,
-                messageManager.getFunctionName("f_project", "项目"), "f_project", ServiceLinkManager.FunctionFastCardUrl(), mNotSupportListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon11,
-                messageManager.getFunctionName("f_guquan", "股权"), "f_guquan", ServiceLinkManager.FunctionLoanUrl(),  mNotSupportListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon12,
-                messageManager.getFunctionName("f_vip_touzi", "VIP专区"), "f_vip_touzi", ServiceLinkManager.FunctionCustomerServiceUrl(), mNotSupportListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon13,
-                messageManager.getFunctionName("f_jijin", "基金"), "f_jijin", ServiceLinkManager.FunctionCustomerServiceUrl(), mNotSupportListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.icon14,
-                messageManager.getFunctionName("f_stock", "股票"), "f_stock", ServiceLinkManager.FunctionCustomerServiceUrl(), mNotSupportListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.icon15,
-                messageManager.getFunctionName("f_zcpz", "资产配置"), "f_zcpz", ServiceLinkManager.FunctionCarLoanUrl(), mNotSupportListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.icon16,
-                messageManager.getFunctionName("f_toolslib", "工具库"), "f_toolslib", ServiceLinkManager.FunctionShopUrl(), mNotSupportListener, messageManager));
-
-
     }
 
     public List<ExtendFunction> getFunctions() {
@@ -200,7 +206,9 @@ public class ExtendFunctionManager {
 
     public int getRowCount() {
         int rows = (getFunctionCount() + (itemCountEachRow - 1)) / itemCountEachRow;
-        return rows > mShowMaxRow ? mShowMaxRow : rows;
+        int result = rows > mShowMaxRow ? mShowMaxRow : rows;
+        LogHelper.d(TAG, "rowCount = " + result);
+        return result;
     }
 
     private int getFunctionCount() {
@@ -225,7 +233,7 @@ public class ExtendFunctionManager {
         return (int)(height * 0.79);
     }
 
-    public ExtendFunctionCell getCell(int row) {
+    public ExtendFunctionCell getCell(int row, boolean isNeedMore) {
         ExtendFunctionCell cell = new ExtendFunctionCell((Activity) mContext);
         int startIndex = row * itemCountEachRow;
 
@@ -236,7 +244,7 @@ public class ExtendFunctionManager {
             }
             ExtendFunction function = functions.get(index);
 
-            if (!mIsNeedMore && function.name == "更多") {
+            if (!isNeedMore && "f_more".equals(function.code) ) {
                 continue;
             }
             cell.addFunction(function);
@@ -347,7 +355,7 @@ public class ExtendFunctionManager {
         String imageUrl = func.getImageUrl();
         //LogHelper.d(TAG, func.code + " - imageUrl: " + imageUrl);
 
-        Bitmap bitmap2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap numberBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
         //检查这个连接是否有效，并且这个链接的图片是否保存在磁盘中。如果在缓存中，直接中磁盘中获取图片，否则从网络中下载。
 
         if (imageUrl != null && !"".equals(imageUrl)) {
@@ -355,13 +363,14 @@ public class ExtendFunctionManager {
             if (bitmap == null) {
                 new GetImageTask().execute(func, image);
             } else {
-                makeImage0(bitmap, bitmap2, func, image);
+                makeImage0(bitmap, numberBitmap, func, image);
             }
+            new GetImageTask().execute(func, image);
             return;
         }
 
-        Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), func.image).copy(Bitmap.Config.ARGB_8888, true);
-        makeImage0(bitmap1, bitmap2, func, image);
+        Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder).copy(Bitmap.Config.ARGB_8888, true);
+        makeImage0(bitmap1, numberBitmap, func, image);
     }
 
     private void makeImage0(Bitmap bitmap1, Bitmap bitmap2, ExtendFunction func, ImageView image) {
@@ -408,7 +417,7 @@ public class ExtendFunctionManager {
     private class ClearFunctionMessageRequestTask extends AsyncTask<ExtendFunctionManager.ExtendFunction, Void, ClearFunctionMessageResponse> {
         @Override
         protected ClearFunctionMessageResponse doInBackground(ExtendFunctionManager.ExtendFunction... functions) {
-            mMessageManager.clearMessage(functions[0].getCode());
+            //mMessageManager.clearMessage(functions[0].getCode());
             ClearFunctionMessageRequest request = new ClearFunctionMessageRequest();
             request.setCodes(new String[]{functions[0].getCode()});
             return new BasicService().sendRequest(request);
@@ -437,10 +446,12 @@ public class ExtendFunctionManager {
 
     public static class ExtendFunction {
         private int image;
+        private String imageUrl = "";
         private String name = "";
         private String code = "";
         private String url = "";
         private ClickListener listener;
+        private boolean hasMessage;
         private ExtendFunctoinVariableInfoManager mMessageManager;
 
         public ExtendFunction(int image, String name, String code, String url, ClickListener listener,
@@ -453,8 +464,19 @@ public class ExtendFunctionManager {
             this.mMessageManager = messageManager;
         }
 
+        public ExtendFunction(String imageUrl, String name, String code, String url, ClickListener listener,
+                              boolean hasMessage ) {
+            this.imageUrl = imageUrl;
+            this.name = name;
+            this.code = code;
+            this.url = url;
+            this.listener = listener;
+            //this.mMessageManager = messageManager;
+            this.hasMessage = hasMessage;
+        }
+
         public boolean hasMessage() {
-            return mMessageManager.hasMessage(this.code);
+            return hasMessage;
         }
 
         public String getCode() {
@@ -462,12 +484,14 @@ public class ExtendFunctionManager {
         }
 
         public String getName() {
-            return mMessageManager.getFunctionName(code, this.name);
+            return this.name;
         }
 
         public String getImageUrl() {
-            return mMessageManager.getImageUrl(code);
+            return imageUrl;
         }
+
+
 
     }
 

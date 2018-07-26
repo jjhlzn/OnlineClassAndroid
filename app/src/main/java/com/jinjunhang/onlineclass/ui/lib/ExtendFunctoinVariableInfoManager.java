@@ -26,7 +26,7 @@ public class ExtendFunctoinVariableInfoManager {
     public void reload() {
         LogHelper.d(TAG, "ExtendFunctoinVariableInfoManager.reload() called");
         this.map = new HashMap<>();
-        ExtendFunctionManager manager = new ExtendFunctionManager(this, CustomApplication.get(), ExtendFunctionManager.RONGZI_TYPE);
+        ExtendFunctionManager manager =  ExtendFunctionManager.getInstance(null);
         List<ExtendFunctionManager.ExtendFunction> funcList = manager.getFunctions();
         Date start = Calendar.getInstance().getTime();
         LogHelper.d(TAG, "funcList.size = " + funcList.size());

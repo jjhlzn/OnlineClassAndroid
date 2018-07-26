@@ -40,11 +40,11 @@ public class ExtendFunctionFragment extends BaseFragment {
         listView.setDividerHeight(0);
         listView.setDivider(null);
 
-        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), getActivity(), false, ExtendFunctionManager.RONGZI_TYPE);
+        mFunctionManager =  ExtendFunctionManager.getInstance(getActivity());
 
         int functionRowCount = mFunctionManager.getRowCount();
         for (int i = 0; i < functionRowCount; i++) {
-            mCells.add(mFunctionManager.getCell(i));
+            mCells.add(mFunctionManager.getCell(i, false));
         }
 
         ListViewCellAdapter adapter = new ListViewCellAdapter(getActivity(), mCells);

@@ -86,7 +86,7 @@ public class MainPageFragment3 extends android.support.v4.app.Fragment implement
 
         int maxShowRows = 10;
 
-        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows, getActivity(), false, ExtendFunctionManager.RONGZI_TYPE);
+        //mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows, getActivity(), false, ExtendFunctionManager.RONGZI_TYPE);
 
         if (mCells.size() == 0) {
             mCells.add(new HeaderAdvCell(getActivity(), mLoading, ""));
@@ -95,7 +95,7 @@ public class MainPageFragment3 extends android.support.v4.app.Fragment implement
 
             int functionRowCount = mFunctionManager.getRowCount();
             for (int i = 0; i < functionRowCount; i++) {
-                mCells.add(mFunctionManager.getCell(i));
+                mCells.add(mFunctionManager.getCell(i, true));
             }
             mCells.add(new MainPageWhiteSeparatorCell(getActivity()));
             mCells.add(new FooterCell(getActivity()));

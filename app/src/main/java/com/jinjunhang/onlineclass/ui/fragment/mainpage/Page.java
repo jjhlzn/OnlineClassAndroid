@@ -24,6 +24,8 @@ import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
+import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoRequest;
+import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
@@ -31,6 +33,7 @@ import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
@@ -59,7 +62,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private ExtendFunctionManager mFunctionManager;
     private MainPageAdapter mMainPageAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private List<ListViewCell> mCells = new ArrayList<>();
+    //private List<ListViewCell> mCells = new ArrayList<>();
+    private PageCells mPageCells = new PageCells();
     private String mType;
     private HeaderAdvCell mHeaderAdvCell;
     private List<Album> mCourses;
@@ -67,6 +71,44 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private FragmentActivity mActivity;
     private boolean mIsLoading;
     private ExoPlayerNotificationManager mNotificationManager;
+
+
+    class PageCells {
+       private HeaderAdvCell mHeaderAdvCell;
+       private List<ExtendFunctionCell> mFuncCells = new ArrayList<>();
+       private ZhuanLanHeaderCell mZhuanLanHeaderCell;
+       private List<ZhuanLanCell> mZhuanLanCells = new ArrayList<>();
+       private TuijianCourseHeaderCell mTuijianCourseHeaderCell;
+       private List<MainPageCourseCell> mMainPageCourseCells = new ArrayList<>();
+
+       private List<ListViewCell> cells = new ArrayList<>();
+       private boolean hasUpdate = true;
+
+       public List<ListViewCell> getCells() {
+           if (!hasUpdate) {
+               hasUpdate = false;
+               return cells;
+           }
+
+           cells = new ArrayList<>();
+           cells.add(mHeaderAdvCell);
+           cells.add(new SectionSeparatorCell(mActivity));
+           for (ExtendFunctionCell cell : mFuncCells) {
+               cells.add(cell);
+           }
+           cells.add(new SectionSeparatorCell(mActivity));
+           cells.add(mZhuanLanHeaderCell);
+           for (ZhuanLanCell cell : mZhuanLanCells) {
+               cells.add(cell);
+           }
+           cells.add(new SectionSeparatorCell(mActivity));
+           cells.add(mTuijianCourseHeaderCell);
+           for (MainPageCourseCell cell : mMainPageCourseCells) {
+               cells.add(cell);
+           }
+           return cells;
+       }
+     }
 
     public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
         mNotificationManager = ExoPlayerNotificationManager.getInstance(activity);
@@ -85,29 +127,19 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
 
-        int maxShowRows = 10;
 
-        mFunctionManager = new ExtendFunctionManager(ExtendFunctoinVariableInfoManager.getInstance(), maxShowRows,
-                activity, true, type);
+        mFunctionManager = ExtendFunctionManager.getInstance(mActivity);
 
-        if (mCells.size() == 0) {
-            mHeaderAdvCell = new HeaderAdvCell(activity, mLoading, mType);
-            mCells.add(mHeaderAdvCell);
+        mHeaderAdvCell = new HeaderAdvCell(activity, mLoading, mType);
+        mPageCells.mHeaderAdvCell = mHeaderAdvCell;
+        mPageCells.mZhuanLanHeaderCell = new ZhuanLanHeaderCell(activity);
+        mPageCells.mTuijianCourseHeaderCell = new TuijianCourseHeaderCell(activity);
 
-            //mCells.add(new CourseNotifyCell(activity));
-            mCells.add(new SectionSeparatorCell(activity));
-
-            int functionRowCount = mFunctionManager.getRowCount();
-            for (int i = 0; i < functionRowCount; i++) {
-                mCells.add(mFunctionManager.getCell(i));
-            }
-            mCells.add(new SectionSeparatorCell(activity));
-        }
 
         mHeaderAdvCell.updateAds();
         mHeaderAdvCell.updateTouTiao();
 
-        mMainPageAdapter = new MainPageAdapter(activity, mCells);
+        mMainPageAdapter = new MainPageAdapter(activity, mPageCells);
         mListView.setAdapter(mMainPageAdapter);
 
         //可以下拉刷新
@@ -153,23 +185,29 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         });
 
         new GetZhuanLanAndTuijianCoursesTask().execute();
+        new GetFunctionInfoRequestTask().execute();
+    }
+
+    private void setFunctionCellView() {
+        int functionRowCount = mFunctionManager.getRowCount();
+        mPageCells.mFuncCells.clear();
+        for (int i = 0; i < functionRowCount; i++) {
+            mPageCells.mFuncCells.add(mFunctionManager.getCell(i, true));
+        }
+        mPageCells.hasUpdate = true;
+        mMainPageAdapter.notifyDataSetChanged();
     }
 
     private void setZhuanLanAndCoursesView() {
-        if (mCells.size() > 5) {
-            int size = mCells.size();
-            for(int i = 0; i < size - 5; i++) {
-                mCells.remove(5);
-            }
-        }
-        mCells.add(new ZhuanLanHeaderCell(mActivity));
+        mPageCells.mZhuanLanCells.clear();
         for(ZhuanLan zhuanLan : mZhuanLans) {
-            mCells.add(new ZhuanLanCell(mActivity, zhuanLan));
+            mPageCells.mZhuanLanCells.add(new ZhuanLanCell(mActivity, zhuanLan));
         }
-        mCells.add(new TuijianCourseHeaderCell(mActivity));
+        mPageCells.mMainPageCourseCells.clear();
         for(Album course : mCourses) {
-            mCells.add(new MainPageCourseCell(mActivity, course));
+            mPageCells.mMainPageCourseCells.add(new MainPageCourseCell(mActivity, course));
         }
+        mPageCells.hasUpdate = true;
         mMainPageAdapter.notifyDataSetChanged();
     }
 
@@ -180,24 +218,25 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     @Override
     public void onRefresh() {
         new GetZhuanLanAndTuijianCoursesTask().execute();
+        new GetFunctionInfoRequestTask().execute();
     }
 
     private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
-        private List<ListViewCell> mViewCells;
+        private PageCells mViewCells;
 
-        public MainPageAdapter(Activity activity, List<ListViewCell> cells) {
-            super(activity, 0, cells);
+        public MainPageAdapter(Activity activity, PageCells cells) {
+            super(activity, 0, cells.getCells());
             mViewCells = cells;
         }
 
         @Override
         public int getCount() {
-            return mViewCells.size();
+            return mViewCells.getCells().size();
         }
 
         @Override
         public ListViewCell getItem(int position) {
-            return mViewCells.get(position);
+            return mViewCells.getCells().get(position);
         }
 
         @Override
@@ -280,6 +319,45 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                 Utils.showErrorMessage(mActivity, "服务端出错");
                 return;
             }
+
+        }
+    }
+
+    private class GetFunctionInfoRequestTask extends AsyncTask<Void, Void, GetExtendFunctionInfoResponse> {
+
+        @Override
+        protected GetExtendFunctionInfoResponse doInBackground(Void... voids) {
+            GetExtendFunctionInfoRequest request = new GetExtendFunctionInfoRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetExtendFunctionInfoResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()){
+                LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
+                return;
+            }
+
+            List<GetExtendFunctionInfoResponse.ExtendFunctionInfo> functions = response.getFunctions();
+            if (functions.size() == 0) {
+                return;
+            }
+
+            List<ExtendFunctionManager.ExtendFunction> funcs = new ArrayList<>();
+
+
+            for (GetExtendFunctionInfoResponse.ExtendFunctionInfo function : functions) {
+                ExtendFunctionManager.ExtendFunction func = mFunctionManager.makeExtendFunction(function.getImageUrl(), function.getName(),
+                        function.getCode(),
+                        function.getClickUrl(), function.getAction(), function.hasMessage());
+                funcs.add(func);
+            }
+            mFunctionManager.setFunctions(funcs);
+            setFunctionCellView();
+
+            LogHelper.d(TAG, "notify adpter data changed");
 
         }
     }
