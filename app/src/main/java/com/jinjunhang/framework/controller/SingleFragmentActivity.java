@@ -26,7 +26,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
 
     protected String getActivityTitle() {
-        return "巨方助手";
+        return "知得";
     }
 
     public void setActivityTitle(String title) {

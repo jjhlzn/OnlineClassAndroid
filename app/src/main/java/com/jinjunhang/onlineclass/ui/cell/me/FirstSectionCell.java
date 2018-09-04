@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.cell.me;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.UserProfilePhotoActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 /**
@@ -35,11 +37,13 @@ public class FirstSectionCell extends BaseListViewCell {
     //private TextView mBossLabel;
 
     private Activity mActivity;
+    private MeFragment mFragment;
 
     private UserImageDao mUserImageDao;
 
-    public FirstSectionCell(Activity activity) {
+    public FirstSectionCell(Activity activity, MeFragment fragment) {
         super(activity);
+        this.mFragment = fragment;
         mLoginUserDao = LoginUserDao.getInstance(activity);
         mActivity = activity;
         mUserImageDao = UserImageDao.getInstance(activity.getApplicationContext());
@@ -54,7 +58,8 @@ public class FirstSectionCell extends BaseListViewCell {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mActivity, UserProfilePhotoActivity.class);
-                mActivity.startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_USER_IAMGE);
+                mFragment.startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_USER_IAMGE);
+
             }
         });
         mUserImage.setBorderColor(0x000000);
@@ -67,6 +72,8 @@ public class FirstSectionCell extends BaseListViewCell {
         update();
         return (LinearLayout)v.findViewById(R.id.root_container);
     }
+
+
 
     public void update() {
         LoginUser loginUser = mLoginUserDao.get();

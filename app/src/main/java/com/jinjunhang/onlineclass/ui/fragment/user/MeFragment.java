@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,7 +158,8 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         mLoading = new LoadingAnimation(getActivity(), (ViewGroup) v.findViewById(R.id.fragmentContainer));
 
         if (mCells.size() == 0) {
-            FirstSectionCell item = new FirstSectionCell(getActivity());
+            FirstSectionCell item = new FirstSectionCell(getActivity(), this);
+
             mCells.add(item);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
@@ -231,6 +233,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        LogHelper.d(TAG, "onActivityResult called");
         if (requestCode == MainActivity.REQUEST_ME_UPDATE_USER_IAMGE || requestCode == MainActivity.REQUEST_ME_UPDATE_PERSONAL_INFO) {
             ((FirstSectionCell)mCells.get(0)).update();
         }

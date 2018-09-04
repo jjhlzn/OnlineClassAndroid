@@ -249,7 +249,7 @@ public class ShareManager {
             Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.me_qrcode);
             msg.thumbData = Util.bmpToByteArray(thumb, true);
         } else {
-            Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.log);
+            Bitmap thumb = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.sharelog);
             msg.thumbData = Util.bmpToByteArray(thumb, true);
         }
 

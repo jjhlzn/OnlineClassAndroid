@@ -340,6 +340,7 @@ public class ExtendFunctionManager {
         protected void onPostExecute(Bitmap bitmap) {
             Bitmap bitmap2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
             if (bitmap == null) {
+                LogHelper.d(TAG, " image = " + function.image);
                 Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), function.image).copy(Bitmap.Config.ARGB_8888, true);
                 makeImage0(bitmap1, bitmap2, function, imageView);
                 return;
@@ -445,7 +446,7 @@ public class ExtendFunctionManager {
 
 
     public static class ExtendFunction {
-        private int image;
+        private int image = R.drawable.placeholder;
         private String imageUrl = "";
         private String name = "";
         private String code = "";

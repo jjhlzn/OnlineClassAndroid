@@ -20,12 +20,15 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.FinanceToutiao;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoRequest;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoResponse;
+import com.jinjunhang.onlineclass.service.GetFinanceToutiaoRequest;
+import com.jinjunhang.onlineclass.service.GetFinanceToutiaoResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
@@ -37,6 +40,8 @@ import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.TuijianCourseHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.ZhuanLanCell;
@@ -68,6 +73,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private HeaderAdvCell mHeaderAdvCell;
     private List<Album> mCourses;
     private List<ZhuanLan> mZhuanLans;
+    private List<FinanceToutiao> mToutiaos = new ArrayList<>();
     private FragmentActivity mActivity;
     private boolean mIsLoading;
     private ExoPlayerNotificationManager mNotificationManager;
@@ -80,6 +86,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
        private List<ZhuanLanCell> mZhuanLanCells = new ArrayList<>();
        private TuijianCourseHeaderCell mTuijianCourseHeaderCell;
        private List<MainPageCourseCell> mMainPageCourseCells = new ArrayList<>();
+       private FinanceToutiaoHeaderCell mFinanceToutiaoHeaderCell;
+       private List<FinanceToutiaoCell> mFinanceToutiaoCells = new ArrayList<>();
 
        private List<ListViewCell> cells = new ArrayList<>();
        private boolean hasUpdate = true;
@@ -97,6 +105,11 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                cells.add(cell);
            }
            cells.add(new SectionSeparatorCell(mActivity));
+           cells.add(mFinanceToutiaoHeaderCell);
+           for(FinanceToutiaoCell cell : mFinanceToutiaoCells) {
+               cells.add(cell);
+           }
+           cells.add(new SectionSeparatorCell(mActivity));
            cells.add(mZhuanLanHeaderCell);
            for (ZhuanLanCell cell : mZhuanLanCells) {
                cells.add(cell);
@@ -106,6 +119,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
            for (MainPageCourseCell cell : mMainPageCourseCells) {
                cells.add(cell);
            }
+
+
            return cells;
        }
      }
@@ -134,6 +149,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mPageCells.mHeaderAdvCell = mHeaderAdvCell;
         mPageCells.mZhuanLanHeaderCell = new ZhuanLanHeaderCell(activity);
         mPageCells.mTuijianCourseHeaderCell = new TuijianCourseHeaderCell(activity);
+        mPageCells.mFinanceToutiaoHeaderCell = new FinanceToutiaoHeaderCell(activity);
+
 
 
         mHeaderAdvCell.updateAds();
@@ -186,6 +203,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
         new GetZhuanLanAndTuijianCoursesTask().execute();
         new GetFunctionInfoRequestTask().execute();
+        new GetFinanceToutiaoTask().execute();
     }
 
     private void setFunctionCellView() {
@@ -211,6 +229,15 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mMainPageAdapter.notifyDataSetChanged();
     }
 
+    private  void setFinanceToutiaosView() {
+        mPageCells.mFinanceToutiaoCells.clear();
+        for(FinanceToutiao toutiao : mToutiaos) {
+            mPageCells.mFinanceToutiaoCells.add(new FinanceToutiaoCell(mActivity, toutiao));
+        }
+        mPageCells.hasUpdate = true;
+        mMainPageAdapter.notifyDataSetChanged();
+    }
+
     public void onStopHandler() {
         mLoading.hide();
     }
@@ -219,6 +246,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     public void onRefresh() {
         new GetZhuanLanAndTuijianCoursesTask().execute();
         new GetFunctionInfoRequestTask().execute();
+        new GetFinanceToutiaoTask().execute();
     }
 
     private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
@@ -360,6 +388,30 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             LogHelper.d(TAG, "notify adpter data changed");
 
         }
+    }
+
+    private class GetFinanceToutiaoTask extends AsyncTask<Void, Void, GetFinanceToutiaoResponse> {
+        protected GetFinanceToutiaoResponse doInBackground(Void... voids) {
+            GetFinanceToutiaoRequest request = new GetFinanceToutiaoRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        protected void onPostExecute(GetFinanceToutiaoResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()){
+                LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
+                return;
+            }
+
+            List<FinanceToutiao> toutiaos = response.getToutiaos();
+            if (toutiaos.size() == 0) {
+                return;
+            }
+            mToutiaos = toutiaos;
+            setFinanceToutiaosView();
+        }
+
     }
 
 

@@ -289,9 +289,9 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
     public static class DataGenerator {
 
-        public static final int []mTabRes = new int[]{R.drawable.icon_home,R.drawable.icon_read, R.drawable.icon_live, R.drawable.icon_shop,R.drawable.icon_my,};
-        public static final int []mTabResPressed = new int[]{R.drawable.icon_home_s, R.drawable.icon_read_s, R.drawable.icon_live_s, R.drawable.icon_shop_s,R.drawable.icon_my_s,};
-        public static final String []mTabTitle = new String[]{"首页", "资讯", "直播", "订阅","我的"};
+        public static final int []mTabRes = new int[]{R.drawable.ic1,R.drawable.ic2, R.drawable.ic3, R.drawable.ic4,R.drawable.ic5,};
+        public static final int []mTabResPressed = new int[]{R.drawable.ic1_s, R.drawable.ic2_s, R.drawable.ic3_s, R.drawable.ic4_s,R.drawable.ic5_s,};
+        public static final String []mTabTitle = new String[]{"探索", "签到", "直播", "已购","我的"};
 
         public static BaseFragment[] getFragments(Activity activity, String from){
             BaseFragment fragments[] = new BaseFragment[5];

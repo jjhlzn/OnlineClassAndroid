@@ -7,21 +7,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.user.UserProfilePhotoFragment;
 
 /**
  * Created by jjh on 2016-6-30.
  */
 public class UserProfilePhotoActivity extends BaseMusicSingleFragmentActivity {
+    private static final String TAG = LogHelper.makeLogTag(UserProfilePhotoActivity.class);
 
     private UserProfilePhotoFragment mFragment;
+
+    @Override
+    protected String getActivityTitle() {
+        return "头像";
+    }
 
     @Override
     protected Fragment createFragment() {
         mFragment = new UserProfilePhotoFragment();
         return mFragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        LogHelper.d(TAG, "onBackPressed");
+        Intent intent = new Intent();
+        setResult( MainActivity.REQUEST_ME_UPDATE_USER_IAMGE,intent);
+        finish();
+
+
+
     }
 
     @Override
