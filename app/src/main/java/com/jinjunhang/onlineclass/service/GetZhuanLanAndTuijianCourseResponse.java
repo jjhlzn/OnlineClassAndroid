@@ -13,16 +13,25 @@ import java.util.List;
 public class GetZhuanLanAndTuijianCourseResponse extends GetTuijianCoursesResponse{
 
     private List<ZhuanLan> mZhuanLans = new ArrayList<>();
+    private List<ZhuanLan> mJpks = new ArrayList<>();
 
     public List<ZhuanLan> getZhuanLans() {
         return mZhuanLans;
     }
 
+    public List<ZhuanLan> getJpks() {
+        return mJpks;
+    }
+
     @Override
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
-
         super.parse(request, jsonObject);
-        JSONArray jsonArray = jsonObject.getJSONArray("zhuanLans");
+        mZhuanLans = parseZhuanLans(jsonObject.getJSONArray("zhuanLans"));
+        mJpks = parseZhuanLans(jsonObject.getJSONArray("jpks"));
+    }
+
+    private List<ZhuanLan> parseZhuanLans(JSONArray jsonArray) throws JSONException {
+        List<ZhuanLan> zhuanLans = new ArrayList<>();
         for(int i = 0 ; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.getJSONObject(i);
             ZhuanLan zhuanLan = new ZhuanLan();
@@ -36,8 +45,9 @@ public class GetZhuanLanAndTuijianCourseResponse extends GetTuijianCoursesRespon
             zhuanLan.setAuthor(json.getString("author"));
             zhuanLan.setAuthorTitle(json.getString("authorTitle"));
             zhuanLan.setDingYue(json.getInt("dingyue"));
-            mZhuanLans.add(zhuanLan);
+            zhuanLans.add(zhuanLan);
         }
+        return zhuanLans;
     }
 
 }

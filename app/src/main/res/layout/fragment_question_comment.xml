@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/container"
+                android:background="@color/white">
+
+    <EditText
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:hint="回复内容限制在200字以内"
+        android:gravity="top"
+        android:background="@drawable/edit_none_border"
+        android:padding="10dp"
+        android:textSize="17sp"/>
+
+
+</RelativeLayout>

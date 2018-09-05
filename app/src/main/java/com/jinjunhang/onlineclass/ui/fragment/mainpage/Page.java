@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -20,8 +21,10 @@ import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.Answer;
 import com.jinjunhang.onlineclass.model.FinanceToutiao;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.Question;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
@@ -29,6 +32,8 @@ import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoRequest;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoResponse;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoRequest;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoResponse;
+import com.jinjunhang.onlineclass.service.GetQuestionRequest;
+import com.jinjunhang.onlineclass.service.GetQuestionResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
@@ -43,6 +48,9 @@ import com.jinjunhang.onlineclass.ui.cell.SectionSeparatorCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.JpkHeaderCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.QuestionCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.QuestionHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.TuijianCourseHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.ZhuanLanCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.ZhuanLanHeaderCell;
@@ -73,8 +81,11 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private HeaderAdvCell mHeaderAdvCell;
     private List<Album> mCourses;
     private List<ZhuanLan> mZhuanLans;
+    private List<ZhuanLan> mJpks;
     private List<FinanceToutiao> mToutiaos = new ArrayList<>();
+    private List<Question> mQuestions = new ArrayList<>();
     private FragmentActivity mActivity;
+    private Fragment mFragment;
     private boolean mIsLoading;
     private ExoPlayerNotificationManager mNotificationManager;
 
@@ -84,10 +95,15 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
        private List<ExtendFunctionCell> mFuncCells = new ArrayList<>();
        private ZhuanLanHeaderCell mZhuanLanHeaderCell;
        private List<ZhuanLanCell> mZhuanLanCells = new ArrayList<>();
+       private JpkHeaderCell mJpkHeaderCell;
+       private List<ZhuanLanCell> mJpkCells = new ArrayList<>();
        private TuijianCourseHeaderCell mTuijianCourseHeaderCell;
        private List<MainPageCourseCell> mMainPageCourseCells = new ArrayList<>();
        private FinanceToutiaoHeaderCell mFinanceToutiaoHeaderCell;
        private List<FinanceToutiaoCell> mFinanceToutiaoCells = new ArrayList<>();
+       private QuestionHeaderCell mQuestionHeaderCell;
+       private List<QuestionCell> mQuestionCells = new ArrayList<>();
+
 
        private List<ListViewCell> cells = new ArrayList<>();
        private boolean hasUpdate = true;
@@ -104,20 +120,45 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
            for (ExtendFunctionCell cell : mFuncCells) {
                cells.add(cell);
            }
-           cells.add(new SectionSeparatorCell(mActivity));
-           cells.add(mFinanceToutiaoHeaderCell);
-           for(FinanceToutiaoCell cell : mFinanceToutiaoCells) {
-               cells.add(cell);
+
+           if (mMainPageCourseCells.size() > 0) {
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mTuijianCourseHeaderCell);
+               for (MainPageCourseCell cell : mMainPageCourseCells) {
+                   cells.add(cell);
+               }
            }
-           cells.add(new SectionSeparatorCell(mActivity));
-           cells.add(mZhuanLanHeaderCell);
-           for (ZhuanLanCell cell : mZhuanLanCells) {
-               cells.add(cell);
+
+           if (mFinanceToutiaoCells.size() > 0) {
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mFinanceToutiaoHeaderCell);
+               for (FinanceToutiaoCell cell : mFinanceToutiaoCells) {
+                   cells.add(cell);
+               }
            }
-           cells.add(new SectionSeparatorCell(mActivity));
-           cells.add(mTuijianCourseHeaderCell);
-           for (MainPageCourseCell cell : mMainPageCourseCells) {
-               cells.add(cell);
+
+           if (mZhuanLanCells.size() > 0) {
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mZhuanLanHeaderCell);
+               for (ZhuanLanCell cell : mZhuanLanCells) {
+                   cells.add(cell);
+               }
+           }
+
+           if (mJpkCells.size() > 0) {
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mJpkHeaderCell);
+               for (ZhuanLanCell cell : mJpkCells) {
+                   cells.add(cell);
+               }
+           }
+
+           if (mQuestionCells.size() > 0) {
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mQuestionHeaderCell);
+               for (QuestionCell cell : mQuestionCells) {
+                   cells.add(cell);
+               }
            }
 
 
@@ -125,9 +166,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
        }
      }
 
-    public Page(FragmentActivity activity, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
+    public Page(FragmentActivity activity, Fragment fragment, LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, String type) {
         mNotificationManager = ExoPlayerNotificationManager.getInstance(activity);
         mActivity = activity;
+        mFragment = fragment;
         mZhuanLans = new ArrayList<>();
         mCourses = new ArrayList<>();
         this.mType = type;
@@ -148,10 +190,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mHeaderAdvCell = new HeaderAdvCell(activity, mLoading, mType);
         mPageCells.mHeaderAdvCell = mHeaderAdvCell;
         mPageCells.mZhuanLanHeaderCell = new ZhuanLanHeaderCell(activity);
+        mPageCells.mJpkHeaderCell = new JpkHeaderCell(activity);
         mPageCells.mTuijianCourseHeaderCell = new TuijianCourseHeaderCell(activity);
         mPageCells.mFinanceToutiaoHeaderCell = new FinanceToutiaoHeaderCell(activity);
-
-
+        mPageCells.mQuestionHeaderCell = new QuestionHeaderCell(activity);
 
         mHeaderAdvCell.updateAds();
         mHeaderAdvCell.updateTouTiao();
@@ -204,6 +246,20 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         new GetZhuanLanAndTuijianCoursesTask().execute();
         new GetFunctionInfoRequestTask().execute();
         new GetFinanceToutiaoTask().execute();
+        new GetQuestionsTask().execute();
+    }
+
+    private void addAnswer(Answer answer) {
+        for (Question question : mQuestions) {
+            if (question.getId().equals(answer.getQuestion().getId())) {
+                question.getAnswers().add(answer);
+                break;
+            }
+        }
+    }
+    public void refreshListView(Answer answer) {
+        addAnswer(answer);
+        mMainPageAdapter.notifyDataSetChanged();
     }
 
     private void setFunctionCellView() {
@@ -220,6 +276,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mPageCells.mZhuanLanCells.clear();
         for(ZhuanLan zhuanLan : mZhuanLans) {
             mPageCells.mZhuanLanCells.add(new ZhuanLanCell(mActivity, zhuanLan));
+        }
+        mPageCells.mJpkCells.clear();
+        for(ZhuanLan jpk : mJpks) {
+            mPageCells.mJpkCells.add(new ZhuanLanCell(mActivity, jpk));
         }
         mPageCells.mMainPageCourseCells.clear();
         for(Album course : mCourses) {
@@ -238,6 +298,15 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mMainPageAdapter.notifyDataSetChanged();
     }
 
+    private  void setQuestionsView() {
+        mPageCells.mQuestionCells.clear();
+        for(Question question : mQuestions) {
+            mPageCells.mQuestionCells.add(new QuestionCell(mActivity, question, mFragment,  mMainPageAdapter));
+        }
+        mPageCells.hasUpdate = true;
+        mMainPageAdapter.notifyDataSetChanged();
+    }
+
     public void onStopHandler() {
         mLoading.hide();
     }
@@ -247,6 +316,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         new GetZhuanLanAndTuijianCoursesTask().execute();
         new GetFunctionInfoRequestTask().execute();
         new GetFinanceToutiaoTask().execute();
+        new GetQuestionsTask().execute();
     }
 
     private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
@@ -293,6 +363,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
             mCourses = response.getCourses();
             mZhuanLans = response.getZhuanLans();
+            mJpks = response.getJpks();
             setZhuanLanAndCoursesView();
         }
     }
@@ -410,6 +481,30 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
             mToutiaos = toutiaos;
             setFinanceToutiaosView();
+        }
+
+    }
+
+    private class GetQuestionsTask extends AsyncTask<Void, Void, GetQuestionResponse> {
+        protected GetQuestionResponse doInBackground(Void... voids) {
+            GetQuestionRequest request = new GetQuestionRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        protected void onPostExecute(GetQuestionResponse response) {
+            super.onPostExecute(response);
+
+            if (!response.isSuccess()){
+                LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
+                return;
+            }
+
+            List<Question> questions = response.getQuestions();
+            if (questions.size() == 0) {
+                return;
+            }
+            mQuestions = questions;
+            setQuestionsView();
         }
 
     }

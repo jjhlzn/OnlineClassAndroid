@@ -20,7 +20,7 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 = "192.168.64.115"; //"192.168.64.126";  // //"192.168.64.126"; // "192.168.31.130"; //"192.168.64.126"; //   //"192.168.31.130"; // "192.168.64.126";  //"192.168.31.130";  // //  //"jf.yhkamani.com"; //"192.168.1.108";
+    private final static String serverName1 = "192.168.5.101"; //"192.168.64.126";  // //"192.168.64.126"; // "192.168.31.130"; //"192.168.64.126"; //   //"192.168.31.130"; // "192.168.64.126";  //"192.168.31.130";  // //  //"jf.yhkamani.com"; //"192.168.1.108";
     private final static int port1 = 3000;
 
 
@@ -235,6 +235,21 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/app/getJinRongToutiaos";
     }
 
+    public static String GetQuestionUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getQuestions";
+    }
+
+    public static String GetPagedQuestionsUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getPagedQuestions";
+    }
+
+    public static String LikeQuestionUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/likeQuestion";
+    }
+
+    public static String SendQuestionAnswerUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/sendQuestionAnswer";
+    }
 }
 
 

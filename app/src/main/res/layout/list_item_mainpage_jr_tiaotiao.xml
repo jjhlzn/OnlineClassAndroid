@@ -29,7 +29,16 @@
             android:textSize="16dp"
             android:textStyle="bold"/>
 
+        <ImageView
+            android:id="@+id/indexImage"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:src="@drawable/toutiaotag"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp"/>
+
         <TextView
+            android:layout_centerVertical="true"
             android:id="@+id/toutiaoTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,9 +46,10 @@
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/toutiaoIndex"
             android:gravity="center_vertical"
-            android:text="亚足联:权健亚冠主场移师澳门 权健:中国土地到哪里都是主场"
+            android:text="亚足联:权健亚冠主场移场"
             android:textColor="@color/black"
-            android:textSize="17dp"/>
+            android:maxLines="2"
+            android:textSize="15dp"/>
 
 
     </RelativeLayout>

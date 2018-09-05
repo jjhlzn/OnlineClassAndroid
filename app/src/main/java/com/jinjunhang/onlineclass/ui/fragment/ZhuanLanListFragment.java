@@ -28,6 +28,7 @@ import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLansRequest;
 import com.jinjunhang.onlineclass.service.GetZhuanLansResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.ZhuanLanListActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.TuijianCourseHeaderCell;
@@ -42,6 +43,11 @@ import java.util.List;
 public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeRefreshLayout.OnRefreshListener   {
     private final static String TAG = LogHelper.makeLogTag(ZhuanLanListFragment.class);
 
+    public static final String EXTRA_TYPE = "EXTRA_TYPE";
+    public static final String TYPE_ZHUANLAN = "TYPE_ZHUANLAN";
+    public static final String TYPE_JPK = "TYPE_JPK";
+
+    private String mType = "";
     private MyAdapter mAdapter;
     private List<ListViewCell> mCells = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -54,6 +60,20 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
         View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_white, container, false);
         mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mType = getActivity().getIntent().getStringExtra(EXTRA_TYPE);
+        if (mType == null) {
+            mType = TYPE_ZHUANLAN;
+        }
+        TextView titleTV = (TextView)((AppCompatActivity)getActivity()).getSupportActionBar()
+                .getCustomView().findViewById(R.id.actionbar_text);
+        if (titleTV != null) {
+            if (mType.equals(TYPE_JPK)) {
+                titleTV.setText("精品课列表");
+            } else {
+                titleTV.setText("专栏列表");
+            }
+        }
 
         mAdapter = new MyAdapter(getActivity(), mCells);
         ListView listView = (ListView)v.findViewById(R.id.listView);
@@ -116,6 +136,8 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
         private GetAlbumsRequest request;
         @Override
         protected GetZhuanLansResponse doInBackground(Void... params) {
+            GetZhuanLansRequest request = new GetZhuanLansRequest();
+            request.setType(mType);
             return new BasicService().sendRequest(new GetZhuanLansRequest());
         }
 

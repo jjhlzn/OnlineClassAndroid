@@ -182,6 +182,10 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
             notifyDataSetChanged();
         }
 
+        public List<T> getDataSet() {
+            return mDataSet;
+        }
+
         @Override
         public int getCount() {
             return mDataSet.size();

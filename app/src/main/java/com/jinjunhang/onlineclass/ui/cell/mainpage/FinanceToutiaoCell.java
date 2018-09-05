@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,17 +36,26 @@ public class FinanceToutiaoCell extends BaseListViewCell {
 
         TextView indexTextView = (TextView) view.findViewById(R.id.toutiaoIndex);
         TextView titleTextView = (TextView) view.findViewById(R.id.toutiaoTitle);
+        ImageView tagImage = (ImageView)view.findViewById(R.id.indexImage);
 
         String indexStr = "";
 
         if (mFinanceToutiao.getIndex() == 0) {
             indexStr = "TOP 1";
+            tagImage.setVisibility(View.INVISIBLE);
+            indexTextView.setVisibility(View.VISIBLE);
         } else if (mFinanceToutiao.getIndex() == 1) {
             indexStr = "TOP 2";
+            tagImage.setVisibility(View.INVISIBLE);
+            indexTextView.setVisibility(View.VISIBLE);
         } else if (mFinanceToutiao.getIndex() == 2) {
             indexStr = "TOP 3";
+            tagImage.setVisibility(View.INVISIBLE);
+            indexTextView.setVisibility(View.VISIBLE);
         } else {
             indexStr = (mFinanceToutiao.getIndex() + 1) + "";
+            tagImage.setVisibility(View.VISIBLE);
+            indexTextView.setVisibility(View.INVISIBLE);
         }
 
         if (mFinanceToutiao.getIndex() > 2) {

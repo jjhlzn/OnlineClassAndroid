@@ -8,29 +8,26 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.QuestionsActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 
-public class FinanceToutiaoHeaderCell extends BaseListViewCell {
+public class QuestionHeaderCell extends BaseListViewCell {
 
 
-    public FinanceToutiaoHeaderCell(Activity activity) {
+    public QuestionHeaderCell(Activity activity) {
         super(activity);
     }
 
     @Override
     public ViewGroup getView() {
 
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jr_tiaotiao_header, null);
+        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_question_header, null);
 
-        Button viewAllBtn = (Button)view.findViewById(R.id.viewAllBtn);
+        Button viewAllBtn = (Button) view.findViewById(R.id.viewAllBtn);
         viewAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(mActivity, WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "融资军火库")
-                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.JunHuoKuUrl());
+                Intent i = new Intent(mActivity, QuestionsActivity.class);
                 mActivity.startActivity(i);
             }
         });

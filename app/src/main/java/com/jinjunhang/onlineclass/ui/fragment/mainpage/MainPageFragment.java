@@ -17,12 +17,17 @@ import android.widget.Toast;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Answer;
+import com.jinjunhang.onlineclass.model.Question;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
+import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.search.SearchActivity;
+import com.jinjunhang.onlineclass.ui.cell.me.FirstSectionCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.fragment.QuestionAnswerFragment;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -58,7 +63,7 @@ public class MainPageFragment extends BaseFragment {
 
         rongziView = (ViewGroup)v.findViewById(R.id.frag_1);
 
-        rongziPage = new Page(getActivity(), inflater, container, savedInstanceState, ExtendFunctionManager.RONGZI_TYPE);
+        rongziPage = new Page(getActivity(), this, inflater, container, savedInstanceState, ExtendFunctionManager.RONGZI_TYPE);
         rongziView.addView(rongziPage.v);
 
         if (!isIntied) {
@@ -125,6 +130,20 @@ public class MainPageFragment extends BaseFragment {
 
 
         Utils.setNavigationBarMusicButton(getActivity());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LogHelper.d(TAG, "onActivityResult called");
+        if (requestCode == QuestionAnswerFragment.REQUEST_QUESTION && data != null) {
+            boolean isSuccess = data.getBooleanExtra(QuestionAnswerFragment.EXTRA_IS_SUCCESS, false);
+            if (isSuccess) {
+                Answer answer = (Answer)data.getSerializableExtra(QuestionAnswerFragment.EXTRA_ANSWER);
+                if(answer != null)
+                    rongziPage.refreshListView(answer);
+            }
+        }
     }
 
 }
