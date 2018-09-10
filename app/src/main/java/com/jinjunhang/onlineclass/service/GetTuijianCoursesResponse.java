@@ -5,6 +5,7 @@ import com.jinjunhang.framework.service.ServerRequest;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
+import com.jinjunhang.onlineclass.model.Pos;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +23,7 @@ public class GetTuijianCoursesResponse extends ServerResponse {
 
     private List<Album> mCourses = new ArrayList<>();
 
+
     public GetTuijianCoursesResponse() {
 
     }
@@ -29,6 +31,7 @@ public class GetTuijianCoursesResponse extends ServerResponse {
     public List<Album> getCourses() {
         return mCourses;
     }
+
 
     @Override
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
@@ -73,6 +76,7 @@ public class GetTuijianCoursesResponse extends ServerResponse {
             mCourses.add(album);
         }
     }
+
 
     public class Course {
         private String mId;

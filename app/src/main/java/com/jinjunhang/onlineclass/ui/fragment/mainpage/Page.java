@@ -24,6 +24,7 @@ import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Answer;
 import com.jinjunhang.onlineclass.model.FinanceToutiao;
 import com.jinjunhang.onlineclass.model.LiveSong;
+import com.jinjunhang.onlineclass.model.Pos;
 import com.jinjunhang.onlineclass.model.Question;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
@@ -32,6 +33,8 @@ import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoRequest;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoResponse;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoRequest;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoResponse;
+import com.jinjunhang.onlineclass.service.GetPosRequest;
+import com.jinjunhang.onlineclass.service.GetPosResponse;
 import com.jinjunhang.onlineclass.service.GetQuestionRequest;
 import com.jinjunhang.onlineclass.service.GetQuestionResponse;
 import com.jinjunhang.onlineclass.service.GetTuijianCoursesRequest;
@@ -49,6 +52,7 @@ import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.JpkHeaderCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.PosApplyCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.QuestionCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.QuestionHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.TuijianCourseHeaderCell;
@@ -82,6 +86,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
     private List<Album> mCourses;
     private List<ZhuanLan> mZhuanLans;
     private List<ZhuanLan> mJpks;
+    private Pos mPos;
     private List<FinanceToutiao> mToutiaos = new ArrayList<>();
     private List<Question> mQuestions = new ArrayList<>();
     private FragmentActivity mActivity;
@@ -103,6 +108,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
        private List<FinanceToutiaoCell> mFinanceToutiaoCells = new ArrayList<>();
        private QuestionHeaderCell mQuestionHeaderCell;
        private List<QuestionCell> mQuestionCells = new ArrayList<>();
+       private PosApplyCell mPosApplyCell;
 
 
        private List<ListViewCell> cells = new ArrayList<>();
@@ -114,9 +120,18 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                return cells;
            }
 
+
+
            cells = new ArrayList<>();
            cells.add(mHeaderAdvCell);
-           cells.add(new SectionSeparatorCell(mActivity));
+
+           if (mPos != null){
+               cells.add(mPosApplyCell);
+           } else {
+               cells.add(new SectionSeparatorCell(mActivity));
+           }
+
+
            for (ExtendFunctionCell cell : mFuncCells) {
                cells.add(cell);
            }
@@ -194,9 +209,10 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         mPageCells.mTuijianCourseHeaderCell = new TuijianCourseHeaderCell(activity);
         mPageCells.mFinanceToutiaoHeaderCell = new FinanceToutiaoHeaderCell(activity);
         mPageCells.mQuestionHeaderCell = new QuestionHeaderCell(activity);
+        mPageCells.mPosApplyCell = new PosApplyCell(mActivity, mPos);
 
         mHeaderAdvCell.updateAds();
-        mHeaderAdvCell.updateTouTiao();
+        //mHeaderAdvCell.updateTouTiao();
 
         mMainPageAdapter = new MainPageAdapter(activity, mPageCells);
         mListView.setAdapter(mMainPageAdapter);
@@ -285,6 +301,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         for(Album course : mCourses) {
             mPageCells.mMainPageCourseCells.add(new MainPageCourseCell(mActivity, course));
         }
+        setPosView();
         mPageCells.hasUpdate = true;
         mMainPageAdapter.notifyDataSetChanged();
     }
@@ -304,6 +321,12 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             mPageCells.mQuestionCells.add(new QuestionCell(mActivity, question, mFragment,  mMainPageAdapter));
         }
         mPageCells.hasUpdate = true;
+        mMainPageAdapter.notifyDataSetChanged();
+    }
+
+    private  void setPosView() {
+        mPageCells.hasUpdate = true;
+        mPageCells.mPosApplyCell.setPos(mPos);
         mMainPageAdapter.notifyDataSetChanged();
     }
 
@@ -364,6 +387,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             mCourses = response.getCourses();
             mZhuanLans = response.getZhuanLans();
             mJpks = response.getJpks();
+            mPos = response.getPos();
             setZhuanLanAndCoursesView();
         }
     }
@@ -508,6 +532,8 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         }
 
     }
+
+
 
 
 }

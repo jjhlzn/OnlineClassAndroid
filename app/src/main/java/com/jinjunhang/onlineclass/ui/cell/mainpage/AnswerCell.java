@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.cell.mainpage;
 
 import android.app.Activity;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -30,15 +31,22 @@ public class AnswerCell extends BaseListViewCell {
 
         TextView contentView = (TextView) v.findViewById(R.id.answerContent);
 
-        String content = mAnswer.getFromUserName();
+
+        String content = "";
+        if (mAnswer.isFromManager()) {
+            content = "<font color=red>"+mAnswer.getFromUserName() +"</font> ";
+        } else {
+            content = "<font color=#707070>"+mAnswer.getFromUserName() +"</font> ";
+        }
+
         if (mAnswer.getToUserName() != null && !"".equals(mAnswer.getToUserName())) {
-            content += " 回复 " + mAnswer.getToUserName();
+            content += " 回复 " + "<font color=#707070>"+mAnswer.getToUserName() +"</font> " ;
         }
 
         content += "：";
         content += mAnswer.getContent();
 
-        contentView.setText(content);
+        contentView.setText(Html.fromHtml(content));
 
         return (RelativeLayout)v.findViewById(R.id.container);
     }

@@ -11,6 +11,7 @@ public class Answer implements Serializable {
     private String mToUserId;
     private String mToUserName;
     private String mContent;
+    private boolean isFromManager;
 
     public String getFromUserId() {
         return mFromUserId;
@@ -58,5 +59,13 @@ public class Answer implements Serializable {
 
     public void setQuestion(Question question) {
         mQuestion = question;
+    }
+
+    public boolean isFromManager() {
+        return isFromManager;
+    }
+
+    public void setFromManager(boolean fromManager) {
+        isFromManager = fromManager;
     }
 }

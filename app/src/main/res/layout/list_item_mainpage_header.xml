@@ -3,7 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:id="@+id/list_item_viewgroup"
-              android:layout_height="156dp"
+              android:layout_height="120dp"
               android:orientation="vertical"
               android:background="@drawable/bottom_border">
 
@@ -14,6 +14,7 @@
             android:layout_height="120dp"
             />
 
+        <!--
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="36dp"
@@ -50,5 +51,5 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/icon_haoyou"/>
-        </RelativeLayout>
+        </RelativeLayout> -->
 </LinearLayout>

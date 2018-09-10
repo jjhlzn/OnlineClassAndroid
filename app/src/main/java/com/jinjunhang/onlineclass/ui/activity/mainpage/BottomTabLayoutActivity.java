@@ -298,19 +298,24 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             try {
 
                 fragments[0] = MainPageFragment.class.newInstance();
+
                 ShopWebBrowserFragment frag1 = new ShopWebBrowserFragment();
                 Bundle args = new Bundle();
                 args.putString("title", mTabTitle[1]);
-                args.putString("url", ServiceLinkManager.StudyUrl());
+                args.putString("url", ServiceLinkManager.QiandaoUrl());
                 frag1.setArguments(args);
                 fragments[1] = frag1;
+
                 fragments[2] = CourseListFragment.class.newInstance();
-                ZhuanLanListFragment frag3 = new ZhuanLanListFragment();
+
+                ShopWebBrowserFragment frag3 = new ShopWebBrowserFragment();
                 Bundle args3 = new Bundle();
                 args3.putString("title", mTabTitle[3]);
-                args3.putString("url", ServiceLinkManager.MallUrl());
+                args3.putString("url", ServiceLinkManager.YigouUrl());
                 frag3.setArguments(args3);
                 fragments[3] = frag3;
+
+
                 fragments[4] = MeFragment.class.newInstance();
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);

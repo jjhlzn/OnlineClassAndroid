@@ -163,5 +163,13 @@ public class ServiceLinkManager {
     public static String HealthUrl() {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/health";
     }
+
+    public static String QiandaoUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/signin";
+    }
+
+    public static String YigouUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/purchased";
+    }
 }
 

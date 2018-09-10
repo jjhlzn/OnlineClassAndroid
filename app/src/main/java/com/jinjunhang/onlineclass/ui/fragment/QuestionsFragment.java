@@ -5,12 +5,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.jinjunhang.framework.controller.PagableController;
@@ -26,6 +29,7 @@ import com.jinjunhang.onlineclass.model.Answer;
 import com.jinjunhang.onlineclass.model.Question;
 import com.jinjunhang.onlineclass.service.GetPagedQuestionsRequest;
 import com.jinjunhang.onlineclass.service.GetPagedQuestionsResponse;
+import com.jinjunhang.onlineclass.ui.activity.AskQuestionActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 
@@ -61,6 +65,17 @@ public class QuestionsFragment extends BaseFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+        });
+
+        //设置ActionBar的按钮
+        View actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView();
+        Button rightButton = (Button)actionBar.findViewById(R.id.actionbar_right_button);
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AskQuestionActivity.class);
+                getActivity().startActivity(i);
             }
         });
 

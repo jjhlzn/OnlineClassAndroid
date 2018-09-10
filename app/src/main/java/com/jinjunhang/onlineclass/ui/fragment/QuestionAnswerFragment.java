@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -161,11 +162,19 @@ public class QuestionAnswerFragment extends BottomPlayerFragment    {
                 return;
             }
 
+            Utils.showMessage(getActivity(),"发送成功，需要审核后才能查看", new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    getActivity().onBackPressed();
+                }
+            });
+            /*
             Intent intent = new Intent();
             intent.putExtra(EXTRA_ANSWER, mAnswer)
                   .putExtra(EXTRA_IS_SUCCESS, true);
             getActivity().setResult( REQUEST_QUESTION, intent);
             getActivity().finish();
+            */
         }
 
     }

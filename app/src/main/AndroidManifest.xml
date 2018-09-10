@@ -132,6 +132,11 @@
 
         </activity>
 
+        <activity android:name=".ui.activity.AskQuestionActivity"
+                  android:screenOrientation="portrait">
+
+        </activity>
+
         <activity android:name=".ui.activity.QuestionsActivity"
                   android:screenOrientation="portrait">
 

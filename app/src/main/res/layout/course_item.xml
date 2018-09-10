@@ -15,7 +15,7 @@
         android:layout_marginRight="10dp"
         android:scaleType="fitXY"
         android:src="@drawable/course"/>
-
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +74,8 @@
             android:textColor="@color/white"
             android:textSize="16dp"/>
     </LinearLayout>
-
+-->
+    <!--
     <TextView
         android:id="@+id/course_name_txt"
         android:layout_width="300dp"
@@ -102,5 +103,5 @@
         android:gravity="bottom"
         android:text="2018/03/20"
         android:textColor="@color/white"
-        android:textSize="15dp"/>
+        android:textSize="15dp"/> -->
 </RelativeLayout>

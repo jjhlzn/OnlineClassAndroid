@@ -82,13 +82,15 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             } else {
 
                 ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
-                backButton.setVisibility(View.VISIBLE);
-                backButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onBackPressed();
-                    }
-                });
+                //if (backButton != null) {
+                    backButton.setVisibility(View.VISIBLE);
+                    backButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onBackPressed();
+                        }
+                    });
+                //}
             }
         }
     }

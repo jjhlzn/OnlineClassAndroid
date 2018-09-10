@@ -52,7 +52,7 @@ public class MainPageCourseCell extends BaseListViewCell {
     }
 
     protected void setCourseView(View view) {
-
+        /*
         TextView nameText = (TextView)view.findViewById(R.id.course_name_txt);
         TextView timeText = (TextView)view.findViewById(R.id.course_time_txt);
         TextView starText = (TextView)view.findViewById(R.id.starsText);
@@ -69,7 +69,7 @@ public class MainPageCourseCell extends BaseListViewCell {
         mStars.add((ImageView)view.findViewById(R.id.star2));
         mStars.add((ImageView)view.findViewById(R.id.star3));
         mStars.add((ImageView)view.findViewById(R.id.star4));
-        mStars.add((ImageView)view.findViewById(R.id.star5));
+        mStars.add((ImageView)view.findViewById(R.id.star5)); */
 
         ImageView imageView = (ImageView)view.findViewById(R.id.course_image);
         Glide
@@ -78,6 +78,7 @@ public class MainPageCourseCell extends BaseListViewCell {
                 .placeholder(R.drawable.course)
                 .into(imageView);
 
+        /*
         double stars = mCourse.getStars();
         for(int i = 0; i < 5; i++) {
             if (stars >= 1) {
@@ -88,6 +89,6 @@ public class MainPageCourseCell extends BaseListViewCell {
                 mStars.get(i).setImageDrawable(mActivity.getDrawable(R.drawable.star3));
             }
             stars -= 1;
-        }
+        } */
     }
 }

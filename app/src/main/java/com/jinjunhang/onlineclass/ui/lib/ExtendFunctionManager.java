@@ -55,7 +55,7 @@ public class ExtendFunctionManager {
     public static final String RONGZI_TYPE = "rongzi";
     public static final String TOUZI_TYPE = "touzi";
 
-    private final int itemCountEachRow = 4;
+    private final int itemCountEachRow = 5;
     private int mShowMaxRow = 100;
     private Context mContext;
     private ClickListener mWebListener;
@@ -154,46 +154,6 @@ public class ExtendFunctionManager {
 
     private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
         functions = new ArrayList<>();
-        /*
-        functions.add(new ExtendFunction(R.drawable.icon1,
-                messageManager.getFunctionName("f_paybycard", "刷卡"), "f_paybycard",
-                ServiceLinkManager.CardPayUrl(), mWebListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon2,
-                messageManager.getFunctionName("f_makecard", "极速下卡"), "f_makecard", ServiceLinkManager.FunctionFastCardUrl(), mWebListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon3,
-                messageManager.getFunctionName("f_loan", "极速贷款"), "f_loan", ServiceLinkManager.FunctionLoanUrl(),  mWebListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon5,
-                messageManager.getFunctionName("f_user1", "融资军火库"), "f_rzjhk", ServiceLinkManager.JunHuoKuUrl(), mWebListener, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon4,
-                messageManager.getFunctionName("f_user0", "订阅专栏"), "f_dingyue", ServiceLinkManager.ZhuanLanUrl(), new ClickListener() {
-            @Override
-            public void onClick(ExtendFunction function) {
-                Intent i = new Intent(mContext, ZhuanLanListActivity.class);
-                context.startActivity(i);
-            }
-        }, messageManager));
-
-        functions.add(new ExtendFunction(R.drawable.icon7,
-                messageManager.getFunctionName("f_car", "微购车"), "f_car", ServiceLinkManager.FunctionCarLoanUrl(), mWebListener, messageManager));
-        functions.add(new ExtendFunction(R.drawable.icon8,
-                messageManager.getFunctionName("f_market", "商城"), "f_market", ServiceLinkManager.MallUrl(), mWebListener, messageManager));
-
-        moreFunction =  new ExtendFunction(R.drawable.f_more,
-                messageManager.getFunctionName("f_more", "更多"), "f_more", "", new BaseClickListener() {
-            @Override
-            public void onClick(ExtendFunction function) {
-                super.onClick(function);
-                Intent i = new Intent(context, ExtendFunctionActivity.class);
-                context.startActivity(i);
-            }
-        }, messageManager);
-
-        functions.add(moreFunction);
-        */
     }
 
     private void initData4Touzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
@@ -264,7 +224,7 @@ public class ExtendFunctionManager {
         ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
         int cellHeight = getHeight();
-        params.width = width / 4;
+        params.width = width / itemCountEachRow;
         params.height = cellHeight;
 
         layout.setLayoutParams(params);
@@ -273,10 +233,9 @@ public class ExtendFunctionManager {
         ImageView imageView = new ImageView(mContext);
 
 
-        imageParams.width = (int)(width / 4 * 0.7 * 0.70);
-        imageParams.height = (int)(width / 4 * 0.7  * 0.70);
-        imageView.setPadding(0, 12, 0, 4);
-
+        imageParams.width = (int)(width / itemCountEachRow * 0.7 * 0.70);
+        imageParams.height = (int)(width / itemCountEachRow * 0.7  * 0.70);
+        imageView.setPadding(0, 32, 0, 0);
 
         imageView.setLayoutParams(imageParams);
 
@@ -285,15 +244,15 @@ public class ExtendFunctionManager {
 
 
         ViewGroup.LayoutParams textParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        textParams.width = width / 4;
+        textParams.width = width / itemCountEachRow;
 
         TextView textView = new TextView(mContext);
         textView.setLayoutParams(textParams);
         textView.setText(function.getName());
-        textView.setWidth(width / 4);
+        textView.setWidth(width / itemCountEachRow);
         textView.setTextSize(11);
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(0, 0, 0, 0);
+        textView.setPadding(0, -20, 0, 0);
 
         layout.addView(textView);
 

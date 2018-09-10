@@ -144,6 +144,8 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
 
         View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
         mSlider = (SliderLayout)view.findViewById(R.id.slider);
+
+        /*
         mToutiaoTextView = (TextView)view.findViewById(R.id.toutiaoTxt);
         mFriendBtn = (ImageButton) view.findViewById(R.id.haoyou_btn);
         mFriendBtn.setOnClickListener(new View.OnClickListener() {
@@ -152,9 +154,9 @@ public class HeaderAdvCell extends BaseListViewCell implements BaseSliderView.On
                 Intent i = new Intent(mActivity, QRImageActivity.class);
                 mActivity.startActivity(i);
             }
-        });
+        }); */
         setSlider();
-        setTouTiao();
+        //setTouTiao();
         return (LinearLayout)view.findViewById(R.id.list_item_viewgroup);
     }
 

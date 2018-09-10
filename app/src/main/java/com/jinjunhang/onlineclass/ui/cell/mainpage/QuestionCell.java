@@ -206,6 +206,7 @@ public class QuestionCell extends BaseListViewCell {
 
             Toast.makeText(mActivity, "点赞成功！", Toast.LENGTH_SHORT).show();
             mQuestion.setLiked(true);
+            mQuestion.setThumbCount(mQuestion.getThumbCount() + 1);
             mAdapter.notifyDataSetChanged();
 
         }

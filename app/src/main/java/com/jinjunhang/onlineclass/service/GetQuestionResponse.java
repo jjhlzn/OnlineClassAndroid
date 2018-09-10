@@ -49,6 +49,7 @@ public class GetQuestionResponse extends ServerResponse{
                 answer.setToUserId(jo.getString("toId"));
                 answer.setToUserName(jo.getString("toName"));
                 answer.setContent(jo.getString("content"));
+                answer.setFromManager(jo.getBoolean("isFromManager"));
                 question.getAnswers().add(answer);
             }
             questions.add(question);

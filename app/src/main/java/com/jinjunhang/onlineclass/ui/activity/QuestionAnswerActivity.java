@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.fragment.QuestionAnswerFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
@@ -55,17 +56,8 @@ public class QuestionAnswerActivity extends BaseMusicSingleFragmentActivity {
 
         parent.setContentInsetsAbsolute(0, 0);
 
-        setLightStatusBar(customView, activity);
+        Utils.setLightStatusBar(customView, activity);
     }
 
-    protected void setLightStatusBar(View view, Activity activity) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-            activity.getWindow().setStatusBarColor(Color.WHITE);
-        }
-    }
 }
