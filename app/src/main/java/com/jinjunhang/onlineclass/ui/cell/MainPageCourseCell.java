@@ -75,7 +75,7 @@ public class MainPageCourseCell extends BaseListViewCell {
         Glide
                 .with(mActivity)
                 .load(mCourse.getImage())
-                .placeholder(R.drawable.course)
+                .placeholder(R.drawable.rect_placeholder)
                 .into(imageView);
 
         /*

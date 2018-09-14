@@ -88,6 +88,8 @@ public class FirstSectionCell extends BaseListViewCell {
             Bitmap userImage = mUserImageDao.get();
             if (userImage != null) {
                 mUserImage.setImageBitmap(userImage);
+                //mUserImage.setOval(true);
+                //mUserImage.setCornerRadius(50);
             } else {
                 Glide.with(mActivity).load(url).asBitmap().into(new BitmapImageViewTarget(mUserImage) {
                     @Override
@@ -99,6 +101,8 @@ public class FirstSectionCell extends BaseListViewCell {
                         // mUserImage.setImageResource(r);
                         mUserImage.setImageBitmap(resource);
                         mUserImageDao.saveOrUpdate( resource);
+                        //mUserImage.setOval(true);
+                       // mUserImage.setCornerRadius(50);
                         //mUserImage.setAlpha(0);
                         //mUserImage.setImageResource(R.drawable.avril);
                         LogHelper.d(TAG, "image is ready");

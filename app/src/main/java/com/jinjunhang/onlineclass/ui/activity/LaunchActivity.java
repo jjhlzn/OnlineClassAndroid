@@ -59,7 +59,7 @@ public class LaunchActivity extends Activity {
     private final Handler mHandler = new Handler();
     private static final long UPDATE_MESSAGE_INTERNAL = 1000;
     private static final long PROGRESS_UPDATE_INITIAL_INTERVAL = 100;
-    private int mSeconds = 4;
+    private int mSeconds = 2;
     private ScheduledFuture<?> mScheduleFuture;
     private final ScheduledExecutorService mExecutorService = Executors.newSingleThreadScheduledExecutor();
 

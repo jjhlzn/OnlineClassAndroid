@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +26,7 @@ import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.fragment.mainpage.Page;
 import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -35,11 +37,12 @@ import android.os.Bundle;
  * Created by lzn on 2016/9/25.
  */
 
-public class ShopWebBrowserFragment extends BaseFragment {
+public class ShopWebBrowserFragment extends BaseFragment  implements SwipeRefreshLayout.OnRefreshListener {
     private final static String TAG = LogHelper.makeLogTag(ShopWebBrowserFragment.class);
 
     public final static String EXTRA_URL = "EXTRA_URL";
     public final static String EXTRA_TITLE = "EXTRA_TITLE";
+    public final static String EXTRA_NEED_REFRESH = "EXTRA_NEED_REFRESH";
     public View v;
     private String mUrl;
     private WebView mWebView;
@@ -47,6 +50,7 @@ public class ShopWebBrowserFragment extends BaseFragment {
     private IWXAPI mWXAPI;
 
     private ShareManager mShareManager;
+    private SwipeRefreshLayout mRefreshLayout;
 
 
     private String mTitle = "";
@@ -56,15 +60,21 @@ public class ShopWebBrowserFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         LogHelper.d(TAG, "onCreateView called");
 
+
         if (getArguments() != null && getArguments().getString("title") != null) {
             mTitle = getArguments().getString("title");
         }
 
-        v = getActivity().getLayoutInflater().inflate(R.layout.activity_fragment_pushdownrefresh, null, false);
-
         LogHelper.d(TAG, "onCreateView called");
 
-        View v = inflater.inflate(R.layout.web_browser, container, false);
+        v = inflater.inflate(R.layout.web_browser, container, false);
+
+        mRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        mRefreshLayout.setOnRefreshListener(this);
+
+        mRefreshLayout.setEnabled(getArguments().getBoolean(EXTRA_NEED_REFRESH, false));
+
+
 
         mWXAPI = WXAPIFactory.createWXAPI(getActivity(), null);
         mWXAPI.registerApp("wx73653b5260b24787");
@@ -91,6 +101,13 @@ public class ShopWebBrowserFragment extends BaseFragment {
         //changeActionBar();
 
         return v;
+    }
+
+    @Override
+    public void onRefresh() {
+        mWebView.reload();
+        mWebView.requestFocus();
+        mRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -190,16 +207,25 @@ public class ShopWebBrowserFragment extends BaseFragment {
                 return true;
             }
             view.loadUrl(url);
+            if (mBackButton != null) {
+                if (view.canGoBack()) {
+                    mBackButton.setVisibility(View.VISIBLE);
+                } else {
+                    mBackButton.setVisibility(View.INVISIBLE);
+                }
+            }
             return true;
         }
 
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
+            //super.onPageFinished(view, url);
             new ParseHtmlPageTask().setShareManager(mShareManager).execute(url);
+            LogHelper.d(TAG, "onPageFinished: " + url);
+            LogHelper.d(TAG,"mWebView.canGoBack(): " + view.canGoBack());
             if (mBackButton != null) {
-                if (mWebView.canGoBack()) {
+                if (view.canGoBack()) {
                     mBackButton.setVisibility(View.VISIBLE);
                 } else {
                     mBackButton.setVisibility(View.INVISIBLE);
@@ -209,15 +235,19 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
+            //super.onPageStarted(view, url, favicon);
+            LogHelper.d(TAG,"onPageStarted: " + url);
+            LogHelper.d(TAG,"mWebView.canGoBack(): " + view.canGoBack());
             if (mBackButton != null) {
-                if (mWebView.canGoBack()) {
+                if (view.canGoBack()) {
                     mBackButton.setVisibility(View.VISIBLE);
                 } else {
                     mBackButton.setVisibility(View.INVISIBLE);
                 }
             }
         }
+
+
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error){

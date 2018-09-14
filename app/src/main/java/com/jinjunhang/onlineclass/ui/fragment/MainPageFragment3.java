@@ -233,7 +233,6 @@ public class MainPageFragment3 extends android.support.v4.app.Fragment implement
             }
 
             mFunctoinMessageManager.reload();
-            mFunctionManager.reload();
 
             LogHelper.d(TAG, "notify adpter data changed");
             mMainPageAdapter.notifyDataSetChanged();

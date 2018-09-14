@@ -10,8 +10,7 @@
         android:id="@+id/posImage"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/pos_placeholder"/>
+        android:scaleType="fitXY"/>
 
 
 </RelativeLayout>

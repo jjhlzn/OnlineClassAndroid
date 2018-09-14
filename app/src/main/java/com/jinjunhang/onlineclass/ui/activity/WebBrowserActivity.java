@@ -290,6 +290,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             LogHelper.d(TAG, "onPageFinished: ", url);
+            LogHelper.d("mWebView.canGoBack(): " + mWebView.canGoBack());
             super.onPageFinished(view, url);
             //这里是重新执行一遍是为了goback的时候，只有这个位置是可以的（对于没个链接，new ParseHtmlPageTask().execute()都被执行了两遍）
             new ParseHtmlPageTask().setShareManager(mShareManager).execute(url);
@@ -301,6 +302,8 @@ public class WebBrowserActivity extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            LogHelper.d("onPageStarted: " + url);
+            LogHelper.d("mWebView.canGoBack(): " + mWebView.canGoBack());
             if (mWebView.canGoBack()) {
                 mCloseButton.setVisibility(View.VISIBLE);
             }

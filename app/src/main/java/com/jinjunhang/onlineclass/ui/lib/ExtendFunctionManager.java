@@ -30,6 +30,7 @@ import com.jinjunhang.onlineclass.service.ClearFunctionMessageRequest;
 import com.jinjunhang.onlineclass.service.ClearFunctionMessageResponse;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
 import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
+import com.jinjunhang.onlineclass.ui.activity.QuestionsActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.ZhuanLanListActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
@@ -37,6 +38,7 @@ import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -100,17 +102,29 @@ public class ExtendFunctionManager {
                     mContext.startActivity(i);
                 }
             };
+        } else if ("questionHandler".equals(action)) {
+            listener = new BaseClickListener() {
+                @Override
+                public void onClick(ExtendFunction function) {
+                    super.onClick(function);
+                    Intent i = new Intent(mContext, QuestionsActivity.class);
+                    mContext.startActivity(i);
+                }
+            };
+        } else if ("jpkHandler".equals(action)) {
+            listener = new BaseClickListener() {
+                @Override
+                public void onClick(ExtendFunction function) {
+                    super.onClick(function);
+                    Intent i = new Intent(mContext, ZhuanLanListActivity.class)
+                            .putExtra(ZhuanLanListFragment.EXTRA_TYPE, ZhuanLanListFragment.TYPE_JPK);
+                    mContext.startActivity(i);
+                }
+            };
         }
+
         ExtendFunction func = new ExtendFunction(imageUrl, name, code, url, listener, hasMessage);
         return func;
-    }
-
-    private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, String type) {
-        this(messageManager, 100, context, true, type);
-    }
-
-    private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, Context context, boolean isNeedMore, String type) {
-        this(messageManager, 100, context, isNeedMore, type);
     }
 
     private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, int showMaxRow, final Context context, boolean isNeedMore, String type) {
@@ -123,42 +137,9 @@ public class ExtendFunctionManager {
         this.mIsNeedMore = isNeedMore;
         this.mShowMaxRow = showMaxRow;
         this.type = type;
-        reload();
-    }
-
-    public void reload() {
-        //makeFunctions(this.mMessageManager, this.mContext, this.type);
-
-        /*
-        if (this.mIsNeedMore) {
-            int lastIndex = this.mShowMaxRow * itemCountEachRow - 1;
-            if (lastIndex >= functions.size() - 1) {
-                functions.add(moreFunction);
-            } else {
-                functions.set(lastIndex, moreFunction);
-            }
-        }*/
-    }
-
-
-
-    private void makeFunctions(ExtendFunctoinVariableInfoManager messageManager, final Context context, String type) {
-        this.type = type;
-        if (type.equals(TOUZI_TYPE)) {
-            initData4Touzi(messageManager, context);
-        } else {
-            initData4Rongzi(messageManager, context);
-        }
 
     }
 
-    private void initData4Rongzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
-        functions = new ArrayList<>();
-    }
-
-    private void initData4Touzi(ExtendFunctoinVariableInfoManager messageManager,  final Context context) {
-        functions = new ArrayList<>();
-    }
 
     public List<ExtendFunction> getFunctions() {
         return functions;

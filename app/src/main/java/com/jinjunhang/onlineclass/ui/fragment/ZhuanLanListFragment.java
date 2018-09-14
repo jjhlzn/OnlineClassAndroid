@@ -133,12 +133,12 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
 
     private class GetZhuanLanTask extends AsyncTask<Void, Void, GetZhuanLansResponse> {
 
-        private GetAlbumsRequest request;
         @Override
         protected GetZhuanLansResponse doInBackground(Void... params) {
             GetZhuanLansRequest request = new GetZhuanLansRequest();
             request.setType(mType);
-            return new BasicService().sendRequest(new GetZhuanLansRequest());
+            LogHelper.d(TAG, "mtype = " + mType);
+            return new BasicService().sendRequest(request);
         }
 
         @Override

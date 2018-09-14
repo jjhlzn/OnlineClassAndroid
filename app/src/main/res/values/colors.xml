@@ -9,6 +9,8 @@
 
     <color name="tab_selected_color">#cf9b56</color>
 
+    <color name="price_color">#fd750f</color>
+
     <color name="share_btn_bg">#cf9b56</color>
     <color name="overlay_bg">#59030303</color>
     <color name="live_couse_bg">#f2f2f2</color>

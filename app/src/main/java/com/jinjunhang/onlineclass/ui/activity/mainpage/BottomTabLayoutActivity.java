@@ -312,6 +312,7 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
                 Bundle args3 = new Bundle();
                 args3.putString("title", mTabTitle[3]);
                 args3.putString("url", ServiceLinkManager.YigouUrl());
+                args3.putBoolean(ShopWebBrowserFragment.EXTRA_NEED_REFRESH, true);
                 frag3.setArguments(args3);
                 fragments[3] = frag3;
 

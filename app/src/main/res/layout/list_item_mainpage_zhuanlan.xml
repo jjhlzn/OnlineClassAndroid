@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/container"
               android:layout_width="match_parent"
-              android:layout_height="100dp"
+              android:layout_height="110dp"
               android:orientation="vertical"
               android:background="@color/white">
 
@@ -16,17 +16,17 @@
             android:baselineAligned="false">
 
                 <LinearLayout
-                    android:layout_width="60dp"
+                    android:layout_width="72dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal|top">
                         <ImageView
                             android:id="@+id/zhuanLanImage"
-                            android:layout_width="60dp"
-                            android:layout_height="80dp"
+                            android:layout_width="70dp"
+                            android:layout_height="88dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/course"/>
+                            android:src="@drawable/rect_placeholder"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -53,7 +53,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="0dp"
-                                            android:textSize="14sp"
+                                            android:textSize="16sp"
                                             android:gravity="center_vertical|left"
                                             android:text="商业经典案例课"
 
@@ -65,7 +65,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="0dp"
                                             android:layout_marginTop="3dp"
-                                            android:textSize="11sp"
+                                            android:textSize="12sp"
                                             android:gravity="center_vertical|left"
                                             android:text="赢家的方法"
                                             android:textAlignment="textStart"
@@ -75,17 +75,17 @@
 
                                 <TextView
                                     android:id="@+id/priceInfoLabel"
-                                    android:layout_alignParentRight="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
                                     android:layout_marginLeft="0dp"
-                                    android:layout_marginTop="3dp"
+                                    android:layout_marginTop="6dp"
 
-                                    android:textSize="11sp"
                                     android:gravity="center_vertical|left"
                                     android:text="199元/年"
                                     android:textAlignment="textStart"
-                                    android:textColor="@color/tab_selected_color"/>
+                                    android:textColor="@color/price_color"
+                                    android:textSize="12sp"/>
                         </RelativeLayout>
 
                         <TextView
@@ -93,8 +93,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
-                            android:layout_marginTop="5dp"
-                            android:textSize="9dp"
+                            android:layout_marginTop="8dp"
+                            android:textSize="10dp"
                             android:gravity="center_vertical|left"
                             android:background="@drawable/round_edittext_border_mainpage"
                             android:text="19小时前更新"
@@ -108,7 +108,7 @@
                             android:layout_marginLeft="0dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="4dp"
-                            android:textSize="11sp"
+                            android:textSize="12sp"
                             android:gravity="center_vertical|left"
                             android:text="赢家的方法"
                             android:textAlignment="textStart"
