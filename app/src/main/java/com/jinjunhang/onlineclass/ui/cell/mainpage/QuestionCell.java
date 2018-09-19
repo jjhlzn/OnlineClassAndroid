@@ -137,6 +137,7 @@ public class QuestionCell extends BaseListViewCell {
             listView.setAdapter(adapter);
         } else {
             listView.setVisibility(View.INVISIBLE);
+            ((LinearLayout)view.findViewById(R.id.container)).removeView(listView);
         }
 
         thumbImage.setOnClickListener(new View.OnClickListener() {

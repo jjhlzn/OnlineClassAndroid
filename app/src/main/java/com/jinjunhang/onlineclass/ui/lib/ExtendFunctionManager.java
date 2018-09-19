@@ -170,8 +170,7 @@ public class ExtendFunctionManager {
         } else if (screenWidth <= 768) {
             height = 190;
         }
-        //LogHelper.d(TAG, "each row height in pixel = " + height);
-        return (int)(height * 0.79);
+        return (int)(height * 0.7);
     }
 
     public ExtendFunctionCell getCell(int row, boolean isNeedMore) {
@@ -263,6 +262,7 @@ public class ExtendFunctionManager {
                         .load(url)
                         .asBitmap()
                         .centerCrop()
+                        .placeholder(R.drawable.placeholder)
                         .into(180, 180)
                         .get();
 
