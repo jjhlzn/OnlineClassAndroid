@@ -58,11 +58,6 @@ public class FinanceToutiaoCell extends BaseListViewCell {
             indexTextView.setVisibility(View.INVISIBLE);
         }
 
-        if (mFinanceToutiao.getIndex() > 2) {
-            indexTextView.setTextColor( mActivity.getResources().getColor(R.color.black));
-        } else {
-            indexTextView.setTextColor( mActivity.getResources().getColor(R.color.red));
-        }
 
         indexTextView.setText(indexStr);
         titleTextView.setText(mFinanceToutiao.getContent());

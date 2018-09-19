@@ -72,7 +72,7 @@ public class QuestionCell extends BaseListViewCell {
 
         final RoundedImageView userImage = (RoundedImageView)view.findViewById(R.id.comment_user_image);
         userImage.setOval(true);
-        userImage.setBorderWidth(0.5f);
+        //userImage.setBorderWidth(0.5f);
         userImage.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600));
 
         TextView userNameTV = (TextView) view.findViewById(R.id.comment_username);
@@ -205,10 +205,16 @@ public class QuestionCell extends BaseListViewCell {
                 return;
             }
 
-            Toast.makeText(mActivity, "点赞成功！", Toast.LENGTH_SHORT).show();
-            mQuestion.setLiked(true);
-            mQuestion.setThumbCount(mQuestion.getThumbCount() + 1);
-            mAdapter.notifyDataSetChanged();
+            if (mQuestion.isLiked()) {
+                mQuestion.setLiked(false);
+                mQuestion.setThumbCount(mQuestion.getThumbCount() - 1);
+                mAdapter.notifyDataSetChanged();
+            } else {
+                //Toast.makeText(mActivity, "点赞成功！", Toast.LENGTH_SHORT).show();
+                mQuestion.setLiked(true);
+                mQuestion.setThumbCount(mQuestion.getThumbCount() + 1);
+                mAdapter.notifyDataSetChanged();
+            }
 
         }
 

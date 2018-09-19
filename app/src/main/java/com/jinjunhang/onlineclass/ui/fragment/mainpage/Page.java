@@ -152,6 +152,14 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                }
            }
 
+           if (mJpkCells.size() > 0) {
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mJpkHeaderCell);
+               for (ZhuanLanCell cell : mJpkCells) {
+                   cells.add(cell);
+               }
+           }
+
            if (mZhuanLanCells.size() > 0) {
                cells.add(new SectionSeparatorCell(mActivity));
                cells.add(mZhuanLanHeaderCell);
@@ -160,13 +168,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
                }
            }
 
-           if (mJpkCells.size() > 0) {
-               cells.add(new SectionSeparatorCell(mActivity));
-               cells.add(mJpkHeaderCell);
-               for (ZhuanLanCell cell : mJpkCells) {
-                   cells.add(cell);
-               }
-           }
+
 
            if (mQuestionCells.size() > 0) {
                cells.add(new SectionSeparatorCell(mActivity));
@@ -406,6 +408,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         protected void onPostExecute(GetAlbumSongsResponse resp) {
             super.onPostExecute(resp);
+            mSwipeRefreshLayout.setRefreshing(false);
             if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
                 mLoading.hide();
                 Utils.showVipBuyMessage(mActivity, resp.getErrorMessage());
@@ -444,6 +447,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
             }
 
         }
+
     }
 
     private class GetFunctionInfoRequestTask extends AsyncTask<Void, Void, GetExtendFunctionInfoResponse> {
@@ -457,7 +461,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
         @Override
         protected void onPostExecute(GetExtendFunctionInfoResponse response) {
             super.onPostExecute(response);
-
+            mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess()){
                 LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
                 return;
@@ -493,7 +497,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
         protected void onPostExecute(GetFinanceToutiaoResponse response) {
             super.onPostExecute(response);
-
+            mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess()){
                 LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
                 return;
@@ -517,7 +521,7 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
 
         protected void onPostExecute(GetQuestionResponse response) {
             super.onPostExecute(response);
-
+            mSwipeRefreshLayout.setRefreshing(false);
             if (!response.isSuccess()){
                 LogHelper.e(TAG, response.getStatus(), response.getErrorMessage());
                 return;

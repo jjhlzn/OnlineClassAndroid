@@ -10,16 +10,18 @@
         android:id="@+id/first_line"
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
         android:gravity="center_vertical"
         android:layout_height="40dp">
 
 
         <TextView
             android:id="@+id/title"
+            android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:text="直播栏目"
-            android:textSize="17dp"
+            android:textSize="19dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
             android:textColor="@color/black"

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/container"
               android:layout_width="match_parent"
-              android:layout_height="110dp"
+              android:layout_height="120dp"
               android:orientation="vertical"
               android:background="@color/white">
 
@@ -16,15 +17,16 @@
             android:baselineAligned="false">
 
                 <LinearLayout
-                    android:layout_width="72dp"
+                    android:layout_width="82dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center_horizontal|top">
                         <ImageView
                             android:id="@+id/zhuanLanImage"
-                            android:layout_width="70dp"
-                            android:layout_height="88dp"
+
+                            android:layout_width="80dp"
+                            android:layout_height="100dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/rect_placeholder"/>
                 </LinearLayout>
@@ -53,7 +55,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="0dp"
-                                            android:textSize="16sp"
+                                            android:textSize="17sp"
                                             android:gravity="center_vertical|left"
                                             android:text="商业经典案例课"
 
@@ -64,12 +66,12 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_marginLeft="0dp"
-                                            android:layout_marginTop="3dp"
-                                            android:textSize="12sp"
+                                            android:layout_marginTop="5dp"
                                             android:gravity="center_vertical|left"
                                             android:text="赢家的方法"
                                             android:textAlignment="textStart"
-                                            android:textColor="@android:color/darker_gray"/>
+                                            android:textColor="@color/gray_text"
+                                            android:textSize="13sp"/>
 
                                 </LinearLayout>
 
@@ -79,13 +81,13 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentRight="true"
                                     android:layout_marginLeft="0dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="4dp"
 
                                     android:gravity="center_vertical|left"
                                     android:text="199元/年"
                                     android:textAlignment="textStart"
                                     android:textColor="@color/price_color"
-                                    android:textSize="12sp"/>
+                                    android:textSize="13sp"/>
                         </RelativeLayout>
 
                         <TextView
@@ -93,13 +95,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="0dp"
-                            android:layout_marginTop="8dp"
-                            android:textSize="10dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/latest_round_edittext_border_mainpage"
                             android:gravity="center_vertical|left"
-                            android:background="@drawable/round_edittext_border_mainpage"
+                            android:paddingBottom="1dp"
+                            android:paddingLeft="1dp"
+                            android:paddingRight="1dp"
+                            android:paddingTop="1dp"
                             android:text="19小时前更新"
                             android:textAlignment="textStart"
-                            android:textColor="@android:color/darker_gray"/>
+                            android:textColor="#676869"
+                            android:textSize="12dp"/>
 
                         <TextView
                             android:id="@+id/descriptionLabel"
@@ -108,12 +114,12 @@
                             android:layout_marginLeft="0dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="4dp"
-                            android:textSize="12sp"
                             android:gravity="center_vertical|left"
                             android:text="赢家的方法"
                             android:textAlignment="textStart"
-                            android:textStyle="normal"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            android:textSize="14sp"
+                            android:textStyle=""/>
 
 
 

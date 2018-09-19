@@ -60,7 +60,7 @@
 
     <include layout="@layout/actionbar_rightpart"
              android:id="@+id/rightPart"
-             android:layout_width="60dp"
+             android:layout_width="48dp"
              android:layout_height="match_parent"
              android:layout_alignParentRight="true"
         />

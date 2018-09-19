@@ -37,8 +37,9 @@ public class ZhuanLanCell extends BaseListViewCell {
         TextView priceInfoLabel = (TextView)v.findViewById(R.id.priceInfoLabel);
         ImageView imageView = (ImageView)v.findViewById(R.id.zhuanLanImage);
 
+
         nameLabel.setText(mZhuanLan.getName());
-        latestLabel.setText(mZhuanLan.getLatest());
+        latestLabel.setText( mZhuanLan.getLatest() );
         updateTimeLabel.setText(mZhuanLan.getUpdateTime());
         descriptionLabel.setText(mZhuanLan.getDescription());
         priceInfoLabel.setText(mZhuanLan.getPriceInfo());

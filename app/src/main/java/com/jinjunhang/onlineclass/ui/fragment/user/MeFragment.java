@@ -126,7 +126,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     public void changeActionBar() {
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         if (activity != null) {
-            LogHelper.d(TAG, "activity = " + activity);
             activity.getSupportActionBar().show();
             activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -135,7 +134,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             Toolbar parent = (Toolbar) customView.getParent();
 
             parent.setContentInsetsAbsolute(0, 0);
-
             TextView text = (TextView)customView.findViewById(R.id.actionbar_text);
             text.setText("我的");
 

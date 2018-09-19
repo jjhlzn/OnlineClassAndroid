@@ -170,7 +170,7 @@ public class ExtendFunctionManager {
         } else if (screenWidth <= 768) {
             height = 190;
         }
-        return (int)(height * 0.7);
+        return (int)(height * 0.64);
     }
 
     public ExtendFunctionCell getCell(int row, boolean isNeedMore) {
@@ -213,8 +213,8 @@ public class ExtendFunctionManager {
         ImageView imageView = new ImageView(mContext);
 
 
-        imageParams.width = (int)(width / itemCountEachRow * 0.7 * 0.70);
-        imageParams.height = (int)(width / itemCountEachRow * 0.7  * 0.70);
+        imageParams.width = (int)(width / itemCountEachRow * 0.7 * 0.54);
+        imageParams.height = (int)(width / itemCountEachRow * 0.7  * 0.54);
         imageView.setPadding(0, 32, 0, 0);
 
         imageView.setLayoutParams(imageParams);

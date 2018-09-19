@@ -11,19 +11,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 
 import java.util.List;
+import java.util.logging.LogManager;
 
 /**
  * Created by lzn on 16/6/10.
  */
 public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
-    private final static String TAG = "PagableController";
+    private final static String TAG = LogHelper.makeLogTag(PagableController.class);
 
     private Activity mActivity;
     private ListView mListView;

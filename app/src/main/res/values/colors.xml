@@ -10,6 +10,7 @@
     <color name="tab_selected_color">#cf9b56</color>
 
     <color name="price_color">#fd750f</color>
+    <color name="top_color">#fd750f</color>
 
     <color name="share_btn_bg">#cf9b56</color>
     <color name="overlay_bg">#59030303</color>
@@ -42,6 +43,7 @@
     <color name="statusbar_background">#ffffff</color>
     <color name="statusbar_background2">#ffffff</color>
     <color name="fragment_background">#EEECE9</color>
+    <color name="toutiao_line_background">#EEECE9</color>
     <color name="fragment_background2">#f0f1f2</color>
     <color name="actionbar_line_color">#f9f9f9</color>
     <color name="login_buton_background">#f0861b</color>
@@ -49,19 +51,21 @@
     <color name="launchpage_textcolor">#555753</color>
     <color name="launchpage_textcolor1">#a4a1a1</color>
 
+    <color name="gray_text">#747474</color>
+
 
     <color name="keyword_color">#9b9b9b</color>
     <color name="keyword_btn_bg">#e2e2e2</color>
 
-    <color name="hint_color">#ccc</color>
+    <color name="hint_color">#A2A2A2</color>
     <color name="black">#000</color>
     <color name="red">#f10707</color>
 
     <color name="background_shadow">#dc262525</color>
 
-    <color name="refresh_progress_1">@color/colorPrimary</color>
-    <color name="refresh_progress_2">@color/colorPrimary</color>
-    <color name="refresh_progress_3">@color/colorPrimary</color>
+    <color name="refresh_progress_1">@color/colorPrimaryDark</color>
+    <color name="refresh_progress_2">@color/colorPrimaryDark</color>
+    <color name="refresh_progress_3">@color/colorPrimaryDark</color>
 
 
     <color name="adv_text_background">#efeef3</color>

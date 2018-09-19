@@ -17,15 +17,15 @@
 
 
         <TextView
-            android:background="@color/answer_bg"
-            android:layout_centerVertical="true"
             android:id="@+id/answerContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@color/answer_bg"
             android:gravity="center_vertical"
             android:text="亚足联:权健亚冠主场移场"
             android:textColor="@color/black"
-            android:textSize="15dp"/>
+            android:textSize="14dp"/>
 
 
     </RelativeLayout>
