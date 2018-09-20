@@ -27,8 +27,7 @@
 
                             android:layout_width="80dp"
                             android:layout_height="100dp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/rect_placeholder"/>
+                            android:scaleType="fitXY"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -58,7 +57,7 @@
                                             android:textSize="17sp"
                                             android:gravity="center_vertical|left"
                                             android:text="商业经典案例课"
-
+                                            android:maxLines="1"
                                             android:textColor="@android:color/black"/>
 
                                         <TextView
@@ -71,6 +70,7 @@
                                             android:text="赢家的方法"
                                             android:textAlignment="textStart"
                                             android:textColor="@color/gray_text"
+                                            android:maxLines="1"
                                             android:textSize="13sp"/>
 
                                 </LinearLayout>
@@ -119,6 +119,7 @@
                             android:textAlignment="textStart"
                             android:textColor="@android:color/black"
                             android:textSize="14sp"
+                            android:maxLines="1"
                             android:textStyle=""/>
 
 

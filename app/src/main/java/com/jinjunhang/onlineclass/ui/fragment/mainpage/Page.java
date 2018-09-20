@@ -125,15 +125,13 @@ public class Page implements SwipeRefreshLayout.OnRefreshListener {
            cells = new ArrayList<>();
            cells.add(mHeaderAdvCell);
 
-           if (mPos != null){
-               cells.add(mPosApplyCell);
-           } else {
-               cells.add(new SectionSeparatorCell(mActivity));
-           }
-
-
            for (ExtendFunctionCell cell : mFuncCells) {
                cells.add(cell);
+           }
+
+           if (mPos != null){
+               cells.add(new SectionSeparatorCell(mActivity));
+               cells.add(mPosApplyCell);
            }
 
            if (mMainPageCourseCells.size() > 0) {

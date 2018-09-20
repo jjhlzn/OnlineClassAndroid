@@ -168,8 +168,9 @@ public class ExtendFunctionManager {
             LogHelper.d(TAG, "height is 100");
             height = 95;
         } else if (screenWidth <= 768) {
-            height = 190;
+            height = 180;
         }
+        LogHelper.d(TAG, "line height = " + height);
         return (int)(height * 0.64);
     }
 
@@ -194,6 +195,17 @@ public class ExtendFunctionManager {
         return cell;
     }
 
+    private int getImageHeight() {
+        int width = Utils.getScreenWidth(mContext);
+
+        if (width <= 768) {
+            return (int)(width / itemCountEachRow * 0.7 * 0.65);
+        } else {
+            return (int)(width / itemCountEachRow * 0.7 * 0.54);
+        }
+
+    }
+
 
     public ViewGroup createSubView(final ExtendFunction function) {
         LinearLayout layout = new LinearLayout(mContext);
@@ -213,8 +225,8 @@ public class ExtendFunctionManager {
         ImageView imageView = new ImageView(mContext);
 
 
-        imageParams.width = (int)(width / itemCountEachRow * 0.7 * 0.54);
-        imageParams.height = (int)(width / itemCountEachRow * 0.7  * 0.54);
+        imageParams.width = getImageHeight();
+        imageParams.height = getImageHeight();
         imageView.setPadding(0, 32, 0, 0);
 
         imageView.setLayoutParams(imageParams);

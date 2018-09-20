@@ -106,7 +106,7 @@ public class QuestionCell extends BaseListViewCell {
                 .load(ServiceConfiguration.GetUserProfileImage(mQuestion.getUserId()))
                 .asBitmap()
                 .centerCrop()
-                .placeholder(R.drawable.dateicon)
+                .placeholder(R.drawable.placeholder)
                 .into(new BitmapImageViewTarget(userImage) {
                     @Override
                     protected void setResource(Bitmap resource) {

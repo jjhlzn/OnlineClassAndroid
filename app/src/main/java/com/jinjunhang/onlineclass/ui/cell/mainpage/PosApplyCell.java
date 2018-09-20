@@ -33,6 +33,11 @@ public class PosApplyCell extends BaseListViewCell {
     public ViewGroup getView() {
 
         View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_pos, null);
+
+        if (mPos == null || mPos.getImageUrl().isEmpty()) {
+            return (RelativeLayout)view.findViewById(R.id.container);
+        }
+
         ImageView image = (ImageView)view.findViewById(R.id.posImage);
         Glide
                 .with(mActivity)
