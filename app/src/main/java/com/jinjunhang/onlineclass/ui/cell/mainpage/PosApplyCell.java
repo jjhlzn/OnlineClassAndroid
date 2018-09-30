@@ -19,6 +19,7 @@ import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
 public class PosApplyCell extends BaseListViewCell {
 
     private Pos mPos;
+    private View view;
 
     public PosApplyCell(Activity activity, Pos pos) {
         super(activity);
@@ -31,29 +32,30 @@ public class PosApplyCell extends BaseListViewCell {
 
     @Override
     public ViewGroup getView() {
+        if (view == null) {
+            view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_pos, null);
 
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_pos, null);
-
-        if (mPos == null || mPos.getImageUrl().isEmpty()) {
-            return (RelativeLayout)view.findViewById(R.id.container);
-        }
-
-        ImageView image = (ImageView)view.findViewById(R.id.posImage);
-        Glide
-                .with(mActivity)
-                .load(mPos.getImageUrl())
-                .placeholder(R.drawable.pos_placeholder)
-                .into(image);
-
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(mActivity, WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, mPos.getTitle())
-                        .putExtra(WebBrowserActivity.EXTRA_URL, mPos.getClickUrl());
-                mActivity.startActivity(i);
+            if (mPos == null || mPos.getImageUrl().isEmpty()) {
+                return (RelativeLayout) view.findViewById(R.id.container);
             }
-        });
+
+            ImageView image = (ImageView) view.findViewById(R.id.posImage);
+            Glide
+                    .with(mActivity)
+                    .load(mPos.getImageUrl())
+                    .placeholder(R.drawable.pos_placeholder)
+                    .into(image);
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                            .putExtra(WebBrowserActivity.EXTRA_TITLE, mPos.getTitle())
+                            .putExtra(WebBrowserActivity.EXTRA_URL, mPos.getClickUrl());
+                    mActivity.startActivity(i);
+                }
+            });
+        }
         return (RelativeLayout)view.findViewById(R.id.container);
     }
 }

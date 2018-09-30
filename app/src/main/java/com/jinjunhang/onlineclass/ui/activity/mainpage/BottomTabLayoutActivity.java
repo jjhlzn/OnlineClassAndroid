@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,6 +38,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.ImmersionBar;
+import com.jinjunhang.framework.controller.BaseActivity;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -72,12 +76,13 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
+//import qiu.niorgai.StatusBarCompat;
 
 /**
  * Created by jinjunhang on 2018/3/29.
  */
 
-public class BottomTabLayoutActivity extends AppCompatActivity {
+public class BottomTabLayoutActivity extends BaseActivity {
     private static String TAG = LogHelper.makeLogTag(BottomTabLayoutActivity.class);
 
     private ViewPager mViewPager;
@@ -89,12 +94,19 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
     private boolean isPopupAdShow = false;
     private Button closeBtn;
 
+
+    @Override
+    protected void setContentView() {
+        //supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        setContentView(R.layout.activity_main_tablayout);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_tablayout);
+
+
         mFragmensts = DataGenerator.getFragments(this, "TabLayout Tab");
-        setActionBar();
         initView();
         mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager)findViewById(R.id.viewpager);
@@ -117,8 +129,8 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             }
         });
         mViewPager.setOffscreenPageLimit(4);
-        setActionBar();
         new CheckUpgradeTask().execute();
+
     }
 
     @Override
@@ -134,8 +146,10 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
 
 
     public void showPopupAd() {
+
         LogHelper.d(TAG, "showPopupAd");
 
+        /*
         final View actionBarOverlay = getSupportActionBar().getCustomView().findViewById(R.id.actionbar_overlay_bg);
         if (actionBarOverlay != null) {
             actionBarOverlay.setVisibility(View.VISIBLE);
@@ -154,17 +168,19 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
             }
-        });
+        }); */
+
 
         closeBtn = (Button)findViewById(R.id.close_ad_btn);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LogHelper.d(TAG, "close btn clicked");
+                /*
                 overlay.setVisibility(View.INVISIBLE);
                 if (actionBarOverlay != null) {
                     actionBarOverlay.setVisibility(View.INVISIBLE);
-                }
+                } */
             }
         });
 
@@ -190,31 +206,6 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
         });
 
         isPopupAdShow = true;
-    }
-
-    public void setActionBar() {
-        AppCompatActivity activity = this;
-        LogHelper.d(TAG, "activity = " + activity);
-        activity.getSupportActionBar().show();
-        activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_main, null);
-        activity.getSupportActionBar().setCustomView(customView);
-        Toolbar parent =(Toolbar) customView.getParent();
-
-        parent.setContentInsetsAbsolute(0, 0);
-
-        setLightStatusBar(customView, activity);
-    }
-
-    protected void setLightStatusBar(View view, Activity activity) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-            activity.getWindow().setStatusBarColor(Color.WHITE);
-        }
     }
 
     private void initView() {
@@ -252,16 +243,23 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
             mTabLayout.addTab(mTabLayout.newTab().setCustomView(DataGenerator.getTabView(this,i)));
         }
 
+
     }
 
     private void onTabItemSelected(int position){
-
-        LogHelper.d(TAG, "tab selected position = " + position);
         if (mViewPager != null) {
             mViewPager.setCurrentItem(position);
         }
 
-        mFragmensts[position].changeActionBar();
+        if (position == 0) {
+            ((MainPageFragment)mFragmensts[0]).startBannerPlay();
+
+        } else {
+            ((MainPageFragment)mFragmensts[0]).stopBannerPlay();
+            ImmersionBar.with(this).statusBarDarkFont(true).init();
+
+        }
+
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter{
@@ -306,7 +304,10 @@ public class BottomTabLayoutActivity extends AppCompatActivity {
                 frag1.setArguments(args);
                 fragments[1] = frag1;
 
+
                 fragments[2] = CourseListFragment.class.newInstance();
+
+
 
                 ShopWebBrowserFragment frag3 = new ShopWebBrowserFragment();
                 Bundle args3 = new Bundle();

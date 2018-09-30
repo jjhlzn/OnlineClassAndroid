@@ -6,13 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center_vertical"
-        android:background="@color/statusbar_background2">
+        android:background="@color/transparent">
 
         <RelativeLayout
             android:id="@+id/leftPart"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-
+            android:background="@color/transparent"
             android:gravity="center_vertical|center_horizontal"
             android:layout_alignParentLeft="true">
             <ImageButton
@@ -33,6 +33,7 @@
             android:layout_toRightOf="@+id/leftPart"
             android:layout_centerInParent="true"
             android:orientation="horizontal"
+            android:background="@color/transparent"
             android:gravity="center_vertical|center_horizontal">
 
             <TextView
@@ -63,14 +64,14 @@
                 android:layout_alignParentRight="true"
         />
 
-
+    <!--android:background="@color/overlay_bg" -->
     <LinearLayout
         android:id="@+id/actionbar_overlay_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/overlay_bg"
+        android:background="@null"
         android:orientation="horizontal"
         android:visibility="invisible">
 

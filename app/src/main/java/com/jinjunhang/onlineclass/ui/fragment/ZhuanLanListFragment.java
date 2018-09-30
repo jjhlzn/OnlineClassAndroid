@@ -17,24 +17,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
-import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
-import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLansRequest;
 import com.jinjunhang.onlineclass.service.GetZhuanLansResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.onlineclass.ui.activity.ZhuanLanListActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
-import com.jinjunhang.onlineclass.ui.cell.MainPageCourseCell;
-import com.jinjunhang.onlineclass.ui.cell.mainpage.TuijianCourseHeaderCell;
-import com.jinjunhang.onlineclass.ui.cell.mainpage.ZhuanLanCell;
 import com.jinjunhang.onlineclass.ui.cell.ZhuanLanInListCell;
-import com.jinjunhang.onlineclass.ui.fragment.mainpage.Page;
 
 
 import java.util.ArrayList;
@@ -92,8 +85,10 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
         });
 
         new GetZhuanLanTask().execute();
+
         return v;
     }
+
 
     @Override
     public void changeActionBar() {
@@ -103,7 +98,7 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
             activity.getSupportActionBar().show();
             activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_courselist, null);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.toolbar_courselist, null);
             activity.getSupportActionBar().setCustomView(customView);
             Toolbar parent = (Toolbar) customView.getParent();
 

@@ -98,11 +98,15 @@ public class QuestionAnswerFragment extends BottomPlayerFragment    {
         });
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_question_comment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_question_comment, container, false);
+        View v = super.onCreateView(inflater,container, savedInstanceState);
 
         mEditText = (EditText)v.findViewById(R.id.content);
 

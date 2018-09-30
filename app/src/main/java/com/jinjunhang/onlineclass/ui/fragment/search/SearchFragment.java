@@ -45,11 +45,15 @@ public class SearchFragment extends BaseFragment {
     private SearchPage mSearchPage;
     private SearchResultPage mSearchResultPage;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_search;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        LogHelper.d(TAG, "onCreateView called");
-        View v = inflater.inflate(R.layout.activity_fragment_search, container, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
 
         searchView = (ViewGroup) v.findViewById(R.id.frag_1);
         searchResultView = (ViewGroup) v.findViewById(R.id.frag_2);

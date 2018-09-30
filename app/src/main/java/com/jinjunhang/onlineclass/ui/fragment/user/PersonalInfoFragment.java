@@ -63,13 +63,6 @@ public class PersonalInfoFragment extends BaseFragment {
                 startActivity(i);
             }
         }));
-        /*
-        mItems.add(new LineRecord("性别", loginUser.getSex(), new CellClickListener() {
-            @Override
-            public void onClick(ListViewCell cell) {
-
-            }
-        }));*/
     }
 
     @Override
@@ -83,10 +76,15 @@ public class PersonalInfoFragment extends BaseFragment {
         //mItems.get(2).setOtherInfo(loginUser.getSex());
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_pushdownrefresh;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
 
         mListView =  (ListView) v.findViewById(R.id.listView);
         createItems();

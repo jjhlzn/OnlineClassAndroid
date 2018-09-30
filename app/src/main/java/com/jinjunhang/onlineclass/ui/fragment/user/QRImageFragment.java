@@ -60,17 +60,22 @@ public class QRImageFragment extends BaseFragment {
     private BaseFragment[] mFragmensts;
 
     private MyPagerAdapter mMyPagerAdapter;
-    private View mView;
     private ViewGroup mOverlayBg;
     private Button mShareBtn;
     private ViewGroup mShareView;
     private List<String> mShareImageUrls = new ArrayList<>();
     //private String selectUrl = "";
 
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_qrimage;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.activity_fragment_qrimage, container, false);
+        mView = super.onCreateView(inflater, container, savedInstanceState);
         mOverlayBg = (ViewGroup)mView.findViewById(R.id.overlay_bg);
         mShareBtn = (Button)mView.findViewById(R.id.share_btn);
         mShareView = (ViewGroup)mView.findViewById(R.id.share_view);

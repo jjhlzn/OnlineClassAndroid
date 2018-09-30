@@ -5,12 +5,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +20,29 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.ui.fragment.mainpage.Page;
 import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import android.os.Bundle;
+
+import org.w3c.dom.Text;
+
+//import qiu.niorgai.StatusBarCompat;
 
 /**
  * Created by lzn on 2016/9/25.
  */
 
-public class ShopWebBrowserFragment extends BaseFragment  implements SwipeRefreshLayout.OnRefreshListener {
+public class ShopWebBrowserFragment extends BaseFragment {
     private final static String TAG = LogHelper.makeLogTag(ShopWebBrowserFragment.class);
 
     public final static String EXTRA_URL = "EXTRA_URL";
@@ -50,31 +55,44 @@ public class ShopWebBrowserFragment extends BaseFragment  implements SwipeRefres
     private IWXAPI mWXAPI;
 
     private ShareManager mShareManager;
-    private SwipeRefreshLayout mRefreshLayout;
+    private SmartRefreshLayout mRefreshLayout;
 
-
+    private Toolbar mToolbar;
     private String mTitle = "";
+
+    @Override
+    protected boolean isNeedTopPadding() {
+        return false;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.web_browser_toolbar_mainpage;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        LogHelper.d(TAG, "onCreateView called");
-
+        v = super.onCreateView(inflater, container, savedInstanceState);
 
         if (getArguments() != null && getArguments().getString("title") != null) {
             mTitle = getArguments().getString("title");
         }
 
-        LogHelper.d(TAG, "onCreateView called");
 
-        v = inflater.inflate(R.layout.web_browser, container, false);
-
-        mRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
+        Utils.setRefreshHeader(getActivity(), mRefreshLayout);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                mWebView.reload();
+                mWebView.requestFocus();
+                mRefreshLayout.finishRefresh();
+            }
+        });
 
         mRefreshLayout.setEnabled(getArguments().getBoolean(EXTRA_NEED_REFRESH, false));
-
-
 
         mWXAPI = WXAPIFactory.createWXAPI(getActivity(), null);
         mWXAPI.registerApp("wx73653b5260b24787");
@@ -93,25 +111,68 @@ public class ShopWebBrowserFragment extends BaseFragment  implements SwipeRefres
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
         mWebView.setWebViewClient(new ShopWebBrowserFragment.MyWebViewClient());
 
+        mToolbar = v.findViewById(R.id.toolbar);
+        setupToolBar();
+
 
         WebSettings settings = mWebView.getSettings();
         settings.setDomStorageEnabled(true);
         openURL();
 
-        //changeActionBar();
+        ImmersionBar.setTitleBar(getActivity(), mToolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
 
         return v;
     }
 
     @Override
-    public void onRefresh() {
-        mWebView.reload();
-        mWebView.requestFocus();
-        mRefreshLayout.setRefreshing(false);
+    protected boolean isCompatibleActionBar() {
+        return false;
     }
+
+
+    public void setupToolBar() {
+
+        //设置返回按键
+        mBackButton = mToolbar.findViewById(R.id.actionbar_back_button);
+
+        if (!"".equals(mTitle))
+            ((TextView)mToolbar.findViewById(R.id.actionbar_text)).setText(mTitle);
+
+
+        if (mWebView.canGoBack()) {
+            //mWebView.goBack();
+            mBackButton.setVisibility(View.VISIBLE);
+        } else {
+            //onBackPressed();
+            mBackButton.setVisibility(View.INVISIBLE);
+        }
+
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                } else {
+                    //onBackPressed();
+                    mBackButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        if (mShareManager == null) {
+            mShareManager = new ShareManager((AppCompatActivity) getActivity(), v);
+            mShareManager.setUseQrCodeImage(false);
+            mShareManager.setShareButtonVisible(false);
+            new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
+        }
+    }
+
 
     @Override
     public void changeActionBar() {
+
+        /*
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         //LogHelper.d(TAG, "activity = " + activity);
         if (activity != null) {
@@ -162,6 +223,10 @@ public class ShopWebBrowserFragment extends BaseFragment  implements SwipeRefres
 
             new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
         }
+
+
+        //StatusBarCompat.setStatusBarColor(getActivity(), Color.WHITE);
+        */
     }
 
     @Override

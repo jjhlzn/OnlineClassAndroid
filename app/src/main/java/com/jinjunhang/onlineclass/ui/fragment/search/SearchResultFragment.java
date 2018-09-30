@@ -42,10 +42,15 @@ public class SearchResultFragment extends BottomPlayerFragment implements  Singl
     private ListView mListView;
     private String mKeyword;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_pushdownrefresh;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
 
         mKeyword = getActivity().getIntent().getStringExtra(EXTRA_KEYWORD);
 

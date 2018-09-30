@@ -1,82 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+                  android:paddingTop="72dp"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:gravity="center_vertical|center_horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:gravity="center_vertical|center_horizontal">
 
-        <ImageButton
-            android:id="@+id/everyday_btn"
+            <ImageButton
+                android:id="@+id/everyday_btn"
 
-            android:layout_width="70dp"
-            android:layout_height="32dp"
-            android:background="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/everyday_s"/>
+                android:layout_width="70dp"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/everyday_s"/>
 
-        <ImageButton
-            android:id="@+id/vip_btn"
+            <ImageButton
+                android:id="@+id/vip_btn"
 
-            android:layout_width="70dp"
-            android:layout_height="32dp"
-            android:background="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/vip"/>
+                android:layout_width="70dp"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/vip"/>
 
-        <ImageButton
-            android:id="@+id/agent_btn"
+            <ImageButton
+                android:id="@+id/agent_btn"
 
-            android:layout_width="80dp"
-            android:layout_height="32dp"
-            android:background="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/agent"/>
+                android:layout_width="80dp"
+                android:layout_height="32dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/agent"/>
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <LinearLayout
+                android:id="@+id/frag_1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:visibility="visible"
+                android:background="@color/white"
+                android:layout_height="match_parent"></LinearLayout>
+            <LinearLayout
+                android:id="@+id/frag_2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:visibility="invisible"
+                android:background="@color/white"
+                android:layout_height="match_parent"></LinearLayout>
+            <LinearLayout
+                android:id="@+id/frag_3"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:visibility="invisible"
+                android:background="@color/white"
+                android:layout_height="match_parent"></LinearLayout>
+        </RelativeLayout>
+
+
     </LinearLayout>
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <LinearLayout
-            android:id="@+id/frag_1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:visibility="visible"
-            android:background="@color/white"
-            android:layout_height="match_parent"></LinearLayout>
-        <LinearLayout
-            android:id="@+id/frag_2"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:visibility="invisible"
-            android:background="@color/white"
-            android:layout_height="match_parent"></LinearLayout>
-        <LinearLayout
-            android:id="@+id/frag_3"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:visibility="invisible"
-            android:background="@color/white"
-            android:layout_height="match_parent"></LinearLayout>
-    </RelativeLayout>
-
-
-</LinearLayout>
-
-</FrameLayout>
+    <include layout="@layout/toolbar_courselist" />
+</RelativeLayout>
 

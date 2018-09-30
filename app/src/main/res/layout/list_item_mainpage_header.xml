@@ -1,55 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/list_item_viewgroup"
-              android:layout_height="120dp"
-              android:orientation="vertical"
-              android:background="@drawable/bottom_border">
+              android:layout_height="240dp"
+              android:orientation="vertical">
 
 
+        <!--
         <com.daimajia.slider.library.SliderLayout
             android:id="@+id/slider"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            />
+            android:layout_height="240dp"
+            /> -->
 
-        <!--
-        <RelativeLayout
+        <com.youth.banner.Banner
+            android:id="@+id/slider"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical"
-            android:gravity="center|center_vertical">
+            app:image_scale_type="fit_xy"
+            app:banner_default_image="@drawable/rect_placeholder"
+            android:layout_height="240dp"
+            app:indicator_margin="6dp"
+            app:indicator_width="12dp"
+            app:indicator_height="3dp"
+            app:indicator_drawable_selected="@color/white"
+            app:indicator_drawable_unselected="@color/slider_unselector_color"/>
 
-                <ImageView
-                    android:id="@+id/tt_img"
-                    android:layout_width="32dp"
-                    android:layout_height="30dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="4dp"
-                    android:src="@drawable/icon_tt"/>
 
-                <TextView
-                    android:id="@+id/toutiaoTxt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toLeftOf="@+id/haoyou_btn"
-                    android:layout_toRightOf="@+id/tt_img"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:textSize="11dp"
-                    android:text="中国"/>
-
-                <ImageButton
-                    android:id="@+id/haoyou_btn"
-                    android:layout_width="90dp"
-                    android:layout_height="27dp"
-
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/icon_haoyou"/>
-        </RelativeLayout> -->
 </LinearLayout>

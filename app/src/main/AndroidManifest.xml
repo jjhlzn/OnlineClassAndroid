@@ -34,9 +34,13 @@
         android:supportsRtl="true"
         tools:replace="android:icon"
         android:name=".ui.lib.CustomApplication"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:resizeableActivity="true">
 
 
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.2" />
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <!-- android:name="com.tencent.android.tpush.XGPushReceiver" -->
@@ -101,14 +105,27 @@
         <activity android:name=".ui.activity.LaunchActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+        </activity>
+
+        <activity android:name=".ui.activity.TestToolBarActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter> -->
         </activity>
 
         <activity android:name=".ui.activity.mainpage.BottomTabLayoutActivity"
-                  android:screenOrientation="portrait">
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
 
@@ -116,6 +133,8 @@
                   android:screenOrientation="portrait">
 
         </activity>
+
+
 
         <activity android:name=".ui.activity.ZhuanLanListActivity"
                   android:screenOrientation="portrait">
@@ -181,6 +200,7 @@
         </activity>
 
         <activity android:name=".ui.activity.WebBrowserActivity"
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />

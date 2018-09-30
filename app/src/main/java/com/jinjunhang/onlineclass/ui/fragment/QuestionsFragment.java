@@ -50,10 +50,15 @@ public class QuestionsFragment extends BaseFragment implements
     private ListView mListView;
     private LoadingAnimation mLoading;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_pushdownrefresh;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh, container, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
 
         mLoading = new LoadingAnimation(getActivity());
         mListView = (ListView) v.findViewById(R.id.listView);

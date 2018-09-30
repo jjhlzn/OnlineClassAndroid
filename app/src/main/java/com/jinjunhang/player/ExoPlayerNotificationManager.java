@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.NotificationCompat;
+//import android.support.v7.app.NotificationCompat;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
@@ -42,6 +42,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         this.mContext = context;
     }
 
+    /*
     private void addPlayPauseAction(NotificationCompat.Builder builder) {
         LogHelper.d(TAG, "updatePlayPauseAction");
         String label;
@@ -83,9 +84,10 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         icon = R.drawable.dateicon;
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
-    }
+    } */
 
     public void display() {
+        /*
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext);
 
         addPrevButton(notificationBuilder);
@@ -128,6 +130,8 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         fetchArtUrl = song.getImageUrl();
         LogHelper.d(TAG, "imageUrl = " + fetchArtUrl);
         fetchBitmapFromURLAsync(fetchArtUrl, notificationBuilder);
+
+        */
     }
 
     private PendingIntent createContentIntent() {
@@ -136,6 +140,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         return PendingIntent.getActivity(mContext, 100, openUI, 0);
     }
 
+    /*
     private void fetchBitmapFromURLAsync(final String bitmapUrl,
                                          final NotificationCompat.Builder builder) {
 
@@ -150,7 +155,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
 
             }
         });
-    }
+    } */
 
 
     @Override

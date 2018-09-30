@@ -25,8 +25,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.afollestad.materialdialogs.AlertDialogWrapper;
+//import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
@@ -35,6 +36,8 @@ import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.mm.sdk.constants.Build;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -46,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import pl.droidsonroids.gif.GifImageView;
+//import qiu.niorgai.StatusBarCompat;
 
 
 /**
@@ -67,13 +71,18 @@ public class Utils {
 
     public static void setLightStatusBar(View view, Activity activity) {
 
+        /*
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
             int flags = view.getSystemUiVisibility();
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             view.setSystemUiVisibility(flags);
             activity.getWindow().setStatusBarColor(Color.WHITE);
-        }
+        } */
+    }
+
+    public static void transparentStatusBarAndActionBar(AppCompatActivity activity, ImmersionBar bar) {
+
     }
 
 
@@ -83,10 +92,11 @@ public class Utils {
     }
 
     public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
-        new AlertDialogWrapper.Builder(context)
+        /*new AlertDialogWrapper.Builder(context)
                 .setMessage(message)
                 .setNegativeButton("好的", listener)
-                .show();
+                .show(); */
+        throw new RuntimeException("showMessage not implemented");
     }
 
     public static void showVipBuyMessage(final Context context, String message) {
@@ -382,6 +392,8 @@ public class Utils {
         if (activity != null && activity instanceof AppCompatActivity) {
             if (((AppCompatActivity)activity).getSupportActionBar() != null) {
                 View v = ((AppCompatActivity) activity).getSupportActionBar().getCustomView();
+                if (v == null)
+                    return;
                 final GifImageView musicBtn = (GifImageView) v.findViewById(R.id.musicBtn);
                 if (musicBtn != null) {
                     musicBtn.setOnClickListener(new View.OnClickListener() {
@@ -403,6 +415,13 @@ public class Utils {
 
         }
 
+    }
+
+    public static void setRefreshHeader(Activity activity, SmartRefreshLayout refreshLayout) {
+        ClassicsHeader header = new ClassicsHeader(activity);
+        header.setEnableLastTime(false);
+
+        refreshLayout.setRefreshHeader(header);
     }
 
     public static void updateNavigationBarButton(Activity activity) {

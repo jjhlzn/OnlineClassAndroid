@@ -33,10 +33,16 @@ public class SettingsFragment extends BaseFragment  {
     private LoadingAnimation mLoading;
     private LoginUserDao mLoginUserDao;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_settings;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_settings, container, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+
 
         mLoginUserDao = new LoginUserDao(getActivity());
         mLoading = new LoadingAnimation(getActivity());

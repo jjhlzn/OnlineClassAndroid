@@ -11,8 +11,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:gravity="center_vertical"
-        android:layout_marginTop="5dp"
-        android:layout_height="40dp"
+        style="@style/mainPageHeadLine"
         >
 
         <TextView
@@ -21,10 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:text="金融头条"
-            android:textSize="19dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
+            style="@style/mainPageHeadTitle"
             />
 
         <Button
@@ -34,10 +30,7 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="33dp"
-            android:textAlignment="textEnd"
-            android:background="@color/transparent"
-            android:textSize="14dp"
-            android:textColor="@color/gray_text"
+            style="@style/mainPageAllButton"
             android:text="查看全部"/>
     </RelativeLayout>
 

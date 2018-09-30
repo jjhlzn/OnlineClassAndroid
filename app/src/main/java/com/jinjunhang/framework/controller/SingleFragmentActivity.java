@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 
@@ -19,9 +21,9 @@ import com.jinjunhang.onlineclass.R;
 /**
  * Created by lzn on 16/3/19.
  */
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class SingleFragmentActivity extends BaseActivity {
 
-    private static final String TAG = "SingleFragmentActivity";
+    private static final String TAG = LogHelper.makeLogTag(SingleFragmentActivity.class);
 
     protected abstract Fragment createFragment();
 
@@ -32,31 +34,25 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     public void setActivityTitle(String title) {
         ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(title);
 
-
     }
 
     protected void createActionBar() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
         View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
         Utils.setLightStatusBar(customView, this);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent = (Toolbar) customView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
-
+        //parent.setContentInsetsAbsolute(0, 0);
     }
-
-    //没有用了
-    protected boolean isNeedPushDownFresh() {return false;}
-
-
+    protected boolean isNeedPushDownFresh() {
+        return false;
+    }
     protected boolean hasParent() {return true;}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fragment);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
@@ -64,7 +60,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         if (fragment == null) {
             fragment = createFragment();
-
             fm.beginTransaction()
                     .add(R.id.fragmentContainer, fragment)
                     .commit();
@@ -73,24 +68,21 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         Utils.setLightStatusBar(findViewById(R.id.fragmentContainer), this);
         if (hasActionBar()) {
             getSupportActionBar().setElevation(0);
-            Log.d(TAG, "has action bar");
             createActionBar();
             ((TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(getActivityTitle());
-            //if (NavUtils.getParentActivityName(this) == null) {
             if (!hasParent()) {
                 getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button).setVisibility(View.INVISIBLE);
             } else {
 
                 ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
-                //if (backButton != null) {
-                    backButton.setVisibility(View.VISIBLE);
-                    backButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onBackPressed();
-                        }
-                    });
-                //}
+                backButton.setVisibility(View.VISIBLE);
+                backButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
+
             }
         }
     }
@@ -105,14 +97,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         void doBack();
     }
 
-    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
-        this.onBackPressedListener = onBackPressedListener;
-    }
-
-
     @Override
     public void onBackPressed() {
-
         if (onBackPressedListener != null)
             onBackPressedListener.doBack();
         else
@@ -135,4 +121,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
 }

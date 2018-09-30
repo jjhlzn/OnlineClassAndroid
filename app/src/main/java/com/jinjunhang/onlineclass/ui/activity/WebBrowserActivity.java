@@ -3,6 +3,8 @@ package com.jinjunhang.onlineclass.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
@@ -15,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -23,6 +26,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gyf.barlibrary.ImmersionBar;
+import com.jinjunhang.framework.controller.BaseActivity;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -59,8 +64,7 @@ import java.util.List;
 /**
  * Created by lzn on 16/6/20.
  */
-public class WebBrowserActivity extends AppCompatActivity {
-
+public class WebBrowserActivity extends BaseActivity {
     private final static String TAG = LogHelper.makeLogTag(WebBrowserActivity.class);
 
     public final static String EXTRA_URL = "EXTRA_URL";
@@ -75,10 +79,18 @@ public class WebBrowserActivity extends AppCompatActivity {
     private WebView mWebView;
     private TextView mCloseButton;
     private IWXAPI mWXAPI;
+    private Toolbar mToolbar;
 
     private LoadingAnimation mLoadingAnimation;
 
     private ShareManager mShareManager;
+
+    @Override
+    protected void setContentView() {
+       // supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        setContentView(R.layout.activity_web_browser);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +98,9 @@ public class WebBrowserActivity extends AppCompatActivity {
         mWXAPI.registerApp("wx73653b5260b24787");
 
         mLoadingAnimation = new LoadingAnimation(this);
+        //getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        mToolbar = findViewById(R.id.toolbar);
 
-        setContentView(R.layout.web_browser);
         mUrl = getIntent().getStringExtra(EXTRA_URL);
         mUrl = Util.addUserInfo(mUrl);
         mUrl = Util.addDeviceInfo(mUrl);
@@ -96,13 +109,16 @@ public class WebBrowserActivity extends AppCompatActivity {
         LogHelper.d(TAG, "title = " + mTitle);
         mIsBackToMainActivity = getIntent().getBooleanExtra(EXTRA_BACK_TO_MAIN_ACTIVITY, false);
 
+        setToolBar();
+        /*
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setElevation(0);
         View customView = getLayoutInflater().inflate(R.layout.actionbar_browser, null);
         ((TextView)customView.findViewById(R.id.actionbar_text)).setText(mTitle);
         getSupportActionBar().setCustomView(customView);
         Toolbar parent =(Toolbar) customView.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
+        //parent.setContentInsetsAbsolute(0, 0);
+
         //设置返回按键
         ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
         mCloseButton = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_close_button);
@@ -121,15 +137,13 @@ public class WebBrowserActivity extends AppCompatActivity {
             }
         });
 
-        Utils.setLightStatusBar(customView, this);
-
         mCloseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
-        setWeixinShareIfNeed(findViewById(R.id.rootView));
+        */
         mWebView = (WebView) findViewById(R.id.webview);
 
         registerForContextMenu(mWebView);
@@ -145,6 +159,37 @@ public class WebBrowserActivity extends AppCompatActivity {
         mShareManager.setUseQrCodeImage(false);
 
         new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
+
+        ImmersionBar.setTitleBar(this, mToolbar);
+        ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).init();
+    }
+
+    protected void setToolBar() {
+        //设置返回按键
+        ((TextView)mToolbar.findViewById(R.id.actionbar_text)).setText(mTitle);
+        ImageButton backButton = mToolbar.findViewById(R.id.actionbar_back_button);
+        mCloseButton = mToolbar.findViewById(R.id.actionbar_close_button);
+        backButton.setVisibility(View.VISIBLE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogHelper.d(TAG, "mWebView.canGoBack() = " + mWebView.canGoBack());
+                if (mWebView.canGoBack()) {
+
+                    mWebView.goBack();
+
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
+
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

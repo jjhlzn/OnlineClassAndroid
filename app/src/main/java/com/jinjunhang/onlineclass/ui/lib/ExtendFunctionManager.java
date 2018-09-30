@@ -58,13 +58,8 @@ public class ExtendFunctionManager {
     public static final String TOUZI_TYPE = "touzi";
 
     private final int itemCountEachRow = 5;
-    private int mShowMaxRow = 100;
     private Context mContext;
     private ClickListener mWebListener;
-    private ClickListener mNotSupportListener;
-    private ExtendFunctoinVariableInfoManager mMessageManager;
-    private boolean mIsNeedMore;
-    private String type;
 
     private List<ExtendFunction> functions = new ArrayList<>();
     private ExtendFunction moreFunction;
@@ -128,16 +123,8 @@ public class ExtendFunctionManager {
     }
 
     private ExtendFunctionManager(ExtendFunctoinVariableInfoManager messageManager, int showMaxRow, final Context context, boolean isNeedMore, String type) {
-        this.mMessageManager = messageManager;
-        mShowMaxRow = showMaxRow;
         mContext = context;
         mWebListener = new WebClickListener();
-        mNotSupportListener = new NotSupportClickListener();
-
-        this.mIsNeedMore = isNeedMore;
-        this.mShowMaxRow = showMaxRow;
-        this.type = type;
-
     }
 
 
@@ -147,9 +134,8 @@ public class ExtendFunctionManager {
 
     public int getRowCount() {
         int rows = (getFunctionCount() + (itemCountEachRow - 1)) / itemCountEachRow;
-        int result = rows > mShowMaxRow ? mShowMaxRow : rows;
-        LogHelper.d(TAG, "rowCount = " + result);
-        return result;
+
+        return rows;
     }
 
     private int getFunctionCount() {
@@ -157,22 +143,7 @@ public class ExtendFunctionManager {
     }
 
 
-    public int getHeight() {
-        int screenWidth =   Utils.getScreenWidth(mContext);
-        int screenHeight =   Utils.getScreenHeight(mContext);
-        //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
-        int height = 250;
-        if (screenWidth >= 1440) {
-            height = 310;
-        } else if (screenWidth <= 480) {
-            LogHelper.d(TAG, "height is 100");
-            height = 95;
-        } else if (screenWidth <= 768) {
-            height = 180;
-        }
-        LogHelper.d(TAG, "line height = " + height);
-        return (int)(height * 0.64);
-    }
+
 
     public ExtendFunctionCell getCell(int row, boolean isNeedMore) {
         ExtendFunctionCell cell = new ExtendFunctionCell((Activity) mContext);
@@ -199,11 +170,28 @@ public class ExtendFunctionManager {
         int width = Utils.getScreenWidth(mContext);
 
         if (width <= 768) {
-            return (int)(width / itemCountEachRow * 0.7 * 0.65);
+            return (int)(width / itemCountEachRow * 0.7 * 0.7);
         } else {
-            return (int)(width / itemCountEachRow * 0.7 * 0.54);
+            return (int)(width / itemCountEachRow * 0.7 * 0.6);
         }
 
+    }
+
+    public int getHeight() {
+        int screenWidth =   Utils.getScreenWidth(mContext);
+        int screenHeight =   Utils.getScreenHeight(mContext);
+        //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
+        int height = 250;
+        if (screenWidth >= 1440) {
+            height = 310;
+        } else if (screenWidth <= 480) {
+            LogHelper.d(TAG, "height is 100");
+            height = 95;
+        } else if (screenWidth <= 768) {
+            height = 180;
+        }
+        //LogHelper.d(TAG, "line height = " + height);
+        return (int)(height * 0.74);
     }
 
 
@@ -227,7 +215,7 @@ public class ExtendFunctionManager {
 
         imageParams.width = getImageHeight();
         imageParams.height = getImageHeight();
-        imageView.setPadding(0, 32, 0, 0);
+        imageView.setPadding(0, 40, 0, 0);
 
         imageView.setLayoutParams(imageParams);
 
@@ -240,8 +228,10 @@ public class ExtendFunctionManager {
 
         TextView textView = new TextView(mContext);
         textView.setLayoutParams(textParams);
+        LogHelper.d(TAG, "name = " + function.getName());
         textView.setText(function.getName());
         textView.setWidth(width / itemCountEachRow);
+        textView.setTextColor(mContext.getResources().getColor(R.color.gray_text));
         textView.setTextSize(11);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding(0, -20, 0, 0);

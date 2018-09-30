@@ -7,11 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
@@ -27,11 +30,41 @@ import pl.droidsonroids.gif.GifImageView;
 public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener  {
     private static  final String TAG = LogHelper.makeLogTag(BaseFragment.class);
     protected  MusicPlayer mMusicPlayer;
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mMusicPlayer = MusicPlayer.getInstance(getActivity().getApplicationContext());
+    protected ImmersionBar mImmersionBar;
+    protected View mView;
 
+    protected boolean isNeedTopPadding() {
+        return true;
+    }
+
+    protected int getLayoutId() {
+        return R.layout.activity_fragment;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mView = inflater.inflate(getLayoutId(), container, false);
+        if (isNeedTopPadding()) {
+            float scale = getResources().getDisplayMetrics().density;
+            int dpAsPixels = (int) (72 * scale + 0.5f);
+
+            mView.setPadding(0, dpAsPixels, 0, 0);
+        }
+
+        mMusicPlayer = MusicPlayer.getInstance(getActivity().getApplicationContext());
+        if (isImmersionBarEnabled()) {
+            initImmersionBar();
+            if (isCompatibleActionBar()) {
+                ImmersionBar.with(this).statusBarColor(R.color.white).statusBarDarkFont(true).init();
+            }
+        }
+        return mView;
+    }
+
+    protected boolean isCompatibleActionBar() {
+        return true;
     }
 
     @Override
@@ -77,19 +110,40 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
 
     }
 
+
+
     public void initView() {
 
     }
 
     protected void setLightStatusBar(View view, Activity activity) {
 
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             int flags = view.getSystemUiVisibility();
             flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
             view.setSystemUiVisibility(flags);
             activity.getWindow().setStatusBarColor(Color.WHITE);
-        }
+        } */
+    }
+
+
+    /**
+     * 是否在Fragment使用沉浸式
+     *
+     * @return the boolean
+     */
+    protected boolean isImmersionBarEnabled() {
+        return true;
+    }
+
+    /**
+     * 初始化沉浸式
+     */
+    protected void initImmersionBar() {
+        mImmersionBar = ImmersionBar.with(this);
+        mImmersionBar.keyboardEnable(true).navigationBarWithKitkatEnable(false).init();
     }
 
 }

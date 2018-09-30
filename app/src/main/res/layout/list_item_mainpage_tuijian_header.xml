@@ -6,13 +6,12 @@
                 android:id="@+id/container"
                 android:background="@color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/first_line"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginTop="5dp"
         android:gravity="center_vertical"
-        android:layout_height="40dp">
+        style="@style/mainPageHeadLine">
 
 
         <TextView
@@ -21,13 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:text="直播栏目"
-            android:textSize="19dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:layout_marginTop="6dp"
+            style="@style/mainPageHeadTitle"
             android:layout_marginBottom="10dp"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>

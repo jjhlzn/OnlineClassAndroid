@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gyf.barlibrary.ImmersionBar;
+import com.jinjunhang.framework.controller.BaseActivity;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
@@ -28,8 +30,6 @@ import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by lzn on 16/6/19.
  */
-public class LaunchActivity extends Activity {
+public class LaunchActivity extends BaseActivity {
     private static final String TAG = LogHelper.makeLogTag(LaunchActivity.class);
 
     private LoginUserDao mLoginUserDao;
@@ -113,6 +113,8 @@ public class LaunchActivity extends Activity {
 
         //NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
         goToNextActivityHandler.postDelayed(goToNextActivityTask, 3000);
+
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
     }
 
     //注册信鸽，并进去下个页面

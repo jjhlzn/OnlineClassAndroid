@@ -3,12 +3,12 @@ package com.jinjunhang.onlineclass.ui.fragment.user;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -39,10 +40,13 @@ import com.jinjunhang.onlineclass.ui.cell.me.CommonCell;
 import com.jinjunhang.onlineclass.ui.cell.me.FirstSectionCell;
 import com.jinjunhang.onlineclass.ui.cell.me.LineRecord;
 import com.jinjunhang.onlineclass.ui.cell.me.SecondSectionCell;
-import com.jinjunhang.onlineclass.ui.cell.me.ThirdSectionCell;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +54,7 @@ import java.util.List;
 /**
  * Created by jjh on 2016-6-29.
  */
-public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRefreshListener {
+public class MeFragment extends BaseFragment  {
     private final static String TAG = LogHelper.makeLogTag(MeFragment.class);
 
     private Boolean inited = false;
@@ -58,7 +62,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
     private List<ListViewCell> mCells = new ArrayList<>();
     private ListView mListView;
     private MeAdapter mMeAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SmartRefreshLayout mSwipeRefreshLayout;
 
     private KeyValueDao mKeyValueDao;
 
@@ -70,6 +74,8 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
     public View v;
     private LoadingAnimation mLoading;
+
+    private Toolbar mToolbar;
 
     private void initSections() {
         if (mSeventSections.size() == 0) {
@@ -113,23 +119,22 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
     }
 
+
     @Override
-    public void onRefresh() {
-        if (isLoading) {
-            return;
-        }
-        isLoading = true;
-        new GetUserStatDataTask().execute();
+    protected boolean isCompatibleActionBar() {
+        return false;
     }
 
     @Override
     public void changeActionBar() {
+
+        /*
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         if (activity != null) {
             activity.getSupportActionBar().show();
             activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_courselist, null);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.toolbar_courselist, null);
             activity.getSupportActionBar().setCustomView(customView);
             Toolbar parent = (Toolbar) customView.getParent();
 
@@ -140,15 +145,27 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             setLightStatusBar(customView, activity);
             Utils.setNavigationBarMusicButton(activity);
         }
+        */
+    }
+
+    @Override
+    protected boolean isNeedTopPadding() {
+        return false;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_pushdownrefresh_me;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = getActivity().getLayoutInflater().inflate(R.layout.activity_fragment_pushdownrefresh, null, false);
+        v = super.onCreateView(inflater, container, savedInstanceState);
         mKeyValueDao = KeyValueDao.getInstance(getActivity());
         initSections();
-        mListView = (ListView) v.findViewById(R.id.listView);
+        mListView =  v.findViewById(R.id.listView);
+        mToolbar = v.findViewById(R.id.toolbar);
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);
@@ -169,12 +186,6 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mCells.add(secondSectionCell);
             mCells.add(new SectionSeparatorCell(getActivity()));
 
-            /*
-            ThirdSectionCell thirdSectionCell = new ThirdSectionCell(getActivity());
-            thirdSectionCell.setAgentLevel(mKeyValueDao.getValue(KeyValueDao.KEY_USER_AGENT_LEVEL, ""));
-            thirdSectionCell.setVipEndDate(mKeyValueDao.getValue(KeyValueDao.KEY_USER_VIP_END_DATE, ""));
-            mCells.add(thirdSectionCell);
-            mCells.add(new SectionSeparatorCell(getActivity())); */
 
             for(int i = 0; i < mSeventSections.size(); i++) {
                 CommonCell cell = new CommonCell(getActivity(), mSeventSections.get(i));
@@ -201,8 +212,20 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
             mCells.add(new SectionSeparatorCell(getActivity()));
         }
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
+        Utils.setRefreshHeader(getActivity(), mSwipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                if (isLoading) {
+                    refreshLayout.finishRefresh();
+                    return;
+                }
+                isLoading = true;
+                new GetUserStatDataTask().execute();
+                refreshLayout.finishRefresh(7000/*,false*/);//传入false表示刷新失败
+            }
+        });
 
         mMeAdapter = new MeAdapter(mCells);
         mListView.setAdapter(mMeAdapter);
@@ -225,6 +248,9 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
         }
 
         //mLoading.show("");
+
+        ImmersionBar.setTitleBar(getActivity(), mToolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         return v;
     }
 
@@ -292,7 +318,7 @@ public class MeFragment extends BaseFragment implements  SwipeRefreshLayout.OnRe
 
         @Override
         protected void onPostExecute(GetUserStatDataResponse resp) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.finishRefresh();
 
             if (!resp.isSuccess()) {
                 LogHelper.e(TAG, resp.getErrorMessage());

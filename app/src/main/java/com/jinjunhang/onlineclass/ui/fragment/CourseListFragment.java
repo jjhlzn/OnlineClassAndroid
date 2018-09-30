@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,12 +16,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.jinjunhang.framework.controller.PagableController;
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
@@ -31,25 +29,20 @@ import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.LiveSong;
-import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetAlbumsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumsResponse;
-import com.jinjunhang.onlineclass.service.GetCoursesRequest;
-import com.jinjunhang.onlineclass.service.GetCoursesResponse;
-import com.jinjunhang.onlineclass.service.GetTuijianCoursesResponse;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
-import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.LiveCourseCell;
-import com.jinjunhang.onlineclass.ui.fragment.album.AlbumDetailFragment;
-import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
-import com.jinjunhang.onlineclass.ui.fragment.album.BaseSongFragment;
+import com.jinjunhang.onlineclass.ui.fragment.user.MeFragment;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +59,7 @@ public class CourseListFragment extends BaseFragment  {
     private CoursePage[] pages;
     private ViewGroup[] mViewGroups;
     private ExoPlayerNotificationManager mNotificationManager;
+    private Toolbar mToolbar;
 
     private AlbumType getAlbumType(int index) {
         if (index == 0)
@@ -76,12 +70,23 @@ public class CourseListFragment extends BaseFragment  {
             return AlbumType.AgentEducationAlbumType;
     }
 
+
+    @Override
+    protected boolean isNeedTopPadding() {
+        return false;
+    }
+
+    protected int getLayoutId() {
+        return R.layout.fragment_couselist;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mNotificationManager = ExoPlayerNotificationManager.getInstance(getActivity());
 
-        View v = inflater.inflate(R.layout.fragment_couselist, null, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        mToolbar = v.findViewById(R.id.toolbar);
 
         mLoading = new LoadingAnimation(getActivity(), (ViewGroup)v.findViewById(R.id.fragmentContainer));
 
@@ -140,9 +145,17 @@ public class CourseListFragment extends BaseFragment  {
 
 
         showPage(0);
+
+        ImmersionBar.setTitleBar(getActivity(), mToolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
         return v;
     }
 
+
+    @Override
+    protected boolean isCompatibleActionBar() {
+        return false;
+    }
 
 
     private void showPage(int index) {
@@ -171,19 +184,19 @@ public class CourseListFragment extends BaseFragment  {
     @Override
     public void onResume() {
         super.onResume();
-        //changeActionBar();
         mLoading.hide();
     }
 
     @Override
     public void changeActionBar() {
+        /*
         LogHelper.d(TAG, "changeActionBar called");
         AppCompatActivity activity = (AppCompatActivity)getActivity();
         if (activity != null) {
             activity.getSupportActionBar().show();
             activity.getSupportActionBar().setElevation(0);
             activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_courselist, null);
+            final View customView = activity.getLayoutInflater().inflate(R.layout.toolbar_courselist, null);
             activity.getSupportActionBar().setCustomView(customView);
             Toolbar parent = (Toolbar) customView.getParent();
 
@@ -195,17 +208,17 @@ public class CourseListFragment extends BaseFragment  {
 
             setLightStatusBar(customView, activity);
             Utils.setNavigationBarMusicButton(getActivity());
-        }
+        } */
     }
 
 
-    private class CoursePage implements SwipeRefreshLayout.OnRefreshListener {
+    private class CoursePage  {
 
         public View v;
         //private LoadingAnimation mLoading;
         private ListView mListView;
         private MyAdapter mMyAdapter;
-        private SwipeRefreshLayout mSwipeRefreshLayout;
+        private SmartRefreshLayout mSwipeRefreshLayout;
         private List<ListViewCell> mCells = new ArrayList<>();
         private List<Album> mCourses = new ArrayList<>();
         private boolean mIsLoading = false;
@@ -213,23 +226,29 @@ public class CourseListFragment extends BaseFragment  {
         private AlbumType mAlbumType;
         //private GetAlbumSongsTask mGetAlbumSongsTask;
 
-        @Override
-        public void onRefresh() {
-            if (mIsLoading) {
-                return;
-            }
-            mIsLoading = true;
-
-            loadCourses();
-        }
 
 
         public CoursePage(AlbumType albumType, LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             mAlbumType = albumType;
-            v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_white, container, false);
+            v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_courselist_page, container, false);
 
-            mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
-            mSwipeRefreshLayout.setOnRefreshListener(this);
+            mSwipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
+            ClassicsHeader header = new ClassicsHeader(getActivity());
+            header.setEnableLastTime(false);
+
+            mSwipeRefreshLayout.setRefreshHeader(header);
+            mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                    if (mIsLoading) {
+                        return;
+                    }
+                    mIsLoading = true;
+
+                    loadCourses();
+                    refreshLayout.finishRefresh(7000/*,false*/);//传入false表示刷新失败
+                }
+            });
 
             //mGetAlbumSongsTask = new GetAlbumSongsTask();
             mListView = (ListView)v.findViewById(R.id.listView);
@@ -371,7 +390,7 @@ public class CourseListFragment extends BaseFragment  {
             protected void onPostExecute(GetAlbumsResponse resp) {
                 super.onPostExecute(resp);
                 //mLoading.hide();
-                mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.finishRefresh();
                 mIsLoading = false;
 
                 if (!resp.isSuccess()) {

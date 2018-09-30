@@ -26,7 +26,8 @@ public class ParseHtmlPageTask extends AsyncTask<String, Void, Void> {
 
     @Override
     protected Void doInBackground(String... strings) {
-
+        if (mShareManager == null)
+            return null;
         String url = strings[0];
         try {
             Document doc = Jsoup.connect(url).get();

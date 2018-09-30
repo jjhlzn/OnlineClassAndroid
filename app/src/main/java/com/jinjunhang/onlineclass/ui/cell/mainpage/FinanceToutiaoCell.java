@@ -22,6 +22,7 @@ public class FinanceToutiaoCell extends BaseListViewCell {
 
     private FinanceToutiao mFinanceToutiao;
     private Activity mActivity;
+    private View view;
 
     public FinanceToutiaoCell(Activity activity, FinanceToutiao toutiao) {
         super(activity);
@@ -31,46 +32,27 @@ public class FinanceToutiaoCell extends BaseListViewCell {
 
     @Override
     public ViewGroup getView() {
+        if (view == null) {
+            view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jr_tiaotiao, null);
 
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jr_tiaotiao, null);
 
-        TextView indexTextView = (TextView) view.findViewById(R.id.toutiaoIndex);
-        TextView titleTextView = (TextView) view.findViewById(R.id.toutiaoTitle);
-        ImageView tagImage = (ImageView)view.findViewById(R.id.indexImage);
+            TextView titleTextView = (TextView) view.findViewById(R.id.toutiaoTitle);
+            ImageView tagImage = (ImageView) view.findViewById(R.id.indexImage);
 
-        String indexStr = "";
+            String indexStr = "";
 
-        if (mFinanceToutiao.getIndex() == 0) {
-            indexStr = "TOP 1";
-            tagImage.setVisibility(View.INVISIBLE);
-            indexTextView.setVisibility(View.VISIBLE);
-        } else if (mFinanceToutiao.getIndex() == 1) {
-            indexStr = "TOP 2";
-            tagImage.setVisibility(View.INVISIBLE);
-            indexTextView.setVisibility(View.VISIBLE);
-        } else if (mFinanceToutiao.getIndex() == 2) {
-            indexStr = "TOP 3";
-            tagImage.setVisibility(View.INVISIBLE);
-            indexTextView.setVisibility(View.VISIBLE);
-        } else {
-            indexStr = (mFinanceToutiao.getIndex() + 1) + "";
-            tagImage.setVisibility(View.VISIBLE);
-            indexTextView.setVisibility(View.INVISIBLE);
+            titleTextView.setText(mFinanceToutiao.getContent());
+
+            titleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                            .putExtra(WebBrowserActivity.EXTRA_TITLE, mFinanceToutiao.getTitle())
+                            .putExtra(WebBrowserActivity.EXTRA_URL, mFinanceToutiao.getLink());
+                    mActivity.startActivity(i);
+                }
+            });
         }
-
-
-        indexTextView.setText(indexStr);
-        titleTextView.setText(mFinanceToutiao.getContent());
-
-        titleTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(mActivity, WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, mFinanceToutiao.getTitle())
-                        .putExtra(WebBrowserActivity.EXTRA_URL, mFinanceToutiao.getLink());
-                mActivity.startActivity(i);
-            }
-        });
         return (RelativeLayout)view.findViewById(R.id.container);
     }
 

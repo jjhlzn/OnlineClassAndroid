@@ -39,8 +39,6 @@ public class UserProfilePhotoActivity extends BaseMusicSingleFragmentActivity {
         setResult( MainActivity.REQUEST_ME_UPDATE_USER_IAMGE,intent);
         finish();
 
-
-
     }
 
     @Override

@@ -2,51 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="34dp"
                 android:id="@+id/container"
                 android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/first_line"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="34dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="6dp">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/toutiaoIndex"
-            android:layout_centerVertical="true"
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:textAlignment="center"
-            android:text="4"
-            android:textColor="@color/top_color"
-            android:textSize="16dp"
-            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/indexImage"
             android:layout_centerVertical="true"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:src="@drawable/toutiaotag"
-            android:layout_marginLeft="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/toutiao_icon"
+            android:layout_marginLeft="20dp"
           />
 
         <TextView
             android:layout_centerVertical="true"
             android:id="@+id/toutiaoTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/toutiaoIndex"
+            android:layout_toRightOf="@+id/indexImage"
             android:gravity="center_vertical"
             android:text="亚足联:权健亚冠主场移场"
             android:textColor="@color/black"
@@ -56,6 +42,7 @@
 
 
     </RelativeLayout>
+    <!--
     <LinearLayout
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -64,5 +51,5 @@
         android:layout_height="0.5dp"
         android:layout_below="@+id/first_line"
         android:background="@drawable/jr_toutiao_bottom_border"></LinearLayout>
-
+   -->
 </RelativeLayout>

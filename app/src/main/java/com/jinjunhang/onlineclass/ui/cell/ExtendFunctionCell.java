@@ -19,7 +19,7 @@ public class ExtendFunctionCell extends BaseListViewCell {
 
     private static final String TAG = LogHelper.makeLogTag(ExtendFunctionCell.class);
 
-    private ViewGroup mView;
+    private LinearLayout layout;
     private int mHeight;
     private List<ExtendFunctionManager.ExtendFunction> functionList = new ArrayList<>();
     private ExtendFunctionManager mFunctionManager;
@@ -32,10 +32,6 @@ public class ExtendFunctionCell extends BaseListViewCell {
 
     public ExtendFunctionCell(Activity activity) {
         super(activity);
-    }
-
-    public void setView(ViewGroup view) {
-        mView = view;
     }
 
     @Override
@@ -54,21 +50,23 @@ public class ExtendFunctionCell extends BaseListViewCell {
     @Override
     public ViewGroup getView() {
         //LogHelper.d(TAG, "ExtendFunctionCell.getView() called");
-        LinearLayout layout = new LinearLayout(mActivity);
-        layout.setOrientation(LinearLayout.HORIZONTAL);
+        if (layout == null) {
+            layout = new LinearLayout(mActivity);
+            layout.setOrientation(LinearLayout.HORIZONTAL);
 
-        ViewGroup.LayoutParams params =  new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        // Changes the height and width to the specified *pixels*
-        params.height = mHeight;
-        layout.setLayoutParams(params);
-        layout.setBackgroundColor(Color.WHITE );
+            ViewGroup.LayoutParams params = new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            // Changes the height and width to the specified *pixels*
+            params.height = mHeight;
+            layout.setLayoutParams(params);
+            layout.setBackgroundColor(Color.WHITE);
 
-        for (ExtendFunctionManager.ExtendFunction func : functionList) {
-            layout.addView(mFunctionManager.createSubView(func));
+            for (ExtendFunctionManager.ExtendFunction func : functionList) {
+                layout.addView(mFunctionManager.createSubView(func));
+            }
+            layout.setEnabled(false);
+            layout.setOnClickListener(null);
         }
-        layout.setEnabled(false);
-        layout.setOnClickListener(null);
         return layout;
     }
 }
