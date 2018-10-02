@@ -11,30 +11,6 @@
         android:src="@drawable/course"
         android:scaleType="fitXY"/>
 
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/back_white_2"
-        android:background="@null"
-        android:scaleType="fitXY"/>
-
-    <ImageButton
-        android:id="@+id/share_button"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="12dp"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/share_white"
-        android:background="@null"
-        android:scaleType="fitXY"
-
-        />
-
     <RelativeLayout
         android:layout_below="@+id/courseImage"
         android:gravity="center_vertical"

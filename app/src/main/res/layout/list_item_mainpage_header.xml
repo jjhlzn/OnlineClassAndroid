@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/list_item_viewgroup"
@@ -7,19 +7,12 @@
               android:orientation="vertical">
 
 
-        <!--
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="240dp"
-            /> -->
-
         <com.youth.banner.Banner
             android:id="@+id/slider"
             android:layout_width="match_parent"
             app:image_scale_type="fit_xy"
             app:banner_default_image="@drawable/rect_placeholder"
-            android:layout_height="240dp"
+            android:layout_height="match_parent"
             app:indicator_margin="6dp"
             app:indicator_width="12dp"
             app:indicator_height="3dp"
@@ -27,4 +20,4 @@
             app:indicator_drawable_unselected="@color/slider_unselector_color"/>
 
 
-</LinearLayout>
+</RelativeLayout>

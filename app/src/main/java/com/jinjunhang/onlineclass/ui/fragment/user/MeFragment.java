@@ -119,6 +119,10 @@ public class MeFragment extends BaseFragment  {
         }
     }
 
+    @Override
+    public Toolbar getToolBar() {
+        return mToolbar;
+    }
 
     @Override
     protected boolean isCompatibleActionBar() {

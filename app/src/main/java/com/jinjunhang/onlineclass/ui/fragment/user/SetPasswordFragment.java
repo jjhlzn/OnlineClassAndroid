@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.fragment.user;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -100,9 +103,9 @@ public class SetPasswordFragment extends BaseFragment {
             LoginUser user = LoginUserDao.getInstance(getActivity()).get();
             user.setPassword(mRequest.getmNewPassword());
             LoginUserDao.getInstance(getActivity()).save(user);
-            Utils.showMessage(getActivity(), "更新成功", new DialogInterface.OnClickListener() {
+            Utils.showMessage(getActivity(), "更新成功", new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     getActivity().finish();
                 }
             });

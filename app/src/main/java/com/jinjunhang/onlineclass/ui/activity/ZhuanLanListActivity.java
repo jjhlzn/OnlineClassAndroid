@@ -10,6 +10,11 @@ import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
 public class ZhuanLanListActivity extends BaseMusicSingleFragmentActivity {
 
     @Override
+    protected boolean hasActionBar() {
+        return false;
+    }
+
+    @Override
     protected Fragment createFragment() {
         return new ZhuanLanListFragment();
     }

@@ -14,8 +14,8 @@
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="-4dp"
-        android:src="@drawable/music_static"
+        android:layout_marginBottom="0dp"
+        android:src="@drawable/demo"
 
         />
     </RelativeLayout>

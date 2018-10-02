@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,17 +24,20 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.TextView;
 
 
 //import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gyf.barlibrary.ImmersionBar;
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
@@ -48,6 +53,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 //import qiu.niorgai.StatusBarCompat;
 
@@ -81,22 +87,23 @@ public class Utils {
         } */
     }
 
-    public static void transparentStatusBarAndActionBar(AppCompatActivity activity, ImmersionBar bar) {
-
-    }
-
-
     public static void showErrorMessage(Context context, String message) {
 
         showMessage(context, message);
     }
 
-    public static void showMessage(Context context, String message, DialogInterface.OnClickListener listener) {
-        /*new AlertDialogWrapper.Builder(context)
-                .setMessage(message)
-                .setNegativeButton("好的", listener)
-                .show(); */
-        throw new RuntimeException("showMessage not implemented");
+    public static void showMessage(Context context, String message, MaterialDialog.SingleButtonCallback listener) {
+
+        new MaterialDialog.Builder(context)
+                .content(message)
+                .positiveText("好的")
+                .positiveColor(context.getResources().getColor(R.color.price_color))
+                .contentColor(context.getResources().getColor(R.color.black))
+                .backgroundColor(context.getResources().getColor(R.color.white))
+                .onPositive(listener)
+
+                .show();
+
     }
 
     public static void showVipBuyMessage(final Context context, String message) {
@@ -388,34 +395,6 @@ public class Utils {
         return textView.getMeasuredHeight();
     }
 
-    public static void setNavigationBarMusicButton(final Activity activity) {
-        if (activity != null && activity instanceof AppCompatActivity) {
-            if (((AppCompatActivity)activity).getSupportActionBar() != null) {
-                View v = ((AppCompatActivity) activity).getSupportActionBar().getCustomView();
-                if (v == null)
-                    return;
-                final GifImageView musicBtn = (GifImageView) v.findViewById(R.id.musicBtn);
-                if (musicBtn != null) {
-                    musicBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
-                            Song song = musicPlayer.getCurrentPlaySong();
-                            if (song != null) {
-                                Intent i = new Intent(activity, NewLiveSongActivity.class);
-                                activity.startActivity(i);
-                            }
-                        }
-                    });
-                }
-            }
-
-
-            Utils.updateNavigationBarButton(activity);
-
-        }
-
-    }
 
     public static void setRefreshHeader(Activity activity, SmartRefreshLayout refreshLayout) {
         ClassicsHeader header = new ClassicsHeader(activity);
@@ -425,28 +404,92 @@ public class Utils {
     }
 
     public static void updateNavigationBarButton(Activity activity) {
-        if (activity == null)
-            return;
-        LogHelper.d(TAG, "updateNavigationBarButton called");
-        MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
-        Boolean isPlay = StatusHelper.isPlayingForUI(musicPlayer);
-        setImage(isPlay, activity);
+        LogHelper.d(TAG, "updateNavigationBarButton called1");
+        updateNavigationBarButton(activity, 1);
     }
 
-    private static void setImage(boolean isPlay, Activity activity) {
+    public static void updateNavigationBarButton(Activity activity, float alpha) {
+        if (activity == null)
+            return;
+        LogHelper.d(TAG, "updateNavigationBarButton called2, alpha = " + alpha);
+        MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
+        Boolean isPlay = StatusHelper.isPlayingForUI(musicPlayer);
+        setImage(isPlay, activity, alpha);
+    }
+
+
+    private static void setImage(boolean isPlay, final  Activity activity, float alpha) {
         if (activity != null && activity instanceof AppCompatActivity) {
+            GifImageView musicBtn = null;
             if (((AppCompatActivity)activity).getSupportActionBar() != null) {
+                LogHelper.d(TAG, "actionBar not null");
                 View v = ((AppCompatActivity) activity).getSupportActionBar().getCustomView();
-                GifImageView musicBtn = (GifImageView) v.findViewById(R.id.musicBtn);
-                if (musicBtn != null) {
-                    if (isPlay) {
+                musicBtn =  v.findViewById(R.id.musicBtn);
+            }
+
+            if (activity instanceof BottomTabLayoutActivity) {
+                Fragment frag = ((BottomTabLayoutActivity)activity).getCurrentFragment();
+                LogHelper.d(TAG, "frag = " + frag);
+                Toolbar toolbar = ((BaseFragment)frag).getToolBar();
+                if (toolbar != null)
+                    musicBtn = toolbar.findViewById(R.id.musicBtn);
+
+            } else if (activity.findViewById(R.id.toolbar) != null) {
+                LogHelper.d(TAG, "toolbar not null");
+                musicBtn = activity.findViewById(R.id.toolbar).findViewById(R.id.musicBtn);
+            } else if (activity instanceof SingleFragmentActivity) {
+                Fragment frag = ((SingleFragmentActivity)activity).getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                if (frag != null) {
+                    Toolbar toolbar = ((BaseFragment) frag).getToolBar();
+                    if (toolbar != null)
+                        musicBtn = toolbar.findViewById(R.id.musicBtn);
+                }
+            }
+
+            LogHelper.d(TAG, "musicBtn = " + musicBtn);
+
+            if (musicBtn != null) {
+
+                musicBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
+                        Song song = musicPlayer.getCurrentPlaySong();
+                        if (song != null) {
+                            Intent i = new Intent(activity, NewLiveSongActivity.class);
+                            activity.startActivity(i);
+                        }
+                    }
+                });
+
+
+                if (isPlay) {
+                    if (isWhiteImage(alpha))
                         musicBtn.setImageResource(R.drawable.demo);
+                    else
+                        musicBtn.setImageResource(R.drawable.demo);
+
+
+                } else {
+                    if (isWhiteImage(alpha)) {
+                        LogHelper.d(TAG, "use white version");
+                        musicBtn.setImageResource(R.drawable.music_static_white);
                     } else {
+                        LogHelper.d(TAG, "use black version");
                         musicBtn.setImageResource(R.drawable.music_static);
                     }
+
+
                 }
             }
         }
+    }
+
+    public static boolean isWhiteImage(float alpha) {
+        if (alpha > 0.7) {
+            return false;
+        }
+        return true;
     }
 
 }

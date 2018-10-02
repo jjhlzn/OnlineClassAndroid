@@ -89,15 +89,17 @@ public class ShareManager {
         return mIsUseQrCodeImage;
     }
 
+    private static String defaultShareTitle = "扫一扫下载安装【知得】，在线学习信用卡、贷款、股票、基金、投资、理财、保险、财务等金融知识！";
+
     public void resetSetting() {
-        mShareTitle = "扫一扫下载安装【知得】，即可免费在线学习、提额、办卡、贷款！";
+        mShareTitle = defaultShareTitle;
         mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
                 "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
         mDescription = "知得";
     }
 
     public ShareManager(AppCompatActivity activity, View v) {
-        mShareTitle = "扫一扫下载安装【知得】，即可免费在线学习、提额、办卡、贷款！";
+        mShareTitle = defaultShareTitle;
         mShareUrl = ServiceLinkManager.ShareQrImageUrl() +
                 "?userid=" + LoginUserDao.getInstance(CustomApplication.get()).get().getUserName();
         mDescription = "知得";
@@ -144,7 +146,7 @@ public class ShareManager {
                 shareButton.setVisibility(View.VISIBLE);
         }
     }
-    
+
     protected void  setup() {
         final View shareView = v.findViewById(R.id.share_view);
 

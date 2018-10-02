@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,8 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
             float scale = getResources().getDisplayMetrics().density;
             int dpAsPixels = (int) (72 * scale + 0.5f);
 
-            mView.setPadding(0, dpAsPixels, 0, 0);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mView.getLayoutParams();
+            params.topMargin = dpAsPixels;
         }
 
         mMusicPlayer = MusicPlayer.getInstance(getActivity().getApplicationContext());
@@ -72,7 +74,7 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
         super.onStop();
         if (mMusicPlayer != null) {
             mMusicPlayer.removeListener(this);
-            Utils.updateNavigationBarButton(getActivity());
+            //Utils.updateNavigationBarButton(getActivity());
         }
     }
 
@@ -81,9 +83,9 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
         super.onResume();
         if (mMusicPlayer != null) {
             mMusicPlayer.addListener(this);
-            Utils.updateNavigationBarButton(getActivity());
+            //Utils.updateNavigationBarButton(getActivity());
         }
-        Utils.setNavigationBarMusicButton(getActivity());
+        //Utils.updateNavigationBarButton(getActivity());
     }
 
     @Override
@@ -110,10 +112,8 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
 
     }
 
-
-
-    public void initView() {
-
+    public Toolbar getToolBar() {
+        return null;
     }
 
     protected void setLightStatusBar(View view, Activity activity) {
@@ -126,6 +126,11 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
             view.setSystemUiVisibility(flags);
             activity.getWindow().setStatusBarColor(Color.WHITE);
         } */
+    }
+
+    public void updateMusicBtnState() {
+        LogHelper.d(TAG, "action = " + getActivity() + ", updateMusicBtnState called");
+        Utils.updateNavigationBarButton(getActivity());
     }
 
 

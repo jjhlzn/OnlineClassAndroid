@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -187,13 +190,13 @@ public class ForgetPasswordFragment extends BaseFragment {
                 return;
             }
 
-            Utils.showMessage(getActivity(), "重设成功", new DialogInterface.OnClickListener() {
+            Utils.showMessage(getActivity(), "重设成功", new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     getActivity().startActivity(i);
                 }
-            });
+            } );
         }
     }
 

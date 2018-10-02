@@ -71,6 +71,11 @@ public class ShopWebBrowserFragment extends BaseFragment {
     }
 
 
+    @Override
+    public Toolbar getToolBar() {
+        return mToolbar;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -171,62 +176,6 @@ public class ShopWebBrowserFragment extends BaseFragment {
 
     @Override
     public void changeActionBar() {
-
-        /*
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        //LogHelper.d(TAG, "activity = " + activity);
-        if (activity != null) {
-
-            activity.getSupportActionBar().show();
-            activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_browser, null);
-            activity.getSupportActionBar().setCustomView(customView);
-            Toolbar parent = (Toolbar) customView.getParent();
-
-            parent.setContentInsetsAbsolute(0, 0);
-
-            //设置返回按键
-            mBackButton = (ImageButton) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
-
-            if (!"".equals(mTitle))
-                ((TextView) activity.getSupportActionBar().getCustomView().findViewById(R.id.actionbar_text)).setText(mTitle);
-
-
-            if (mWebView.canGoBack()) {
-                //mWebView.goBack();
-                mBackButton.setVisibility(View.VISIBLE);
-            } else {
-                //onBackPressed();
-                mBackButton.setVisibility(View.INVISIBLE);
-            }
-
-            mBackButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mWebView.canGoBack()) {
-                        mWebView.goBack();
-                    } else {
-                        //onBackPressed();
-                        mBackButton.setVisibility(View.INVISIBLE);
-                    }
-                }
-            });
-
-            setLightStatusBar(customView, activity);
-            Utils.setNavigationBarMusicButton(activity);
-        }
-
-        if (mShareManager == null) {
-            mShareManager = new ShareManager((AppCompatActivity) getActivity(), getView());
-            mShareManager.setUseQrCodeImage(false);
-            mShareManager.setShareButtonVisible(false);
-
-            new ParseHtmlPageTask().setShareManager(mShareManager).execute(mUrl);
-        }
-
-
-        //StatusBarCompat.setStatusBarColor(getActivity(), Color.WHITE);
-        */
     }
 
     @Override

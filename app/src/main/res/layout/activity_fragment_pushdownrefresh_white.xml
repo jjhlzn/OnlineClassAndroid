@@ -11,7 +11,7 @@
                                                   android:paddingTop="72dp"
                                                   android:layout_width="match_parent"
                                                   android:layout_height="wrap_content"
-                                                  android:background="@color/fragment_background">
+                                                  android:background="@color/white">
 
         <ListView
             android:layout_width="fill_parent"

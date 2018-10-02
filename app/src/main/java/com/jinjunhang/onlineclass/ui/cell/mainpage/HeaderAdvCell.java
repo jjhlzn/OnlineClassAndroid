@@ -9,27 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-//import com.daimajia.slider.library.Indicators.PagerIndicator;
-//import com.daimajia.slider.library.SliderLayout;
-//import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.service.GetMainPageAdsRequest;
 import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
-import com.jinjunhang.onlineclass.service.GetTouTiaoResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
-import com.jinjunhang.onlineclass.ui.fragment.mainpage.CustomSliderView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
@@ -47,7 +43,6 @@ public class HeaderAdvCell extends BaseListViewCell  {
     private LoadingAnimation mLoading;
     private List<Advertise> mAdvertises;
     private Banner mSlider;
-    private GetTouTiaoResponse mTouTiaoResp;
     private KeyValueDao dao;
 
     private View mView;
@@ -57,7 +52,6 @@ public class HeaderAdvCell extends BaseListViewCell  {
         dao = KeyValueDao.getInstance(activity);
         this.mLoading = loading;
         mAdvertises = new ArrayList<>();
-        mTouTiaoResp = new GetTouTiaoResponse();
     }
 
     public void updateAds() {
@@ -113,12 +107,19 @@ public class HeaderAdvCell extends BaseListViewCell  {
     public ViewGroup getView() {
         if (mView == null) {
             mView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
+
+            //设置Banner的显示比例
+            mView.setLayoutParams(new RelativeLayout.LayoutParams(Utils.getScreenWidth(mActivity), (int)((float)Utils.getScreenWidth(mActivity) / 375.0 * 224)));
+
+
             mSlider = mView.findViewById(R.id.slider);
+
+
             mSlider.setImageLoader(new GlideImageLoader());
             setSlider();
-            return (LinearLayout) mView.findViewById(R.id.list_item_viewgroup);
+            return (RelativeLayout) mView.findViewById(R.id.list_item_viewgroup);
         } {
-            return (LinearLayout) mView.findViewById(R.id.list_item_viewgroup);
+            return (RelativeLayout) mView.findViewById(R.id.list_item_viewgroup);
         }
     }
 
@@ -149,7 +150,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
                     dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_IMAGEURL, popAd.getImageUrl());
                     dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_CLICKURL, popAd.getClickUrl());
                     dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_TITLE, popAd.getTitle());
-                    //((BottomTabLayoutActivity)mActivity).showPopupAd();
+                    ((BottomTabLayoutActivity)mActivity).showPopupAd();
                 }
             } else {
                 LogHelper.d(TAG, "reponse popad is null");

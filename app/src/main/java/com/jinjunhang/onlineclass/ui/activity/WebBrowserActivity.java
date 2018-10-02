@@ -110,40 +110,6 @@ public class WebBrowserActivity extends BaseActivity {
         mIsBackToMainActivity = getIntent().getBooleanExtra(EXTRA_BACK_TO_MAIN_ACTIVITY, false);
 
         setToolBar();
-        /*
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setElevation(0);
-        View customView = getLayoutInflater().inflate(R.layout.actionbar_browser, null);
-        ((TextView)customView.findViewById(R.id.actionbar_text)).setText(mTitle);
-        getSupportActionBar().setCustomView(customView);
-        Toolbar parent =(Toolbar) customView.getParent();
-        //parent.setContentInsetsAbsolute(0, 0);
-
-        //设置返回按键
-        ImageButton backButton = (ImageButton) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_back_button);
-        mCloseButton = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.actionbar_close_button);
-        backButton.setVisibility(View.VISIBLE);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogHelper.d(TAG, "mWebView.canGoBack() = " + mWebView.canGoBack());
-                if (mWebView.canGoBack()) {
-
-                    mWebView.goBack();
-
-                } else {
-                    onBackPressed();
-                }
-            }
-        });
-
-        mCloseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        */
         mWebView = (WebView) findViewById(R.id.webview);
 
         registerForContextMenu(mWebView);
@@ -204,7 +170,7 @@ public class WebBrowserActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        Utils.setNavigationBarMusicButton(this);
+        Utils.updateNavigationBarButton(this);
     }
 
     private void checkLogin() {

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -23,6 +24,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -142,7 +145,7 @@ public class QuestionAnswerFragment extends BottomPlayerFragment    {
                         mSendButton.setTextColor(getActivity().getResources().getColor(R.color.ccl_grey600));
                     } else {
                         mSendButton.setEnabled(true);
-                        mSendButton.setTextColor(getActivity().getResources().getColor(R.color.tab_selected_color));
+                        mSendButton.setTextColor(getActivity().getResources().getColor(R.color.price_color));
                     }
                 }
             }
@@ -166,9 +169,9 @@ public class QuestionAnswerFragment extends BottomPlayerFragment    {
                 return;
             }
 
-            Utils.showMessage(getActivity(),"发送成功，需要审核后才能查看", new DialogInterface.OnClickListener(){
+            Utils.showMessage(getActivity(), "发送成功，需要审核后才能查看", new MaterialDialog.SingleButtonCallback() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                     getActivity().onBackPressed();
                 }
             });

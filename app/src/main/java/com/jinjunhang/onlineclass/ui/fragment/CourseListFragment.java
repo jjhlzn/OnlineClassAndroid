@@ -175,6 +175,11 @@ public class CourseListFragment extends BaseFragment  {
     }
 
     @Override
+    public Toolbar getToolBar() {
+        return mToolbar;
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         //放在这里为了防止双击
@@ -281,6 +286,8 @@ public class CourseListFragment extends BaseFragment  {
             });
 
         }
+
+
 
         public void loadCourses() {
             GetAlbumsRequest request = new GetAlbumsRequest(mAlbumType);

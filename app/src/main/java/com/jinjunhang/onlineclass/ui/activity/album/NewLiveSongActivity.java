@@ -18,8 +18,6 @@ import com.jinjunhang.player.MusicPlayer;
  */
 public class NewLiveSongActivity extends BaseMusicSingleFragmentActivity {
 
-    private final static String TAG = LogHelper.makeLogTag(NewLiveSongActivity.class);
-
     protected boolean hasActionBar() {
         return false;
     }
@@ -28,24 +26,7 @@ public class NewLiveSongActivity extends BaseMusicSingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
         return new NewLiveSongFragment();
-        /*
-        Song song = (Song)getIntent().getSerializableExtra(BaseSongFragment.EXTRA_SONG);
-       // return new SongFragment();
-        if (song == null) {  //从通知栏过来
-           song = MusicPlayer.getInstance(this).getCurrentPlaySong();
-        }
 
-        if (song == null) {
-            Intent i = new Intent(this, MainActivity.class);
-            startActivity(i);
-            return null;
-        }
-
-        if (song.isLive()) {
-            return new LiveSongFragment();
-        } else {
-            return new CommonSongFragment();
-        }*/
     }
    
 }

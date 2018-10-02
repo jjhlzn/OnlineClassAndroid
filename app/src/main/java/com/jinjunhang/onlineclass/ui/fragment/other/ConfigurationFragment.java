@@ -73,12 +73,7 @@ public class ConfigurationFragment extends android.support.v4.app.Fragment  {
                 ServiceConfiguration.LOCATOR_SERVERNAME = newServerName;
                 ServiceConfiguration.LOCATOR_PORT = port;
 
-                Utils.showMessage(getActivity(), "保存成功", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getActivity().finish();
-                    }
-                });
+                getActivity().finish();
             }
         });
 

@@ -105,7 +105,6 @@ public class BottomTabLayoutActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         mFragmensts = DataGenerator.getFragments(this, "TabLayout Tab");
         initView();
         mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -147,20 +146,6 @@ public class BottomTabLayoutActivity extends BaseActivity {
 
     public void showPopupAd() {
 
-        LogHelper.d(TAG, "showPopupAd");
-
-        /*
-        final View actionBarOverlay = getSupportActionBar().getCustomView().findViewById(R.id.actionbar_overlay_bg);
-        if (actionBarOverlay != null) {
-            actionBarOverlay.setVisibility(View.VISIBLE);
-            actionBarOverlay.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-                }
-            });
-        }
-
         final View overlay = findViewById(R.id.overlay_bg);
         overlay.setVisibility(View.VISIBLE);
         overlay.setOnTouchListener(new View.OnTouchListener() {
@@ -168,24 +153,21 @@ public class BottomTabLayoutActivity extends BaseActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return true;
             }
-        }); */
+        });
 
-
-        closeBtn = (Button)findViewById(R.id.close_ad_btn);
+        closeBtn = findViewById(R.id.close_ad_btn);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LogHelper.d(TAG, "close btn clicked");
-                /*
+
                 overlay.setVisibility(View.INVISIBLE);
-                if (actionBarOverlay != null) {
-                    actionBarOverlay.setVisibility(View.INVISIBLE);
-                } */
+
             }
         });
 
 
-        final ImageView imageView = (ImageView)findViewById(R.id.popupImage);
+        final ImageView imageView = findViewById(R.id.popupImage);
         KeyValueDao dao = KeyValueDao.getInstance(this);
         String imageUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_IMAGEURL, "");
         final String title = dao.getValue(KeyValueDao.KEY_POPUPAD_TITLE, "");
@@ -246,6 +228,11 @@ public class BottomTabLayoutActivity extends BaseActivity {
 
     }
 
+
+    public Fragment getCurrentFragment() {
+        return mFragmensts[mViewPager.getCurrentItem()];
+    }
+
     private void onTabItemSelected(int position){
         if (mViewPager != null) {
             mViewPager.setCurrentItem(position);
@@ -259,6 +246,7 @@ public class BottomTabLayoutActivity extends BaseActivity {
             ImmersionBar.with(this).statusBarDarkFont(true).init();
 
         }
+        mFragmensts[position].updateMusicBtnState();
 
     }
 

@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.fragment.album;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,8 +11,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -19,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +36,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer.ExoPlayer;
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
@@ -86,9 +92,10 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     private ImageButton mPlayButton;
 
     private ViewPager mViewPager;
+    private Toolbar mToolbar;
     private BaseFragment[] mFragmensts;
     private MyPagerAdapter mMyPagerAdapter;
-    private Button couseOverViewBtn, otherCourseBtn, signUpBtn;
+    private Button couseOverViewBtn, signUpBtn;
     private TextView mListenerTextView;
     private TextView mPlayTextView;
     private ImageView mCourseImage;
@@ -113,6 +120,8 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             updateChat();
         }
     };
+
+    private float mLastAlpha = 0;
 
     private void stopChatUpdate() {
         if (mScheduleFuture != null) {
@@ -166,6 +175,16 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         }
     }
 
+    @Override
+    protected boolean isNeedTopPadding() {
+        return false;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_live_player;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -174,27 +193,37 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
         LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
 
-        final View v = inflater.inflate(R.layout.activity_fragment_live_player, container, false);
+        final View v = super.onCreateView(inflater, container, savedInstanceState);
+
         final ScrollView scrollView = (ScrollView) v.findViewById(R.id.scrollView);
         mListenerTextView = (TextView)v.findViewById(R.id.listenerCount);
         mListenerTextView.setText(song.getListenPeople());
         mPlayTextView = (TextView)v.findViewById(R.id.playTextView);
         mCourseImage = (ImageView)v.findViewById(R.id.courseImage);
 
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollY = scrollView.getScrollY(); // For ScrollView
+                int scrollX = scrollView.getScrollX(); // For HorizontalScrollView
+
+               // LogHelper.d(TAG, "scrollY = " + scrollY);
+                int height = 72;
+                float alpha = 0;
+                alpha = (float)scrollY / height;
+                if (alpha > 1)
+                    alpha = 1;
+
+                if (Math.abs(alpha - mLastAlpha) > 0.0001)
+                    updateToolBar(alpha);
+
+                mLastAlpha = alpha;
+            }
+        });
+
         Glide.with(this)
                 .load(song.getImageUrl())
                 .into(mCourseImage);
-
-
-        ImageButton backBtn = (ImageButton)v.findViewById(R.id.back_button);
-        LogHelper.d(TAG, "backBtn = " + backBtn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //getActivity().onBackPressed();
-                getActivity().finish();
-            }
-        });
 
 
         mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
@@ -202,10 +231,12 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         mShareManager.setShareUrl(song.getShareUrl());
         mShareManager.setUseQrCodeImage(false);
 
+        mToolbar = v.findViewById(R.id.toolbar);
+        setToolBar();
+
         mPlayButton  = (ImageButton)v.findViewById(R.id.playBtn);
 
         couseOverViewBtn = (Button)v.findViewById(R.id.courseOverviewBtn);
-        otherCourseBtn = (Button)v.findViewById(R.id.otherCoursesBtn);
         signUpBtn = (Button)v.findViewById(R.id.SignupBtn);
 
 
@@ -226,12 +257,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             }
         });
 
-        otherCourseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buttonClicked(1);
-            }
-        });
 
         mFragmensts = DataGenerator.getFragments(getActivity(), "", this);
         mViewPager = (ViewPager)v.findViewById(R.id.viewpager);
@@ -257,29 +282,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         buttonClicked(0);
         setPlayerView(v);
 
-        ImageButton shareBtn = (ImageButton)v.findViewById(R.id.share_button);
-        final ViewGroup shareView = (ViewGroup)v.findViewById(R.id.share_view);
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shareView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        View overlay = v.findViewById(R.id.overlay_bg);
-        overlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //shareView.setVisibility(View.INVISIBLE);
-            }
-        });
-        //这段代码不能删除，否则按在空白的地方会把
-        v.findViewById(R.id.share_menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         mChatManager.setBottomCommentView(v);
         //mChatManager.loadComments();
@@ -290,16 +292,90 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         return v;
     }
 
-    private void buttonClicked(int selectedIndex) {
-        if (selectedIndex == 0) {
-            couseOverViewBtn.setTextColor(getActivity().getResources().getColor(R.color.tab_selected_color));
-            otherCourseBtn.setTextColor(getActivity().getResources().getColor(R.color.black));
-            mViewPager.setCurrentItem(0);
+
+    protected  void setToolBar() {
+        ImageButton backBtn = mToolbar.findViewById(R.id.actionbar_back_button);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //getActivity().onBackPressed();
+                getActivity().finish();
+            }
+        });
+
+        ImageButton shareBtn = mToolbar.findViewById(R.id.actionbar_right_button);
+        final ViewGroup shareView =  mView.findViewById(R.id.share_view);
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        View overlay = mView.findViewById(R.id.overlay_bg);
+        overlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //shareView.setVisibility(View.INVISIBLE);
+            }
+        });
+        //这段代码不能删除，否则按在空白的地方会把
+        mView.findViewById(R.id.share_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        //mImmersionBar = ImmersionBar.with(this);
+        //mImmersionBar.statusBarColorTransformEnable(false).init();
+        ImmersionBar.setTitleBar(getActivity(), mToolbar);
+        ImmersionBar.with(this).transparentStatusBar().init();
+
+        updateToolBar(0);
+    }
+
+    private void  updateToolBar(float alpha) {
+
+        if (alpha < 0)
+            alpha = 0;
+        if (alpha > 1)
+            alpha = 1;
+
+        mToolbar.setBackgroundColor(ColorUtils.blendARGB(Color.TRANSPARENT, ContextCompat.getColor(getActivity(), R.color.colorPrimary), alpha));
+
+        TextView textView = mToolbar.findViewById(R.id.actionbar_text);
+        ImageButton backButton = mToolbar.findViewById(R.id.actionbar_back_button);
+        ImageButton shareButton = mToolbar.findViewById(R.id.actionbar_right_button);
+
+        textView.setText(mMusicPlayer.getCurrentPlaySong().getName());
+
+
+        if (alpha > 0.7) {
+            textView.setTextColor(getResources().getColor(R.color.black));
+            textView.setVisibility(View.VISIBLE);
+            backButton.setImageDrawable(getResources().getDrawable(R.drawable.back));
+            shareButton.setImageDrawable(getResources().getDrawable(R.drawable.share_black));
         } else {
-            couseOverViewBtn.setTextColor(getActivity().getResources().getColor(R.color.black));
-            otherCourseBtn.setTextColor(getActivity().getResources().getColor(R.color.tab_selected_color));
-            mViewPager.setCurrentItem(1);
+            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            textView.setVisibility(View.INVISIBLE);
+            backButton.setImageDrawable(getResources().getDrawable(R.drawable.back_white));
+            shareButton.setImageDrawable(getResources().getDrawable(R.drawable.share_white));
         }
+
+        if (alpha == 1) {
+            ImmersionBar.with(this).statusBarDarkFont(true).init();
+        } else {
+            ImmersionBar.with(this).statusBarDarkFont(false).init();
+        }
+    }
+
+
+
+    private void buttonClicked(int selectedIndex) {
+
+            mViewPager.setCurrentItem(0);
+
     }
 
     private void setPlayerView(View v) {
@@ -358,14 +434,14 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     public static class DataGenerator {
 
         public static BaseFragment[] getFragments(Activity activity, String from, NewLiveSongFragment fragment){
-            BaseFragment fragments[] = new BaseFragment[2];
+            BaseFragment fragments[] = new BaseFragment[1];
             try {
 
                 fragments[0] = CourseOverviewFragment.class.newInstance();
                 ((CourseOverviewFragment)fragments[0]).mSongFragment = fragment;
                 ((CourseOverviewFragment)fragments[0]).setChatManager(fragment.mChatManager);
-                fragments[1] = BeforeCoursesFragment.class.newInstance();
-                ((BeforeCoursesFragment)fragments[1]).mSongFragment = fragment;
+                //fragments[1] = BeforeCoursesFragment.class.newInstance();
+                //((BeforeCoursesFragment)fragments[1]).mSongFragment = fragment;
             }catch (Exception  ex) {
                 LogHelper.e("DataGenerator", ex);
             }

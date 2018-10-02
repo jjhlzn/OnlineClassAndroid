@@ -3,7 +3,6 @@ package com.jinjunhang.onlineclass.ui.fragment.mainpage;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,24 +10,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
@@ -42,7 +36,6 @@ import com.jinjunhang.onlineclass.model.FinanceToutiao;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.Pos;
 import com.jinjunhang.onlineclass.model.Question;
-import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
@@ -54,8 +47,6 @@ import com.jinjunhang.onlineclass.service.GetQuestionRequest;
 import com.jinjunhang.onlineclass.service.GetQuestionResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
-import com.jinjunhang.onlineclass.service.ServiceConfiguration;
-import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.activity.search.SearchActivity;
@@ -88,8 +79,6 @@ import com.scwang.smartrefresh.layout.listener.OnMultiPurposeListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Created by jinjunhang on 2018/3/21.
@@ -136,6 +125,11 @@ public class MainPageFragment extends BaseFragment  {
     }
 
     @Override
+    public Toolbar getToolBar() {
+        return mToolBar;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -147,13 +141,13 @@ public class MainPageFragment extends BaseFragment  {
         rongziView.addView(rongziPage.v);
 
         if (!isIntied) {
-            setupToolBar();
+            setToolBar();
             isIntied = true;
         }
         return v;
     }
 
-    public void setupToolBar() {
+    public void setToolBar() {
 
         TextView searchField = mToolBar.findViewById(R.id.searchBar);
         searchField.setOnClickListener(new View.OnClickListener() {
@@ -164,8 +158,16 @@ public class MainPageFragment extends BaseFragment  {
             }
         });
 
-        Utils.setNavigationBarMusicButton(getActivity());
+        Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
 
+    }
+
+    @Override
+    public void updateMusicBtnState() {
+        if (rongziPage != null) {
+            LogHelper.d(TAG , "toolbar alpha = " + rongziPage.mToolbarAlpha);
+            Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
+        }
     }
 
     @Override
@@ -201,58 +203,6 @@ public class MainPageFragment extends BaseFragment  {
             rongziPage.onStopHandler();
     }
 
-    @Override
-    public void changeActionBar() {
-        /*
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        if (activity == null)
-            return;
-
-        activity.getSupportActionBar().show();
-        activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        //删除actionbar下面的阴影
-        activity.getSupportActionBar().setElevation(0);
-        final View customView = activity.getLayoutInflater().inflate(R.layout.actionbar_main, null);
-        activity.getSupportActionBar().setCustomView(customView);
-        Toolbar parent =(Toolbar) customView.getParent();
-
-        parent.setContentInsetsAbsolute(0, 0);
-
-        setLightStatusBar(customView, activity);
-
-        TextView searchField = (TextView) ((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.search_edit_field);
-        searchField.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(), SearchActivity.class);
-                getContext().startActivity(i);
-            }
-        });
-
-
-        kefuBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.kefu_btn);
-        //searchBtn = (ImageButton)((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.search_btn);
-
-        kefuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(), WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "客服")
-                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.FunctionCustomerServiceUrl());
-                getContext().startActivity(i);
-            }
-        });
-
-
-        Utils.setNavigationBarMusicButton(getActivity());
-        ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#00ffffff")));
-        actionBar.setSplitBackgroundDrawable(new ColorDrawable(Color.parseColor("#00ffffff")));
-
-        //StatusBarCompat.translucentStatusBar(getActivity(), true);
-        //sofia
-        */
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -542,9 +492,7 @@ public class MainPageFragment extends BaseFragment  {
             });
 
             mImmersionBar = ImmersionBar.with(fragment);
-            mImmersionBar.statusBarColorTransformEnable(false)
-                    .init();
-            LogHelper.d(TAG, "toolbar = " + mToolbar);
+            mImmersionBar.statusBarColorTransformEnable(false).init();
             ImmersionBar.setTitleBar(activity, mToolbar);
 
             mToolbar.setBackgroundColor(ColorUtils.blendARGB(Color.TRANSPARENT
@@ -560,7 +508,7 @@ public class MainPageFragment extends BaseFragment  {
                         int scrollY = -c.getTop();
 
                         int top = scrollY;
-                        int height = 70;
+                        int height = 72;
                         float alpha = 0;
                         if (firstVisibleItem > 0) {
                             alpha = 1;
@@ -594,21 +542,22 @@ public class MainPageFragment extends BaseFragment  {
         private void  updateToolBar(float alpha) {
 
             mToolbar.setBackgroundColor(ColorUtils.blendARGB(Color.TRANSPARENT, ContextCompat.getColor(mActivity, R.color.colorPrimary), alpha));
-            if (alpha > 0.7) {
-                mMusicBtn.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.music_static));
-                mTitleView.setVisibility(View.VISIBLE);
-                mSearchBar.setVisibility(View.INVISIBLE);
-            } else {
-                mMusicBtn.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.music_static_white));
+            if (Utils.isWhiteImage(alpha)) {
                 mTitleView.setVisibility(View.INVISIBLE);
                 mSearchBar.setVisibility(View.VISIBLE);
+            } else {
+                mTitleView.setVisibility(View.VISIBLE);
+                mSearchBar.setVisibility(View.INVISIBLE);
             }
+
+            Utils.updateNavigationBarButton(getActivity(), alpha);
 
             if (alpha == 1) {
                 ImmersionBar.with(mFragment).statusBarDarkFont(true).init();
             } else {
                 ImmersionBar.with(mFragment).statusBarDarkFont(false).init();
             }
+
         }
 
 

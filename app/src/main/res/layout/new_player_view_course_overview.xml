@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="10dp"
+            android:layout_width="6dp"
             android:layout_height="28dp"
             android:background="#cc9d5d"
             android:layout_marginRight="8dp"

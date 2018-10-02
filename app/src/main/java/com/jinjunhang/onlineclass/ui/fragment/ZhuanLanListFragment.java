@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,12 +30,14 @@ import com.jinjunhang.onlineclass.service.GetZhuanLansResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.ZhuanLanInListCell;
-
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeRefreshLayout.OnRefreshListener   {
+public class ZhuanLanListFragment extends BaseFragment   {
     private final static String TAG = LogHelper.makeLogTag(ZhuanLanListFragment.class);
 
     public static final String EXTRA_TYPE = "EXTRA_TYPE";
@@ -43,30 +47,41 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
     private String mType = "";
     private MyAdapter mAdapter;
     private List<ListViewCell> mCells = new ArrayList<>();
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SmartRefreshLayout mSwipeRefreshLayout;
     private boolean mIsLoading = false;
     private List<ZhuanLan> mZhuanLans = new ArrayList<>();
+    private Toolbar mToolbar;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_pushdownrefresh_smart;
+    }
+
+    @Override
+    protected boolean isNeedTopPadding() {
+        return false;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_white, container, false);
-        mSwipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        mSwipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
+        Utils.setRefreshHeader(getActivity(), mSwipeRefreshLayout);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                new GetZhuanLanTask().execute();
+                mSwipeRefreshLayout.finishRefresh(7000);
+            }
+        });
 
         mType = getActivity().getIntent().getStringExtra(EXTRA_TYPE);
         if (mType == null) {
             mType = TYPE_ZHUANLAN;
         }
-        TextView titleTV = (TextView)((AppCompatActivity)getActivity()).getSupportActionBar()
-                .getCustomView().findViewById(R.id.actionbar_text);
-        if (titleTV != null) {
-            if (mType.equals(TYPE_JPK)) {
-                titleTV.setText("精品课列表");
-            } else {
-                titleTV.setText("专栏列表");
-            }
-        }
+
 
         mAdapter = new MyAdapter(getActivity(), mCells);
         ListView listView = (ListView)v.findViewById(R.id.listView);
@@ -86,36 +101,42 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
 
         new GetZhuanLanTask().execute();
 
+        mToolbar = v.findViewById(R.id.toolbar);
+        ImmersionBar.setTitleBar(getActivity(), mToolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
+
+
+        setToolbar();
         return v;
     }
 
-
     @Override
-    public void changeActionBar() {
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        if (activity != null) {
-            LogHelper.d(TAG, "activity = " + activity);
-            activity.getSupportActionBar().show();
-            activity.getSupportActionBar().setElevation(0);
-            activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.toolbar_courselist, null);
-            activity.getSupportActionBar().setCustomView(customView);
-            Toolbar parent = (Toolbar) customView.getParent();
+    public Toolbar getToolBar() {
+        return mToolbar;
+    }
 
-            parent.setContentInsetsAbsolute(0, 0);
+    public void setToolbar() {
 
-            TextView text = (TextView)customView.findViewById(R.id.actionbar_text);
-            text.setText("订阅");
+        ImageButton backButton = mToolbar.findViewById(R.id.actionbar_back_button);
+        backButton.setVisibility(View.VISIBLE);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
 
-            setLightStatusBar(customView, activity);
-            Utils.setNavigationBarMusicButton(activity);
+        TextView text = mToolbar.findViewById(R.id.actionbar_text);
+        if (mType.equals(TYPE_JPK)) {
+            text.setText("精品课列表");
+        } else {
+            text.setText("专栏列表");
         }
+
+        Utils.updateNavigationBarButton(getActivity());
+
     }
 
-    @Override
-    public void onRefresh() {
-        new GetZhuanLanTask().execute();
-    }
 
     private void setZhuanLansView() {
         mCells.clear();
@@ -140,7 +161,7 @@ public class ZhuanLanListFragment extends BottomPlayerFragment implements SwipeR
         protected void onPostExecute(GetZhuanLansResponse resp) {
             super.onPostExecute(resp);
             //mLoading.hide();
-            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.finishRefresh();
             mIsLoading = false;
 
             if (!resp.isSuccess()) {

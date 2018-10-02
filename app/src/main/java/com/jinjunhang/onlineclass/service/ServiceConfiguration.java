@@ -20,7 +20,7 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 = "192.168.64.202"; //"192.168.64.126";  // //"192.168.64.126"; // "192.168.31.130"; //"192.168.64.126"; //   //"192.168.31.130"; // "192.168.64.126";  //"192.168.31.130";  // //  //"jf.yhkamani.com"; //"192.168.1.108";
+    private final static String serverName1 = "172.20.10.2"; //"192.168.64.126";  // //"192.168.64.126"; // "192.168.31.130"; //"192.168.64.126"; //   //"192.168.31.130"; // "192.168.64.126";  //"192.168.31.130";  // //  //"jf.yhkamani.com"; //"192.168.1.108";
     private final static int port1 = 3000;
 
 

@@ -168,13 +168,14 @@ public class ExtendFunctionManager {
 
     private int getImageHeight() {
         int width = Utils.getScreenWidth(mContext);
-
+        int result = 0;
         if (width <= 768) {
-            return (int)(width / itemCountEachRow * 0.7 * 0.7);
+            result = (int)(width / itemCountEachRow * 0.54);
         } else {
-            return (int)(width / itemCountEachRow * 0.7 * 0.6);
+            result = (int)(width / itemCountEachRow * 0.45);
         }
-
+        LogHelper.d(TAG, " imageHeight = " + result);
+        return result ;
     }
 
     public int getHeight() {
@@ -265,7 +266,7 @@ public class ExtendFunctionManager {
                         .asBitmap()
                         .centerCrop()
                         .placeholder(R.drawable.placeholder)
-                        .into(180, 180)
+                        .into(90, 90)
                         .get();
 
                 if (myBitmap != null) {
@@ -293,14 +294,11 @@ public class ExtendFunctionManager {
     }
 
     public void makeImage(ImageView image, ExtendFunction func) {
-        //LogHelper.d(TAG, func.name, " has message: ", func.hasMessage());
         // 防止出现Immutable bitmap passed to Canvas constructor错误
         String imageUrl = func.getImageUrl();
-        //LogHelper.d(TAG, func.code + " - imageUrl: " + imageUrl);
 
         Bitmap numberBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
         //检查这个连接是否有效，并且这个链接的图片是否保存在磁盘中。如果在缓存中，直接中磁盘中获取图片，否则从网络中下载。
-
         if (imageUrl != null && !"".equals(imageUrl)) {
             Bitmap bitmap = ExtendFunctionImageDao.getInstance(mContext).get(imageUrl);
             if (bitmap == null) {
@@ -316,18 +314,16 @@ public class ExtendFunctionManager {
         makeImage0(bitmap1, numberBitmap, func, image);
     }
 
-    private void makeImage0(Bitmap bitmap1, Bitmap bitmap2, ExtendFunction func, ImageView image) {
-
-
-        Bitmap newBitmap = Bitmap.createBitmap(bitmap1);
+    private void makeImage0(Bitmap funcImage, Bitmap numberImage, ExtendFunction func, ImageView image) {
+        int w = funcImage.getWidth();
+        int h = funcImage.getHeight();
+        int w_2 = numberImage.getWidth();
+        int h_2 = numberImage.getHeight();
+        Bitmap newBitmap = Bitmap.createBitmap(funcImage);
         Canvas canvas = new Canvas(newBitmap);
         Paint paint = new Paint();
 
-        int w = bitmap1.getWidth();
-        int h = bitmap1.getHeight();
-
-        int w_2 = bitmap2.getWidth();
-        int h_2 = bitmap2.getHeight();
+        //LogHelper.d(TAG, "w = " + w + " h = " + h + ", w2 = " + w_2 + " h2 = " + h_2);
 
         paint.setColor(Color.GRAY);
         paint.setAlpha(0);
@@ -335,7 +331,7 @@ public class ExtendFunctionManager {
 
         if (func.hasMessage()) {
             Paint paint2 = new Paint();
-            canvas.drawBitmap(bitmap2, Math.abs(w - w_2) / 2 * 2 + 6, -6, paint2);
+            canvas.drawBitmap(numberImage, Math.abs(w - w_2) / 2 * 2 + 10, -6, paint2);
         }
         canvas.save(Canvas.ALL_SAVE_FLAG);
         // 存储新合成的图片
