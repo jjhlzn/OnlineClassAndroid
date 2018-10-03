@@ -21,8 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
@@ -49,6 +48,7 @@ import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.search.SearchActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
@@ -473,6 +473,7 @@ public class MainPageFragment extends BaseFragment  {
                         mActivity.startActivity(i);
 
                     } else if (cell instanceof MainPageCourseCell) {
+
                         MainPageCourseCell courseCell = (MainPageCourseCell)cell;
                         Album album = courseCell.getCourse();
                         if (!album.isReady()) {
@@ -480,13 +481,16 @@ public class MainPageFragment extends BaseFragment  {
                             return;
                         }
 
-                        mLoading.show("");
+                        ((BottomTabLayoutActivity)(getActivity())).switchToZhiboTab();
 
+                        /*
+                        mLoading.show("");
                         GetAlbumSongsRequest request = new GetAlbumSongsRequest();
                         request.setAlbum(album);
                         request.setPageIndex(0);
                         request.setPageSize(200);
                         new GetAlbumSongsTask().execute(request);
+                        */
                     }
                 }
             });
@@ -569,6 +573,7 @@ public class MainPageFragment extends BaseFragment  {
                 }
             }
         }
+
         public void refreshListView(Answer answer) {
             addAnswer(answer);
             mMainPageAdapter.notifyDataSetChanged();
@@ -702,7 +707,6 @@ public class MainPageFragment extends BaseFragment  {
             @Override
             protected void onPostExecute(GetAlbumSongsResponse resp) {
                 super.onPostExecute(resp);
-                //mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.finishRefresh();
                 if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
                     mLoading.hide();
@@ -725,7 +729,6 @@ public class MainPageFragment extends BaseFragment  {
 
                 if (resp.getResultSet().size() >= 1) {
                     LiveSong song = (LiveSong) resp.getResultSet().get(0);
-                    LogHelper.d(TAG, "mActivity: " + mActivity);
                     MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity.getApplicationContext());
                     if (!musicPlayer.isPlay(song)) {
                         musicPlayer.pause();
@@ -740,7 +743,6 @@ public class MainPageFragment extends BaseFragment  {
                     Utils.showErrorMessage(mActivity, "服务端出错");
                     return;
                 }
-
             }
 
         }

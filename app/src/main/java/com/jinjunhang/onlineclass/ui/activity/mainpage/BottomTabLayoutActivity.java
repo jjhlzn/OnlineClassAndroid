@@ -53,6 +53,7 @@ import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.CourseListFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
+import com.jinjunhang.onlineclass.ui.fragment.album.NewLiveSongFragment;
 import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.fragment.ShopWebBrowserFragment;
@@ -76,7 +77,6 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
-//import qiu.niorgai.StatusBarCompat;
 
 /**
  * Created by jinjunhang on 2018/3/29.
@@ -94,10 +94,8 @@ public class BottomTabLayoutActivity extends BaseActivity {
     private boolean isPopupAdShow = false;
     private Button closeBtn;
 
-
     @Override
     protected void setContentView() {
-        //supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_main_tablayout);
     }
 
@@ -138,9 +136,7 @@ public class BottomTabLayoutActivity extends BaseActivity {
         if (isPopupAdShow && closeBtn != null) {
             isPopupAdShow = false;
             closeBtn.performClick();
-
         }
-
     }
 
 
@@ -220,7 +216,6 @@ public class BottomTabLayoutActivity extends BaseActivity {
             }
         });
 
-        // 提供自定义的布局添加Tab
         for(int i=0;i<5;i++){
             mTabLayout.addTab(mTabLayout.newTab().setCustomView(DataGenerator.getTabView(this,i)));
         }
@@ -228,6 +223,10 @@ public class BottomTabLayoutActivity extends BaseActivity {
 
     }
 
+    public void switchToZhiboTab() {
+        TabLayout.Tab tab = mTabLayout.getTabAt(2);
+        tab.select();
+    }
 
     public Fragment getCurrentFragment() {
         return mFragmensts[mViewPager.getCurrentItem()];
@@ -247,6 +246,9 @@ public class BottomTabLayoutActivity extends BaseActivity {
 
         }
         mFragmensts[position].updateMusicBtnState();
+        if (position == 2) {
+            ((NewLiveSongFragment)mFragmensts[position]).fetchData();
+        }
 
     }
 
@@ -292,10 +294,7 @@ public class BottomTabLayoutActivity extends BaseActivity {
                 frag1.setArguments(args);
                 fragments[1] = frag1;
 
-
-                fragments[2] = CourseListFragment.class.newInstance();
-
-
+                fragments[2] = NewLiveSongFragment.class.newInstance();
 
                 ShopWebBrowserFragment frag3 = new ShopWebBrowserFragment();
                 Bundle args3 = new Bundle();

@@ -4,19 +4,24 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/transparent">
-<!-- android:scrollbars="none" -->
+
+
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:descendantFocusability="blocksDescendants">
 
             <include layout="@layout/new_player_view_header" android:id="@+id/header"
                      android:layout_width="match_parent"
+                     android:background="@color/white"
                      android:layout_height="224dp" />
 
             <include layout="@layout/new_player_buttons" android:id="@+id/buttons"
@@ -24,18 +29,17 @@
                      android:layout_height="60dp"
                 android:layout_below="@+id/header"/>
 
-            <android.support.v4.view.ViewPager
+            <com.jinjunhang.onlineclass.ui.lib.MyListView
                 android:layout_below="@+id/buttons"
-                android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentBottom="true">
-            </android.support.v4.view.ViewPager>
+                android:id="@+id/listView"
+                android:layout_marginBottom="55dp">
+                android:background="@color/white">
+            </com.jinjunhang.onlineclass.ui.lib.MyListView>
 
 
         </RelativeLayout>
-
-
 
 
     </ScrollView>

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
@@ -23,15 +24,14 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.cell.player.CourseOverViewCell;
 import com.jinjunhang.onlineclass.ui.cell.player.NewCommentCell;
 import com.jinjunhang.onlineclass.ui.cell.player.NewCommentHeaderCell;
-import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
 import com.jinjunhang.player.MusicPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseOverviewFragment extends BaseFragment {
-
+public class CourseOverviewView {
+    private static final String TAG = LogHelper.makeLogTag(CourseOverviewView.class);
     public final static int MAX_COMMENT_COUNT = 10;
 
     private MyListAdapter mListAdapter;
@@ -41,35 +41,42 @@ public class CourseOverviewFragment extends BaseFragment {
     public NewLiveSongFragment mSongFragment;
     private ChatManager mChatManager;
     private MusicPlayer mMusicPlayer;
+    private Activity mActivity;
 
     public void setChatManager(ChatManager chatManager) {
         mChatManager = chatManager;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mMusicPlayer = MusicPlayer.getInstance(getActivity());
-        View v = inflater.inflate(R.layout.activity_fragment_listview, container, false);
+    public CourseOverviewView(Activity activity, ListView listView) {
+        this.mActivity = activity;
+        mMusicPlayer = MusicPlayer.getInstance(mActivity);
+        this.mListView = listView;
+        mListView.setDividerHeight(0);
+        mListView.setDivider(null);
+    }
 
-        mListView = (ListView) v.findViewById(R.id.listView);
+    /*
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+       // View v = inflater.inflate(R.layout.activity_fragment_listview, container, false);
+        mListView = v.findViewById(R.id.listView);
 
         //去掉列表的分割线
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
+        return v;
+    } */
 
-        mCells.add(new CourseOverViewCell(getActivity(), new Course(), mSongFragment));
-        mCells.add(new NewCommentHeaderCell(getActivity()));
+    public void fetchData() {
+        mCells.add(new CourseOverViewCell(mActivity, new Course(), mSongFragment));
+        mCells.add(new NewCommentHeaderCell(mActivity));
 
-        mListAdapter = new MyListAdapter(getActivity(), mCells);
+        mListAdapter = new MyListAdapter(mActivity, mCells);
         mListView.setAdapter(mListAdapter);
-
         if (mSongFragment != null)
-             mSongFragment.resetViewPagerHeight(0);
-
+            mSongFragment.resetViewPagerHeight(0);
         mChatManager.loadComments();
         new GetCourseInfoTask().execute();
-        return v;
     }
 
     public void setCommentsView(List<Comment> comments) {
@@ -79,16 +86,15 @@ public class CourseOverviewFragment extends BaseFragment {
 
     private void setCommentsView0(List<ListViewCell> cells) {
         for (Comment comment : mComments) {
-            cells.add(new NewCommentCell(getActivity(), comment));
+            cells.add(new NewCommentCell(mActivity, comment));
         }
         mListAdapter.setCells(cells);
         mListAdapter.notifyDataSetChanged();
-        if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
-            mSongFragment.resetViewPagerHeight(0);
+        //if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
+        //    mSongFragment.resetViewPagerHeight(0);
     }
 
     public void newCommentHanlder(Comment comment) {
-        //shiftComments();
         mComments.add(0, comment);
         if (mComments.size() > MAX_COMMENT_COUNT) {
             mComments.remove(mComments.size() -1);
@@ -106,7 +112,6 @@ public class CourseOverviewFragment extends BaseFragment {
 
         public void setCells(List<ListViewCell> cells) {
             mViewCells = cells;
-
         }
 
         public MyListAdapter(Activity activity, List<ListViewCell> cells) {
@@ -138,12 +143,8 @@ public class CourseOverviewFragment extends BaseFragment {
 
     private class GetCourseInfoTask extends AsyncTask<Void, Void, GetCourseInfoResponse> {
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected GetCourseInfoResponse doInBackground(Void... params) {
+            LogHelper.d(TAG , "GetCourseInfoTask called");
             GetCourseInfoRequest req = new GetCourseInfoRequest();
             Song song = mMusicPlayer.getCurrentPlaySong();
             req.setId(song.getId());
@@ -160,8 +161,8 @@ public class CourseOverviewFragment extends BaseFragment {
             CourseOverViewCell cell = (CourseOverViewCell) mListView.getItemAtPosition(0);
             cell.setCourse(course);
             mListAdapter.notifyDataSetChanged();
-            if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
-                mSongFragment.resetViewPagerHeight(0);
+            //if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
+              //  mSongFragment.resetViewPagerHeight(0);
         }
     }
 

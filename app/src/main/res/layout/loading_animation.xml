@@ -17,17 +17,19 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true">
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/loadingview_border">
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#dc7d7b7b"
+                    android:background="@drawable/loadingview_border"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+
                     android:gravity="bottom|center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -49,7 +51,7 @@
                             android:layout_marginTop="-10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:indicator="BallSpinFadeLoader"
+                            app:indicator="LineSpinFadeLoader"
                             android:layout_centerVertical="true"
                             android:layout_centerHorizontal="true"
                             />

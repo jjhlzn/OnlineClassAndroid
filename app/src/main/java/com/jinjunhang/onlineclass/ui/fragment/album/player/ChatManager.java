@@ -27,7 +27,7 @@ import com.jinjunhang.onlineclass.service.GetLiveCommentsRequest;
 import com.jinjunhang.onlineclass.service.GetLiveCommentsResponse;
 import com.jinjunhang.onlineclass.service.JoinRoomRequest;
 import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
-import com.jinjunhang.onlineclass.ui.fragment.album.CourseOverviewFragment;
+//import com.jinjunhang.onlineclass.ui.fragment.album.CourseOverviewFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.NewLiveSongFragment;
 import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
 import com.jinjunhang.player.MusicPlayer;

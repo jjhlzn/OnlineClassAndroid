@@ -1,7 +1,6 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -16,68 +15,48 @@ import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer.ExoPlayer;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.framework.lib.MyEmojiParse;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LiveSong;
-import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
-import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
+import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetLiveListenerRequest;
 import com.jinjunhang.onlineclass.service.GetLiveListenerResponse;
-import com.jinjunhang.onlineclass.service.JoinRoomRequest;
-import com.jinjunhang.onlineclass.service.SendLiveCommentRequest;
-import com.jinjunhang.onlineclass.service.SendLiveCommentResponse;
+import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
+import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
-import com.jinjunhang.onlineclass.ui.fragment.album.player.SendLiveCommentTask;
-import com.jinjunhang.onlineclass.ui.lib.EmojiKeyboard;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import io.socket.client.Ack;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 /**
  * Created by jjh on 2016-7-2.
@@ -89,24 +68,20 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     private boolean mInited;
     protected MusicPlayer mMusicPlayer;
 
+    //private LoadingAnimation mLoadingView;
     private ImageButton mPlayButton;
-
-    private ViewPager mViewPager;
     private Toolbar mToolbar;
-    private BaseFragment[] mFragmensts;
-    private MyPagerAdapter mMyPagerAdapter;
     private Button couseOverViewBtn, signUpBtn;
     private TextView mListenerTextView;
     private TextView mPlayTextView;
     private ImageView mCourseImage;
-    public int getCurrentSelectPage() {
-        return mViewPager.getCurrentItem();
-    }
-
+    private CourseOverviewView mCourseOverviewView;
 
     private ChatManager mChatManager;
-
     protected ShareManager mShareManager;
+
+    private int lastPlayerState = ExoPlayer.STATE_IDLE;
+    private boolean hasSeekTo = false;
 
     //定时获取评论、回复播放
     private static final long CHAT_UPDATE_INTERNAL = 10000;
@@ -151,30 +126,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         }
     }
 
-    private  class GetLiveListenerTask extends AsyncTask<Void ,Void, GetLiveListenerResponse> {
-        @Override
-        protected GetLiveListenerResponse doInBackground(Void... params) {
-            GetLiveListenerRequest request = new GetLiveListenerRequest();
-            request.setSong(mMusicPlayer.getCurrentPlaySong());
-            return new BasicService().sendRequest(request);
-        }
-
-        @Override
-        protected void onPostExecute(GetLiveListenerResponse resp) {
-            super.onPostExecute(resp);
-            if (!resp.isSuccess()) {
-                return;
-            }
-
-            int listenerCount = resp.getListernerCount();
-            LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
-            if (song != null) {
-                song.setListenPeople(listenerCount+"");
-            }
-            mListenerTextView.setText(song.getListenPeople());
-        }
-    }
-
     @Override
     protected boolean isNeedTopPadding() {
         return false;
@@ -189,25 +140,24 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
-        mChatManager = new ChatManager(NewLiveSongFragment.this);
 
-        LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
+        mView = super.onCreateView(inflater, container, savedInstanceState);
 
-        final View v = super.onCreateView(inflater, container, savedInstanceState);
+        ListView childListView = mView.findViewById(R.id.listView);
+        mCourseOverviewView = new CourseOverviewView(getActivity(), childListView);
 
-        final ScrollView scrollView = (ScrollView) v.findViewById(R.id.scrollView);
-        mListenerTextView = (TextView)v.findViewById(R.id.listenerCount);
-        mListenerTextView.setText(song.getListenPeople());
-        mPlayTextView = (TextView)v.findViewById(R.id.playTextView);
-        mCourseImage = (ImageView)v.findViewById(R.id.courseImage);
+        //mLoadingView = new LoadingAnimation(getActivity());
+        final ScrollView scrollView = mView.findViewById(R.id.scrollView);
+        mListenerTextView = mView.findViewById(R.id.listenerCount);
+
+        mPlayTextView = mView.findViewById(R.id.playTextView);
+        mCourseImage = mView.findViewById(R.id.courseImage);
 
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
                 int scrollY = scrollView.getScrollY(); // For ScrollView
-                int scrollX = scrollView.getScrollX(); // For HorizontalScrollView
 
-               // LogHelper.d(TAG, "scrollY = " + scrollY);
                 int height = 72;
                 float alpha = 0;
                 alpha = (float)scrollY / height;
@@ -221,29 +171,43 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             }
         });
 
+        //把除了分享的toolbar设置好
+        mToolbar = mView.findViewById(R.id.toolbar);
+        setToolBar();
+
+        if (!isInMainActivity()) {
+            fetchData();
+        }
+
+        return mView;
+    }
+
+    private void setViewWithSongInfo(LiveSong song) {
+        mChatManager = new ChatManager(NewLiveSongFragment.this);
+        mChatManager.initChat();
+
         Glide.with(this)
                 .load(song.getImageUrl())
                 .into(mCourseImage);
 
+        mListenerTextView.setText(song.getListenPeople());
 
-        mShareManager = new ShareManager((AppCompatActivity)getActivity(), v);
+        mShareManager = new ShareManager((AppCompatActivity)getActivity(), mView);
         mShareManager.setShareTitle(song.getShareTitle());
         mShareManager.setShareUrl(song.getShareUrl());
         mShareManager.setUseQrCodeImage(false);
 
-        mToolbar = v.findViewById(R.id.toolbar);
         setToolBar();
 
-        mPlayButton  = (ImageButton)v.findViewById(R.id.playBtn);
+        mPlayButton = mView.findViewById(R.id.playBtn);
 
-        couseOverViewBtn = (Button)v.findViewById(R.id.courseOverviewBtn);
-        signUpBtn = (Button)v.findViewById(R.id.SignupBtn);
-
+        couseOverViewBtn = mView.findViewById(R.id.courseOverviewBtn);
+        signUpBtn = mView.findViewById(R.id.SignupBtn);
 
         couseOverViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                buttonClicked(0);
+                //buttonClicked(0);
             }
         });
 
@@ -257,80 +221,90 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             }
         });
 
+        mCourseOverviewView.setChatManager(mChatManager);
+        mCourseOverviewView.fetchData();
 
-        mFragmensts = DataGenerator.getFragments(getActivity(), "", this);
-        mViewPager = (ViewPager)v.findViewById(R.id.viewpager);
-        mMyPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
-        mViewPager.setAdapter(mMyPagerAdapter);
+        setPlayerView(mView);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                buttonClicked(position);
-                resetViewPagerHeight(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        buttonClicked(0);
-        setPlayerView(v);
-
-
-        mChatManager.setBottomCommentView(v);
+        mChatManager.setBottomCommentView(mView);
         //mChatManager.loadComments();
 
         scheduleChatUpdate();
-
-        mInited = true;
-        return v;
     }
 
+    public void fetchData() {
 
+        if (getUserVisibleHint() && !mInited) {
+            LogHelper.d(TAG, "fetch data");
+            LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
+            if (song == null) {
+                loadSongInfo();
+            } else {
+                setViewWithSongInfo(song);
+            }
+            mInited = true;
+        }
+    }
+
+    private void loadSongInfo() {
+        new GetZhuanLanAndTuijianCoursesTask().execute();
+    }
+
+    private boolean isInMainActivity() {
+        if (getActivity() instanceof BottomTabLayoutActivity) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSetToolBarCalled = false;
     protected  void setToolBar() {
+
         ImageButton backBtn = mToolbar.findViewById(R.id.actionbar_back_button);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getActivity().onBackPressed();
                 getActivity().finish();
             }
         });
+        if (isInMainActivity()) {
+            backBtn.setVisibility(View.INVISIBLE);
+        } else {
+            backBtn.setVisibility(View.VISIBLE);
+        }
 
-        ImageButton shareBtn = mToolbar.findViewById(R.id.actionbar_right_button);
-        final ViewGroup shareView =  mView.findViewById(R.id.share_view);
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shareView.setVisibility(View.VISIBLE);
+        if (mInited) {
+            ImageButton shareBtn = mToolbar.findViewById(R.id.actionbar_right_button);
+            final ViewGroup shareView = mView.findViewById(R.id.share_view);
+            shareBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shareView.setVisibility(View.VISIBLE);
+                }
+            });
+
+            View overlay = mView.findViewById(R.id.overlay_bg);
+            overlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //shareView.setVisibility(View.INVISIBLE);
+                }
+            });
+            //这段代码不能删除，否则按在空白的地方会把
+            mView.findViewById(R.id.share_menu).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+        else {
+            if (!isSetToolBarCalled) {
+                ImmersionBar.setTitleBar(getActivity(), mToolbar);
+                ImmersionBar.with(this).transparentStatusBar().init();
+                isSetToolBarCalled = true;
             }
-        });
-
-        View overlay = mView.findViewById(R.id.overlay_bg);
-        overlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //shareView.setVisibility(View.INVISIBLE);
-            }
-        });
-        //这段代码不能删除，否则按在空白的地方会把
-        mView.findViewById(R.id.share_menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        //mImmersionBar = ImmersionBar.with(this);
-        //mImmersionBar.statusBarColorTransformEnable(false).init();
-        ImmersionBar.setTitleBar(getActivity(), mToolbar);
-        ImmersionBar.with(this).transparentStatusBar().init();
+        }
 
         updateToolBar(0);
     }
@@ -348,8 +322,10 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         ImageButton backButton = mToolbar.findViewById(R.id.actionbar_back_button);
         ImageButton shareButton = mToolbar.findViewById(R.id.actionbar_right_button);
 
-        textView.setText(mMusicPlayer.getCurrentPlaySong().getName());
-
+        if (mMusicPlayer.getCurrentPlaySong() != null)
+            textView.setText(mMusicPlayer.getCurrentPlaySong().getName());
+        else
+            textView.setText("");
 
         if (alpha > 0.7) {
             textView.setTextColor(getResources().getColor(R.color.black));
@@ -368,14 +344,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         } else {
             ImmersionBar.with(this).statusBarDarkFont(false).init();
         }
-    }
-
-
-
-    private void buttonClicked(int selectedIndex) {
-
-            mViewPager.setCurrentItem(0);
-
     }
 
     private void setPlayerView(View v) {
@@ -398,64 +366,24 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
 
+
     public void resetViewPagerHeight(int index) {
+        /*
         ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
         if (index == 0)
             params.height= ((CourseOverviewFragment)mFragmensts[index]).getListViewHeightBasedOnChildren();
         else
             params.height= ((BeforeCoursesFragment)mFragmensts[index]).getListViewHeightBasedOnChildren();
         LogHelper.d(TAG, "set viewpager height = " + params.height);
-        mViewPager.setLayoutParams(params);
+        mViewPager.setLayoutParams(params); */
     }
-
-    public class MyPagerAdapter extends FragmentPagerAdapter {
-
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmensts[position];
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmensts.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "";
-        }
-    }
-
-
-    public static class DataGenerator {
-
-        public static BaseFragment[] getFragments(Activity activity, String from, NewLiveSongFragment fragment){
-            BaseFragment fragments[] = new BaseFragment[1];
-            try {
-
-                fragments[0] = CourseOverviewFragment.class.newInstance();
-                ((CourseOverviewFragment)fragments[0]).mSongFragment = fragment;
-                ((CourseOverviewFragment)fragments[0]).setChatManager(fragment.mChatManager);
-                //fragments[1] = BeforeCoursesFragment.class.newInstance();
-                //((BeforeCoursesFragment)fragments[1]).mSongFragment = fragment;
-            }catch (Exception  ex) {
-                LogHelper.e("DataGenerator", ex);
-            }
-            return fragments;
-        }
-    }
-
 
 
     @Override
     public void onResume() {
         super.onResume();
-        mChatManager.initChat();
-        //mMusicPlayer.addMusicPlayerControlListener(this);
+        if (mChatManager != null)
+            mChatManager.initChat();
     }
 
     @Override
@@ -467,10 +395,11 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mChatManager.releaseChat();
-        stopChatUpdate();
+        if (mChatManager != null) {
+            mChatManager.releaseChat();
+            stopChatUpdate();
+        }
     }
-
 
     protected void updatePlayButton() {
         LogHelper.d(TAG, "updatePlayButton called, state = " + mMusicPlayer.getState());
@@ -504,8 +433,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
     }
 
-    private int lastPlayerState = ExoPlayer.STATE_IDLE;
-    private boolean hasSeekTo = false;
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (!mInited)
@@ -530,7 +457,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((CourseOverviewFragment)mFragmensts[0]).newCommentHanlder(comment);
+                mCourseOverviewView.newCommentHanlder(comment);
             }
         });
     }
@@ -539,14 +466,121 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((CourseOverviewFragment)mFragmensts[0]).newCommentHanlder(comment);
+                mCourseOverviewView.newCommentHanlder(comment);
             }
         });
 
     }
 
     public void getCommentsHandler(List<Comment> comments) {
-        ((CourseOverviewFragment)mFragmensts[0]).setCommentsView(comments);
+        mCourseOverviewView.setCommentsView(comments);
+    }
+
+    private  class GetLiveListenerTask extends AsyncTask<Void ,Void, GetLiveListenerResponse> {
+        @Override
+        protected GetLiveListenerResponse doInBackground(Void... params) {
+            GetLiveListenerRequest request = new GetLiveListenerRequest();
+            request.setSong(mMusicPlayer.getCurrentPlaySong());
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetLiveListenerResponse resp) {
+            super.onPostExecute(resp);
+            if (!resp.isSuccess()) {
+                return;
+            }
+
+            int listenerCount = resp.getListernerCount();
+            LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
+            if (song != null) {
+                song.setListenPeople(listenerCount+"");
+            }
+            mListenerTextView.setText(song.getListenPeople());
+        }
+    }
+
+    public class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
+
+        private GetAlbumSongsRequest request;
+
+        @Override
+        protected GetAlbumSongsResponse doInBackground(GetAlbumSongsRequest... params) {
+            //mLoadingView.show("");
+            request = params[0];
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(GetAlbumSongsResponse resp) {
+            super.onPostExecute(resp);
+            if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
+                //mLoadingView.hide();
+                Utils.showVipBuyMessage(getActivity(), resp.getErrorMessage());
+                return;
+            }
+
+            if (resp.getStatus() == ServerResponse.NOT_PAY_COURSE_NO_PERMISSION) {
+                //mLoadingView.hide();
+                Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
+                return;
+            }
+
+            if (!resp.isSuccess()) {
+               // mLoadingView.hide();
+                LogHelper.e(TAG, resp.getErrorMessage());
+                Utils.showErrorMessage(getActivity(), resp.getErrorMessage());
+                return;
+            }
+
+            if (resp.getResultSet().size() >= 1) {
+                LiveSong song = (LiveSong) resp.getResultSet().get(0);
+                MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
+                if (!musicPlayer.isPlay(song)) {
+                    musicPlayer.pause();
+                    musicPlayer.play(resp.getResultSet(), 0);
+                    //mNotificationManager.display();
+                }
+                setViewWithSongInfo(song);
+                return;
+            } else {
+               // mLoadingView.hide();
+                Utils.showErrorMessage(getActivity(), "服务端出错");
+                return;
+            }
+        }
+
+    }
+
+    private class GetZhuanLanAndTuijianCoursesTask extends AsyncTask<Void, Void, GetZhuanLanAndTuijianCourseResponse> {
+
+        @Override
+        protected GetZhuanLanAndTuijianCourseResponse doInBackground(Void... voids) {
+            GetZhuanLanAndTuijianCourseRequest request = new GetZhuanLanAndTuijianCourseRequest();
+            return new BasicService().sendRequest(request);
+        }
+
+        @Override
+        protected void onPostExecute(final GetZhuanLanAndTuijianCourseResponse response) {
+            super.onPostExecute(response);
+            //mSwipeRefreshLayout.setRefreshing(false);
+
+            if (!response.isSuccess()) {
+                LogHelper.e(TAG, response.getErrorMessage());
+                return;
+            }
+
+            List<Album> courses = response.getCourses();
+            if (courses.size() > 0) {
+                GetAlbumSongsRequest request = new GetAlbumSongsRequest();
+
+                request.setAlbum(courses.get(0));
+                request.setAlbum(courses.get(0));
+                request.setPageIndex(0);
+                request.setPageSize(10);
+                new GetAlbumSongsTask().execute(request);
+            }
+        }
     }
 }
 

@@ -86,8 +86,8 @@ public class BeforeCoursesFragment extends BaseFragment {
         for (Course course : mCourses) {
             mCells.add(new BeforeCourseItemCell(getActivity(), course));
         }
-        if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 1)
-            mSongFragment.resetViewPagerHeight(1);
+        //if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 1)
+          //  mSongFragment.resetViewPagerHeight(1);
     }
 
     private class MyListAdapter extends ArrayAdapter<ListViewCell> {

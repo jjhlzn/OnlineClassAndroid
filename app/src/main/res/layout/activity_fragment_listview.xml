@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/fragmentContainer"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-<!--
-        <LinearLayout
-            android:id="@+id/frag_1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:visibility="visible"
-            android:background="@color/white"
-            android:layout_height="match_parent"></LinearLayout> -->
+              android:layout_height="match_parent"
+              android:background="@color/white">
+
 
 
         <com.jinjunhang.onlineclass.ui.lib.MyListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView"
-            android:background="@color/fragment_background">
+            android:background="@color/white">
         </com.jinjunhang.onlineclass.ui.lib.MyListView>
 
 </LinearLayout>
