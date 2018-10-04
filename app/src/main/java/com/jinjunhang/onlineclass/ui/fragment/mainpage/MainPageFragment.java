@@ -165,7 +165,6 @@ public class MainPageFragment extends BaseFragment  {
     @Override
     public void updateMusicBtnState() {
         if (rongziPage != null) {
-            LogHelper.d(TAG , "toolbar alpha = " + rongziPage.mToolbarAlpha);
             Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
         }
     }
@@ -203,6 +202,12 @@ public class MainPageFragment extends BaseFragment  {
             rongziPage.onStopHandler();
     }
 
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if (getUserVisibleHint()) {
+            Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

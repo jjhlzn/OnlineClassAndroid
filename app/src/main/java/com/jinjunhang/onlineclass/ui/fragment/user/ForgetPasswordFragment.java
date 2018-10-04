@@ -56,18 +56,24 @@ public class ForgetPasswordFragment extends BaseFragment {
         }
     };
 
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_forgetpassword;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_forgetpassword, container, false);
+        mView = super.onCreateView(inflater, container, savedInstanceState);
         mLoading = new LoadingAnimation(getActivity());
 
-        Button singupButton = (Button) v.findViewById(R.id.submit_button);
-        mGetCheckCodeButton = (Button) v.findViewById(R.id.get_checkcode_button);
-        mCheckCodeButtonMessage = (TextView) v.findViewById(R.id.get_checkcode_message);
-        final EditText phoneField = (EditText) v.findViewById(R.id.forget_phone);
-        final EditText checkCodeField = (EditText) v.findViewById(R.id.forget_checkcode);
-        final EditText passwordField = (EditText) v.findViewById(R.id.forget_password);
+        Button singupButton = (Button) mView.findViewById(R.id.submit_button);
+        mGetCheckCodeButton = (Button) mView.findViewById(R.id.get_checkcode_button);
+        mCheckCodeButtonMessage = (TextView) mView.findViewById(R.id.get_checkcode_message);
+        final EditText phoneField = (EditText) mView.findViewById(R.id.forget_phone);
+        final EditText checkCodeField = (EditText) mView.findViewById(R.id.forget_checkcode);
+        final EditText passwordField = (EditText) mView.findViewById(R.id.forget_password);
 
         singupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,9 +126,9 @@ public class ForgetPasswordFragment extends BaseFragment {
             }
         });
 
-        Utils.setupUI4HideKeybaord(v, getActivity());
+        Utils.setupUI4HideKeybaord(mView, getActivity());
 
-        return v;
+        return mView;
     }
 
     private void getCheckCodeButtonPressed() {

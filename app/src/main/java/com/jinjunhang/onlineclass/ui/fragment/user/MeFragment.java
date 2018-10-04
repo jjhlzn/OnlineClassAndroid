@@ -129,28 +129,6 @@ public class MeFragment extends BaseFragment  {
         return false;
     }
 
-    @Override
-    public void changeActionBar() {
-
-        /*
-        AppCompatActivity activity = (AppCompatActivity)getActivity();
-        if (activity != null) {
-            activity.getSupportActionBar().show();
-            activity.getSupportActionBar().setElevation(0);
-            activity.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            final View customView = activity.getLayoutInflater().inflate(R.layout.toolbar_courselist, null);
-            activity.getSupportActionBar().setCustomView(customView);
-            Toolbar parent = (Toolbar) customView.getParent();
-
-            parent.setContentInsetsAbsolute(0, 0);
-            TextView text = (TextView)customView.findViewById(R.id.actionbar_text);
-            text.setText("我的");
-
-            setLightStatusBar(customView, activity);
-            Utils.setNavigationBarMusicButton(activity);
-        }
-        */
-    }
 
     @Override
     protected boolean isNeedTopPadding() {
@@ -251,10 +229,10 @@ public class MeFragment extends BaseFragment  {
            new GetUserStatDataTask().execute();
         }
 
-        //mLoading.show("");
-
         ImmersionBar.setTitleBar(getActivity(), mToolbar);
-        ImmersionBar.with(this).statusBarDarkFont(true).init();
+        if (getUserVisibleHint()) {
+            ImmersionBar.with(this).statusBarDarkFont(true).init();
+        }
         return v;
     }
 

@@ -137,7 +137,6 @@ public class SearchFragment extends BaseFragment {
                 }
             });
 
-            setLightStatusBar(customView, activity);
         }
     }
 

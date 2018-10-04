@@ -125,7 +125,10 @@ public class ShopWebBrowserFragment extends BaseFragment {
         openURL();
 
         ImmersionBar.setTitleBar(getActivity(), mToolbar);
-        ImmersionBar.with(this).statusBarDarkFont(true).init();
+
+        if (getUserVisibleHint()) {
+            ImmersionBar.with(this).statusBarDarkFont(true).init();
+        }
 
         return v;
     }

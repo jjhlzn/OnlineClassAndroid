@@ -1,20 +1,16 @@
 package com.jinjunhang.onlineclass.ui.fragment.album;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +45,7 @@ import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.player.ChatManager;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
+import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
 
@@ -95,6 +92,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             updateChat();
         }
     };
+    private ExoPlayerNotificationManager mNotificationManager;
 
     private float mLastAlpha = 0;
 
@@ -140,6 +138,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
+        mNotificationManager =  ExoPlayerNotificationManager.getInstance(getActivity());
 
         mView = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -182,12 +181,19 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         return mView;
     }
 
+    @Override
+    public void updateMusicBtnState() {
+        Utils.updateNavigationBarButton(getActivity(), mLastAlpha);
+        updateToolBar(mLastAlpha);
+    }
+
     private void setViewWithSongInfo(LiveSong song) {
         mChatManager = new ChatManager(NewLiveSongFragment.this);
         mChatManager.initChat();
 
         Glide.with(this)
                 .load(song.getImageUrl())
+                .placeholder(R.drawable.rect_placeholder)
                 .into(mCourseImage);
 
         mListenerTextView.setText(song.getListenPeople());
@@ -230,18 +236,23 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         //mChatManager.loadComments();
 
         scheduleChatUpdate();
+        updatePlayButton();
+
     }
 
     public void fetchData() {
 
         if (getUserVisibleHint() && !mInited) {
+            ImmersionBar.with(this).statusBarDarkFont(false).init();
             LogHelper.d(TAG, "fetch data");
             LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
             if (song == null) {
                 loadSongInfo();
             } else {
                 setViewWithSongInfo(song);
+
             }
+
             mInited = true;
         }
     }
@@ -302,6 +313,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             if (!isSetToolBarCalled) {
                 ImmersionBar.setTitleBar(getActivity(), mToolbar);
                 ImmersionBar.with(this).transparentStatusBar().init();
+                if (getUserVisibleHint()) {
+                    ImmersionBar.with(this).statusBarDarkFont(false).init();
+                }
                 isSetToolBarCalled = true;
             }
         }
@@ -366,19 +380,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
 
-
-    public void resetViewPagerHeight(int index) {
-        /*
-        ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
-        if (index == 0)
-            params.height= ((CourseOverviewFragment)mFragmensts[index]).getListViewHeightBasedOnChildren();
-        else
-            params.height= ((BeforeCoursesFragment)mFragmensts[index]).getListViewHeightBasedOnChildren();
-        LogHelper.d(TAG, "set viewpager height = " + params.height);
-        mViewPager.setLayoutParams(params); */
-    }
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -389,7 +390,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     @Override
     public void onStop() {
         super.onStop();
-        //mMusicPlayer.removeMusicPlayerControlListener();
     }
 
     @Override
@@ -404,6 +404,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     protected void updatePlayButton() {
         LogHelper.d(TAG, "updatePlayButton called, state = " + mMusicPlayer.getState());
 
+        if (mPlayButton == null)
+            return;
+
         int state = mMusicPlayer.getState();
         if (StatusHelper.isPlayingForUI(mMusicPlayer) ) {
             mPlayButton.setImageResource(R.drawable.icon_stop);
@@ -411,19 +414,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             mPlayButton.setImageResource(R.drawable.icon_play);
         }
 
-
         if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {
-            //mBufferCircle.setVisibility(View.VISIBLE);
-            //load_animations();
             mPlayTextView.setText("缓冲中");
         } else {
-            /*
-            if (mRotation != null) {
-                mRotation.cancel();
-            }
-            mBufferCircle.setAnimation(null);
-            mBufferCircle.setVisibility(View.INVISIBLE); */
-
             if (mMusicPlayer.isPlaying()) {
                 mPlayTextView.setText("播放中");
             } else {
@@ -435,8 +428,11 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (!mInited)
+        LogHelper.d(TAG, "onPlayerStateChanged called");
+        if (mPlayButton == null) {
             return;
+        }
+
         updatePlayButton();
 
         //TODO: 如何测试这段代码
@@ -539,7 +535,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
                 if (!musicPlayer.isPlay(song)) {
                     musicPlayer.pause();
                     musicPlayer.play(resp.getResultSet(), 0);
-                    //mNotificationManager.display();
+                    mNotificationManager.display();
                 }
                 setViewWithSongInfo(song);
                 return;

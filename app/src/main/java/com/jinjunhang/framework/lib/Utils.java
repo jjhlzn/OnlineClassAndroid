@@ -422,20 +422,20 @@ public class Utils {
         if (activity != null && activity instanceof AppCompatActivity) {
             GifImageView musicBtn = null;
             if (((AppCompatActivity)activity).getSupportActionBar() != null) {
-                LogHelper.d(TAG, "actionBar not null");
+                //LogHelper.d(TAG, "actionBar not null");
                 View v = ((AppCompatActivity) activity).getSupportActionBar().getCustomView();
                 musicBtn =  v.findViewById(R.id.musicBtn);
             }
 
             if (activity instanceof BottomTabLayoutActivity) {
                 Fragment frag = ((BottomTabLayoutActivity)activity).getCurrentFragment();
-                LogHelper.d(TAG, "frag = " + frag);
+                //LogHelper.d(TAG, "frag = " + frag);
                 Toolbar toolbar = ((BaseFragment)frag).getToolBar();
                 if (toolbar != null)
                     musicBtn = toolbar.findViewById(R.id.musicBtn);
 
             } else if (activity.findViewById(R.id.toolbar) != null) {
-                LogHelper.d(TAG, "toolbar not null");
+               // LogHelper.d(TAG, "toolbar not null");
                 musicBtn = activity.findViewById(R.id.toolbar).findViewById(R.id.musicBtn);
             } else if (activity instanceof SingleFragmentActivity) {
                 Fragment frag = ((SingleFragmentActivity)activity).getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
@@ -446,7 +446,7 @@ public class Utils {
                 }
             }
 
-            LogHelper.d(TAG, "musicBtn = " + musicBtn);
+            //LogHelper.d(TAG, "musicBtn = " + musicBtn);
 
             if (musicBtn != null) {
 
@@ -475,7 +475,7 @@ public class Utils {
                         LogHelper.d(TAG, "use white version");
                         musicBtn.setImageResource(R.drawable.music_static_white);
                     } else {
-                        LogHelper.d(TAG, "use black version");
+                        //LogHelper.d(TAG, "use black version");
                         musicBtn.setImageResource(R.drawable.music_static);
                     }
 

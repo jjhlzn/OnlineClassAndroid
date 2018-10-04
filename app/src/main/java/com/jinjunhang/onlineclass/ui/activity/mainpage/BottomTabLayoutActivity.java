@@ -242,8 +242,10 @@ public class BottomTabLayoutActivity extends BaseActivity {
 
         } else {
             ((MainPageFragment)mFragmensts[0]).stopBannerPlay();
-            ImmersionBar.with(this).statusBarDarkFont(true).init();
+        }
 
+        if (position != 0 && position != 2) {
+            ImmersionBar.with(this).statusBarDarkFont(true).init();
         }
         mFragmensts[position].updateMusicBtnState();
         if (position == 2) {

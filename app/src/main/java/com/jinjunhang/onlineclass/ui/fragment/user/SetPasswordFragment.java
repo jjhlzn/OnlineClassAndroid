@@ -31,15 +31,20 @@ public class SetPasswordFragment extends BaseFragment {
     private static final String TAG = LogHelper.makeLogTag(SetPasswordFragment.class);
     private LoadingAnimation mLoading;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_set_password;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater  inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_set_password, container, false);
+        mView =  super.onCreateView(inflater, container, savedInstanceState);
         mLoading = new LoadingAnimation(getActivity());
 
-        final EditText originPassword = (EditText) v.findViewById(R.id.origin_password);
-        final EditText newPassword = (EditText) v.findViewById(R.id.new_password);
-        final EditText repeatNewPassword = (EditText) v.findViewById(R.id.repeat_new_password);
+        final EditText originPassword = (EditText) mView.findViewById(R.id.origin_password);
+        final EditText newPassword = (EditText) mView.findViewById(R.id.new_password);
+        final EditText repeatNewPassword = (EditText) mView.findViewById(R.id.repeat_new_password);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +78,7 @@ public class SetPasswordFragment extends BaseFragment {
             }
         });
 
-        return v;
+        return mView;
     }
 
     private class SetPasswordTask extends AsyncTask<SetPasswordRequest, Void, SetPasswordResponse> {

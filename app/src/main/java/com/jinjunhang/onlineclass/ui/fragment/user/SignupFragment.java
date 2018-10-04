@@ -58,20 +58,25 @@ public class SignupFragment extends BaseFragment {
         }
     };
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_signup;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_signup, container, false);
+        mView = super.onCreateView(inflater, container, savedInstanceState);
         mLoading = new LoadingAnimation(getActivity());
 
-        Button singupButton = (Button) v.findViewById(R.id.singup_button);
-        mGetCheckCodeButton = (Button) v.findViewById(R.id.get_checkcode_button);
-        mCheckCodeButtonMessage = (TextView) v.findViewById(R.id.get_checkcode_message);
-        final EditText phoneField = (EditText) v.findViewById(R.id.signup_phone);
-        final EditText checkCodeField = (EditText) v.findViewById(R.id.signup_checkcode);
-        final EditText invitePhoneField = (EditText) v.findViewById(R.id.signup_invitePhone);
-        final EditText passwordField = (EditText) v.findViewById(R.id.signup_password);
-        Button showAgreementButton = (Button) v.findViewById(R.id.protocol_message);
+        Button singupButton = (Button) mView.findViewById(R.id.singup_button);
+        mGetCheckCodeButton = (Button) mView.findViewById(R.id.get_checkcode_button);
+        mCheckCodeButtonMessage = (TextView) mView.findViewById(R.id.get_checkcode_message);
+        final EditText phoneField = (EditText) mView.findViewById(R.id.signup_phone);
+        final EditText checkCodeField = (EditText) mView.findViewById(R.id.signup_checkcode);
+        final EditText invitePhoneField = (EditText) mView.findViewById(R.id.signup_invitePhone);
+        final EditText passwordField = (EditText) mView.findViewById(R.id.signup_password);
+        Button showAgreementButton = (Button) mView.findViewById(R.id.protocol_message);
 
         singupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +141,8 @@ public class SignupFragment extends BaseFragment {
             }
         });
 
-        Utils.setupUI4HideKeybaord(v, getActivity());
-        return v;
+        Utils.setupUI4HideKeybaord(mView, getActivity());
+        return mView;
     }
 
     private void getCheckCodeButtonPressed() {

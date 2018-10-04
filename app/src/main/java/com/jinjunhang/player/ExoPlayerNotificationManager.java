@@ -6,12 +6,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.NotificationCompat;
 //import android.support.v7.app.NotificationCompat;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
+import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
 import com.jinjunhang.framework.lib.LogHelper;
 
@@ -42,7 +44,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         this.mContext = context;
     }
 
-    /*
+
     private void addPlayPauseAction(NotificationCompat.Builder builder) {
         LogHelper.d(TAG, "updatePlayPauseAction");
         String label;
@@ -84,10 +86,10 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         icon = R.drawable.dateicon;
 
         builder.addAction(new NotificationCompat.Action(icon, label, pendingSwitchIntent));
-    } */
+    }
 
     public void display() {
-        /*
+
         final NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext);
 
         addPrevButton(notificationBuilder);
@@ -107,9 +109,10 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
             author = song.getAuthor();
         }
 
-
+        //NotificationCompat.MediaStyle;
         notificationBuilder
-                .setStyle(new NotificationCompat.MediaStyle())
+                //.setStyle(new NotificationCompat.s\.MediaStyle())
+                //.setStyle(n\)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setUsesChronometer(true)
@@ -131,16 +134,16 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         LogHelper.d(TAG, "imageUrl = " + fetchArtUrl);
         fetchBitmapFromURLAsync(fetchArtUrl, notificationBuilder);
 
-        */
+
     }
 
     private PendingIntent createContentIntent() {
-        Intent openUI = new Intent(mContext, SongActivity.class);
+        Intent openUI = new Intent(mContext, NewLiveSongActivity.class);
         openUI.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return PendingIntent.getActivity(mContext, 100, openUI, 0);
     }
 
-    /*
+
     private void fetchBitmapFromURLAsync(final String bitmapUrl,
                                          final NotificationCompat.Builder builder) {
 
@@ -155,7 +158,7 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
 
             }
         });
-    } */
+    }
 
 
     @Override

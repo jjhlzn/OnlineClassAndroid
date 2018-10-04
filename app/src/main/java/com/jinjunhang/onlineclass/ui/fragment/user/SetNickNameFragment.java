@@ -27,13 +27,18 @@ public class SetNickNameFragment extends BaseFragment {
 
     private LoadingAnimation mLoading;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_set_name_or_nickname;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_set_name_or_nickname, container, false);
+        mView = super.onCreateView(inflater, container, savedInstanceState);
         mLoading = new LoadingAnimation(getActivity());
 
-        final EditText textField = (EditText) v.findViewById(R.id.textField);
+        final EditText textField = (EditText) mView.findViewById(R.id.textField);
         textField.setText(LoginUserDao.getInstance(getActivity()).get().getNickName()
         );
 
@@ -54,7 +59,7 @@ public class SetNickNameFragment extends BaseFragment {
             }
         });
 
-        return v;
+        return mView;
     }
 
     private class SetNickNameTask extends AsyncTask<SetNickNameRequest, Void, SetNickNameResponse> {

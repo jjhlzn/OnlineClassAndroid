@@ -111,7 +111,6 @@ public class LaunchActivity extends BaseActivity {
 
         registerXinGeAndGoToNextActivity();
 
-        //NBSAppAgent.setLicenseKey("a200c16a118f4f99891ab5645fa2a13d").withLocationServiceEnabled(true).start(this.getApplicationContext());
         goToNextActivityHandler.postDelayed(goToNextActivityTask, 3000);
 
         ImmersionBar.with(this).statusBarDarkFont(true).init();
@@ -273,6 +272,8 @@ public class LaunchActivity extends BaseActivity {
                 advTipText.setVisibility(View.VISIBLE);
 
                 scheduleSkipAdv();
+
+                ImmersionBar.with(LaunchActivity.this).statusBarDarkFont(false).init();
             }
         }
     }

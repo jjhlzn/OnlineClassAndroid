@@ -37,8 +37,8 @@ public class MusicPlayer implements ExoPlayer.Listener {
             instance = new MusicPlayer();
             instance.context = context;
             instance.player = new DemoPlayer();
-            instance.player.addListener(instance);
-            instance.player.addListener(ExoPlayerNotificationManager.getInstance(context));
+            instance.addListener(instance);
+            instance.addListener(ExoPlayerNotificationManager.getInstance(context));
         }
         return instance;
     }
@@ -74,12 +74,17 @@ public class MusicPlayer implements ExoPlayer.Listener {
         }
     }
 
+    private List<ExoPlayer.Listener> mListeners = new ArrayList<>();
+
     public void addListener(ExoPlayer.Listener listener) {
         player.addListener(listener);
+        mListeners.add(listener);
     }
 
     public void removeListener(ExoPlayer.Listener listener) {
         player.removeListener(listener);
+        mListeners.remove(listener);
+
     }
 
 
@@ -228,8 +233,11 @@ public class MusicPlayer implements ExoPlayer.Listener {
                 LogHelper.d(TAG, "recreate player");
                 player.release();
                 player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
-                player.addListener(this);
-                player.addListener(ExoPlayerNotificationManager.getInstance(context));
+
+                //player.addListener(ExoPlayerNotificationManager.getInstance(context));
+                for (ExoPlayer.Listener item : mListeners ) {
+                    player.addListener(item);
+                }
             }
         }
         lastAlbum = song.getAlbum();

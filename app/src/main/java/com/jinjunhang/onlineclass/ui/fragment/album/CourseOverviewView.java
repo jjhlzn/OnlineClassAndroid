@@ -2,9 +2,6 @@ package com.jinjunhang.onlineclass.ui.fragment.album;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -14,7 +11,6 @@ import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
-import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.Course;
 import com.jinjunhang.onlineclass.model.Song;
@@ -73,8 +69,6 @@ public class CourseOverviewView {
 
         mListAdapter = new MyListAdapter(mActivity, mCells);
         mListView.setAdapter(mListAdapter);
-        if (mSongFragment != null)
-            mSongFragment.resetViewPagerHeight(0);
         mChatManager.loadComments();
         new GetCourseInfoTask().execute();
     }

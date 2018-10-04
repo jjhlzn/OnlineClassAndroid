@@ -67,42 +67,61 @@ public class QuestionCell extends BaseListViewCell {
         return updateView();
     }
 
+    private void setView() {
+
+
+        TextView userNameTV = (TextView) view.findViewById(R.id.comment_username);
+        TextView dateTV = (TextView) view.findViewById(R.id.comment_date);
+        TextView contentTV = (TextView) view.findViewById(R.id.comment_content);
+        TextView answerCountTV = (TextView) view.findViewById(R.id.answerCountText);
+        TextView thumbCountTV = (TextView) view.findViewById(R.id.thumbCountText);
+
+        ImageView thumbImage = (ImageView) view.findViewById(R.id.thumbIcon);
+        ImageView answerImage = (ImageView) view.findViewById(R.id.answerIcon);
+
+        if (mQuestion.isLiked()) {
+            thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb_s));
+        } else {
+            thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb));
+        }
+
+        thumbImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LikeQuestionRequest request = new LikeQuestionRequest();
+                request.setQuestionId(mQuestion.getId());
+                new LikeQuestionTask().execute(request);
+
+            }
+        });
+
+        answerImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mActivity, QuestionAnswerActivity.class)
+                        .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
+                        .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, "")
+                        .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_NAME, "");
+                mFragment.startActivityForResult(i, QuestionAnswerFragment.REQUEST_QUESTION);
+            }
+        });
+
+        userNameTV.setText(mQuestion.getUserName());
+        dateTV.setText(mQuestion.getTime());
+        contentTV.setText(mQuestion.getContent());
+        answerCountTV.setText(mQuestion.getAnswerCount() + "");
+        thumbCountTV.setText(mQuestion.getThumbCount() + "");
+    }
+
     private ViewGroup updateView() {
         if (view == null) {
             view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_question, null);
+            ListView listView = (ListView) view.findViewById(R.id.answerListView);
 
-            final RoundedImageView userImage = (RoundedImageView) view.findViewById(R.id.comment_user_image);
+            final RoundedImageView userImage = view.findViewById(R.id.comment_user_image);
             userImage.setOval(true);
             //userImage.setBorderWidth(0.5f);
             userImage.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600));
-
-            TextView userNameTV = (TextView) view.findViewById(R.id.comment_username);
-            TextView dateTV = (TextView) view.findViewById(R.id.comment_date);
-            TextView contentTV = (TextView) view.findViewById(R.id.comment_content);
-            TextView answerCountTV = (TextView) view.findViewById(R.id.answerCountText);
-            TextView thumbCountTV = (TextView) view.findViewById(R.id.thumbCountText);
-            ListView listView = (ListView) view.findViewById(R.id.answerListView);
-            ImageView thumbImage = (ImageView) view.findViewById(R.id.thumbIcon);
-            ImageView answerImage = (ImageView) view.findViewById(R.id.answerIcon);
-
-            if (mQuestion.isLiked()) {
-                thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb_s));
-            } else {
-                thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb));
-            }
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Answer item = mQuestion.getAnswers().get(i);
-                    Intent intent = new Intent(mActivity, QuestionAnswerActivity.class)
-                            .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
-                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, item.getFromUserId())
-                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_NAME, item.getFromUserName());
-                    mFragment.startActivityForResult(intent, QuestionAnswerFragment.REQUEST_QUESTION);
-                }
-            });
-
             Glide.with(mActivity)
                     .load(ServiceConfiguration.GetUserProfileImage(mQuestion.getUserId()))
                     .asBitmap()
@@ -122,11 +141,18 @@ public class QuestionCell extends BaseListViewCell {
             listView.setDividerHeight(0);
             listView.setDivider(null);
 
-            userNameTV.setText(mQuestion.getUserName());
-            dateTV.setText(mQuestion.getTime());
-            contentTV.setText(mQuestion.getContent());
-            answerCountTV.setText(mQuestion.getAnswerCount() + "");
-            thumbCountTV.setText(mQuestion.getThumbCount() + "");
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Answer item = mQuestion.getAnswers().get(i);
+                    Intent intent = new Intent(mActivity, QuestionAnswerActivity.class)
+                            .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
+                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, item.getFromUserId())
+                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_NAME, item.getFromUserName());
+                    mFragment.startActivityForResult(intent, QuestionAnswerFragment.REQUEST_QUESTION);
+                }
+            });
+
 
             if (mQuestion.getAnswers().size() > 0) {
                 List<ListViewCell> cells = new ArrayList<>();
@@ -141,26 +167,9 @@ public class QuestionCell extends BaseListViewCell {
                 ((LinearLayout) view.findViewById(R.id.container)).removeView(listView);
             }
 
-            thumbImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LikeQuestionRequest request = new LikeQuestionRequest();
-                    request.setQuestionId(mQuestion.getId());
-                    new LikeQuestionTask().execute(request);
 
-                }
-            });
+            setView();
 
-            answerImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(mActivity, QuestionAnswerActivity.class)
-                            .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
-                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, "")
-                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_NAME, "");
-                    mFragment.startActivityForResult(i, QuestionAnswerFragment.REQUEST_QUESTION);
-                }
-            });
         }
 
         return (LinearLayout)view.findViewById(R.id.container);
@@ -210,11 +219,12 @@ public class QuestionCell extends BaseListViewCell {
             if (mQuestion.isLiked()) {
                 mQuestion.setLiked(false);
                 mQuestion.setThumbCount(mQuestion.getThumbCount() - 1);
+                setView();
                 mAdapter.notifyDataSetChanged();
             } else {
-                //Toast.makeText(mActivity, "点赞成功！", Toast.LENGTH_SHORT).show();
                 mQuestion.setLiked(true);
                 mQuestion.setThumbCount(mQuestion.getThumbCount() + 1);
+                setView();
                 mAdapter.notifyDataSetChanged();
             }
 
