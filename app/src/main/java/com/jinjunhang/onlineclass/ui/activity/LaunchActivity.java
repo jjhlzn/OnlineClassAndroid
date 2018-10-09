@@ -75,7 +75,7 @@ public class LaunchActivity extends BaseActivity {
     private final Runnable goToNextActivityTask = new Runnable() {
         @Override
         public void run() {
-            LogHelper.d(TAG, "after 5s delayed, check login");
+           // LogHelper.d(TAG, "after 5s delayed, check login");
             checkLogin();
         }
     };

@@ -34,6 +34,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,6 +99,7 @@ public class BottomTabLayoutActivity extends BaseActivity {
     @Override
     protected void setContentView() {
         setContentView(R.layout.activity_main_tablayout);
+
     }
 
     @Override
@@ -106,10 +109,9 @@ public class BottomTabLayoutActivity extends BaseActivity {
         mFragmensts = DataGenerator.getFragments(this, "TabLayout Tab");
         initView();
         mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager)findViewById(R.id.viewpager);
+        mViewPager = findViewById(R.id.viewpager);
         mViewPager.setAdapter(mMyPagerAdapter);
         mViewPager.setCurrentItem(0);
-
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -140,9 +142,21 @@ public class BottomTabLayoutActivity extends BaseActivity {
     }
 
 
+    View popupView;
+    private ViewGroup createPopup() {
+        popupView = getLayoutInflater().inflate(R.layout.popup, null);
+        return (ViewGroup) popupView;
+    }
+
+
     public void showPopupAd() {
 
-        final View overlay = findViewById(R.id.overlay_bg);
+        final View overlay = createPopup();
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        ((ViewGroup) findViewById(R.id.container)).addView(popupView, layoutParams);
+
         overlay.setVisibility(View.VISIBLE);
         overlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -156,8 +170,8 @@ public class BottomTabLayoutActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 LogHelper.d(TAG, "close btn clicked");
-
-                overlay.setVisibility(View.INVISIBLE);
+                if (popupView != null)
+                    ((ViewGroup) findViewById(R.id.container)).removeView(popupView);
 
             }
         });

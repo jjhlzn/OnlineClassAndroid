@@ -826,7 +826,9 @@ public class MainPageFragment extends BaseFragment  {
                 }
                 List<Advertise> advs = response.getAdvertises();
                 if (response.getPopupAd() != null && !"".equals(response.getPopupAd().getImageUrl())) {
+                    LogHelper.d(TAG, "popup url:" + response.getPopupAd().getImageUrl());
                     Advertise popAd = response.getPopupAd();
+                    //((BottomTabLayoutActivity)mActivity).showPopupAd();
                     String cacheImageUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_IMAGEURL, "");
                     if (  !popAd.getImageUrl().equals(cacheImageUrl) ) {
                         dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_IMAGEURL, popAd.getImageUrl());
