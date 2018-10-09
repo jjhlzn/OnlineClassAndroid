@@ -3,14 +3,11 @@ package com.jinjunhang.onlineclass.ui.lib;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.View;
@@ -20,33 +17,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.ExtendFunctionImageDao;
-import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.ClearFunctionMessageRequest;
 import com.jinjunhang.onlineclass.service.ClearFunctionMessageResponse;
-import com.jinjunhang.onlineclass.service.GetHeaderAdvRequest;
-import com.jinjunhang.onlineclass.service.GetHeaderAdvResponse;
 import com.jinjunhang.onlineclass.ui.activity.QuestionsActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.ZhuanLanListActivity;
-import com.jinjunhang.onlineclass.ui.activity.album.AlbumListActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ExtendFunctionActivity;
-import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
 import com.jinjunhang.onlineclass.ui.cell.ExtendFunctionCell;
-import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.logging.LogManager;
 
 /**
  * Created by lzn on 16/6/20.
@@ -141,8 +127,6 @@ public class ExtendFunctionManager {
     private int getFunctionCount() {
         return functions.size();
     }
-
-
 
 
     public ExtendFunctionCell getCell(int row, boolean isNeedMore) {

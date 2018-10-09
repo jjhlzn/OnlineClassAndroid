@@ -2,6 +2,7 @@ package com.jinjunhang.framework.controller;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,9 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
 import java.util.logging.LogManager;
@@ -23,7 +27,7 @@ import java.util.logging.LogManager;
 /**
  * Created by lzn on 16/6/10.
  */
-public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
+public class PagableController implements OnRefreshListener {
 
     private final static String TAG = LogHelper.makeLogTag(PagableController.class);
 
@@ -31,7 +35,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     private ListView mListView;
     private PagableArrayAdapter mPagableArrayAdapter;
     private PagableRequestHandler mPagableRequestHandler;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SmartRefreshLayout mSwipeRefreshLayout;
     private PagableErrorResponseHandler mErrorResponseHanlder = new DefaultPagableErrorResponseHanlder();
 
     //用于load more
@@ -68,7 +72,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
         mErrorResponseHanlder = errorResponseHanlder;
     }
 
-    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
+    public void setSwipeRefreshLayout(SmartRefreshLayout swipeRefreshLayout) {
         mSwipeRefreshLayout = swipeRefreshLayout;
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
@@ -129,18 +133,16 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
     }
 
     @Override
-    public void onRefresh() {
-       // Log.d(TAG, "onRefresh");
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         if (!mIsLoading) {
             mIsRefreshing = true;
             mMoreDataAvailable = true;
             mPageIndex = 0;
             new PagableTask(this, mPagableRequestHandler).execute();
         } else {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.finishRefresh();
         }
     }
-
 
     private void setFootView() {
         mFooterView = LayoutInflater.from(mActivity).inflate(R.layout.loading_view, null);
@@ -195,7 +197,12 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
 
         @Override
         public T getItem(int position) {
-            return mDataSet.get(position);
+            T result = mDataSet.get(position);
+            if (result == null) {
+                throw new RuntimeException("item can't be null");
+            }
+            LogHelper.d(TAG, "position: " + position);
+            return result;
         }
 
     }
@@ -239,7 +246,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
             super.onPreExecute();
             mPagableController.mIsLoading = true;
             if (mPagableController.mIsRefreshing) {
-                mPagableController.mSwipeRefreshLayout.setRefreshing(true);
+                mPagableController.mSwipeRefreshLayout.finishRefresh();
                 Log.d(TAG, "start refresh");
             }
         }
@@ -249,7 +256,7 @@ public class PagableController implements SwipeRefreshLayout.OnRefreshListener {
             super.onPostExecute(resp);
 
             if (mPagableController.mIsRefreshing) {
-                mPagableController.mSwipeRefreshLayout.setRefreshing(false);
+                mPagableController.mSwipeRefreshLayout.finishRefresh();
             }
 
             if (resp.getStatus() != ServerResponse.SUCCESS) {

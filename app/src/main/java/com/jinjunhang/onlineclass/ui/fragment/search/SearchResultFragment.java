@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.jinjunhang.framework.controller.PagableController;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.PagedServerResponse;
 import com.jinjunhang.onlineclass.R;
@@ -24,6 +25,7 @@ import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BottomPlayerFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumDetailFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -68,7 +70,8 @@ public class SearchResultFragment extends BottomPlayerFragment implements  Singl
         });
 
 
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
+        SmartRefreshLayout swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
+        Utils.setRefreshHeader(getActivity(), swipeRefreshLayout);
 
         //设置PagableController
         mPagableController = new PagableController(getActivity(), mListView);

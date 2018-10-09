@@ -108,7 +108,7 @@ public class AlbumListFragment extends BottomPlayerFragment implements  SingleFr
         mPagableController.setShowLoadCompleteTip(false);
 
         AlbumListAdapter adapter = new AlbumListAdapter(mPagableController, new ArrayList<Album>());
-        mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
+        //mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(adapter);
         mPagableController.setPagableRequestHandler(new AlbumListHanlder());
         mPagableController.setErrorResponseHanlder(this);

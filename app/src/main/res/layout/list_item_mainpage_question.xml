@@ -75,6 +75,8 @@
                         android:layout_height="22dp"
                         android:layout_marginRight="14dp"
                         android:src="@drawable/answer_icon"
+
+                        android:focusable="false"
                         android:layout_toLeftOf="@+id/thumbCountText"/>
 
                     <TextView
@@ -95,6 +97,7 @@
                         android:layout_height="22dp"
                         android:src="@drawable/thumb"
                         android:layout_marginRight="0dp"
+
                         android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>

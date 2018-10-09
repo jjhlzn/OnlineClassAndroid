@@ -24,12 +24,25 @@ public class TuijianCourseHeaderCell extends BaseListViewCell {
         super(activity);
     }
 
+
+    @Override
+    public int getItemViewType() {
+        return BaseListViewCell.MAINPAGE_COURSE_HEADER_CELL;
+    }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_tuijian_header, null).findViewById(R.id.container);
+        }
+
+        return (ViewGroup)convertView;
+    }
+
+
     @Override
     public ViewGroup getView() {
-
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_tuijian_header, null);
-
-        return (RelativeLayout)view.findViewById(R.id.container);
+       return getView(null);
     }
 
 }

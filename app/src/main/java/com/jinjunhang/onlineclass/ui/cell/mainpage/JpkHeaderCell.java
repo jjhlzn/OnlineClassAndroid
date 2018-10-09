@@ -18,19 +18,34 @@ public class JpkHeaderCell extends BaseListViewCell {
         super(activity);
     }
 
+
+
+    @Override
+    public int getItemViewType() {
+        return BaseListViewCell.JPK_HEADER_CELL;
+    }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jpk_header, null).findViewById(R.id.container);
+            Button btn = (Button) convertView.findViewById(R.id.viewAllBtn);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(mActivity, ZhuanLanListActivity.class)
+                            .putExtra(ZhuanLanListFragment.EXTRA_TYPE, ZhuanLanListFragment.TYPE_JPK);
+                    mActivity.startActivity(i);
+                }
+            });
+        }
+        return (ViewGroup)convertView;
+    }
+
     @Override
     public ViewGroup getView() {
-
-        View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jpk_header, null);
-        Button btn = (Button)view.findViewById(R.id.viewAllBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(mActivity, ZhuanLanListActivity.class)
-                        .putExtra(ZhuanLanListFragment.EXTRA_TYPE, ZhuanLanListFragment.TYPE_JPK);
-                mActivity.startActivity(i);
-            }
-        });
-        return (RelativeLayout)view.findViewById(R.id.container);
+        return this.getView(null);
     }
+
+
 }

@@ -22,7 +22,6 @@ public class FinanceToutiaoCell extends BaseListViewCell {
 
     private FinanceToutiao mFinanceToutiao;
     private Activity mActivity;
-    private View view;
 
     public FinanceToutiaoCell(Activity activity, FinanceToutiao toutiao) {
         super(activity);
@@ -31,29 +30,45 @@ public class FinanceToutiaoCell extends BaseListViewCell {
     }
 
     @Override
-    public ViewGroup getView() {
-        if (view == null) {
-            view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jr_tiaotiao, null);
-
-
-            TextView titleTextView = (TextView) view.findViewById(R.id.toutiaoTitle);
-            ImageView tagImage = (ImageView) view.findViewById(R.id.indexImage);
-
-            String indexStr = "";
-
-            titleTextView.setText(mFinanceToutiao.getContent());
-
-            titleTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(mActivity, WebBrowserActivity.class)
-                            .putExtra(WebBrowserActivity.EXTRA_TITLE, mFinanceToutiao.getTitle())
-                            .putExtra(WebBrowserActivity.EXTRA_URL, mFinanceToutiao.getLink());
-                    mActivity.startActivity(i);
-                }
-            });
-        }
-        return (RelativeLayout)view.findViewById(R.id.container);
+    public int getItemViewType() {
+        return BaseListViewCell.FINANCE_TOUTIAO_CELL;
     }
 
+    private void setView(ViewHolder viewHolder) {
+        viewHolder.titleTextView.setText(mFinanceToutiao.getContent());
+        viewHolder.titleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mActivity, WebBrowserActivity.class)
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, mFinanceToutiao.getTitle())
+                        .putExtra(WebBrowserActivity.EXTRA_URL, mFinanceToutiao.getLink());
+                mActivity.startActivity(i);
+            }
+        });
+    }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_jr_tiaotiao, null).findViewById(R.id.container);
+
+            viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
+
+            viewHolder. titleTextView =  convertView.findViewById(R.id.toutiaoTitle);
+            viewHolder.tagImage =  convertView.findViewById(R.id.indexImage);
+
+
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        setView(viewHolder);
+        return (RelativeLayout)convertView;
+    }
+
+    class ViewHolder {
+        TextView titleTextView;
+        ImageView tagImage;
+    }
 }

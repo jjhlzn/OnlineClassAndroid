@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,17 +27,13 @@ import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
-import com.jinjunhang.framework.service.ServerResponse;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Answer;
 import com.jinjunhang.onlineclass.model.FinanceToutiao;
-import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.Pos;
 import com.jinjunhang.onlineclass.model.Question;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
-import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
-import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoRequest;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoResponse;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoRequest;
@@ -47,7 +43,6 @@ import com.jinjunhang.onlineclass.service.GetQuestionResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
-import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.search.SearchActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
@@ -69,7 +64,6 @@ import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 import com.jinjunhang.onlineclass.ui.fragment.QuestionAnswerFragment;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
 import com.jinjunhang.player.ExoPlayerNotificationManager;
-import com.jinjunhang.player.MusicPlayer;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -77,6 +71,7 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnMultiPurposeListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,8 +95,7 @@ public class MainPageFragment extends BaseFragment  {
 
     private  static final String TAG = LogHelper.makeLogTag(MainPageFragment.class);
 
-    private Page rongziPage;
-    private ViewGroup rongziView;
+    private Page mPage;
 
     private boolean isIntied;
     private View v;
@@ -133,12 +127,9 @@ public class MainPageFragment extends BaseFragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = super.onCreateView(inflater, container, savedInstanceState);
 
-        rongziView = (ViewGroup)v.findViewById(R.id.frag_1);
 
-
-        rongziPage = new Page(getActivity(), this, inflater, container, savedInstanceState, ExtendFunctionManager.RONGZI_TYPE);
-        mToolBar = rongziPage.mToolbar;
-        rongziView.addView(rongziPage.v);
+        mPage = new Page(getActivity(), this,v);
+        mToolBar = mPage.mToolbar;
 
         if (!isIntied) {
             setToolBar();
@@ -158,14 +149,14 @@ public class MainPageFragment extends BaseFragment  {
             }
         });
 
-        Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
+        Utils.updateNavigationBarButton(getActivity(), mPage.mToolbarAlpha);
 
     }
 
     @Override
     public void updateMusicBtnState() {
-        if (rongziPage != null) {
-            Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
+        if (mPage != null) {
+            Utils.updateNavigationBarButton(getActivity(), mPage.mToolbarAlpha);
         }
     }
 
@@ -173,39 +164,39 @@ public class MainPageFragment extends BaseFragment  {
     public void onStop() {
         LogHelper.d(TAG, "onStop() called");
         super.onStop();
-        rongziPage.onStopHandler();
+        mPage.onStopHandler();
     }
 
     @Override
     public void onResume() {
         LogHelper.d(TAG, "onResume() called");
         super.onResume();
-        rongziPage.onStartHandler();
+        mPage.onStartHandler();
     }
 
     @Override
     public void onPause() {
         LogHelper.d(TAG, "onPause() called");
         super.onPause();
-        rongziPage.onStopHandler();
+        mPage.onStopHandler();
     }
 
     public void startBannerPlay() {
-        if (rongziPage != null) {
-            rongziPage.onStartHandler();
-            rongziPage.updateToolBar(rongziPage.mToolbarAlpha);
+        if (mPage != null) {
+            mPage.onStartHandler();
+            mPage.updateToolBar(mPage.mToolbarAlpha);
         }
     }
 
     public void stopBannerPlay() {
-        if (rongziPage != null)
-            rongziPage.onStopHandler();
+        if (mPage != null)
+            mPage.onStopHandler();
     }
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (getUserVisibleHint()) {
-            Utils.updateNavigationBarButton(getActivity(), rongziPage.mToolbarAlpha);
+            Utils.updateNavigationBarButton(getActivity(), mPage.mToolbarAlpha);
         }
     }
 
@@ -218,13 +209,13 @@ public class MainPageFragment extends BaseFragment  {
             if (isSuccess) {
                 Answer answer = (Answer)data.getSerializableExtra(QuestionAnswerFragment.EXTRA_ANSWER);
                 if(answer != null)
-                    rongziPage.refreshListView(answer);
+                    mPage.refreshListView(answer);
             }
         }
     }
 
 
-    class Page  {
+    class Page  implements  Serializable {
         private  final String TAG = LogHelper.makeLogTag(Page.class);
 
         public View v;
@@ -234,7 +225,6 @@ public class MainPageFragment extends BaseFragment  {
         private MainPageAdapter mMainPageAdapter;
         private RefreshLayout mSwipeRefreshLayout;
         private PageCells mPageCells = new PageCells();
-        private String mType;
         private HeaderAdvCell mHeaderAdvCell;
         private List<Album> mCourses;
         private List<ZhuanLan> mZhuanLans;
@@ -249,15 +239,15 @@ public class MainPageFragment extends BaseFragment  {
         private Toolbar mToolbar;
         private TextView mSearchBar;
         private TextView mTitleView;
-        private ImageView mMusicBtn;
         private float mToolbarAlpha = 0;
 
-        private boolean mIsLoading;
         private ExoPlayerNotificationManager mNotificationManager;
         private ImmersionBar mImmersionBar;
         private float mLastAlpha = 0;
 
-        class PageCells {
+
+
+        class PageCells implements Serializable {
             private HeaderAdvCell mHeaderAdvCell;
             private List<ExtendFunctionCell> mFuncCells = new ArrayList<>();
             private ZhuanLanHeaderCell mZhuanLanHeaderCell;
@@ -272,11 +262,11 @@ public class MainPageFragment extends BaseFragment  {
             private List<QuestionCell> mQuestionCells = new ArrayList<>();
             private PosApplyCell mPosApplyCell;
 
-
             private List<ListViewCell> cells = new ArrayList<>();
             private boolean hasUpdate = true;  //表示是否已经有更新，如果有更新，需要重新创建cells； 否则就直接返回cells
 
             public List<ListViewCell> getCells() {
+                LogHelper.d(TAG, "cells.count = " + cells.size());
                 if (!hasUpdate) {
                     return cells;
                 }
@@ -336,24 +326,22 @@ public class MainPageFragment extends BaseFragment  {
                 }
 
 
+
                 return cells;
             }
         }
 
-        public Page(FragmentActivity activity, final Fragment fragment, LayoutInflater inflater, ViewGroup container,
-                    Bundle savedInstanceState, String type) {
+        public Page(FragmentActivity activity, final Fragment fragment, View view) {
             mNotificationManager = ExoPlayerNotificationManager.getInstance(activity);
             mActivity = activity;
             mFragment = fragment;
             mZhuanLans = new ArrayList<>();
             mCourses = new ArrayList<>();
-            this.mType = type;
 
-            v = inflater.inflate(R.layout.activity_fragment_pushdownrefresh_mainpage, container, false);
+            v = view;
             mToolbar = v.findViewById(R.id.toolbar);
             mTitleView = v.findViewById(R.id.title);
             mSearchBar = v.findViewById(R.id.searchBar);
-            mMusicBtn = v.findViewById(R.id.musicBtn);
             mListView = v.findViewById(R.id.listView);
             mListView.setVerticalScrollBarEnabled(false);
             mListView.setFocusable(true);
@@ -364,9 +352,11 @@ public class MainPageFragment extends BaseFragment  {
             mListView.setDividerHeight(0);
             mListView.setDivider(null);
 
+
+
             mFunctionManager = ExtendFunctionManager.getInstance(mActivity);
 
-            mHeaderAdvCell = new HeaderAdvCell(activity, mLoading, mType);
+            mHeaderAdvCell = new HeaderAdvCell(activity);
             mPageCells.mHeaderAdvCell = mHeaderAdvCell;
             mPageCells.mZhuanLanHeaderCell = new ZhuanLanHeaderCell(activity);
             mPageCells.mJpkHeaderCell = new JpkHeaderCell(activity);
@@ -375,7 +365,6 @@ public class MainPageFragment extends BaseFragment  {
             mPageCells.mQuestionHeaderCell = new QuestionHeaderCell(activity);
             mPageCells.mPosApplyCell = new PosApplyCell(mActivity, mPos);
 
-            mHeaderAdvCell.updateAds();
 
             mMainPageAdapter = new MainPageAdapter(activity, mPageCells);
             mListView.setAdapter(mMainPageAdapter);
@@ -436,13 +425,19 @@ public class MainPageFragment extends BaseFragment  {
                 }
 
                 @Override
-                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
                     mHeaderAdvCell.updateAds();
-                    new GetZhuanLanAndTuijianCoursesTask().execute();
-                    new GetFunctionInfoRequestTask().execute();
-                    new GetFinanceToutiaoTask().execute();
-                    new GetQuestionsTask().execute();
-                    refreshLayout.finishRefresh(7000/*,false*/);//传入false表示刷新失败
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            new GetZhuanLanAndTuijianCoursesTask().execute();
+                            new GetFunctionInfoRequestTask().execute();
+                            //new GetFinanceToutiaoTask().execute();
+                            new GetQuestionsTask().execute();
+                            refreshLayout.finishRefresh(7000/*,false*/);//传入false表示刷新失败
+                        }
+                    });
+
                 }
 
                 @Override
@@ -478,24 +473,13 @@ public class MainPageFragment extends BaseFragment  {
                         mActivity.startActivity(i);
 
                     } else if (cell instanceof MainPageCourseCell) {
-
                         MainPageCourseCell courseCell = (MainPageCourseCell)cell;
                         Album album = courseCell.getCourse();
                         if (!album.isReady()) {
                             Utils.showErrorMessage(mActivity, "该课程未上线，敬请期待！");
                             return;
                         }
-
                         ((BottomTabLayoutActivity)(getActivity())).switchToZhiboTab();
-
-                        /*
-                        mLoading.show("");
-                        GetAlbumSongsRequest request = new GetAlbumSongsRequest();
-                        request.setAlbum(album);
-                        request.setPageIndex(0);
-                        request.setPageSize(200);
-                        new GetAlbumSongsTask().execute(request);
-                        */
                     }
                 }
             });
@@ -540,10 +524,16 @@ public class MainPageFragment extends BaseFragment  {
 
             });
 
-            new GetZhuanLanAndTuijianCoursesTask().execute();
-            new GetFunctionInfoRequestTask().execute();
-            new GetFinanceToutiaoTask().execute();
-            new GetQuestionsTask().execute();
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    mHeaderAdvCell.updateAds();
+                    new GetZhuanLanAndTuijianCoursesTask().execute();
+                    new GetFunctionInfoRequestTask().execute();
+                    new GetFinanceToutiaoTask().execute();
+                    new GetQuestionsTask().execute();
+                }
+            });
 
             updateToolBar(mToolbarAlpha);
         }
@@ -647,28 +637,42 @@ public class MainPageFragment extends BaseFragment  {
 
 
 
-        private class MainPageAdapter extends ArrayAdapter<ListViewCell> {
-            private PageCells mViewCells;
+        public class MainPageAdapter extends ArrayAdapter<ListViewCell> {
+            private PageCells mPageCells;
 
             public MainPageAdapter(Activity activity, PageCells cells) {
-                super(activity, 0, cells.getCells());
-                mViewCells = cells;
+                super(activity, 0);
+                mPageCells = cells;
             }
 
             @Override
             public int getCount() {
-                return mViewCells.getCells().size();
+                return mPageCells.getCells().size();
             }
 
             @Override
             public ListViewCell getItem(int position) {
-                return mViewCells.getCells().get(position);
+                return mPageCells.getCells().get(position);
             }
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+                LogHelper.d(TAG, "position: " + position);
+                //LogHelper.d(TAG, "cell: " + mPageCells.getCells().get(0));
                 ListViewCell item = getItem(position);
-                return item.getView();
+                return item.getView(convertView);
+            }
+
+
+            @Override
+            public int getItemViewType(int position) {
+                ListViewCell item = getItem(position);
+                return item.getItemViewType();
+            }
+
+            @Override
+            public int getViewTypeCount() {
+                return 16;
             }
         }
 
@@ -696,60 +700,6 @@ public class MainPageFragment extends BaseFragment  {
                 mPos = response.getPos();
                 setZhuanLanAndCoursesView();
             }
-        }
-
-
-        public class GetAlbumSongsTask extends AsyncTask<GetAlbumSongsRequest, Void, GetAlbumSongsResponse> {
-
-            private GetAlbumSongsRequest request;
-
-            @Override
-            protected GetAlbumSongsResponse doInBackground(GetAlbumSongsRequest... params) {
-                request = params[0];
-                return new BasicService().sendRequest(request);
-            }
-
-            @Override
-            protected void onPostExecute(GetAlbumSongsResponse resp) {
-                super.onPostExecute(resp);
-                mSwipeRefreshLayout.finishRefresh();
-                if (resp.getStatus() == ServerResponse.NO_PERMISSION) {
-                    mLoading.hide();
-                    Utils.showVipBuyMessage(mActivity, resp.getErrorMessage());
-                    return;
-                }
-
-                if (resp.getStatus() == ServerResponse.NOT_PAY_COURSE_NO_PERMISSION) {
-                    mLoading.hide();
-                    Utils.showErrorMessage(mActivity, resp.getErrorMessage());
-                    return;
-                }
-
-                if (!resp.isSuccess()) {
-                    mLoading.hide();
-                    LogHelper.e(TAG, resp.getErrorMessage());
-                    Utils.showErrorMessage(mActivity, resp.getErrorMessage());
-                    return;
-                }
-
-                if (resp.getResultSet().size() >= 1) {
-                    LiveSong song = (LiveSong) resp.getResultSet().get(0);
-                    MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity.getApplicationContext());
-                    if (!musicPlayer.isPlay(song)) {
-                        musicPlayer.pause();
-                        musicPlayer.play(resp.getResultSet(), 0);
-                        mNotificationManager.display();
-                    }
-                    Intent i = new Intent(mActivity, NewLiveSongActivity.class);
-                    mActivity.startActivity(i);
-                    return;
-                } else {
-                    mLoading.hide();
-                    Utils.showErrorMessage(mActivity, "服务端出错");
-                    return;
-                }
-            }
-
         }
 
         private class GetFunctionInfoRequestTask extends AsyncTask<Void, Void, GetExtendFunctionInfoResponse> {

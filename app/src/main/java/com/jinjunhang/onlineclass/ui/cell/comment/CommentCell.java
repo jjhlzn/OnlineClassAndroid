@@ -35,7 +35,7 @@ public class CommentCell extends BaseListViewCell {
         RoundedImageView image = ((RoundedImageView)v.findViewById(R.id.comment_user_image));
 
         if (mComment.isManager()) {
-            image.setImageResource(R.drawable.dateicon);
+            image.setImageResource(R.drawable.placeholder);
             ((TextView)v.findViewById(R.id.comment_username)).setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
         }
 

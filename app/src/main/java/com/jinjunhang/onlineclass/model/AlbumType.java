@@ -36,11 +36,11 @@ public class AlbumType extends BaseModelObject {
         return image;
     }
 
-    public final static AlbumType DummyAlbumType = new AlbumType("Dummy", "Dummy", R.drawable.dateicon);
-    public final static AlbumType LiveAlbumType = new AlbumType("直播课程", "Live", R.drawable.dateicon);
-    public final static AlbumType VipAlbumType = new AlbumType("VIP课程", "Vip", R.drawable.dateicon);
-    public final static AlbumType AgentEducationAlbumType = new AlbumType("代理培训课程", "Agent", R.drawable.dateicon);
-    public final static AlbumType CommonAlbumType = new AlbumType("往期直播课程", "Common", R.drawable.dateicon);
+    public final static AlbumType DummyAlbumType = new AlbumType("Dummy", "Dummy", R.drawable.placeholder);
+    public final static AlbumType LiveAlbumType = new AlbumType("直播课程", "Live", R.drawable.placeholder);
+    public final static AlbumType VipAlbumType = new AlbumType("VIP课程", "Vip", R.drawable.placeholder);
+    public final static AlbumType AgentEducationAlbumType = new AlbumType("代理培训课程", "Agent", R.drawable.placeholder);
+    public final static AlbumType CommonAlbumType = new AlbumType("往期直播课程", "Common", R.drawable.placeholder);
 
 
     public static AlbumType getAlbumTypeByCode(String code) {

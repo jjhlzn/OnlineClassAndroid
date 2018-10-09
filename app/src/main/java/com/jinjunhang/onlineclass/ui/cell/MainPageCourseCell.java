@@ -18,7 +18,6 @@ public class MainPageCourseCell extends BaseListViewCell {
 
     private static final String TAG = LogHelper.makeLogTag(MainPageCourseCell.class);
 
-    protected View mView;
     protected Album mCourse;
     protected Activity mActivity;
 
@@ -32,27 +31,45 @@ public class MainPageCourseCell extends BaseListViewCell {
         return mCourse;
     }
 
+    @Override
+    public int getItemViewType() {
+        return BaseListViewCell.MAINPAGE_COURSE_CELL;
+    }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_course, null);
+            viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
+            viewHolder.imageView = convertView.findViewById(R.id.course_image);
+
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+        setCourseView(viewHolder);
+        return convertView.findViewById(R.id.list_item_course);
+    }
 
     @Override
     public ViewGroup getView() {
-        if (mView == null) {
-            mView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_course, null);
-            setCourseView(mView);
-            return mView.findViewById(R.id.list_item_course);
-        } else {
-            return mView.findViewById(R.id.list_item_course);
-        }
+        return this.getView(null);
     }
 
-    protected void setCourseView(View view) {
+    protected void setCourseView(ViewHolder viewHodler) {
 
-        ImageView imageView = view.findViewById(R.id.course_image);
+
         Glide
                 .with(mActivity)
                 .load(mCourse.getImage())
                 .placeholder(R.drawable.rect_placeholder)
-                .into(imageView);
+                .into(viewHodler.imageView);
 
 
+    }
+
+    class ViewHolder {
+        ImageView imageView;
     }
 }

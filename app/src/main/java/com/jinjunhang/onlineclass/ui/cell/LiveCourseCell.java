@@ -24,7 +24,7 @@ public class LiveCourseCell extends MainPageCourseCell {
     public ViewGroup getView() {
         View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_live_course, null);
         ViewGroup g = (ViewGroup)view.findViewById(R.id.list_item_course);
-        setCourseView(view);
+        //setCourseView(view);
 
         TextView status = (TextView)view.findViewById(R.id.status);
         TextView listener = (TextView)view.findViewById(R.id.listenerCount);

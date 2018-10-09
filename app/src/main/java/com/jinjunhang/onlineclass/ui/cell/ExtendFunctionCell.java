@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.ui.cell;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
@@ -19,7 +20,6 @@ public class ExtendFunctionCell extends BaseListViewCell {
 
     private static final String TAG = LogHelper.makeLogTag(ExtendFunctionCell.class);
 
-    private LinearLayout layout;
     private int mHeight;
     private List<ExtendFunctionManager.ExtendFunction> functionList = new ArrayList<>();
     private ExtendFunctionManager mFunctionManager;
@@ -29,9 +29,13 @@ public class ExtendFunctionCell extends BaseListViewCell {
     }
 
 
-
     public ExtendFunctionCell(Activity activity) {
         super(activity);
+    }
+
+    @Override
+    public int getItemViewType() {
+        return BaseListViewCell.EXTENDFUNCTION_CELL;
     }
 
     @Override
@@ -47,13 +51,14 @@ public class ExtendFunctionCell extends BaseListViewCell {
         this.mFunctionManager = functionManager;
     }
 
+    //TODO： 不能下拉刷新
     @Override
-    public ViewGroup getView() {
-        //LogHelper.d(TAG, "ExtendFunctionCell.getView() called");
-        if (layout == null) {
-            layout = new LinearLayout(mActivity);
+    public ViewGroup getView(View convertView) {
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            LinearLayout layout = new LinearLayout(mActivity);
+            convertView = layout;
             layout.setOrientation(LinearLayout.HORIZONTAL);
-
             ViewGroup.LayoutParams params = new AbsListView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.MATCH_PARENT);
             // Changes the height and width to the specified *pixels*
@@ -66,7 +71,18 @@ public class ExtendFunctionCell extends BaseListViewCell {
             }
             layout.setEnabled(false);
             layout.setOnClickListener(null);
+
+            viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        return layout;
+
+        return (ViewGroup) convertView;
     }
+
+    class ViewHolder  {
+
+    }
+
 }

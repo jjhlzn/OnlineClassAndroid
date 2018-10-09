@@ -95,7 +95,7 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
         if (mAlbum.isLive()) {
             mPagableController.setShowLoadCompleteTip(false);
         }
-        mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
+        //mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(new AlbumDetailAdapter(mPagableController, new ArrayList<Song>()));
         mPagableController.setPagableRequestHandler(new AlbumDetailRequestHandler());
         mPagableController.setOnScrollListener(this);
@@ -177,9 +177,9 @@ public class AlbumDetailFragment extends BottomPlayerFragment implements  Single
             ImageView playImageView = (ImageView) convertView.findViewById(R.id.song_list_item_playimage);
             if (mMusicPlayer.isPlay(song)) {
                 LogHelper.d(TAG, "now player song.id = " + song.getId());
-                playImageView.setImageResource(R.drawable.dateicon);
+                playImageView.setImageResource(R.drawable.icon_stop);
             } else {
-                playImageView.setImageResource(R.drawable.dateicon);
+                playImageView.setImageResource(R.drawable.icon_play);
             }
 
             return convertView;

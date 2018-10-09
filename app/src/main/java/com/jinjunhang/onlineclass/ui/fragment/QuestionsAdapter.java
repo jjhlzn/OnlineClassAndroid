@@ -36,7 +36,7 @@ public class QuestionsAdapter extends PagableController.PagableArrayAdapter<Ques
     public View getView(int position, View convertView, ViewGroup parent) {
         Question question = getItem(position);
         QuestionCell cell = new QuestionCell(mActivity, question, mFragment,  this);
-        convertView = cell.getView();
+        convertView = cell.getView(convertView);
         return convertView;
     }
 }

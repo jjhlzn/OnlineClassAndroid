@@ -5,11 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.lib.LoadingAnimation;
@@ -24,6 +28,7 @@ import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -40,17 +45,14 @@ import java.util.List;
 public class HeaderAdvCell extends BaseListViewCell  {
     private static final String TAG = LogHelper.makeLogTag(HeaderAdvCell.class);
 
-    private LoadingAnimation mLoading;
     private List<Advertise> mAdvertises;
-    private Banner mSlider;
+    private ViewHolder mViewHolder;
     private KeyValueDao dao;
+    private boolean isNeedUpdate = true;
 
-    private View mView;
-
-    public HeaderAdvCell(Activity activity, LoadingAnimation loading, String type) {
+    public HeaderAdvCell(Activity activity) {
         super(activity);
         dao = KeyValueDao.getInstance(activity);
-        this.mLoading = loading;
         mAdvertises = new ArrayList<>();
     }
 
@@ -59,24 +61,43 @@ public class HeaderAdvCell extends BaseListViewCell  {
     }
 
     public void startPlay() {
-        if (mSlider != null) {
-            mSlider.startAutoPlay();
+        if (mViewHolder != null && mViewHolder.slider != null) {
+            mViewHolder.slider.startAutoPlay();
         }
     }
 
     public void stopPlay() {
-        if (mSlider != null) {
-            mSlider.stopAutoPlay();
+        if (mViewHolder != null && mViewHolder.slider != null) {
+            mViewHolder.slider.stopAutoPlay();
         }
     }
 
-    private void setSlider() {
-        if (mSlider == null)
+
+    private void setSlider(ViewHolder viewHolder) {
+        if (mAdvertises.size() == 0)
             return;
+        if (viewHolder.isInited && !isNeedUpdate)
+            return;
+        updateSlider(viewHolder);
+        Banner mSlider = viewHolder.slider;
+        mSlider.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+
+        mSlider.setOffscreenPageLimit(8);
+        mSlider.isAutoPlay(true);
+        mSlider.setDelayTime(3000);
+        mSlider.setIndicatorGravity(BannerConfig.CENTER);
+
+        mSlider.start();
+        mSlider.startAutoPlay();
+        viewHolder.isInited = true;
+        isNeedUpdate = false;
+    }
+
+    private  void updateSlider(ViewHolder viewHolder) {
+        Banner mSlider = viewHolder.slider;
         List<String> imageUrls = new ArrayList<>();
         List<String> titles = new ArrayList<>();
         for (Advertise adv : mAdvertises) {
-            LogHelper.d(TAG, "imageUrl: " + adv.getImageUrl());
             imageUrls.add(adv.getImageUrl());
             titles.add(adv.getTitle());
         }
@@ -92,36 +113,48 @@ public class HeaderAdvCell extends BaseListViewCell  {
                 mActivity.startActivity(i);
             }
         });
-        mSlider.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        mSlider.setImages(imageUrls);
-        mSlider.setBannerTitles(titles);
-        mSlider.isAutoPlay(true);
-        mSlider.setDelayTime(3000);
-        mSlider.setIndicatorGravity(BannerConfig.CENTER);
-        mSlider.start();
-        mSlider.startAutoPlay();
-    }
 
+        if (imageUrls.size() != 0) {
+            mSlider.update(imageUrls, titles);
+        } else {
+            mSlider.setImages(imageUrls);
+            mSlider.setBannerTitles(titles);
+        }
+
+
+    }
 
     @Override
-    public ViewGroup getView() {
-        if (mView == null) {
-            mView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null);
-
-            //设置Banner的显示比例
-            mView.setLayoutParams(new RelativeLayout.LayoutParams(Utils.getScreenWidth(mActivity), (int)((float)Utils.getScreenWidth(mActivity) / 375.0 * 224)));
-
-
-            mSlider = mView.findViewById(R.id.slider);
-
-
-            mSlider.setImageLoader(new GlideImageLoader());
-            setSlider();
-            return (RelativeLayout) mView.findViewById(R.id.list_item_viewgroup);
-        } {
-            return (RelativeLayout) mView.findViewById(R.id.list_item_viewgroup);
-        }
+    public int getItemViewType() {
+        return BaseListViewCell.HEADER_CELL;
     }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        //LogHelper.d(TAG, "convertView = " + convertView);
+        //LogHelper.d(TAG, "mSlider = " + mSlider);
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            isNeedUpdate = true;
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null).findViewById(R.id.list_item_viewgroup);
+            //设置Banner的显示比例
+            convertView.setLayoutParams(new RelativeLayout.LayoutParams(Utils.getScreenWidth(mActivity), (int) ((float) Utils.getScreenWidth(mActivity) / 375.0 * 224)));
+            Banner mSlider = convertView.findViewById(R.id.slider);
+            viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
+            viewHolder.slider = mSlider;
+            viewHolder.slider.setImageLoader(new GlideImageLoader());
+
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
+
+        }
+        mViewHolder = viewHolder;
+        setSlider(viewHolder);
+
+        return (ViewGroup) convertView;
+    }
+
 
     private class GetHeaderAdvTask extends AsyncTask<Void, Void, GetMainPageAdsResponse> {
 
@@ -136,7 +169,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
         @Override
         protected void onPostExecute(GetMainPageAdsResponse response) {
             super.onPostExecute(response);
-
+            //mMainPageFragment.refreshListView();
             if (!response.isSuccess()) {
                 LogHelper.e(TAG, response.getErrorMessage());
                 return;
@@ -157,7 +190,8 @@ public class HeaderAdvCell extends BaseListViewCell  {
             }
 
             mAdvertises = advs;
-            setSlider();
+            isNeedUpdate = true;
+            //setSlider();
         }
     }
 
@@ -173,7 +207,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
              */
 
             //Glide 加载图片简单用法
-            LogHelper.d(TAG, "load image: " + path);
+           // LogHelper.d(TAG, "load image: " + path);
             Glide.with(context).load(path).placeholder(R.drawable.rect_placeholder).into(imageView);
 
         }
@@ -186,6 +220,11 @@ public class HeaderAdvCell extends BaseListViewCell  {
             return imageView;
         }
 
+    }
+
+    class ViewHolder {
+        Banner slider;
+        boolean isInited;
     }
 
 

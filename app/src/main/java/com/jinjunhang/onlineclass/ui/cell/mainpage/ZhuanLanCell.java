@@ -14,7 +14,6 @@ import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 
 public class ZhuanLanCell extends BaseListViewCell {
 
-    private View v;
     private ZhuanLan mZhuanLan;
 
     public ZhuanLanCell(Activity activity, ZhuanLan zhuanLan) {
@@ -27,31 +26,54 @@ public class ZhuanLanCell extends BaseListViewCell {
     }
 
     @Override
-    public ViewGroup getView() {
-        if (v == null) {
-
-            v = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_zhuanlan, null);
-
-            TextView nameLabel = (TextView) v.findViewById(R.id.nameLabel);
-            TextView latestLabel = (TextView) v.findViewById(R.id.latestLabel);
-            TextView updateTimeLabel = (TextView) v.findViewById(R.id.updateTimeLabel);
-            TextView descriptionLabel = (TextView) v.findViewById(R.id.descriptionLabel);
-            TextView priceInfoLabel = (TextView) v.findViewById(R.id.priceInfoLabel);
-            ImageView imageView = (ImageView) v.findViewById(R.id.zhuanLanImage);
-
-
-            nameLabel.setText(mZhuanLan.getName());
-            latestLabel.setText(mZhuanLan.getLatest());
-            updateTimeLabel.setText(mZhuanLan.getUpdateTime());
-            descriptionLabel.setText(mZhuanLan.getDescription());
-            priceInfoLabel.setText(mZhuanLan.getPriceInfo());
-            Glide
-                    .with(mActivity)
-                    .load(mZhuanLan.getImageUrl())
-                    .placeholder(R.drawable.rect_placeholder)
-                    .into(imageView);
-        }
-        return (LinearLayout) v.findViewById(R.id.container);
+    public int getItemViewType() {
+        return BaseListViewCell.ZHUANLAN_CELL;
     }
 
+    private void setView(ViewHolder viewHolder) {
+        viewHolder.nameLabel.setText(mZhuanLan.getName());
+        viewHolder.latestLabel.setText(mZhuanLan.getLatest());
+        viewHolder.updateTimeLabel.setText(mZhuanLan.getUpdateTime());
+        viewHolder.descriptionLabel.setText(mZhuanLan.getDescription());
+        viewHolder.priceInfoLabel.setText(mZhuanLan.getPriceInfo());
+        Glide
+                .with(mActivity)
+                .load(mZhuanLan.getImageUrl())
+                .placeholder(R.drawable.rect_placeholder)
+                .into(viewHolder.imageView);
+    }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_zhuanlan, null);
+            viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
+            viewHolder.nameLabel = convertView.findViewById(R.id.nameLabel);
+            viewHolder.latestLabel = (TextView) convertView.findViewById(R.id.latestLabel);
+            viewHolder.updateTimeLabel = (TextView) convertView.findViewById(R.id.updateTimeLabel);
+            viewHolder.descriptionLabel = (TextView) convertView.findViewById(R.id.descriptionLabel);
+            viewHolder.priceInfoLabel = (TextView) convertView.findViewById(R.id.priceInfoLabel);
+            viewHolder.imageView = convertView.findViewById(R.id.zhuanLanImage);
+        } else {
+            viewHolder = (ViewHolder)convertView.getTag();
+        }
+        setView(viewHolder);
+        return (LinearLayout) convertView.findViewById(R.id.container);
+    }
+
+    @Override
+    public ViewGroup getView() {
+        return this.getView(null);
+    }
+
+    class ViewHolder {
+        private TextView nameLabel;
+        private TextView latestLabel;
+        private TextView updateTimeLabel;
+        private TextView descriptionLabel;
+        private TextView priceInfoLabel;
+        private ImageView imageView;
+    }
 }

@@ -32,6 +32,7 @@ import com.jinjunhang.onlineclass.service.GetPagedQuestionsResponse;
 import com.jinjunhang.onlineclass.ui.activity.AskQuestionActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.AlbumDetailActivity;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,8 +86,9 @@ public class QuestionsFragment extends BaseFragment implements
         });
 
 
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
+        SmartRefreshLayout swipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout);
+        Utils.setRefreshHeader(getActivity(), swipeRefreshLayout);
+        //swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
 
         //设置PagableController
         mPagableController = new PagableController(getActivity(), mListView);

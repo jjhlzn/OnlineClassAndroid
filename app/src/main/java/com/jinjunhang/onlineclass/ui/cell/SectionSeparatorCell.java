@@ -22,8 +22,22 @@ public class SectionSeparatorCell extends BaseListViewCell {
     }
 
     @Override
-    public ViewGroup getView() {
-        View convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_separator, null);
-        return (LinearLayout)convertView.findViewById(R.id.list_item_albumtype_viewgroup);
+    public int getItemViewType() {
+        return BaseListViewCell.SEPARATOR_CELL;
     }
+
+    @Override
+    public ViewGroup getView(View convertView) {
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_separator, null).findViewById(R.id.list_item_albumtype_viewgroup);
+        }
+        return (ViewGroup) convertView;
+    }
+
+    @Override
+    public ViewGroup getView() {
+        return getView(null);
+    }
+
+
 }

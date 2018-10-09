@@ -41,10 +41,11 @@ import com.jinjunhang.onlineclass.ui.cell.ListViewCell;
 import com.jinjunhang.onlineclass.ui.fragment.QuestionAnswerFragment;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionCell extends BaseListViewCell {
+public class QuestionCell extends BaseListViewCell implements Serializable {
 
     private final static String TAG = LogHelper.makeLogTag(QuestionCell.class);
 
@@ -52,7 +53,6 @@ public class QuestionCell extends BaseListViewCell {
     private Activity mActivity;
     private ArrayAdapter mAdapter;
     private Fragment mFragment;
-    private View view;
 
     public QuestionCell(Activity activity, Question question, Fragment fragment, ArrayAdapter adapter) {
         super(activity);
@@ -63,31 +63,34 @@ public class QuestionCell extends BaseListViewCell {
     }
 
     @Override
-    public ViewGroup getView() {
-        return updateView();
+    public int getItemViewType() {
+        return BaseListViewCell.QUESTION_CELL;
     }
 
-    private void setView() {
+    @Override
+    public ViewGroup getView(View convertView) {
+        return updateView(convertView);
+    }
 
+    private void setView(ViewHolder viewHolder) {
 
-        TextView userNameTV = (TextView) view.findViewById(R.id.comment_username);
-        TextView dateTV = (TextView) view.findViewById(R.id.comment_date);
-        TextView contentTV = (TextView) view.findViewById(R.id.comment_content);
-        TextView answerCountTV = (TextView) view.findViewById(R.id.answerCountText);
-        TextView thumbCountTV = (TextView) view.findViewById(R.id.thumbCountText);
-
-        ImageView thumbImage = (ImageView) view.findViewById(R.id.thumbIcon);
-        ImageView answerImage = (ImageView) view.findViewById(R.id.answerIcon);
 
         if (mQuestion.isLiked()) {
-            thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb_s));
+            viewHolder.thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb_s));
         } else {
-            thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb));
+            viewHolder.thumbImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.thumb));
         }
 
-        thumbImage.setOnClickListener(new View.OnClickListener() {
+        viewHolder.userNameTV.setText(mQuestion.getUserName());
+        viewHolder.dateTV.setText(mQuestion.getTime());
+        viewHolder.contentTV.setText(mQuestion.getContent());
+        viewHolder.answerCountTV.setText(mQuestion.getAnswerCount() + "");
+        viewHolder.thumbCountTV.setText(mQuestion.getThumbCount() + "");
+
+        viewHolder.thumbImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LogHelper.d(TAG, "thumbImage clicked");
                 LikeQuestionRequest request = new LikeQuestionRequest();
                 request.setQuestionId(mQuestion.getId());
                 new LikeQuestionTask().execute(request);
@@ -95,9 +98,10 @@ public class QuestionCell extends BaseListViewCell {
             }
         });
 
-        answerImage.setOnClickListener(new View.OnClickListener() {
+        viewHolder.answerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LogHelper.d(TAG, "answerImage clicked");
                 Intent i = new Intent(mActivity, QuestionAnswerActivity.class)
                         .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
                         .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, "")
@@ -105,75 +109,91 @@ public class QuestionCell extends BaseListViewCell {
                 mFragment.startActivityForResult(i, QuestionAnswerFragment.REQUEST_QUESTION);
             }
         });
-
-        userNameTV.setText(mQuestion.getUserName());
-        dateTV.setText(mQuestion.getTime());
-        contentTV.setText(mQuestion.getContent());
-        answerCountTV.setText(mQuestion.getAnswerCount() + "");
-        thumbCountTV.setText(mQuestion.getThumbCount() + "");
     }
 
-    private ViewGroup updateView() {
-        if (view == null) {
-            view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_question, null);
-            ListView listView = (ListView) view.findViewById(R.id.answerListView);
-
-            final RoundedImageView userImage = view.findViewById(R.id.comment_user_image);
-            userImage.setOval(true);
-            //userImage.setBorderWidth(0.5f);
-            userImage.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600));
-            Glide.with(mActivity)
-                    .load(ServiceConfiguration.GetUserProfileImage(mQuestion.getUserId()))
-                    .asBitmap()
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder)
-                    .into(new BitmapImageViewTarget(userImage) {
-                        @Override
-                        protected void setResource(Bitmap resource) {
-                            RoundedBitmapDrawable circularBitmapDrawable =
-                                    RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
-                            circularBitmapDrawable.setCircular(true);
-                            userImage.setImageDrawable(circularBitmapDrawable);
-                        }
-                    });
-
-            //去掉列表的分割线
-            listView.setDividerHeight(0);
-            listView.setDivider(null);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Answer item = mQuestion.getAnswers().get(i);
-                    Intent intent = new Intent(mActivity, QuestionAnswerActivity.class)
-                            .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
-                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, item.getFromUserId())
-                            .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_NAME, item.getFromUserName());
-                    mFragment.startActivityForResult(intent, QuestionAnswerFragment.REQUEST_QUESTION);
-                }
-            });
+    private void setView(final  ViewHolder viewHolder, View convertView) {
+        setView(viewHolder);
+        Glide.with(mActivity)
+                .load(ServiceConfiguration.GetUserProfileImage(mQuestion.getUserId()))
+                .asBitmap()
+                .centerCrop()
+                .placeholder(R.drawable.placeholder)
+                .into(new BitmapImageViewTarget(viewHolder.userImage) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        viewHolder.userImage.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
 
 
-            if (mQuestion.getAnswers().size() > 0) {
-                List<ListViewCell> cells = new ArrayList<>();
-                for (Answer answer : mQuestion.getAnswers()) {
-                    AnswerCell answerCell = new AnswerCell(mActivity, answer);
-                    cells.add(answerCell);
-                }
-                AnswerAdapter adapter = new AnswerAdapter(mActivity, cells);
-                listView.setAdapter(adapter);
-            } else {
-                listView.setVisibility(View.INVISIBLE);
-                ((LinearLayout) view.findViewById(R.id.container)).removeView(listView);
+
+        viewHolder.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Answer item = mQuestion.getAnswers().get(i);
+                Intent intent = new Intent(mActivity, QuestionAnswerActivity.class)
+                        .putExtra(QuestionAnswerFragment.EXTRA_QUESTION, mQuestion)
+                        .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_ID, item.getFromUserId())
+                        .putExtra(QuestionAnswerFragment.EXTRA_TO_USER_NAME, item.getFromUserName());
+                mFragment.startActivityForResult(intent, QuestionAnswerFragment.REQUEST_QUESTION);
             }
+        });
 
 
-            setView();
+        if (mQuestion.getAnswers().size() > 0) {
+            List<ListViewCell> cells = new ArrayList<>();
+            for (Answer answer : mQuestion.getAnswers()) {
+                AnswerCell answerCell = new AnswerCell(mActivity, answer);
+                cells.add(answerCell);
+            }
+            AnswerAdapter adapter = new AnswerAdapter(mActivity, cells);
+            viewHolder.listView.setAdapter(adapter);
+        } else {
+            viewHolder.listView.setVisibility(View.INVISIBLE);
+            ((ViewGroup)convertView).removeView(viewHolder.listView);
+        }
+    }
 
+    private ViewGroup updateView(View convertView) {
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_question, null).findViewById(R.id.container);
+
+            viewHolder = new ViewHolder();
+            convertView.setTag(viewHolder);
+
+            viewHolder.userNameTV = (TextView) convertView.findViewById(R.id.comment_username);
+            viewHolder. dateTV = (TextView) convertView.findViewById(R.id.comment_date);
+            viewHolder. contentTV = (TextView) convertView.findViewById(R.id.comment_content);
+            viewHolder. answerCountTV = (TextView) convertView.findViewById(R.id.answerCountText);
+            viewHolder. thumbCountTV = (TextView) convertView.findViewById(R.id.thumbCountText);
+
+            viewHolder. thumbImage = (ImageView) convertView.findViewById(R.id.thumbIcon);
+            viewHolder. answerImage = (ImageView) convertView.findViewById(R.id.answerIcon);
+
+
+            viewHolder.listView = convertView.findViewById(R.id.answerListView);
+            viewHolder.userImage = convertView.findViewById(R.id.comment_user_image);
+            //去掉列表的分割线
+            viewHolder.listView.setDividerHeight(0);
+            viewHolder.listView.setDivider(null);
+
+            viewHolder.userImage.setOval(true);
+            //userImage.setBorderWidth(0.5f);
+            //serImage.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600));
+
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        return (LinearLayout)view.findViewById(R.id.container);
+        setView(viewHolder, convertView);
+        return (ViewGroup) convertView;
     }
+
+
 
     private class AnswerAdapter extends ArrayAdapter<ListViewCell> {
         private List<ListViewCell> mCells;
@@ -219,16 +239,28 @@ public class QuestionCell extends BaseListViewCell {
             if (mQuestion.isLiked()) {
                 mQuestion.setLiked(false);
                 mQuestion.setThumbCount(mQuestion.getThumbCount() - 1);
-                setView();
                 mAdapter.notifyDataSetChanged();
             } else {
                 mQuestion.setLiked(true);
                 mQuestion.setThumbCount(mQuestion.getThumbCount() + 1);
-                setView();
                 mAdapter.notifyDataSetChanged();
             }
 
         }
+
+    }
+
+    class ViewHolder {
+        ListView listView;
+        RoundedImageView userImage;
+        TextView userNameTV;
+        TextView dateTV;
+        TextView contentTV;
+        TextView answerCountTV;
+        TextView thumbCountTV;
+
+        ImageView thumbImage;
+        ImageView answerImage;
 
     }
 

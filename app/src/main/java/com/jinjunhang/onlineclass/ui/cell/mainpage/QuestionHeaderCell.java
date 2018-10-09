@@ -19,6 +19,11 @@ public class QuestionHeaderCell extends BaseListViewCell {
     }
 
     @Override
+    public ViewGroup getView(View convertView) {
+        return this.getView();
+    }
+
+    @Override
     public ViewGroup getView() {
 
         View view = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_question_header, null);

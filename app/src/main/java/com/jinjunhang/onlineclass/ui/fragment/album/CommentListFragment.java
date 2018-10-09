@@ -73,7 +73,7 @@ public class CommentListFragment extends BaseFragment implements AbsListView.OnS
 
         CommentListAdpater adapter = new CommentListAdpater(mPagableController, new ArrayList<Comment>());
 
-        mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
+       // mPagableController.setSwipeRefreshLayout(swipeRefreshLayout);
         mPagableController.setPagableArrayAdapter(adapter);
         mPagableController.setPagableRequestHandler(new CommentListHanler());
         mPagableController.setOnScrollListener(this);
