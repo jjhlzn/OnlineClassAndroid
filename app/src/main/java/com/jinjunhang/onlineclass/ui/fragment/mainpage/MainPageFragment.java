@@ -28,6 +28,8 @@ import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
+import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Answer;
 import com.jinjunhang.onlineclass.model.FinanceToutiao;
@@ -38,6 +40,8 @@ import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoRequest;
 import com.jinjunhang.onlineclass.service.GetExtendFunctionInfoResponse;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoRequest;
 import com.jinjunhang.onlineclass.service.GetFinanceToutiaoResponse;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsRequest;
+import com.jinjunhang.onlineclass.service.GetMainPageAdsResponse;
 import com.jinjunhang.onlineclass.service.GetQuestionRequest;
 import com.jinjunhang.onlineclass.service.GetQuestionResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
@@ -229,6 +233,7 @@ public class MainPageFragment extends BaseFragment  {
         private List<Album> mCourses;
         private List<ZhuanLan> mZhuanLans;
         private List<ZhuanLan> mJpks;
+        private List<Advertise> mAdvertises;
         private Pos mPos;
         private List<FinanceToutiao> mToutiaos = new ArrayList<>();
         private List<Question> mQuestions = new ArrayList<>();
@@ -244,6 +249,7 @@ public class MainPageFragment extends BaseFragment  {
         private ExoPlayerNotificationManager mNotificationManager;
         private ImmersionBar mImmersionBar;
         private float mLastAlpha = 0;
+        private KeyValueDao dao;
 
 
 
@@ -266,7 +272,7 @@ public class MainPageFragment extends BaseFragment  {
             private boolean hasUpdate = true;  //表示是否已经有更新，如果有更新，需要重新创建cells； 否则就直接返回cells
 
             public List<ListViewCell> getCells() {
-                LogHelper.d(TAG, "cells.count = " + cells.size());
+                //LogHelper.d(TAG, "cells.count = " + cells.size());
                 if (!hasUpdate) {
                     return cells;
                 }
@@ -338,6 +344,7 @@ public class MainPageFragment extends BaseFragment  {
             mZhuanLans = new ArrayList<>();
             mCourses = new ArrayList<>();
 
+            dao = KeyValueDao.getInstance(activity);
             v = view;
             mToolbar = v.findViewById(R.id.toolbar);
             mTitleView = v.findViewById(R.id.title);
@@ -426,15 +433,17 @@ public class MainPageFragment extends BaseFragment  {
 
                 @Override
                 public void onRefresh(@NonNull final RefreshLayout refreshLayout) {
-                    mHeaderAdvCell.updateAds();
+
+
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
+                            new GetHeaderAdvTask().execute();
                             new GetZhuanLanAndTuijianCoursesTask().execute();
                             new GetFunctionInfoRequestTask().execute();
                             //new GetFinanceToutiaoTask().execute();
                             new GetQuestionsTask().execute();
-                            refreshLayout.finishRefresh(7000/*,false*/);//传入false表示刷新失败
+                            refreshLayout.finishRefresh(3000/*,false*/);//传入false表示刷新失败
                         }
                     });
 
@@ -527,7 +536,7 @@ public class MainPageFragment extends BaseFragment  {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
-                    mHeaderAdvCell.updateAds();
+                    new GetHeaderAdvTask().execute();
                     new GetZhuanLanAndTuijianCoursesTask().execute();
                     new GetFunctionInfoRequestTask().execute();
                     new GetFinanceToutiaoTask().execute();
@@ -620,6 +629,11 @@ public class MainPageFragment extends BaseFragment  {
             mMainPageAdapter.notifyDataSetChanged();
         }
 
+        private void setHeaderAdvCell() {
+            mHeaderAdvCell.setAdvertises(mAdvertises);
+            mMainPageAdapter.notifyDataSetChanged();
+        }
+
         private  void setPosView() {
             mPageCells.hasUpdate = true;
             mPageCells.mPosApplyCell.setPos(mPos);
@@ -657,7 +671,7 @@ public class MainPageFragment extends BaseFragment  {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                LogHelper.d(TAG, "position: " + position);
+                //LogHelper.d(TAG, "position: " + position);
                 //LogHelper.d(TAG, "cell: " + mPageCells.getCells().get(0));
                 ListViewCell item = getItem(position);
                 return item.getView(convertView);
@@ -727,7 +741,6 @@ public class MainPageFragment extends BaseFragment  {
 
                 List<ExtendFunctionManager.ExtendFunction> funcs = new ArrayList<>();
 
-
                 for (GetExtendFunctionInfoResponse.ExtendFunctionInfo function : functions) {
                     ExtendFunctionManager.ExtendFunction func = mFunctionManager.makeExtendFunction(function.getImageUrl(), function.getName(),
                             function.getCode(),
@@ -793,7 +806,41 @@ public class MainPageFragment extends BaseFragment  {
         }
 
 
+        private class GetHeaderAdvTask extends AsyncTask<Void, Void, GetMainPageAdsResponse> {
 
+            @Override
+            protected GetMainPageAdsResponse doInBackground(Void... voids) {
+                GetMainPageAdsRequest request = new GetMainPageAdsRequest();
+                //request.setType(mType);
+                return new BasicService().sendRequest(request);
+            }
+
+
+            @Override
+            protected void onPostExecute(GetMainPageAdsResponse response) {
+                super.onPostExecute(response);
+                mSwipeRefreshLayout.finishRefresh();
+                if (!response.isSuccess()) {
+                    LogHelper.e(TAG, response.getErrorMessage());
+                    return;
+                }
+                List<Advertise> advs = response.getAdvertises();
+                if (response.getPopupAd() != null && !"".equals(response.getPopupAd().getImageUrl())) {
+                    Advertise popAd = response.getPopupAd();
+                    String cacheImageUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_IMAGEURL, "");
+                    if (  !popAd.getImageUrl().equals(cacheImageUrl) ) {
+                        dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_IMAGEURL, popAd.getImageUrl());
+                        dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_CLICKURL, popAd.getClickUrl());
+                        dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_TITLE, popAd.getTitle());
+                        ((BottomTabLayoutActivity)mActivity).showPopupAd();
+                    }
+                }
+
+                mAdvertises = advs;
+                setHeaderAdvCell();
+                LogHelper.d(TAG, "need to update HaderAdv");
+            }
+        }
 
     }
 }

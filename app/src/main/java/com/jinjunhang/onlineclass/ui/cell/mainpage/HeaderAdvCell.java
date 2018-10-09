@@ -47,17 +47,17 @@ public class HeaderAdvCell extends BaseListViewCell  {
 
     private List<Advertise> mAdvertises;
     private ViewHolder mViewHolder;
-    private KeyValueDao dao;
+
     private boolean isNeedUpdate = true;
+
+    public void setAdvertises(List<Advertise> advertises) {
+        mAdvertises = advertises;
+        isNeedUpdate = true;
+    }
 
     public HeaderAdvCell(Activity activity) {
         super(activity);
-        dao = KeyValueDao.getInstance(activity);
         mAdvertises = new ArrayList<>();
-    }
-
-    public void updateAds() {
-        new GetHeaderAdvTask().execute();
     }
 
     public void startPlay() {
@@ -76,10 +76,13 @@ public class HeaderAdvCell extends BaseListViewCell  {
     private void setSlider(ViewHolder viewHolder) {
         if (mAdvertises.size() == 0)
             return;
+
+        //LogHelper.d(TAG, "isInited = " + viewHolder.isInited + ", isNeedUpdate = " + isNeedUpdate);
         if (viewHolder.isInited && !isNeedUpdate)
             return;
-        updateSlider(viewHolder);
+
         Banner mSlider = viewHolder.slider;
+        updateSlider(viewHolder);
         mSlider.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
 
         mSlider.setOffscreenPageLimit(8);
@@ -89,6 +92,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
 
         mSlider.start();
         mSlider.startAutoPlay();
+
         viewHolder.isInited = true;
         isNeedUpdate = false;
     }
@@ -98,6 +102,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
         List<String> imageUrls = new ArrayList<>();
         List<String> titles = new ArrayList<>();
         for (Advertise adv : mAdvertises) {
+            //LogHelper.d(TAG, "url: " + adv.getImageUrl());
             imageUrls.add(adv.getImageUrl());
             titles.add(adv.getTitle());
         }
@@ -120,8 +125,6 @@ public class HeaderAdvCell extends BaseListViewCell  {
             mSlider.setImages(imageUrls);
             mSlider.setBannerTitles(titles);
         }
-
-
     }
 
     @Override
@@ -129,26 +132,33 @@ public class HeaderAdvCell extends BaseListViewCell  {
         return BaseListViewCell.HEADER_CELL;
     }
 
+
+    private View recreateCell() {
+        View convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null).findViewById(R.id.list_item_viewgroup);
+        //设置Banner的显示比例
+        convertView.setLayoutParams(new RelativeLayout.LayoutParams(Utils.getScreenWidth(mActivity), (int) ((float) Utils.getScreenWidth(mActivity) / 375.0 * 224)));
+        Banner mSlider = convertView.findViewById(R.id.slider);
+        ViewHolder viewHolder = new ViewHolder();
+        convertView.setTag(viewHolder);
+        viewHolder.slider = mSlider;
+        viewHolder.slider.setImageLoader(new GlideImageLoader());
+        return convertView;
+    }
+
+    //TODO： 不能下拉刷新
     @Override
     public ViewGroup getView(View convertView) {
-        //LogHelper.d(TAG, "convertView = " + convertView);
-        //LogHelper.d(TAG, "mSlider = " + mSlider);
         ViewHolder viewHolder;
         if (convertView == null) {
-            isNeedUpdate = true;
-            convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_header, null).findViewById(R.id.list_item_viewgroup);
-            //设置Banner的显示比例
-            convertView.setLayoutParams(new RelativeLayout.LayoutParams(Utils.getScreenWidth(mActivity), (int) ((float) Utils.getScreenWidth(mActivity) / 375.0 * 224)));
-            Banner mSlider = convertView.findViewById(R.id.slider);
-            viewHolder = new ViewHolder();
-            convertView.setTag(viewHolder);
-            viewHolder.slider = mSlider;
-            viewHolder.slider.setImageLoader(new GlideImageLoader());
-
+            convertView = recreateCell();
+            viewHolder = (ViewHolder) convertView.getTag();
         } else {
             viewHolder = (ViewHolder)convertView.getTag();
-
         }
+
+
+        viewHolder.mAdvertises = mAdvertises;
+        //Log.d(TAG, "viewHolder.mAdvertises.size() = " + viewHolder.mAdvertises.size());
         mViewHolder = viewHolder;
         setSlider(viewHolder);
 
@@ -156,44 +166,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
     }
 
 
-    private class GetHeaderAdvTask extends AsyncTask<Void, Void, GetMainPageAdsResponse> {
 
-        @Override
-        protected GetMainPageAdsResponse doInBackground(Void... voids) {
-            GetMainPageAdsRequest request = new GetMainPageAdsRequest();
-            //request.setType(mType);
-            return new BasicService().sendRequest(request);
-        }
-
-
-        @Override
-        protected void onPostExecute(GetMainPageAdsResponse response) {
-            super.onPostExecute(response);
-            //mMainPageFragment.refreshListView();
-            if (!response.isSuccess()) {
-                LogHelper.e(TAG, response.getErrorMessage());
-                return;
-            }
-            List<Advertise> advs = response.getAdvertises();
-            if (response.getPopupAd() != null && !"".equals(response.getPopupAd().getImageUrl())) {
-                LogHelper.d(TAG, "reponse popad is not null");
-                Advertise popAd = response.getPopupAd();
-                String cacheImageUrl = dao.getValue(KeyValueDao.KEY_POPUPAD_IMAGEURL, "");
-                if (  !popAd.getImageUrl().equals(cacheImageUrl) ) {
-                    dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_IMAGEURL, popAd.getImageUrl());
-                    dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_CLICKURL, popAd.getClickUrl());
-                    dao.saveOrUpdate(KeyValueDao.KEY_POPUPAD_TITLE, popAd.getTitle());
-                    ((BottomTabLayoutActivity)mActivity).showPopupAd();
-                }
-            } else {
-                LogHelper.d(TAG, "reponse popad is null");
-            }
-
-            mAdvertises = advs;
-            isNeedUpdate = true;
-            //setSlider();
-        }
-    }
 
     class GlideImageLoader extends ImageLoader {
         @Override
@@ -225,6 +198,7 @@ public class HeaderAdvCell extends BaseListViewCell  {
     class ViewHolder {
         Banner slider;
         boolean isInited;
+        List<Advertise> mAdvertises;
     }
 
 

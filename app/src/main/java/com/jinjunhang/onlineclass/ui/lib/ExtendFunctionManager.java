@@ -180,149 +180,172 @@ public class ExtendFunctionManager {
     }
 
 
-    public ViewGroup createSubView(final ExtendFunction function) {
-        LinearLayout layout = new LinearLayout(mContext);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+    public  static class ExtendFunctionView {
+        private final String TAG = LogHelper.makeLogTag(ExtendFunctionView.class);
 
-        int width = Utils.getScreenWidth(mContext);
-        ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        // Changes the height and width to the specified *pixels*
-        int cellHeight = getHeight();
-        params.width = width / itemCountEachRow;
-        params.height = cellHeight;
+        private Context mContext;
+        private LinearLayout layout;
+        private TextView textView;
 
-        layout.setLayoutParams(params);
-
-        ViewGroup.LayoutParams imageParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        ImageView imageView = new ImageView(mContext);
-
-
-        imageParams.width = getImageHeight();
-        imageParams.height = getImageHeight();
-        imageView.setPadding(0, 40, 0, 0);
-
-        imageView.setLayoutParams(imageParams);
-
-        makeImage(imageView, function);
-        layout.addView(imageView);
-
-
-        ViewGroup.LayoutParams textParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        textParams.width = width / itemCountEachRow;
-
-        TextView textView = new TextView(mContext);
-        textView.setLayoutParams(textParams);
-        LogHelper.d(TAG, "name = " + function.getName());
-        textView.setText(function.getName());
-        textView.setWidth(width / itemCountEachRow);
-        textView.setTextColor(mContext.getResources().getColor(R.color.gray_text));
-        textView.setTextSize(11);
-        textView.setGravity(Gravity.CENTER);
-        textView.setPadding(0, -20, 0, 0);
-
-        layout.addView(textView);
-
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                function.listener.onClick(function);
-            }
-        });
-
-        return layout;
-    }
-
-    private class GetImageTask extends AsyncTask<Object, Void, Bitmap> {
-        private ExtendFunction function = null;
-        private ImageView imageView = null;
-
-        @Override
-        protected Bitmap doInBackground(Object...params) {
-            this.function = (ExtendFunction) params[0];
-            this.imageView = (ImageView) params[1];
-            Bitmap myBitmap = null;
-            String url = function.getImageUrl();
-            try {
-
-                myBitmap = Glide.with(mContext)
-                        .load(url)
-                        .asBitmap()
-                        .centerCrop()
-                        .placeholder(R.drawable.placeholder)
-                        .into(90, 90)
-                        .get();
-
-                if (myBitmap != null) {
-                    ExtendFunctionImageDao.getInstance(mContext).saveOrUpdate(url, myBitmap);
-                }
-            } catch (Exception ex) {
-                LogHelper.d(TAG, ex);
-                return null;
-            }
-            return myBitmap;
+        public ViewGroup getView() {
+            return layout;
         }
 
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            Bitmap bitmap2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
-            if (bitmap == null) {
-                LogHelper.d(TAG, " image = " + function.image);
-                Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), function.image).copy(Bitmap.Config.ARGB_8888, true);
-                makeImage0(bitmap1, bitmap2, function, imageView);
+        public TextView getTextView() {
+            return textView;
+        }
+
+        public ExtendFunctionView(Context mContext, final  ExtendFunction function, int itemCountEachRow, int cellHeight, int imageHeight) {
+            this.mContext = mContext;
+
+            layout = new LinearLayout(mContext);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+            int width = Utils.getScreenWidth(mContext);
+            ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            // Changes the height and width to the specified *pixels*
+            //int cellHeight = getHeight();
+            params.width = width / itemCountEachRow;
+            params.height = cellHeight;
+
+            layout.setLayoutParams(params);
+
+            ViewGroup.LayoutParams imageParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            ImageView imageView = new ImageView(mContext);
+
+            imageParams.width = imageHeight; //getImageHeight();
+            imageParams.height = imageHeight; //getImageHeight();
+            imageView.setPadding(0, 40, 0, 0);
+
+            imageView.setLayoutParams(imageParams);
+
+            makeImage(imageView, function);
+            layout.addView(imageView);
+
+            ViewGroup.LayoutParams textParams =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            textParams.width = width / itemCountEachRow;
+
+            TextView textView = new TextView(mContext);
+            textView.setLayoutParams(textParams);
+            LogHelper.d(TAG, "name = " + function.getName());
+            textView.setText(function.getName());
+            textView.setWidth(width / itemCountEachRow);
+            textView.setTextColor(mContext.getResources().getColor(R.color.gray_text));
+            textView.setTextSize(11);
+            textView.setGravity(Gravity.CENTER);
+            textView.setPadding(0, -20, 0, 0);
+
+            layout.addView(textView);
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    function.listener.onClick(function);
+                }
+            });
+
+            //return layout;
+        }
+
+        private class GetImageTask extends AsyncTask<Object, Void, Bitmap> {
+            private ExtendFunction function = null;
+            private ImageView imageView = null;
+
+            @Override
+            protected Bitmap doInBackground(Object...params) {
+                this.function = (ExtendFunction) params[0];
+                this.imageView = (ImageView) params[1];
+                Bitmap myBitmap = null;
+                String url = function.getImageUrl();
+                try {
+
+                    myBitmap = Glide.with(mContext)
+                            .load(url)
+                            .asBitmap()
+                            .centerCrop()
+                            .placeholder(R.drawable.placeholder)
+                            .into(90, 90)
+                            .get();
+
+                    if (myBitmap != null) {
+                        ExtendFunctionImageDao.getInstance(mContext).saveOrUpdate(url, myBitmap);
+                    }
+                } catch (Exception ex) {
+                    LogHelper.d(TAG, ex);
+                    return null;
+                }
+                return myBitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                Bitmap bitmap2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
+                if (bitmap == null) {
+                    LogHelper.d(TAG, " image = " + function.image);
+                    Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), function.image).copy(Bitmap.Config.ARGB_8888, true);
+                    makeImage0(bitmap1, bitmap2, function, imageView);
+                    return;
+                }
+
+                makeImage0(bitmap, bitmap2, function, imageView);
+            }
+        }
+
+        public void makeImage(ImageView image, ExtendFunction func) {
+            // 防止出现Immutable bitmap passed to Canvas constructor错误
+            String imageUrl = func.getImageUrl();
+
+            Bitmap numberBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
+            //检查这个连接是否有效，并且这个链接的图片是否保存在磁盘中。如果在缓存中，直接中磁盘中获取图片，否则从网络中下载。
+            if (imageUrl != null && !"".equals(imageUrl)) {
+                Bitmap bitmap = ExtendFunctionImageDao.getInstance(mContext).get(imageUrl);
+                if (bitmap == null) {
+                    new GetImageTask().execute(func, image);
+                } else {
+                    makeImage0(bitmap, numberBitmap, func, image);
+                }
+                new GetImageTask().execute(func, image);
                 return;
             }
 
-            makeImage0(bitmap, bitmap2, function, imageView);
+            Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder).copy(Bitmap.Config.ARGB_8888, true);
+            makeImage0(bitmap1, numberBitmap, func, image);
         }
-    }
 
-    public void makeImage(ImageView image, ExtendFunction func) {
-        // 防止出现Immutable bitmap passed to Canvas constructor错误
-        String imageUrl = func.getImageUrl();
+        private void makeImage0(Bitmap funcImage, Bitmap numberImage, ExtendFunction func, ImageView image) {
+            int w = funcImage.getWidth();
+            int h = funcImage.getHeight();
+            int w_2 = numberImage.getWidth();
+            int h_2 = numberImage.getHeight();
+            Bitmap newBitmap = Bitmap.createBitmap(funcImage);
+            Canvas canvas = new Canvas(newBitmap);
+            Paint paint = new Paint();
 
-        Bitmap numberBitmap = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.f_1).copy(Bitmap.Config.ARGB_8888, true);
-        //检查这个连接是否有效，并且这个链接的图片是否保存在磁盘中。如果在缓存中，直接中磁盘中获取图片，否则从网络中下载。
-        if (imageUrl != null && !"".equals(imageUrl)) {
-            Bitmap bitmap = ExtendFunctionImageDao.getInstance(mContext).get(imageUrl);
-            if (bitmap == null) {
-                new GetImageTask().execute(func, image);
-            } else {
-                makeImage0(bitmap, numberBitmap, func, image);
+            //LogHelper.d(TAG, "w = " + w + " h = " + h + ", w2 = " + w_2 + " h2 = " + h_2);
+
+            paint.setColor(Color.GRAY);
+            paint.setAlpha(0);
+            canvas.drawRect(0, 0, w + 20, h + 20, paint);
+
+            if (func.hasMessage()) {
+                Paint paint2 = new Paint();
+                canvas.drawBitmap(numberImage, Math.abs(w - w_2) / 2 * 2 + 10, -6, paint2);
             }
-            new GetImageTask().execute(func, image);
-            return;
-        }
+            canvas.save(Canvas.ALL_SAVE_FLAG);
+            // 存储新合成的图片
+            canvas.restore();
 
-        Bitmap bitmap1 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.placeholder).copy(Bitmap.Config.ARGB_8888, true);
-        makeImage0(bitmap1, numberBitmap, func, image);
+            image.setImageBitmap(newBitmap);
+        }
     }
 
-    private void makeImage0(Bitmap funcImage, Bitmap numberImage, ExtendFunction func, ImageView image) {
-        int w = funcImage.getWidth();
-        int h = funcImage.getHeight();
-        int w_2 = numberImage.getWidth();
-        int h_2 = numberImage.getHeight();
-        Bitmap newBitmap = Bitmap.createBitmap(funcImage);
-        Canvas canvas = new Canvas(newBitmap);
-        Paint paint = new Paint();
+    public ExtendFunctionView createSubView(final ExtendFunction function) {
+        return new ExtendFunctionView(mContext, function, itemCountEachRow, getHeight(), getImageHeight());
 
-        //LogHelper.d(TAG, "w = " + w + " h = " + h + ", w2 = " + w_2 + " h2 = " + h_2);
 
-        paint.setColor(Color.GRAY);
-        paint.setAlpha(0);
-        canvas.drawRect(0, 0, w + 20, h + 20, paint);
-
-        if (func.hasMessage()) {
-            Paint paint2 = new Paint();
-            canvas.drawBitmap(numberImage, Math.abs(w - w_2) / 2 * 2 + 10, -6, paint2);
-        }
-        canvas.save(Canvas.ALL_SAVE_FLAG);
-        // 存储新合成的图片
-        canvas.restore();
-
-        image.setImageBitmap(newBitmap);
     }
+
 
 
     interface ClickListener {
@@ -358,13 +381,6 @@ public class ExtendFunctionManager {
         }
     }
 
-    class NotSupportClickListener extends BaseClickListener {
-        @Override
-        public void onClick(ExtendFunction function) {
-            super.onClick(function);
-            Utils.showMessage(mContext, "敬请期待");
-        }
-    }
 
 
     public static class ExtendFunction {

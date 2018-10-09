@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.ui.lib.ExtendFunctionManager;
@@ -23,6 +24,7 @@ public class ExtendFunctionCell extends BaseListViewCell {
     private int mHeight;
     private List<ExtendFunctionManager.ExtendFunction> functionList = new ArrayList<>();
     private ExtendFunctionManager mFunctionManager;
+    private boolean isInited = false;
 
     public void addFunction(ExtendFunctionManager.ExtendFunction func) {
         functionList.add(func);
@@ -67,7 +69,9 @@ public class ExtendFunctionCell extends BaseListViewCell {
             layout.setBackgroundColor(Color.WHITE);
 
             for (ExtendFunctionManager.ExtendFunction func : functionList) {
-                layout.addView(mFunctionManager.createSubView(func));
+                ExtendFunctionManager.ExtendFunctionView view = mFunctionManager.createSubView(func);
+
+                layout.addView(view.getView());
             }
             layout.setEnabled(false);
             layout.setOnClickListener(null);
@@ -77,12 +81,11 @@ public class ExtendFunctionCell extends BaseListViewCell {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         return (ViewGroup) convertView;
     }
 
     class ViewHolder  {
-
+        TextView textView;
     }
 
 }

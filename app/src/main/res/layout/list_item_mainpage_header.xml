@@ -4,7 +4,6 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/list_item_viewgroup"
               android:layout_height="240dp"
-                android:background="@color/black"
               android:orientation="vertical">
 
         <com.youth.banner.Banner
