@@ -24,10 +24,12 @@ public class ShareManager2 extends ShareManager {
     }
 
     protected void  setup() {
+        if (mActivity.getSupportActionBar() != null && mActivity.getSupportActionBar().getCustomView() != null) {
+            View customView = mActivity.getSupportActionBar().getCustomView();
+            ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
+            rightButton.setImageResource(R.drawable.share);
+        }
 
-        View customView = mActivity.getSupportActionBar().getCustomView();
-        ImageButton rightButton = (ImageButton) customView.findViewById(R.id.actionbar_right_button);
-        rightButton.setImageResource(R.drawable.share);
 
         final View shareView = v.findViewById(R.id.share_view);
 

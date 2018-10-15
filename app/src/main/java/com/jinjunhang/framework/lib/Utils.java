@@ -169,6 +169,24 @@ public class Utils {
         return screenHeight;
     }
 
+    public static int getScreenWidthInDp(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float density  = activity.getResources().getDisplayMetrics().density;
+        return (int)(getScreenWidth(activity) / density);
+    }
+
+    public static int getScreenHeightInDp(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics ();
+        display.getMetrics(outMetrics);
+
+        float density  = activity.getResources().getDisplayMetrics().density;
+        return (int)(getScreenHeight(activity) / density);
+    }
+
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (activity != null && activity.getCurrentFocus() != null) {

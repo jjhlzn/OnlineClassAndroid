@@ -1,29 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white">
-    <!--
-    <FrameLayout
-        android:id="@+id/home_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-    </FrameLayout> -->
+
     <android.support.v4.view.ViewPager
+        android:layout_marginTop="72dp"
+
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         >
     </android.support.v4.view.ViewPager>
 
-
-
     <LinearLayout
+
         android:id="@+id/overlay_bg"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -43,6 +37,7 @@
         android:text="一键分享"
         android:textColor="@color/white"
         android:textSize="16dp"
+
         android:background="@color/share_btn_bg"/>
 
     <RelativeLayout
@@ -62,47 +57,6 @@
             />
     </RelativeLayout>
 
+    <include layout="@layout/toolbar_common_no_music_icon" />
 </RelativeLayout>
 
-<!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:background="@color/code_image_background"
-    android:layout_height="match_parent">
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/qr_image"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="-100dp"
-            />
-    </LinearLayout>
-    -->
-
-
-
-
-<!--
-    <RelativeLayout
-        android:id="@+id/share_view"
-        android:layout_width="match_parent"
-        android:layout_height="186dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        >
-
-
-        <include layout="@layout/share_menu_1" android:id="@+id/sharez_menu"
-                 android:layout_width="match_parent"
-                 android:layout_height="186dp"
-                 android:layout_alignParentBottom="true"
-            />
-    </RelativeLayout>
-
-</LinearLayout> -->

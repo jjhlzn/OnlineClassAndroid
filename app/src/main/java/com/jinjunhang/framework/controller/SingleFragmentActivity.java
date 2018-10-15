@@ -39,10 +39,7 @@ public abstract class SingleFragmentActivity extends BaseActivity {
     protected void createActionBar() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customView = getLayoutInflater().inflate(R.layout.actionbar, null);
-        Utils.setLightStatusBar(customView, this);
         getSupportActionBar().setCustomView(customView);
-        Toolbar parent = (Toolbar) customView.getParent();
-        //parent.setContentInsetsAbsolute(0, 0);
     }
     protected boolean isNeedPushDownFresh() {
         return false;
@@ -65,7 +62,6 @@ public abstract class SingleFragmentActivity extends BaseActivity {
                     .commit();
         }
 
-        Utils.setLightStatusBar(findViewById(R.id.fragmentContainer), this);
         if (hasActionBar()) {
             getSupportActionBar().setElevation(0);
             createActionBar();

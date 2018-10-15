@@ -25,7 +25,7 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
     protected ImmersionBar mImmersionBar;
     protected View mView;
 
-    protected boolean isNeedTopPadding() {
+    protected boolean isNeedTopMargin() {
         return true;
     }
 
@@ -38,7 +38,8 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mView = inflater.inflate(getLayoutId(), container, false);
-        if (isNeedTopPadding()) {
+
+        if (isNeedTopMargin()) {
             float scale = getResources().getDisplayMetrics().density;
             int dpAsPixels = (int) (72 * scale + 0.5f);
 

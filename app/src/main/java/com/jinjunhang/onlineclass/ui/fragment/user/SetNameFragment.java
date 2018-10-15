@@ -27,7 +27,7 @@ public class SetNameFragment extends BaseFragment {
     private LoadingAnimation mLoading;
 
     @Override
-    protected boolean isNeedTopPadding() {
+    protected boolean isNeedTopMargin() {
         return true;
     }
 

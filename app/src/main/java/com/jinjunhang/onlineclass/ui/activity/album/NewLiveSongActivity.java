@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.activity.album;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.BaseMusicSingleFragmentActivity;
@@ -16,12 +17,11 @@ import com.jinjunhang.player.MusicPlayer;
 /**
  * Created by lzn on 16/6/13.
  */
-public class NewLiveSongActivity extends BaseMusicSingleFragmentActivity {
+public class NewLiveSongActivity extends SingleFragmentActivity {
 
     protected boolean hasActionBar() {
         return false;
     }
-
 
     @Override
     protected Fragment createFragment() {

@@ -72,7 +72,7 @@ public class CourseListFragment extends BaseFragment  {
 
 
     @Override
-    protected boolean isNeedTopPadding() {
+    protected boolean isNeedTopMargin() {
         return false;
     }
 

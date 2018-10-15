@@ -22,9 +22,9 @@ import com.jinjunhang.onlineclass.BuildConfig;
 
 public class LogHelper {
 
-    private static final String LOG_PREFIX = "uamp_";
+    private static final String LOG_PREFIX = "jf_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
-    private static final int MAX_LOG_TAG_LENGTH = 23;
+    private static final int MAX_LOG_TAG_LENGTH = 40;
 
     public static String makeLogTag(String str) {
         if (str.length() > MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH) {

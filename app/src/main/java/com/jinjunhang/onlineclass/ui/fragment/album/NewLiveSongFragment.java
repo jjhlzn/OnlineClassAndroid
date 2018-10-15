@@ -125,7 +125,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
     @Override
-    protected boolean isNeedTopPadding() {
+    protected boolean isNeedTopMargin() {
         return false;
     }
 

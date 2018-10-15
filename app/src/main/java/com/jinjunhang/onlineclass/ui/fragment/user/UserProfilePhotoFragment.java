@@ -81,10 +81,16 @@ public class UserProfilePhotoFragment extends BaseFragment {
         }
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_fragment_profileimage;
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_fragment_profileimage, container, false);
+        View v = super.onCreateView(inflater, container, savedInstanceState);
         mUserImageDao = UserImageDao.getInstance(getActivity().getApplicationContext());
         mLoading = new LoadingAnimation(getActivity());
 

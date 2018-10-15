@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
 
@@ -22,28 +24,31 @@ public class ShareImageFragment extends BaseFragment {
 
     private ImageView mImageView;
     private String mUrl = "";
-    private boolean mIsInited = false;
 
     public void setUrl(String url) {
         mUrl = url;
     }
 
-    public boolean isInited() {
-        return mIsInited;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.share_image_item, container, false);
-        if (getArguments() != null)
+        if (getArguments() != null) {
             mUrl = getArguments().getString("url");
-        mImageView = (ImageView)v.findViewById(R.id.share_image);
+        }
+        mImageView = v.findViewById(R.id.share_image);
 
-        //if (!"".equals(mUrl)) {
-            loadImage(mUrl);
-       // }
+        int width = Utils.getScreenWidth(getActivity()) - QRImageFragment.PageInterWidth * 2;
+        int height = (int)( (Utils.getScreenWidth(getActivity()) - QRImageFragment.PageInterWidth * 2 )* 1.8);
 
-        mIsInited = true;
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mImageView.getLayoutParams();
+        params.height = height;
+        params.width = width;
+
+        LogHelper.d(TAG, "width = " + params.width + ", height = " + params.height);
+
+        mImageView.setLayoutParams(params);
+        loadImage(mUrl);
         return v;
     }
 
@@ -52,7 +57,7 @@ public class ShareImageFragment extends BaseFragment {
         Glide
             .with(this)
             .load(url)
-           // .placeholder(R.drawable.footer_ditu)
+            .placeholder(R.drawable.rect_placeholder)
             .into(mImageView);
     }
 }

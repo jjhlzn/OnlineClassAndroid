@@ -58,7 +58,7 @@ public class ZhuanLanListFragment extends BaseFragment   {
     }
 
     @Override
-    protected boolean isNeedTopPadding() {
+    protected boolean isNeedTopMargin() {
         return false;
     }
 

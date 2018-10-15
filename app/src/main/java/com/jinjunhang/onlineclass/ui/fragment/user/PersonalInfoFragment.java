@@ -3,6 +3,7 @@ package com.jinjunhang.onlineclass.ui.fragment.user;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -27,6 +29,10 @@ import com.jinjunhang.framework.lib.LogHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by jjh on 2016-7-1.
  */
@@ -36,6 +42,18 @@ public class PersonalInfoFragment extends BaseFragment {
     private List<LineRecord> mItems;
     private ListView mListView;
     private PersonalInfoAdapter mAdapter;
+
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @OnClick(R.id.actionbar_back_button)
+    void backClick() {
+        getActivity().finish();
+    }
+    @BindView(R.id.actionbar_text) TextView mToolbarTitle;
+
+    @Override
+    protected boolean isNeedTopMargin() {
+        return false;
+    }
 
     private void createItems() {
         LoginUser loginUser = LoginUserDao.getInstance(getContext()).get();
@@ -65,6 +83,8 @@ public class PersonalInfoFragment extends BaseFragment {
         }));
     }
 
+
+
     @Override
     public void onResume() {
         LogHelper.d(TAG, "onResume called");
@@ -78,14 +98,16 @@ public class PersonalInfoFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_fragment_pushdownrefresh;
+        return R.layout.activity_fragment_pushdownrefresh_white_with_toolbar;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, v);
 
+        mToolbarTitle.setText("我的资料");
         mListView =  (ListView) v.findViewById(R.id.listView);
         createItems();
         mAdapter = new PersonalInfoAdapter(mItems);
@@ -98,6 +120,7 @@ public class PersonalInfoFragment extends BaseFragment {
             }
         });
 
+        ImmersionBar.setTitleBar(getActivity(), mToolbar);
         return v;
     }
 

@@ -21,4 +21,8 @@ public class PersonalInfoActivity extends SingleFragmentActivity {
     }
 
 
+    @Override
+    protected boolean hasActionBar() {
+        return false;
+    }
 }

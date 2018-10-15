@@ -61,7 +61,7 @@ public class ShopWebBrowserFragment extends BaseFragment {
     private String mTitle = "";
 
     @Override
-    protected boolean isNeedTopPadding() {
+    protected boolean isNeedTopMargin() {
         return false;
     }
 
