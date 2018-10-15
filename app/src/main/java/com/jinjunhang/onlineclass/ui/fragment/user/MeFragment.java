@@ -154,6 +154,9 @@ public class MeFragment extends BaseFragment  {
         mListView.setDivider(null);
         mLoading = new LoadingAnimation(getActivity(), (ViewGroup) v.findViewById(R.id.fragmentContainer));
 
+        TextView titleView = v.findViewById(R.id.actionbar_text);
+        titleView.setText("我的");
+
         if (mCells.size() == 0) {
             FirstSectionCell item = new FirstSectionCell(getActivity(), this);
 
