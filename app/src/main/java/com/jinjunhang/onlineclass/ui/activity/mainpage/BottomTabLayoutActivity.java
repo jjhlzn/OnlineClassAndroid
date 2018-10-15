@@ -127,7 +127,7 @@ public class BottomTabLayoutActivity extends BaseActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(5);
         new CheckUpgradeTask().execute();
 
     }
