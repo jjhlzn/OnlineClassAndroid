@@ -103,6 +103,9 @@ public final class AlbumArtCache {
                     mCache.put(artUrl, bitmaps);
                 } catch (IOException e) {
                     return null;
+                } catch (Exception ex) {
+                    LogHelper.e(TAG , ex);
+                    return null;
                 }
                 LogHelper.d(TAG, "doInBackground: putting bitmap in cache. cache size=" +
                     mCache.size());
