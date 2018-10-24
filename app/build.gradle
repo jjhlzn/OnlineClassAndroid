@@ -9,7 +9,7 @@ android {
         applicationId "com.jinjunhang.onlineclass"
         minSdkVersion 21
         targetSdkVersion 21
-        versionCode 29
+        versionCode 30
         versionName "3.2"
         multiDexEnabled true
     }
@@ -85,7 +85,7 @@ dependencies {
     api files('lib/libammsdk.jar')
     //implementation 'com.afollestad.material-dialogs:core:0.8.6.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-    api('io.socket:socket.io-client:0.8.3') {
+    api('io.socket:socket.io-client:1.0.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
@@ -99,17 +99,22 @@ dependencies {
     api files('libs/weiboSDKCore_3.1.4.jar')
     //compile files('libs/android-support-v4.jar')
     api 'com.android.support:multidex:1.0.1'
+
     // add this in  dependencies
     api files('libs/mta-sdk-1.6.2.jar')
     api files('libs/open_sdk_r5778.jar')
     //html解析
     api 'org.jsoup:jsoup:1.10.3'
+
     //push down refresh
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
     api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
     //没有使用特殊Header，可以不加这行
-    //compile 'com.android.support:appcompat-v7:25.3.1'//版本 23以上（必须）
+    //compile 'com.android.support:appcompat-v7:25.3.1'//版本 23以上（必x须）
     implementation 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     implementation 'com.youth.banner:banner:1.4.10'
+
+    //微信登陆
+    //implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

@@ -59,7 +59,7 @@ public class UserProfilePhotoFragment extends BaseFragment {
                 Bitmap bitmap =  MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
                 UserImageDao userImageDao = UserImageDao.getInstance(getActivity());
                 userImageDao.saveOrUpdate(bitmap);
-
+                mImageView.setImageBitmap(mUserImageDao.get());
                 File file = new File(imageUri.getPath());
                 new UploadUserImageTask().execute(file);
             }catch (Exception ex) {
@@ -153,6 +153,7 @@ public class UserProfilePhotoFragment extends BaseFragment {
         protected void onPostExecute(ServerResponse serverResponse) {
             super.onPostExecute(serverResponse);
             mLoading.hide();
+
             if (serverResponse.getStatus() == ServerResponse.SUCCESS) {
                 Utils.showMessage(getActivity(), "头像更新成功");
             } else {

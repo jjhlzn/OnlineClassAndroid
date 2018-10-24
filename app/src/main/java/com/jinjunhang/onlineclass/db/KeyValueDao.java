@@ -20,6 +20,9 @@ public class KeyValueDao {
     public static final String KEY_USER_VIP_END_DATE = "USER_VIP_END_DATE";
     public static final String KEY_USER_AGENT_LEVEL = "USER_AGENT_LEVEL";
 
+    public static final String KEY_USER_HAS_NEW_MESSAGE = "USER_HAS_NEW_MESSAGE";
+    public static final String KEY_USER_IS_BIND_WEIXIN = "USER_IS_BIND_WEIXIN";
+    public static final String KEY_USER_HAS_BIND_PHONE = "USER_HAS_BIND_PHONE";
     public static final String KEY_USER_MY_TUIJIAN = "USER_MY_TUIJIAN";
     public static final String KEY_USER_MY_ORDER = "USER_MY_ORDER";
     public static final String KEY_USER_MY_TEAM = "USER_MY_TEAM";
@@ -134,4 +137,17 @@ public class KeyValueDao {
         }
     }
 
+
+
+    public boolean hasNewMessage() {
+        return getValue(KeyValueDao.KEY_USER_HAS_NEW_MESSAGE, "0").equals("1");
+    }
+
+    public  void setHasNessageMessage(boolean  result) {
+        saveOrUpdate(KEY_USER_HAS_NEW_MESSAGE, result ? "1" : "0");
+    }
+
+    public boolean hasBindPhone() {
+        return getValue(KeyValueDao.KEY_USER_HAS_BIND_PHONE, "0").equals("1");
+    }
 }

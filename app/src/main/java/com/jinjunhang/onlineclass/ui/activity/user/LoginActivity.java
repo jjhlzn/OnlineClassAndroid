@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
@@ -19,18 +20,25 @@ import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.LoginRequest;
 import com.jinjunhang.onlineclass.service.LoginResponse;
-import com.jinjunhang.onlineclass.ui.activity.MainActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.other.ConfigurationActivity;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.lib.WeixinLoginManager;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by lzn on 16/6/27.
  */
 public class LoginActivity extends android.support.v4.app.FragmentActivity {
 
+    public static final int WEIXIN_LOGIN = 1;
+    public static int loginType = -1;
+    public static String code = "";
 
     private static final String TAG = LogHelper.makeLogTag(LoginActivity.class);
     private EditText mUserNameEditText;
@@ -39,11 +47,24 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
 
     private LoginUserDao mLoginUserDao;
     private String mDeviceToken = "";
+    private WeixinLoginManager mWXLoginManager;
+
+    @BindView(R.id.weixinBtn) ImageView mWeixinBtn;
+    //@BindView(R.id.qqBtn) ImageView mQQBtn;
+
+    @OnClick(R.id.weixinBtn) void weixinClick() {
+        mWXLoginManager.loginStep1();
+    }
+
+    //@OnClick(R.id.qqBtn) void qqClick() {}
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_login);
+
+        ButterKnife.bind(this);
+        mWXLoginManager = new WeixinLoginManager(this);
 
         XGPushManager.registerPush(LoginActivity.this, new XGIOperateCallback() {
             @Override
@@ -183,5 +204,18 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
     @Override
     public void onBackPressed() {
         return;
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogHelper.d(TAG, "onResume called");
+        if (loginType == WEIXIN_LOGIN) {
+            LogHelper.d(TAG, "code: " + code);
+            loginType = -1;
+
+            mWXLoginManager.loginStep2(code, mLoading, mDeviceToken);
+        }
     }
 }

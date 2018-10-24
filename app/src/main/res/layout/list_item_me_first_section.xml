@@ -21,7 +21,7 @@
             android:layout_height="50dp"
             android:scaleType="fitXY"
             app:riv_oval="true"
-            android:src="@drawable/avril"
+            android:src="@drawable/placeholder"
             />
     </RelativeLayout>
 

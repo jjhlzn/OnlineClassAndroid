@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,9 +155,9 @@ public class ExtendFunctionManager {
         int width = Utils.getScreenWidth(mContext);
         int result = 0;
         if (width <= 768) {
-            result = (int)(width / itemCountEachRow * 0.54);
+            result = (int)(width / itemCountEachRow * 0.6);
         } else {
-            result = (int)(width / itemCountEachRow * 0.45);
+            result = (int)(width / itemCountEachRow * 0.56);
         }
         LogHelper.d(TAG, " imageHeight = " + result);
         return result ;
@@ -164,7 +165,6 @@ public class ExtendFunctionManager {
 
     public int getHeight() {
         int screenWidth =   Utils.getScreenWidth(mContext);
-        int screenHeight =   Utils.getScreenHeight(mContext);
         //LogHelper.d(TAG, "width = " + screenWidth + ", heigth = " + screenHeight);
         int height = 250;
         if (screenWidth >= 1440) {
@@ -176,7 +176,7 @@ public class ExtendFunctionManager {
             height = 180;
         }
         //LogHelper.d(TAG, "line height = " + height);
-        return (int)(height * 0.74);
+        return (int)(height * 0.9);
     }
 
 
@@ -189,10 +189,6 @@ public class ExtendFunctionManager {
 
         public ViewGroup getView() {
             return layout;
-        }
-
-        public TextView getTextView() {
-            return textView;
         }
 
         public ExtendFunctionView(Context mContext, final  ExtendFunction function, int itemCountEachRow, int cellHeight, int imageHeight) {
@@ -216,7 +212,10 @@ public class ExtendFunctionManager {
 
             imageParams.width = imageHeight; //getImageHeight();
             imageParams.height = imageHeight; //getImageHeight();
-            imageView.setPadding(0, 40, 0, 0);
+
+            int topPadding = (cellHeight - imageHeight) / 2;
+            LogHelper.d(TAG, "top pad = " + topPadding);
+            imageView.setPadding(0, topPadding, 0, 0);
 
             imageView.setLayoutParams(imageParams);
 
@@ -232,7 +231,7 @@ public class ExtendFunctionManager {
             textView.setText(function.getName());
             textView.setWidth(width / itemCountEachRow);
             textView.setTextColor(mContext.getResources().getColor(R.color.gray_text));
-            textView.setTextSize(11);
+            textView.setTextSize(13);
             textView.setGravity(Gravity.CENTER);
             textView.setPadding(0, -20, 0, 0);
 

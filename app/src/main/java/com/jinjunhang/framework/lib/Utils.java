@@ -39,6 +39,7 @@ import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.jinjunhang.onlineclass.ui.lib.WXConstants;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -66,25 +67,19 @@ public class Utils {
 
     public static int BOTTOM_BAR_HEIGHT = 153; //in dp
 
-    public static final String WEIXIN_SHERE_APP_ID = "wx73653b5260b24787";
+    public static final String WEIXIN_SHERE_APP_ID = WXConstants.APPID;
 
     public static void showMessage(Context context, String message) {
         new MaterialDialog.Builder(context)
                 .content(message)
+                .positiveColor(context.getResources().getColor(R.color.price_color))
+                .contentColor(context.getResources().getColor(R.color.black))
+                .backgroundColor(context.getResources().getColor(R.color.white))
                 .positiveText("好的")
                 .show();
     }
 
     public static void setLightStatusBar(View view, Activity activity) {
-
-        /*
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-            activity.getWindow().setStatusBarColor(Color.WHITE);
-        } */
     }
 
     public static void showErrorMessage(Context context, String message) {
@@ -483,9 +478,9 @@ public class Utils {
 
                 if (isPlay) {
                     if (isWhiteImage(alpha))
-                        musicBtn.setImageResource(R.drawable.demo);
+                        musicBtn.setImageResource(R.drawable.demo_white);
                     else
-                        musicBtn.setImageResource(R.drawable.demo);
+                        musicBtn.setImageResource(R.drawable.demo_black);
 
 
                 } else {

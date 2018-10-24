@@ -117,7 +117,7 @@ public class ServiceLinkManager {
 
     public static String ChatServerUrl() {
         return "http://chat.yhkamani.com";
-        //return "http://192.168.1.54:3000";
+        //return "http://192.168.1.102:3000";
     }
 
     public static String ShenqingUrl() {

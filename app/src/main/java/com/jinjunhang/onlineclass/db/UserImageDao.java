@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 
+import com.jinjunhang.framework.lib.LogHelper;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,8 +18,10 @@ import java.io.IOException;
  */
 public class UserImageDao {
 
+    private final String TAG = LogHelper.makeLogTag(UserImageDao.class);
     private static UserImageDao instance = null;
     private Context mContext;
+    private Bitmap mBitmap;
 
     private UserImageDao(Context context) {
         mContext = context;
@@ -30,28 +34,36 @@ public class UserImageDao {
         return instance;
     }
 
+
+    private String name = "userprofile.png";
     public Bitmap get() {
-        String name = "userprofile.png";
+        if (mBitmap != null)
+            return mBitmap;
         try{
             FileInputStream fis = mContext.openFileInput(name);
             Bitmap b = BitmapFactory.decodeStream(fis);
             fis.close();
+            mBitmap = b;
             return b;
         }
         catch(Exception e){
+            LogHelper.e(TAG, e);
         }
         return null;
     }
 
     public void saveOrUpdate(Bitmap image) {
-        String name = "userprofile.png";
         FileOutputStream out;
         try {
             out = mContext.openFileOutput(name, Context.MODE_PRIVATE);
-            image.compress(Bitmap.CompressFormat.JPEG, 90, out);
+
+            image.compress(Bitmap.CompressFormat.JPEG, 70, out);
+            out.flush();
             out.close();
+
+            mBitmap = image;
         } catch (Exception e) {
-            e.printStackTrace();
+            LogHelper.e(TAG, e);
         }
     }
 

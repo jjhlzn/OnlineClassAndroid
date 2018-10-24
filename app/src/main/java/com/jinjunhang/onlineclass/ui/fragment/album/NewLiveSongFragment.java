@@ -139,6 +139,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mMusicPlayer = MusicPlayer.getInstance(getActivity());
         mNotificationManager =  ExoPlayerNotificationManager.getInstance(getActivity());
+        mChatManager = new ChatManager(NewLiveSongFragment.this);
 
         mView = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -187,8 +188,19 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         updateToolBar(mLastAlpha);
     }
 
+    public void releaseChat() {
+        if (mChatManager != null) {
+            mChatManager.releaseChat();
+        }
+    }
+
+    public void initChat() {
+        if (mChatManager != null && mMusicPlayer.getCurrentPlaySong() != null)
+            mChatManager.initChat();
+    }
+
     private void setViewWithSongInfo(LiveSong song) {
-        mChatManager = new ChatManager(NewLiveSongFragment.this);
+
         mChatManager.initChat();
 
         Glide.with(this)
@@ -233,7 +245,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         setPlayerView(mView);
 
         mChatManager.setBottomCommentView(mView);
-        //mChatManager.loadComments();
 
         scheduleChatUpdate();
         updatePlayButton();
@@ -383,7 +394,8 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     @Override
     public void onResume() {
         super.onResume();
-        if (mChatManager != null)
+        LogHelper.d(TAG, "onResume called");
+        if (mChatManager != null && mMusicPlayer.getCurrentPlaySong() != null)
             mChatManager.initChat();
     }
 
@@ -400,6 +412,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             stopChatUpdate();
         }
     }
+
+
+
 
     protected void updatePlayButton() {
         LogHelper.d(TAG, "updatePlayButton called, state = " + mMusicPlayer.getState());

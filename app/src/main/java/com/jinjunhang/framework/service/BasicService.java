@@ -69,9 +69,7 @@ public class BasicService {
         }
     }
 
-
-
-    private String get(String url) throws IOException {
+    public String get(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)

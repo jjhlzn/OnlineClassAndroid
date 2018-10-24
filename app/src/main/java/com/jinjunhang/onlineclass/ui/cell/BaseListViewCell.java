@@ -25,6 +25,10 @@ public abstract class BaseListViewCell implements ListViewCell {
     public final static int JPK_HEADER_CELL = 10;
     public final static int MAINPAGE_COURSE_HEADER_CELL = 11;
 
+    public final static int USER_FIRST_SECTION_CELL = 12;
+    public final static int USER_SECOND_SECTION_CELL = 13;
+    public final static int USER_COMMON_SECTION_CELL = 14;
+
 
     private  static final  String TAG = LogHelper.makeLogTag(BaseListViewCell.class);
     protected Activity mActivity;

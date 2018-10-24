@@ -53,7 +53,7 @@ public class ParseHtmlPageTask extends AsyncTask<String, Void, Void> {
 
         }
         catch (Exception ex) {
-            LogHelper.e(TAG, ex);
+            //LogHelper.e(TAG, ex);
         }
         return null;
     }

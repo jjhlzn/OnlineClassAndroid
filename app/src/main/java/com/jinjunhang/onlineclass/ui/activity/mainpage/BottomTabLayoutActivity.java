@@ -264,6 +264,9 @@ public class BottomTabLayoutActivity extends BaseActivity {
         mFragmensts[position].updateMusicBtnState();
         if (position == 2) {
             ((NewLiveSongFragment)mFragmensts[position]).fetchData();
+            ((NewLiveSongFragment)mFragmensts[position]).initChat();
+        } else {
+            ((NewLiveSongFragment)mFragmensts[2]).releaseChat();
         }
 
     }

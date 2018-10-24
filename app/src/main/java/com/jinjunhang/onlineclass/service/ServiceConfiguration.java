@@ -20,7 +20,7 @@ public class ServiceConfiguration {
     public static String LOCATOR_HTTP = "";
     public static String LOCATOR_SERVERNAME = "";
     public static int LOCATOR_PORT = 0;
-    private final static String serverName1 = "192.168.31.130"; //"192.168.64.126";  // //"192.168.64.126"; // "192.168.31.130"; //"192.168.64.126"; //   //"192.168.31.130"; // "192.168.64.126";  //"192.168.31.130";  // //  //"jf.yhkamani.com"; //"192.168.1.108";
+    private final static String serverName1 = "192.168.1.102"; //"192.168.64.126";  // //"192.168.64.126"; // "192.168.31.130"; //"192.168.64.126"; //   //"192.168.31.130"; // "192.168.64.126";  //"192.168.31.130";  // //  //"jf.yhkamani.com"; //"192.168.1.108";
     private final static int port1 = 3000;
 
 
@@ -62,6 +62,22 @@ public class ServiceConfiguration {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/login";
     }
 
+    public static String OAuthUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/oauth";
+    }
+
+    public static String BindWeixinUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/bindweixin";
+    }
+
+    public static String GetWeixinTokenUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/getweixintoken";
+    }
+
+    public static String BindPhoneUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/user/bindphone";
+    }
+
     public static  String LogoutUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/logout";
     }
@@ -69,6 +85,11 @@ public class ServiceConfiguration {
     public static  String SingupUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/signup";
     }
+
+    public static  String GetMessagesUrl() {
+        return httpMethod() + "://" + serverName() + ":" + port() + "/app/getmessages";
+    }
+
 
     public static  String GetPhoneCheckCodeUrl() {
         return httpMethod() + "://" + serverName() + ":" + port() + "/user/getPhoneCheckCode";

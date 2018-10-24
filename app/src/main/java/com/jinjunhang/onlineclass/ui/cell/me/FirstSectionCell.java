@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.jinjunhang.onlineclass.R;
@@ -34,12 +38,15 @@ public class FirstSectionCell extends BaseListViewCell {
     private RoundedImageView mUserImage;
     private TextView mNameLabel;
     private TextView mLevelLabel;
-    //private TextView mBossLabel;
 
     private Activity mActivity;
     private MeFragment mFragment;
-
     private UserImageDao mUserImageDao;
+
+    @Override
+    public int getItemViewType() {
+        return BaseListViewCell.USER_FIRST_SECTION_CELL;
+    }
 
     public FirstSectionCell(Activity activity, MeFragment fragment) {
         super(activity);
@@ -53,21 +60,20 @@ public class FirstSectionCell extends BaseListViewCell {
     public ViewGroup getView() {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_me_first_section, null);
 
-        mUserImage = (RoundedImageView) v.findViewById(R.id.user_image);
+        mUserImage =  v.findViewById(R.id.user_image);
         mUserImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mActivity, UserProfilePhotoActivity.class);
                 mFragment.startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_USER_IAMGE);
-
             }
         });
         mUserImage.setBorderColor(0x000000);
         mUserImage.setBorderWidth(2.0f);
+        mUserImage.setOval(true);
 
         mNameLabel = (TextView) v.findViewById(R.id.name_label);
         mLevelLabel = (TextView) v.findViewById(R.id.level_label);
-        //mBossLabel = (TextView) v.findViewById(R.id.boss_label);
 
         update();
         return (LinearLayout)v.findViewById(R.id.root_container);
@@ -80,37 +86,21 @@ public class FirstSectionCell extends BaseListViewCell {
         if (loginUser != null) {
             mNameLabel.setText(loginUser.getName());
             mLevelLabel.setText(loginUser.getLevel());
-            //mBossLabel.setText("我的上级: "+loginUser.getBoss());
-            String url = ServiceConfiguration.GetUserProfileImage(loginUser.getUserName());
-            //Glide.with(mActivity).load(url).asBitmap().into(mUserImage);
-            //mUserImage.setImageResource(R.drawable.log);
 
-            Bitmap userImage = mUserImageDao.get();
-            if (userImage != null) {
-                mUserImage.setImageBitmap(userImage);
-                //mUserImage.setOval(true);
-                //mUserImage.setCornerRadius(50);
+            String url = ServiceConfiguration.GetUserProfileImage(loginUser.getUserName());
+
+            LogHelper.d(TAG, url);
+
+            if (mUserImageDao.get() != null) {
+                mUserImage.setImageBitmap(mUserImageDao.get());
             } else {
                 Glide.with(mActivity).load(url).asBitmap().into(new BitmapImageViewTarget(mUserImage) {
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> animation) {
-                        // here it's similar to RequestListener, but with less information (e.g. no model available)
-                        //super.onResourceReady(resource, animation);
-                        // here you can be sure it's already set
-                        // mUserImage.set
-                        // mUserImage.setImageResource(r);
+                    public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> animation) {
                         mUserImage.setImageBitmap(resource);
-                        mUserImageDao.saveOrUpdate( resource);
-                        //mUserImage.setOval(true);
-                       // mUserImage.setCornerRadius(50);
-                        //mUserImage.setAlpha(0);
-                        //mUserImage.setImageResource(R.drawable.avril);
+                        //mUserImageDao.saveOrUpdate(resource);
                         LogHelper.d(TAG, "image is ready");
-                    }
-
-                    // +++++ OR +++++
-                    @Override
-                    protected void setResource(Bitmap resource) {
+                        mFragment.notifyListViewUpdate();
                     }
                 });
             }

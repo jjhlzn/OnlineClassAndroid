@@ -64,9 +64,13 @@ public class ChatManager {
     }
 
     public void initChat() {
-        if (mSocket != null)
+        LogHelper.d(TAG, "initChat called");
+        if (mSocket != null) {
+            LogHelper.d(TAG, "socket is not null");
             return;
+        }
         try {
+            LogHelper.d(TAG, "create and set socket");
             mSocket = IO.socket(ServiceLinkManager.ChatServerUrl());
             setSocketEvent();
             mSocket.connect();
@@ -76,9 +80,11 @@ public class ChatManager {
     }
 
     public void releaseChat() {
+        LogHelper.d("releaseChat called");
         if (mSocket != null) {
             mSocket.disconnect();
             mSocket.off();
+            mSocket = null;
         }
     }
 
@@ -86,6 +92,7 @@ public class ChatManager {
         try {
             if (mSocket == null)
                 return;
+            mSocket.off();
             mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
@@ -124,7 +131,6 @@ public class ChatManager {
                     LogHelper.d(TAG, "socket disconnected");
                 }
             });
-            mSocket.connect();
         }catch (Exception ex) {
             LogHelper.e(TAG, ex);
         }

@@ -34,7 +34,7 @@ public class FinanceToutiaoHeaderCell extends BaseListViewCell {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mActivity, WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "融资军火库")
+                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "金融宝典")
                         .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.JunHuoKuUrl());
                 mActivity.startActivity(i);
             }

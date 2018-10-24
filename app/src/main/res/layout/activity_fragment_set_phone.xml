@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/white">
+
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="80dp"
+                  android:orientation="vertical"
+                  android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="25dp"
+            android:weightSum="1"
+            >
+            <EditText
+                android:id="@+id/bindPhone1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:textColor="@color/black"
+                android:background="@drawable/edit_text_border"
+                android:textCursorDrawable="@null"
+                android:hint="新手机号"
+                android:textColorHint="@color/hint_color"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:lines="1"
+                android:textSize="15dp"
+                android:inputType="number"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="1"
+            >
+
+            <EditText
+                android:id="@+id/bindPhone2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:paddingBottom="10dp"
+                android:background="@drawable/edit_text_border"
+                android:textCursorDrawable="@null"
+                android:hint="确认手机号"
+                android:textColorHint="@color/hint_color"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:lines="1"
+                android:textSize="15dp"
+                android:inputType="number"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:weightSum="1"
+            android:id="@+id/codeContainer"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:textColor="@color/black"
+                    android:id="@+id/checkcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/edit_text_border"
+                    android:textCursorDrawable="@null"
+                    android:hint="原手机验证码"
+                    android:textColorHint="@color/hint_color"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:lines="1"
+                    android:textSize="15dp"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:text="获取验证码"
+                    android:textSize="13dp"
+
+                    android:textColor="@color/price_color"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginRight="18dp"
+                    android:background="@null"
+                    android:id="@+id/get_checkcode_button"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="59秒后重新获取"
+                    android:textSize="13dp"
+                    android:textColor="@color/ccl_grey600"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginRight="27dp"
+                    android:paddingBottom="10dp"
+                    android:background="@null"
+                    android:gravity="bottom"
+                    android:visibility="invisible"
+                    android:id="@+id/get_checkcode_message"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+    <include layout="@layout/toolbar_common_right_button" />
+
+
+</RelativeLayout>

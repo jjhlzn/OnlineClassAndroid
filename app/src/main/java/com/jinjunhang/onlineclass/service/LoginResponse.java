@@ -11,6 +11,7 @@ import org.json.JSONObject;
  */
 public class LoginResponse extends ServerResponse {
 
+    private String mUserId;
     private String mName;
     private String mToken;
     private String mNickName;
@@ -47,6 +48,10 @@ public class LoginResponse extends ServerResponse {
         return mCodeImageUrl;
     }
 
+    public String getUserId() {
+        return mUserId;
+    }
+
     public void setName(String name) {
         mName = name;
     }
@@ -77,6 +82,9 @@ public class LoginResponse extends ServerResponse {
 
     @Override
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
+        if (json.has("userid")) {
+            mUserId = json.getString("userid");
+        }
         mName = json.getString("name");
         mToken = json.getString("token");
         mNickName = json.getString("nickname");
@@ -84,5 +92,6 @@ public class LoginResponse extends ServerResponse {
         mBoss = json.getString("boss");
         mSex = json.getString("sex");
         mCodeImageUrl = json.getString("codeImageUrl");
+
     }
 }

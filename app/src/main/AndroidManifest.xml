@@ -129,8 +129,20 @@
 
         </activity>
 
+        <activity android:name=".ui.activity.MessagesActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+
         <activity android:name=".ui.activity.MainActivity"
                   android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity android:name=".ui.activity.user.SetPhoneActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
 
@@ -257,10 +269,20 @@
         <activity android:name=".ui.activity.UpgradeActivity"
                   android:screenOrientation="portrait" />
 
+        <activity android:name="com.jinjunhang.onlineclass.wxapi.WXEntryActivity"
+                  android:screenOrientation="portrait"
+                  android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="sdksample"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name="com.jinjunhang.onlineclass.wxapi.WXPayEntryActivity"
-                  android:screenOrientation="portrait" />
+                  android:screenOrientation="portrait">
 
-
+        </activity>
 
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"

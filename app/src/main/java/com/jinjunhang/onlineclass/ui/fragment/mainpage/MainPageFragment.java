@@ -47,6 +47,7 @@ import com.jinjunhang.onlineclass.service.GetQuestionResponse;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseRequest;
 import com.jinjunhang.onlineclass.service.GetZhuanLanAndTuijianCourseResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.search.SearchActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
@@ -467,9 +468,7 @@ public class MainPageFragment extends BaseFragment  {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (position < 5) {
-                        return;
-                    }
+
 
                     BaseListViewCell cell = (BaseListViewCell) mMainPageAdapter.getItem(position);
                     if (cell instanceof ZhuanLanCell) {
@@ -488,7 +487,8 @@ public class MainPageFragment extends BaseFragment  {
                             Utils.showErrorMessage(mActivity, "该课程未上线，敬请期待！");
                             return;
                         }
-                        ((BottomTabLayoutActivity)(getActivity())).switchToZhiboTab();
+                        Intent i = new Intent(getActivity(), NewLiveSongActivity.class);
+                        startActivity(i);
                     }
                 }
             });

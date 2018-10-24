@@ -20,6 +20,7 @@
 
             <EditText
                 android:id="@+id/signup_phone"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
@@ -55,6 +56,7 @@
                     android:background="@drawable/edit_text_border"
                     android:textCursorDrawable="@null"
                     android:hint="验证码"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/hint_color"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
@@ -72,6 +74,7 @@
                     android:layout_marginBottom="14dp"
                     android:layout_marginRight="18dp"
                     android:background="@null"
+
                     android:id="@+id/get_checkcode_button"
                     />
 
@@ -117,6 +120,7 @@
                 android:textColorHint="@color/hint_color"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:textColor="@color/black"
                 android:lines="1"
                 android:textSize="15dp"
                 android:inputType="number"/>
@@ -139,6 +143,7 @@
                 android:background="@drawable/edit_text_border"
                 android:textCursorDrawable="@null"
                 android:hint="密    码 (不少于6位)"
+                android:textColor="@color/black"
                 android:textColorHint="@color/hint_color"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"

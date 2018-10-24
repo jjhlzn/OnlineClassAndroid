@@ -24,6 +24,9 @@ public class GetUserStatDataResponse extends ServerResponse {
     private String mSex;
     private String mCodeImageUrl;
     private String mVipEndDate = "";
+    private Boolean mIsBindWeixin = false;
+    private boolean mHasNewMessage = false;
+    private boolean mHasBindPhone = false;
 
     public String getJifen() {
         return mJifen;
@@ -77,6 +80,18 @@ public class GetUserStatDataResponse extends ServerResponse {
         mVipEndDate = vipEndDate;
     }
 
+    public Boolean isBindWeixin() {
+        return mIsBindWeixin;
+    }
+
+    public boolean hasNewMessage() {
+        return mHasNewMessage;
+    }
+
+    public boolean hasBindPhone() {
+        return mHasBindPhone;
+    }
+
     @Override
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
         mJifen = json.getString("jifen");
@@ -92,5 +107,17 @@ public class GetUserStatDataResponse extends ServerResponse {
         mSex = json.getString("sex");
         mCodeImageUrl = json.getString("codeImageUrl");
         mVipEndDate = json.getString("vipEndDate");
+
+        if (json.has("isBindWeixin")) {
+            mIsBindWeixin = json.getBoolean("isBindWeixin");
+        }
+
+        if (json.has("hasNewMessage")) {
+            mHasNewMessage = json.getBoolean("hasNewMessage");
+        }
+
+        if (json.has("hasBindPhone")) {
+            mHasBindPhone = json.getBoolean("hasBindPhone");
+        }
     }
 }

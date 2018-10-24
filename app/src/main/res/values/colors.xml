@@ -18,6 +18,8 @@
 
     <color name="transparent">#00000000</color>
 
+    <color name="messageDetailColor">#555753</color>
+
     <color name="answerTextColor">#555753</color>
     <color name="answer_bg">#ecedef</color>
     <color name="tv_branding">#ffff5722</color>
@@ -52,10 +54,14 @@
     <color name="launchpage_textcolor1">#a4a1a1</color>
 
     <color name="gray_text">#747474</color>
+    <color name="fangshiLine">#cccccc</color>
+
 
 
     <color name="keyword_color">#9b9b9b</color>
     <color name="keyword_btn_bg">#e2e2e2</color>
+
+    <color name="separate_line_color">#e2e2e2</color>
 
     <color name="hint_color">#A2A2A2</color>
     <color name="black">#000</color>

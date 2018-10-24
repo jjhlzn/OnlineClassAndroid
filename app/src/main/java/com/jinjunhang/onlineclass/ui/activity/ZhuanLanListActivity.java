@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.onlineclass.ui.fragment.ZhuanLanListFragment;
 import com.jinjunhang.onlineclass.ui.fragment.album.AlbumListFragment;
 
-public class ZhuanLanListActivity extends BaseMusicSingleFragmentActivity {
+public class ZhuanLanListActivity extends SingleFragmentActivity {
 
     @Override
     protected boolean hasActionBar() {

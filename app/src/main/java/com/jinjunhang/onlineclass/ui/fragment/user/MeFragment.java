@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.service.GetUserStatDataRequest;
 import com.jinjunhang.onlineclass.service.GetUserStatDataResponse;
 import com.jinjunhang.onlineclass.ui.activity.MainActivity;
+import com.jinjunhang.onlineclass.ui.activity.MessagesActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.PersonalInfoActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.QRImageActivity;
@@ -51,6 +53,10 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by jjh on 2016-6-29.
  */
@@ -63,6 +69,7 @@ public class MeFragment extends BaseFragment  {
     private ListView mListView;
     private MeAdapter mMeAdapter;
     private SmartRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.redDotImage) ImageView mRedDotImage;
 
     private KeyValueDao mKeyValueDao;
 
@@ -92,7 +99,7 @@ public class MeFragment extends BaseFragment  {
             }, "", ""));
             mFourthSections.add(new LineRecord(R.drawable.user2, "我的推荐", webBroserClickListener, ServiceLinkManager.MyTuiJianUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TUIJIAN, "0人")));
             mFourthSections.add(new LineRecord(R.drawable.user3, "我的订单", webBroserClickListener, ServiceLinkManager.MyOrderUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ORDER, "0笔")));
-            mFourthSections.add(new LineRecord(R.drawable.user4, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
+            //mFourthSections.add(new LineRecord(R.drawable.user4, "我的团队", webBroserClickListener, ServiceLinkManager.MyTeamUrl(), mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_TEAM, "0人")));
         }
 
         if (mFifthSections.size() == 0) {
@@ -103,13 +110,7 @@ public class MeFragment extends BaseFragment  {
                     getActivity().startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_PERSONAL_INFO);
                 }
             }, "", ""));
-            mFifthSections.add(new LineRecord(R.drawable.user6, "我的二维码", new CellClickListener() {
-                @Override
-                public void onClick(ListViewCell cell) {
-                    Intent i = new Intent(getActivity(), QRImageActivity.class);
-                    startActivity(i);
-                }
-            }, "", ""));
+
             mFifthSections.add(new LineRecord(R.drawable.user9, "申请合作", webBroserClickListener, ServiceLinkManager.HezuoUrl(), ""));
         }
 
@@ -140,10 +141,24 @@ public class MeFragment extends BaseFragment  {
         return R.layout.activity_fragment_pushdownrefresh_me;
     }
 
+    public void notifyListViewUpdate() {
+        this.mMeAdapter.notifyDataSetChanged();
+    }
+
+    @OnClick(R.id.actionbar_message_button) void messageButtonClick() {
+        mKeyValueDao.setHasNessageMessage(false);
+
+        Intent i = new Intent(getActivity(), MessagesActivity.class);
+        startActivity(i);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = super.onCreateView(inflater, container, savedInstanceState);
+
+        ButterKnife.bind(this, v);
+
         mKeyValueDao = KeyValueDao.getInstance(getActivity());
         initSections();
         mListView =  v.findViewById(R.id.listView);
@@ -232,11 +247,28 @@ public class MeFragment extends BaseFragment  {
            new GetUserStatDataTask().execute();
         }
 
+        setRedDotImage();
         ImmersionBar.setTitleBar(getActivity(), mToolbar);
         if (getUserVisibleHint()) {
             ImmersionBar.with(this).statusBarDarkFont(true).init();
         }
         return v;
+    }
+
+    private void setRedDotImage() {
+        LogHelper.d(TAG, "hesMessage = " + mKeyValueDao.hasNewMessage());
+        if (mKeyValueDao.hasNewMessage()) {
+            mRedDotImage.setVisibility(View.VISIBLE);
+        } else {
+            mRedDotImage.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setRedDotImage();
+        mMeAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -323,21 +355,18 @@ public class MeFragment extends BaseFragment  {
 
             CommonCell cell0  = (CommonCell)mCells.get(7);
             CommonCell cell1 = (CommonCell)mCells.get(8);
-            CommonCell cell2 = (CommonCell)mCells.get(9);
 
-            /*
-            ThirdSectionCell cell3 = (ThirdSectionCell) mCells.get(4);
-            cell3.setVipEndDate(resp.getVipEndDate());
-            cell3.setAgentLevel(resp.getLevel()); */
 
             cell0.getRecord().setOtherInfo(resp.getTuiJianPeople());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_TUIJIAN, resp.getTuiJianPeople());
             //cell0.updateView();
             cell1.getRecord().setOtherInfo(resp.getOrderCount());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_ORDER, resp.getOrderCount());
-            //cell1.updateView();
-            cell2.getRecord().setOtherInfo(resp.getTeamPeople());
-            //cell2.updateView();
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_IS_BIND_WEIXIN, resp.isBindWeixin() ? "1" : "0");
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_HAS_NEW_MESSAGE, resp.hasNewMessage() ? "1" : "0");
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_HAS_BIND_PHONE, resp.hasBindPhone() ? "1" : "0");
+
+            LogHelper.d(TAG, "KEY_USER_IS_BIND_WEIXIN = " + mKeyValueDao.getValue(KeyValueDao.KEY_USER_IS_BIND_WEIXIN, "0"));
 
             FirstSectionCell firstCell = (FirstSectionCell)mCells.get(0);
             LoginUser loginUser = LoginUserDao.getInstance(getActivity()).get();
@@ -350,7 +379,6 @@ public class MeFragment extends BaseFragment  {
             loginUser.setSex(resp.getSex());
             loginUser.setVipEndDate(resp.getVipEndDate());
             LoginUserDao.getInstance(getActivity()).save(loginUser);
-            //firstCell.update();
 
             mMeAdapter.notifyDataSetChanged();
 

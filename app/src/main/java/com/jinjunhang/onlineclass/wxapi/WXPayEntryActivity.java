@@ -2,17 +2,30 @@ package com.jinjunhang.onlineclass.wxapi;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.jinjunhang.framework.lib.Utils;
-import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.framework.lib.Utils;
+import com.jinjunhang.framework.service.BasicService;
+import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.service.OAuthRequest;
+import com.jinjunhang.onlineclass.service.OAuthResponse;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
+import com.jinjunhang.onlineclass.ui.lib.WXConstants;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Created by lzn on 2016/10/8.
@@ -23,12 +36,15 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private static String TAG = LogHelper.makeLogTag(WXPayEntryActivity.class);
 
     private IWXAPI api;
+    private LoginUserDao mLoginUserDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_view);
-        api = WXAPIFactory.createWXAPI(this, "wx73653b5260b24787");
+        mLoginUserDao = LoginUserDao.getInstance(this);
+        api = WXAPIFactory.createWXAPI(this, WXConstants.APPID);
+        api.handleIntent(getIntent(), this);
     }
 
     @Override
@@ -40,24 +56,36 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
 
     public void onReq(BaseReq req) {
+
     }
 
     public void onResp(BaseResp resp) {
-        LogHelper.d(TAG, "onPayFinish, errCode = " + resp.errCode);
-        Utils.showMessage(this, "onPayFinish, errCode = " + resp.errCode);
+        LogHelper.d(TAG, "weixin type = " + resp.getType());
+        LogHelper.d(TAG, "weixin errCode = " + resp.errCode);
 
         String message = "";
-        if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            switch (resp.errCode) {
-                case BaseResp.ErrCode.ERR_OK:
-                    message = "支付成功";
-                    break;
-                default:
-                    message = "支付失败";
-            }
-            LogHelper.d(TAG, "message = " + message);
-            Utils.showMessage(this, message);
+
+        switch (resp.getType()) {
+            case ConstantsAPI.COMMAND_PAY_BY_WX:
+                switch (resp.errCode) {
+                    case BaseResp.ErrCode.ERR_OK:
+                        message = "支付成功";
+                        break;
+                    default:
+                        message = "支付失败";
+                }
+                LogHelper.d(TAG, "message = " + message);
+                Utils.showMessage(this, message);
+
+                finish();
+                break;
+
         }
     }
+
+
+
+
+
 
 }

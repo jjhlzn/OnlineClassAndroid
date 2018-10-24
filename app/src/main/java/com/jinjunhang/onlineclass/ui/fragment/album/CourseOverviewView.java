@@ -51,17 +51,6 @@ public class CourseOverviewView {
         mListView.setDivider(null);
     }
 
-    /*
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-       // View v = inflater.inflate(R.layout.activity_fragment_listview, container, false);
-        mListView = v.findViewById(R.id.listView);
-
-        //去掉列表的分割线
-        mListView.setDividerHeight(0);
-        mListView.setDivider(null);
-        return v;
-    } */
 
     public void fetchData() {
         mCells.add(new CourseOverViewCell(mActivity, new Course(), mSongFragment));
@@ -130,9 +119,6 @@ public class CourseOverviewView {
         }
     }
 
-    public int getListViewHeightBasedOnChildren() {
-        return Utils.getListViewHeightBasedOnChildren(mListView);
-    }
 
 
     private class GetCourseInfoTask extends AsyncTask<Void, Void, GetCourseInfoResponse> {
