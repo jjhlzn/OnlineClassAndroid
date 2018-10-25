@@ -1,16 +1,19 @@
 package com.jinjunhang.framework.service;
 
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
+import com.jinjunhang.onlineclass.service.UpdateTokenRequest;
+import com.jinjunhang.onlineclass.service.UpdateTokenResponse;
+import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
@@ -20,22 +23,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.google.gson.Gson;
-import com.jinjunhang.onlineclass.BuildConfig;
-import com.jinjunhang.onlineclass.db.LoginUserDao;
-import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.onlineclass.service.LoginResponse;
-import com.jinjunhang.onlineclass.service.ServiceConfiguration;
-import com.jinjunhang.onlineclass.service.UpdateTokenRequest;
-import com.jinjunhang.onlineclass.service.UpdateTokenResponse;
-import com.jinjunhang.onlineclass.ui.lib.CustomApplication;
-
 /**
  * Created by lzn on 16/3/23.
  */
 public class BasicService {
 
-    private final static String TAG = "BasicService";
+    private final static String TAG = LogHelper.makeLogTag(BasicService.class);
 
 
     private String send(ServerRequest request) throws IOException {
