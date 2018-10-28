@@ -155,9 +155,9 @@ public class ExtendFunctionManager {
         int width = Utils.getScreenWidth(mContext);
         int result = 0;
         if (width <= 768) {
-            result = (int)(width / itemCountEachRow * 0.6);
+            result = (int)(width / itemCountEachRow * 0.64);
         } else {
-            result = (int)(width / itemCountEachRow * 0.56);
+            result = (int)(width / itemCountEachRow * 0.59);
         }
         LogHelper.d(TAG, " imageHeight = " + result);
         return result ;
@@ -176,7 +176,7 @@ public class ExtendFunctionManager {
             height = 180;
         }
         //LogHelper.d(TAG, "line height = " + height);
-        return (int)(height * 0.9);
+        return (int)(height * 0.97);
     }
 
 
@@ -233,7 +233,7 @@ public class ExtendFunctionManager {
             textView.setTextColor(mContext.getResources().getColor(R.color.gray_text));
             textView.setTextSize(13);
             textView.setGravity(Gravity.CENTER);
-            textView.setPadding(0, -20, 0, 0);
+            textView.setPadding(0, -30, 0, 0);
 
             layout.addView(textView);
 

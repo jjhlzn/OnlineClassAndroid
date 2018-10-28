@@ -13,8 +13,8 @@
             app:banner_default_image="@drawable/rect_placeholder"
             android:layout_height="match_parent"
             app:indicator_margin="6dp"
-            app:indicator_width="12dp"
-            app:indicator_height="3dp"
+            app:indicator_width="10dp"
+            app:indicator_height="2dp"
             app:indicator_drawable_selected="@color/white"
             app:indicator_drawable_unselected="@color/slider_unselector_color"/>
 

@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Pos;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
@@ -37,7 +39,7 @@ public class PosApplyCell extends BaseListViewCell {
         ViewHolder viewHolder;
         if (convertView == null) {
             convertView = mActivity.getLayoutInflater().inflate(R.layout.list_item_mainpage_pos, null).findViewById(R.id.container);
-
+            convertView.setLayoutParams(new RelativeLayout.LayoutParams(Utils.getScreenWidth(mActivity), (int) ((float) Utils.getScreenWidth(mActivity) / 375.0 * 90)));
             viewHolder = new ViewHolder();
             convertView.setTag(viewHolder);
 
