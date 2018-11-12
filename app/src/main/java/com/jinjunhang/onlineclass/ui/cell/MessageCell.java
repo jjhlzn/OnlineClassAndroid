@@ -49,7 +49,7 @@ public class MessageCell extends BaseListViewCell {
     }
 
     private void setView(ViewHolder viewHolder) {
-        viewHolder.timeLabel.setText(mMessage.getTitle());
+        viewHolder.titleLabel.setText(mMessage.getTitle());
         viewHolder.detailLabel.setText(mMessage.getDetail());
         viewHolder.timeLabel.setText(mMessage.getTime());
     }
