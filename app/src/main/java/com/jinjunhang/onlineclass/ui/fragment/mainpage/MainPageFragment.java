@@ -33,6 +33,7 @@ import com.jinjunhang.onlineclass.model.Advertise;
 import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Answer;
 import com.jinjunhang.onlineclass.model.FinanceToutiao;
+import com.jinjunhang.onlineclass.model.LearnFinanceItem;
 import com.jinjunhang.onlineclass.model.Pos;
 import com.jinjunhang.onlineclass.model.Question;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
@@ -59,6 +60,8 @@ import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.FinanceToutiaoHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.HeaderAdvCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.JpkHeaderCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.LearnFinanceCell;
+import com.jinjunhang.onlineclass.ui.cell.mainpage.LearnFinanceHeaderCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.PosApplyCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.QuestionCell;
 import com.jinjunhang.onlineclass.ui.cell.mainpage.QuestionHeaderCell;
@@ -235,6 +238,7 @@ public class MainPageFragment extends BaseFragment  {
         private List<ZhuanLan> mZhuanLans;
         private List<ZhuanLan> mJpks;
         private List<Advertise> mAdvertises;
+        private List<LearnFinanceItem> mLearnFinanceItems = new ArrayList<>();
         private Pos mPos;
         private List<FinanceToutiao> mToutiaos = new ArrayList<>();
         private List<Question> mQuestions = new ArrayList<>();
@@ -267,6 +271,8 @@ public class MainPageFragment extends BaseFragment  {
             private List<FinanceToutiaoCell> mFinanceToutiaoCells = new ArrayList<>();
             private QuestionHeaderCell mQuestionHeaderCell;
             private List<QuestionCell> mQuestionCells = new ArrayList<>();
+            private LearnFinanceHeaderCell mLearnFinanceHeaderCell;
+            private List<LearnFinanceCell> mLearnFinanceCells = new ArrayList<>();
             private PosApplyCell mPosApplyCell;
 
             private List<ListViewCell> cells = new ArrayList<>();
@@ -308,6 +314,14 @@ public class MainPageFragment extends BaseFragment  {
                     }
                 }
 
+                if (mLearnFinanceCells.size() > 0) {
+                    cells.add(new SectionSeparatorCell(mActivity));
+                    cells.add(mLearnFinanceHeaderCell);
+                    for (LearnFinanceCell cell : mLearnFinanceCells) {
+                        cells.add(cell);
+                    }
+                }
+
                 if (mJpkCells.size() > 0) {
                     cells.add(new SectionSeparatorCell(mActivity));
                     cells.add(mJpkHeaderCell);
@@ -331,8 +345,6 @@ public class MainPageFragment extends BaseFragment  {
                         cells.add(cell);
                     }
                 }
-
-
 
                 return cells;
             }
@@ -372,6 +384,7 @@ public class MainPageFragment extends BaseFragment  {
             mPageCells.mFinanceToutiaoHeaderCell = new FinanceToutiaoHeaderCell(activity);
             mPageCells.mQuestionHeaderCell = new QuestionHeaderCell(activity);
             mPageCells.mPosApplyCell = new PosApplyCell(mActivity, mPos);
+            mPageCells.mLearnFinanceHeaderCell = new LearnFinanceHeaderCell(activity);
 
 
             mMainPageAdapter = new MainPageAdapter(activity, mPageCells);
@@ -606,6 +619,10 @@ public class MainPageFragment extends BaseFragment  {
             for(Album course : mCourses) {
                 mPageCells.mMainPageCourseCells.add(new MainPageCourseCell(mActivity, course));
             }
+            mPageCells.mLearnFinanceCells.clear();
+            for(LearnFinanceItem item : mLearnFinanceItems) {
+                mPageCells.mLearnFinanceCells.add(new LearnFinanceCell(mActivity, item));
+            }
             setPosView();
             mPageCells.hasUpdate = true;
             mMainPageAdapter.notifyDataSetChanged();
@@ -671,8 +688,6 @@ public class MainPageFragment extends BaseFragment  {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                //LogHelper.d(TAG, "position: " + position);
-                //LogHelper.d(TAG, "cell: " + mPageCells.getCells().get(0));
                 ListViewCell item = getItem(position);
                 return item.getView(convertView);
             }
@@ -686,7 +701,7 @@ public class MainPageFragment extends BaseFragment  {
 
             @Override
             public int getViewTypeCount() {
-                return 16;
+                return 18;
             }
         }
 
@@ -711,6 +726,7 @@ public class MainPageFragment extends BaseFragment  {
                 mCourses = response.getCourses();
                 mZhuanLans = response.getZhuanLans();
                 mJpks = response.getJpks();
+                mLearnFinanceItems = response.getLearnFinanceItems();
                 mPos = response.getPos();
                 setZhuanLanAndCoursesView();
             }

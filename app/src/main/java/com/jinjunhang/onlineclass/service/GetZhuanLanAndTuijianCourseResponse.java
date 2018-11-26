@@ -2,6 +2,7 @@ package com.jinjunhang.onlineclass.service;
 
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.service.ServerRequest;
+import com.jinjunhang.onlineclass.model.LearnFinanceItem;
 import com.jinjunhang.onlineclass.model.Pos;
 import com.jinjunhang.onlineclass.model.ZhuanLan;
 
@@ -18,6 +19,7 @@ public class GetZhuanLanAndTuijianCourseResponse extends GetTuijianCoursesRespon
 
     private List<ZhuanLan> mZhuanLans = new ArrayList<>();
     private List<ZhuanLan> mJpks = new ArrayList<>();
+    private List<LearnFinanceItem> mLearnFinanceItems = new ArrayList<>();
     private Pos mPos;
 
     public Pos getPos() {
@@ -32,11 +34,16 @@ public class GetZhuanLanAndTuijianCourseResponse extends GetTuijianCoursesRespon
         return mJpks;
     }
 
+    public List<LearnFinanceItem> getLearnFinanceItems() {
+        return mLearnFinanceItems;
+    }
+
     @Override
     public void parse(ServerRequest request, JSONObject jsonObject) throws JSONException {
         super.parse(request, jsonObject);
         mZhuanLans = parseZhuanLans(jsonObject.getJSONArray("zhuanLans"));
         mJpks = parseZhuanLans(jsonObject.getJSONArray("jpks"));
+        mLearnFinanceItems = parseLearnFinanceItems(jsonObject.getJSONArray("learnFinanceItems"));
         mPos = parsePos(jsonObject.getJSONObject("pos"));
     }
 
@@ -60,6 +67,20 @@ public class GetZhuanLanAndTuijianCourseResponse extends GetTuijianCoursesRespon
         return zhuanLans;
     }
 
+    private List<LearnFinanceItem> parseLearnFinanceItems(JSONArray jsonArray) throws  JSONException {
+        List<LearnFinanceItem> items = new ArrayList<>();
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject json = jsonArray.getJSONObject(i);
+            LearnFinanceItem item = new LearnFinanceItem();
+            item.setId(json.getString("id"));
+            item.setSongId(json.getString("songId"));
+            item.setAudioUrl(json.getString("audioUrl"));
+            item.setTitle(json.getString("title"));
+            items.add(item);
+        }
+        return items;
+    }
+
     private Pos parsePos(JSONObject json) throws JSONException {
         Pos pos = new Pos();
         pos.setClickUrl(json.getString("clickUrl"));
@@ -71,6 +92,8 @@ public class GetZhuanLanAndTuijianCourseResponse extends GetTuijianCoursesRespon
             return null;
         return pos;
     }
+
+
 
 
 }

@@ -56,6 +56,12 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
         mWXLoginManager.loginStep1();
     }
 
+    @BindView(R.id.mobileBtn) ImageView mMobleBtn;
+    @OnClick(R.id.mobileBtn) void mobileBtnClick() {
+        Intent i = new Intent(this, MobileLoginActivity.class);
+        startActivity(i);
+    }
+
     //@OnClick(R.id.qqBtn) void qqClick() {}
 
     @Override

@@ -64,7 +64,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
         String userAgent = Util.getUserAgent(context, "ExoPlayerDemo");
         switch (contentType) {
             //case Util.TYPE_SS:
-             //   return new SmoothStreamingRendererBuilder(context, userAgent, contentUri.toString(), new SmoothStreamingTestMediaDrmCallback());
+            //    return new SmoothStreamingRendererBuilder(context, userAgent, contentUri.toString(), new SmoothStreamingTestMediaDrmCallback());
             case Util.TYPE_HLS:
                 return new HlsRendererBuilder(context, userAgent, contentUri.toString());
             case Util.TYPE_OTHER:
@@ -153,7 +153,7 @@ public class MusicPlayer implements ExoPlayer.Listener {
             if (isPause()) {
                 if (getCurrentPlaySong().isLive()){
                     //跳到最远
-                    player.seekTo(-1);
+                   player.seekTo(-1);
                 }
                 player.setPlayWhenReady(true);
             } else {
@@ -214,12 +214,20 @@ public class MusicPlayer implements ExoPlayer.Listener {
         return mSongs[currentIndex];
     }
 
+    private boolean isMp3(Song song) {
+        return song.getUrl() != null && song.getUrl().endsWith(".mp3");
+    }
+
     private void createPlayer(Song song) {
         LogHelper.d(TAG, "createPlayer() called");
         int type = Util.TYPE_OTHER;
-        if (song.isLive()) {
+        if (isMp3(song)) {
+            type = Util.TYPE_OTHER;
+        } else if (song.isLive()) {
             type = Util.TYPE_HLS;
         }
+
+        LogHelper.d(TAG, "type = " + type );
         if (player == null) {
             player = new DemoPlayer(getRendererBuilder(Uri.parse(song.getUrl()), type));
             player.addListener(this);

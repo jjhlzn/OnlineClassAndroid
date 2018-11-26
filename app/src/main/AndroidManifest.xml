@@ -195,6 +195,10 @@
                   android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".ui.activity.user.MobileLoginActivity"
+                  android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".ui.activity.user.ForgetPasswordActivity"
                   android:screenOrientation="portrait">
         </activity>

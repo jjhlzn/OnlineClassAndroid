@@ -208,8 +208,6 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <!-- android:id="@+id/imagesContainer"
-                 -->
             <LinearLayout
                 android:id="@+id/imagesContainer"
                 android:layout_alignParentBottom="true"
@@ -224,20 +222,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
+                        android:layout_marginTop="5dp"
                         android:id="@+id/weixinBtn"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:padding="5dp"
                         android:layout_marginRight="8dp"
                         android:src="@drawable/s_weixin"/>
 
                     <TextView
-                        android:layout_centerInParent="true"
+
                         android:layout_below="@id/weixinBtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:textAlignment="center"
                         android:text="微信登陆"
-                        android:visibility="gone"/>
+                        android:textSize="10dp"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/mobileBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/phonelogin"/>
+
+                    <TextView
+
+                        android:layout_below="@id/mobileBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="验证码登陆"
+                        android:textSize="10dp"
+                        />
                 </RelativeLayout>
 
 

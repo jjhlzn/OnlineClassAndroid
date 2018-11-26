@@ -68,7 +68,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     //private LoadingAnimation mLoadingView;
     private ImageButton mPlayButton;
     private Toolbar mToolbar;
-    private Button couseOverViewBtn, signUpBtn;
+    private Button  signUpBtn;
     private TextView mListenerTextView;
     private TextView mPlayTextView;
     private ImageView mCourseImage;
@@ -96,34 +96,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
     private float mLastAlpha = 0;
 
-    private void stopChatUpdate() {
-        if (mScheduleFuture != null) {
-            mScheduleFuture.cancel(false);
-        }
-    }
-
-    protected void scheduleChatUpdate() {
-        stopChatUpdate();
-        if (!mExecutorService.isShutdown()) {
-            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            mHandler.post(mUpdateChatTask);
-                        }
-                    }, CHAT_UPDATE_INITIAL_INTERVAL,
-                    CHAT_UPDATE_INTERNAL, TimeUnit.MILLISECONDS);
-        }
-    }
-
-    private int mUpdateChatCount = 0;
-    private void updateChat() {
-        mUpdateChatCount++;
-        if (mUpdateChatCount % 6 == 0) {
-            new GetLiveListenerTask().execute();
-        }
-    }
-
     @Override
     protected boolean isNeedTopMargin() {
         return false;
@@ -146,7 +118,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         ListView childListView = mView.findViewById(R.id.listView);
         mCourseOverviewView = new CourseOverviewView(getActivity(), childListView);
 
-        //mLoadingView = new LoadingAnimation(getActivity());
         final ScrollView scrollView = mView.findViewById(R.id.scrollView);
         mListenerTextView = mView.findViewById(R.id.listenerCount);
 
@@ -195,8 +166,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
     public void initChat() {
-        if (mChatManager != null && mMusicPlayer.getCurrentPlaySong() != null)
+        if (mChatManager != null && mMusicPlayer.getCurrentPlaySong() != null) {
             mChatManager.initChat();
+        }
     }
 
     private void setViewWithSongInfo(LiveSong song) {
@@ -219,16 +191,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
         mPlayButton = mView.findViewById(R.id.playBtn);
 
-        couseOverViewBtn = mView.findViewById(R.id.courseOverviewBtn);
         signUpBtn = mView.findViewById(R.id.SignupBtn);
-
-        couseOverViewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //buttonClicked(0);
-            }
-        });
-
         signUpBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -248,11 +211,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
         scheduleChatUpdate();
         updatePlayButton();
-
     }
 
     public void fetchData() {
-
         if (getUserVisibleHint() && !mInited) {
             ImmersionBar.with(this).statusBarDarkFont(false).init();
             LogHelper.d(TAG, "fetch data");
@@ -261,9 +222,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
                 loadSongInfo();
             } else {
                 setViewWithSongInfo(song);
-
             }
-
             mInited = true;
         }
     }
@@ -372,7 +331,7 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     }
 
     private void setPlayerView(View v) {
-        ImageButton playBtn = (ImageButton)v.findViewById(R.id.playBtn);
+        ImageButton playBtn = v.findViewById(R.id.playBtn);
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -389,31 +348,6 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         });
         updatePlayButton();
     }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        LogHelper.d(TAG, "onResume called");
-        if (mChatManager != null && mMusicPlayer.getCurrentPlaySong() != null)
-            mChatManager.initChat();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mChatManager != null) {
-            mChatManager.releaseChat();
-            stopChatUpdate();
-        }
-    }
-
-
 
 
     protected void updatePlayButton() {
@@ -591,6 +525,57 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
                 request.setPageSize(10);
                 new GetAlbumSongsTask().execute(request);
             }
+        }
+    }
+
+
+    private void stopChatUpdate() {
+        if (mScheduleFuture != null) {
+            mScheduleFuture.cancel(false);
+        }
+    }
+
+    protected void scheduleChatUpdate() {
+        stopChatUpdate();
+        if (!mExecutorService.isShutdown()) {
+            mScheduleFuture = mExecutorService.scheduleAtFixedRate(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mHandler.post(mUpdateChatTask);
+                        }
+                    }, CHAT_UPDATE_INITIAL_INTERVAL,
+                    CHAT_UPDATE_INTERNAL, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private int mUpdateChatCount = 0;
+    private void updateChat() {
+        mUpdateChatCount++;
+        if (mUpdateChatCount % 6 == 0) {
+            new GetLiveListenerTask().execute();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogHelper.d(TAG, "onResume called");
+        if (mChatManager != null && mMusicPlayer.getCurrentPlaySong() != null)
+            mChatManager.initChat();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mChatManager != null) {
+            mChatManager.releaseChat();
+            stopChatUpdate();
         }
     }
 }
