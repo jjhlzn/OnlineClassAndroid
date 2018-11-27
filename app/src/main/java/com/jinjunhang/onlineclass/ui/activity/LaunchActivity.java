@@ -81,6 +81,12 @@ public class LaunchActivity extends BaseActivity {
     };
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        stopScheduleSkipAdv();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.getScreenHeight(this);

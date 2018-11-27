@@ -253,7 +253,7 @@ public class BottomTabLayoutActivity extends BaseActivity {
 
         if (position == 0) {
             ((MainPageFragment)mFragmensts[0]).startBannerPlay();
-
+            ((MainPageFragment)mFragmensts[0]).refreshList();
         } else {
             ((MainPageFragment)mFragmensts[0]).stopBannerPlay();
         }
@@ -265,8 +265,11 @@ public class BottomTabLayoutActivity extends BaseActivity {
         if (position == 2) {
             ((NewLiveSongFragment)mFragmensts[position]).fetchData();
             ((NewLiveSongFragment)mFragmensts[position]).initChat();
+            ((NewLiveSongFragment)mFragmensts[position]).checkPlay();
+            ((NewLiveSongFragment)mFragmensts[position]).visibleToUserHandler();
         } else {
             ((NewLiveSongFragment)mFragmensts[2]).releaseChat();
+            ((NewLiveSongFragment)mFragmensts[2]).invisibleToUserHandler();
         }
 
     }

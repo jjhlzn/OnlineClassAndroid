@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.exoplayer.ExoPlaybackException;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Player;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
@@ -19,7 +19,7 @@ import com.jinjunhang.player.MusicPlayer;
 /**
  * Created by lzn on 16/6/18.
  */
-public class BaseFragment extends android.support.v4.app.Fragment implements ExoPlayer.Listener  {
+public class BaseFragment extends android.support.v4.app.Fragment implements Player.EventListener  {
     private static  final String TAG = LogHelper.makeLogTag(BaseFragment.class);
     protected  MusicPlayer mMusicPlayer;
     protected ImmersionBar mImmersionBar;
@@ -85,10 +85,6 @@ public class BaseFragment extends android.support.v4.app.Fragment implements Exo
          }
     }
 
-    @Override
-    public void onPlayWhenReadyCommitted() {
-
-    }
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {

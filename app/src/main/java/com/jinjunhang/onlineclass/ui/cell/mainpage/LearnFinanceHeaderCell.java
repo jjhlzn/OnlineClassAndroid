@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.activity.LearnFinanceListActivity;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 
@@ -38,9 +39,7 @@ public class LearnFinanceHeaderCell extends BaseListViewCell {
         viewAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(mActivity, WebBrowserActivity.class)
-                        .putExtra(WebBrowserActivity.EXTRA_TITLE, "金融宝典")
-                        .putExtra(WebBrowserActivity.EXTRA_URL, ServiceLinkManager.JunHuoKuUrl());
+                Intent i = new Intent(mActivity, LearnFinanceListActivity.class);
                 mActivity.startActivity(i);
             }
         });

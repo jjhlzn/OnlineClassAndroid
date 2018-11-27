@@ -140,6 +140,12 @@
 
         </activity>
 
+        <activity android:name=".ui.activity.LearnFinanceListActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+
         <activity android:name=".ui.activity.user.SetPhoneActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/Theme.AppCompat.NoActionBar">

@@ -38,6 +38,7 @@ public class Album extends BaseModelObject {
     public static Album LiveAlum;
     public static Album VipAlbum;
     public static Album AgentAlbum;
+
     static {
         LiveAlum = new Album();
         LiveAlum.setName("每日课程");
@@ -48,6 +49,7 @@ public class Album extends BaseModelObject {
         AgentAlbum = new Album();
         AgentAlbum.setName("代理培训课程");
         AgentAlbum.setAlbumType(AlbumType.DummyAlbumType);
+
     }
 
 
@@ -192,6 +194,9 @@ public class Album extends BaseModelObject {
 
     public boolean isLive() {
         //return this.getAlbumType().getName().equals(AlbumType.LiveAlbumType.getName()) || getAlbumType().getName().equals(AlbumType.VipAlbumType.getName());
+        if (this.getAlbumType().getName().equals(AlbumType.CommonAlbumType.getName())) {
+            return false;
+        }
         return true;
     }
 

@@ -2,20 +2,26 @@ package com.jinjunhang.onlineclass.ui.cell.mainpage;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.Player;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.model.Album;
+import com.jinjunhang.onlineclass.model.AlbumType;
 import com.jinjunhang.onlineclass.model.FinanceToutiao;
 import com.jinjunhang.onlineclass.model.LearnFinanceItem;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
+import com.jinjunhang.onlineclass.ui.fragment.LearnFinanceListFragment;
+import com.jinjunhang.onlineclass.ui.fragment.mainpage.MainPageFragment;
 import com.jinjunhang.player.MusicPlayer;
 
 import java.util.ArrayList;
@@ -27,18 +33,24 @@ public class LearnFinanceCell extends BaseListViewCell {
 
     private LearnFinanceItem mLearnFinanceItem;
     private Activity mActivity;
+    private Fragment mFragment;
 
-    public LearnFinanceCell(Activity activity, LearnFinanceItem item) {
+    public LearnFinanceCell(Activity activity, Fragment fragment, LearnFinanceItem item) {
         super(activity);
         mActivity = activity;
         this.mLearnFinanceItem = item;
+        this.mFragment = fragment;
     }
 
     private Song getSong() {
         Song song = new Song();
+        Album album = new Album();
+        album.setAlbumType(AlbumType.CommonAlbumType);
+        song.setAlbum(album);
         song.setId(mLearnFinanceItem.getSongId());
         song.setUrl(mLearnFinanceItem.getAudioUrl());
-        LogHelper.d(TAG, mLearnFinanceItem.getAudioUrl());
+        LogHelper.d(TAG, mLearnFinanceItem.getSongId() + " -> " +mLearnFinanceItem.getAudioUrl());
+
         return song;
     }
 
@@ -74,10 +86,33 @@ public class LearnFinanceCell extends BaseListViewCell {
                     musicPlayer.play(getSongs(), 0);
                 }
 
+                if (mFragment instanceof MainPageFragment) {
+                    ((MainPageFragment)mFragment).refreshList();
+                } else if (mFragment instanceof LearnFinanceListFragment) {
+                    ((LearnFinanceListFragment)mFragment).refreshList();
+                }
 
             }
         });
 
+        Song song = musicPlayer.getCurrentPlaySong();
+
+        LogHelper.d(TAG, "state = " + musicPlayer.getState());
+
+        if (song != null && song.getId().equals(mLearnFinanceItem.getSongId()) && isPlaying()) {
+            viewHolder.titleTextView.setTextColor(mActivity.getResources().getColor(R.color.price_color));
+            viewHolder.tagImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.learn_finance_playing));
+        } else {
+            viewHolder.titleTextView.setTextColor(mActivity.getResources().getColor(R.color.black));
+            viewHolder.tagImage.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.toutiao_icon));
+        }
+
+    }
+
+    public boolean isPlaying() {
+        final MusicPlayer musicPlayer = MusicPlayer.getInstance(mActivity);
+        int state = musicPlayer.getState();
+        return musicPlayer.isPlaying() || state  == Player.STATE_BUFFERING;
     }
 
     @Override

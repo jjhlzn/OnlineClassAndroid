@@ -180,6 +180,7 @@ public class MainPageFragment extends BaseFragment  {
         LogHelper.d(TAG, "onResume() called");
         super.onResume();
         mPage.onStartHandler();
+        refreshList();
     }
 
     @Override
@@ -205,6 +206,12 @@ public class MainPageFragment extends BaseFragment  {
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (getUserVisibleHint()) {
             Utils.updateNavigationBarButton(getActivity(), mPage.mToolbarAlpha);
+        }
+    }
+
+    public void refreshList() {
+        if (this.mPage != null && this.mPage.mMainPageAdapter != null) {
+            this.mPage.mMainPageAdapter.notifyDataSetChanged();
         }
     }
 
@@ -621,7 +628,7 @@ public class MainPageFragment extends BaseFragment  {
             }
             mPageCells.mLearnFinanceCells.clear();
             for(LearnFinanceItem item : mLearnFinanceItems) {
-                mPageCells.mLearnFinanceCells.add(new LearnFinanceCell(mActivity, item));
+                mPageCells.mLearnFinanceCells.add(new LearnFinanceCell(mActivity, MainPageFragment.this, item));
             }
             setPosView();
             mPageCells.hasUpdate = true;

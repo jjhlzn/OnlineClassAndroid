@@ -23,7 +23,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
@@ -34,6 +36,7 @@ import com.jinjunhang.onlineclass.model.Album;
 import com.jinjunhang.onlineclass.model.Comment;
 import com.jinjunhang.onlineclass.model.LiveSong;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsRequest;
 import com.jinjunhang.onlineclass.service.GetAlbumSongsResponse;
 import com.jinjunhang.onlineclass.service.GetLiveListenerRequest;
@@ -49,6 +52,7 @@ import com.jinjunhang.player.ExoPlayerNotificationManager;
 import com.jinjunhang.player.MusicPlayer;
 import com.jinjunhang.player.utils.StatusHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -58,7 +62,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by jjh on 2016-7-2.
  */
-public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Listener {
+public class NewLiveSongFragment extends BaseFragment implements Player.EventListener {
 
     private final static String TAG = LogHelper.makeLogTag(NewLiveSongFragment.class);
 
@@ -77,8 +81,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
     private ChatManager mChatManager;
     protected ShareManager mShareManager;
 
-    private int lastPlayerState = ExoPlayer.STATE_IDLE;
+    private int lastPlayerState = Player.STATE_IDLE;
     private boolean hasSeekTo = false;
+    private LiveSong defaultCourse;
 
     //定时获取评论、回复播放
     private static final long CHAT_UPDATE_INTERNAL = 10000;
@@ -171,6 +176,36 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         }
     }
 
+    public void checkPlay() {
+        MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
+        if (defaultCourse != null) {
+
+            if (!musicPlayer.isPlay(defaultCourse)) {
+                musicPlayer.pause();
+                List<Song> songs = new ArrayList<>();
+                songs.add(defaultCourse);
+                musicPlayer.play(songs, 0);
+                mNotificationManager.display();
+            }
+        } else {
+            musicPlayer.pause();
+        }
+    }
+
+    public void visibleToUserHandler() {
+        if (mMusicPlayer != null) {
+            mMusicPlayer.addListener(this);
+        }
+        scheduleChatUpdate();
+    }
+
+    public void invisibleToUserHandler() {
+        if (mMusicPlayer != null) {
+            mMusicPlayer.removeListener(this);
+        }
+        stopChatUpdate();
+    }
+
     private void setViewWithSongInfo(LiveSong song) {
 
         mChatManager.initChat();
@@ -213,15 +248,16 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         updatePlayButton();
     }
 
+
     public void fetchData() {
         if (getUserVisibleHint() && !mInited) {
             ImmersionBar.with(this).statusBarDarkFont(false).init();
             LogHelper.d(TAG, "fetch data");
-            LiveSong song = (LiveSong) mMusicPlayer.getCurrentPlaySong();
-            if (song == null) {
+            Song song =  mMusicPlayer.getCurrentPlaySong();
+            if (song == null || !(song instanceof LiveSong)) {
                 loadSongInfo();
             } else {
-                setViewWithSongInfo(song);
+                setViewWithSongInfo((LiveSong)song);
             }
             mInited = true;
         }
@@ -363,13 +399,17 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             mPlayButton.setImageResource(R.drawable.icon_play);
         }
 
-        if (state == ExoPlayer.STATE_BUFFERING || state == ExoPlayer.STATE_PREPARING) {
-            mPlayTextView.setText("缓冲中");
+        if (mMusicPlayer.hasError()) {
+           mPlayTextView.setText("直播未开始");            
         } else {
-            if (mMusicPlayer.isPlaying()) {
-                mPlayTextView.setText("播放中");
+            if (state == Player.STATE_BUFFERING) {
+                mPlayTextView.setText("缓冲中");
             } else {
-                mPlayTextView.setText("开始播放");
+                if (mMusicPlayer.isPlaying()) {
+                    mPlayTextView.setText("播放中");
+                } else {
+                    mPlayTextView.setText("开始播放");
+                }
             }
         }
 
@@ -386,15 +426,26 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
         //TODO: 如何测试这段代码
         if (mMusicPlayer.getCurrentPlaySong() != null && mMusicPlayer.getCurrentPlaySong().isLive()) {
-            if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING && !hasSeekTo) {
+            if (playbackState == Player.STATE_READY && playWhenReady && lastPlayerState == Player.STATE_BUFFERING && !hasSeekTo) {
                 hasSeekTo = true;
                 MusicPlayer.getInstance(getActivity()).seekTo(-1);
                 LogHelper.e(TAG, "lastPlayerState = " + lastPlayerState + ", playbackState = " + playbackState + ", playWhenReady = " + playWhenReady);
-            } else if (playbackState == ExoPlayer.STATE_READY && playWhenReady && lastPlayerState == ExoPlayer.STATE_BUFFERING) {
+            } else if (playbackState == Player.STATE_READY && playWhenReady && lastPlayerState == Player.STATE_BUFFERING) {
                 hasSeekTo = false;
             }
             lastPlayerState = playbackState;
         }
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+        LogHelper.e(TAG, error);
+        updatePlayButton();
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+        LogHelper.e(TAG, "onPlaybackParametersChanged called");
     }
 
 
@@ -425,7 +476,14 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
         @Override
         protected GetLiveListenerResponse doInBackground(Void... params) {
             GetLiveListenerRequest request = new GetLiveListenerRequest();
-            request.setSong(mMusicPlayer.getCurrentPlaySong());
+            Song song = mMusicPlayer.getCurrentPlaySong();
+            if (song !=  null && song instanceof LiveSong) {
+                request.setSong(song);
+            } else {
+                GetLiveListenerResponse resp = new GetLiveListenerResponse();
+                resp.setStatus(ServerResponse.FAIL);
+                return resp;
+            }
             return new BasicService().sendRequest(request);
         }
 
@@ -437,11 +495,13 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
             }
 
             int listenerCount = resp.getListernerCount();
-            LiveSong song = (LiveSong)mMusicPlayer.getCurrentPlaySong();
-            if (song != null) {
-                song.setListenPeople(listenerCount+"");
+
+            Song song = mMusicPlayer.getCurrentPlaySong();
+            if (song !=  null && song instanceof LiveSong) {
+                LiveSong liveSong = (LiveSong)song;
+                liveSong.setListenPeople(listenerCount + "");
+                mListenerTextView.setText(liveSong.getListenPeople());
             }
-            mListenerTextView.setText(song.getListenPeople());
         }
     }
 
@@ -480,7 +540,9 @@ public class NewLiveSongFragment extends BaseFragment implements ExoPlayer.Liste
 
             if (resp.getResultSet().size() >= 1) {
                 LiveSong song = (LiveSong) resp.getResultSet().get(0);
+                defaultCourse = song;
                 MusicPlayer musicPlayer = MusicPlayer.getInstance(getActivity());
+                musicPlayer.addListener(NewLiveSongFragment.this);
                 if (!musicPlayer.isPlay(song)) {
                     musicPlayer.pause();
                     musicPlayer.play(resp.getResultSet(), 0);

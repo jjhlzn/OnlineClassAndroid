@@ -2,8 +2,9 @@ package com.jinjunhang.player.utils;
 
 import android.media.session.PlaybackState;
 
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.Player;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.player.MusicPlayer;
 
 /**
@@ -17,8 +18,23 @@ public class StatusHelper {
     public static boolean isPlayingForUI(MusicPlayer musicPlayer) {
         int state = musicPlayer.getState();
         boolean isPlayingForUI = musicPlayer.isPlaying()
-                || (state == ExoPlayer.STATE_BUFFERING) || (state == ExoPlayer.STATE_PREPARING);
+                || (state == Player.STATE_BUFFERING);
        // LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
         return isPlayingForUI;
+    }
+
+    public static boolean isPlayingLiveSongForUI(MusicPlayer musicPlayer) {
+        int state = musicPlayer.getState();
+        boolean isPlayingForUI = musicPlayer.isPlaying()
+                || (state == Player.STATE_BUFFERING);
+        // LogHelper.d(TAG, "isPlayingForUI = " + isPlayingForUI);
+        if (isPlayingForUI) {
+            Song song = musicPlayer.getCurrentPlaySong();
+            LogHelper.d(TAG, "song.isLive = " + song.isLive());
+
+            return musicPlayer.getCurrentPlaySong().isLive();
+        } else {
+            return false;
+        }
     }
 }

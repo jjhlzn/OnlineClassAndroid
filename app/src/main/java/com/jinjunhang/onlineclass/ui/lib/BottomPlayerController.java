@@ -9,8 +9,9 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer.ExoPlaybackException;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Player;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.album.SongActivity;
@@ -23,7 +24,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 /**
  * Created by lzn on 16/6/21.
  */
-public class BottomPlayerController implements ExoPlayer.Listener   {
+public class BottomPlayerController implements Player.EventListener   {
     private static final String TAG = LogHelper.makeLogTag(BottomPlayerController.class);
 
     private Activity mActivity;
@@ -116,11 +117,6 @@ public class BottomPlayerController implements ExoPlayer.Listener   {
         } else {
             stopSpinSongImage();
         }
-    }
-
-    @Override
-    public void onPlayWhenReadyCommitted() {
-
     }
 
     @Override

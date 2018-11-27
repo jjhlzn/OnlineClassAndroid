@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +17,25 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jinjunhang.framework.lib.LoadingAnimation;
+import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
-import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.GetCheckCodeRequest;
 import com.jinjunhang.onlineclass.service.GetCheckCodeResponse;
+import com.jinjunhang.onlineclass.service.MobileLoginRequest;
+import com.jinjunhang.onlineclass.service.MobileLoginResponse;
 import com.jinjunhang.onlineclass.service.SignupRequest;
 import com.jinjunhang.onlineclass.service.SignupResponse;
-import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushManager;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -38,10 +46,15 @@ import java.util.concurrent.TimeUnit;
  * Created by lzn on 16/6/28.
  */
 public class MobileLoginFragment extends BaseFragment {
+    private static final String TAG = LogHelper.makeLogTag(MobileLoginFragment.class);
 
     private LoadingAnimation mLoading;
     private TextView mCheckCodeButtonMessage;
     private Button mGetCheckCodeButton;
+
+    private String mDeviceToken;
+
+    private LoginUserDao mLoginUserDao;
 
     //控制
     private static final long UPDATE_MESSAGE_INTERNAL = 1000;
@@ -73,17 +86,27 @@ public class MobileLoginFragment extends BaseFragment {
         mCheckCodeButtonMessage = (TextView) mView.findViewById(R.id.get_checkcode_message);
         final EditText phoneField = (EditText) mView.findViewById(R.id.signup_phone);
         final EditText checkCodeField = (EditText) mView.findViewById(R.id.signup_checkcode);
-        final EditText invitePhoneField = (EditText) mView.findViewById(R.id.signup_invitePhone);
-        final EditText passwordField = (EditText) mView.findViewById(R.id.signup_password);
-        Button showAgreementButton = (Button) mView.findViewById(R.id.protocol_message);
+
+        mLoginUserDao = LoginUserDao.getInstance(getActivity());
+
+        XGPushManager.registerPush( getActivity(), new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object o, int i) {
+                Log.d(TAG, "register device succes, devicetoken = " + o.toString());
+                mDeviceToken = o.toString();
+            }
+
+            @Override
+            public void onFail(Object o, int i, String s) {
+                Log.d(TAG, "register device fail");
+            }
+        });
 
         singupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String phoneNumber = phoneField.getText().toString();
                 String checkCode = checkCodeField.getText().toString();
-                String invitePhone = invitePhoneField.getText().toString();
-                String password = passwordField.getText().toString();
 
                 if (phoneNumber.trim() == "") {
                     Utils.showErrorMessage(getActivity(), "手机号码不能为空");
@@ -96,23 +119,31 @@ public class MobileLoginFragment extends BaseFragment {
                 }
 
 
-                if (password.trim() == "") {
-                    Utils.showErrorMessage(getActivity(), "密码不能为空");
-                    return;
-                }
 
-                if (password.length() < 6) {
-                    Utils.showErrorMessage(getActivity(), "密码至少为6位");
-                    return;
-                }
-
-                SignupRequest req = new SignupRequest();
-                req.setPhoneNumber(phoneNumber);
+                MobileLoginRequest req = new MobileLoginRequest();
+                req.setMobile(phoneNumber);
                 req.setCheckCode(checkCode);
-                req.setInvitePhone(invitePhone);
-                req.setPassword(password);
+                if ( Util.isVirtualEmulator() || !"".equals(mDeviceToken)) {
+                    req.setDeviceToken(mDeviceToken);
+                    new MobileLoginTask().execute(req);
+                } else {
+                    XGPushManager.registerPush(getActivity(), new XGIOperateCallback() {
+                        @Override
+                        public void onSuccess(Object o, int i) {
+                            Log.d(TAG, "register device succes, devicetoken = " + o.toString());
+                            mDeviceToken = o.toString();
+                            req.setDeviceToken(o.toString());
+                            new MobileLoginTask().execute(req);
+                        }
 
-                new SignupTask().execute(req);
+                        @Override
+                        public void onFail(Object o, int i, String s) {
+                            Log.d(TAG, "register device fail");
+                            mLoading.hide();
+                            Utils.showMessage(getActivity(), "您的网络不给力，请检查网络是否正常!");
+                        }
+                    });
+                }
             }
         });
 
@@ -177,37 +208,41 @@ public class MobileLoginFragment extends BaseFragment {
     }
 
 
-    private class SignupTask extends AsyncTask<SignupRequest, Void, SignupResponse> {
-        @Override
-        protected SignupResponse doInBackground(SignupRequest... params) {
-            SignupRequest request = params[0];
+    private class MobileLoginTask extends AsyncTask<MobileLoginRequest, Void, MobileLoginResponse> {
+        private MobileLoginRequest mLoginRequest;
 
-            return new BasicService().sendRequest(request);
+        @Override
+        protected MobileLoginResponse doInBackground(MobileLoginRequest... params) {
+            mLoginRequest = params[0];
+
+            return new BasicService().sendRequest(mLoginRequest);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mLoading.show("注册中...");
+            mLoading.show("登陆中...");
         }
 
         @Override
-        protected void onPostExecute(SignupResponse signupResponse) {
-            super.onPostExecute(signupResponse);
+        protected void onPostExecute(MobileLoginResponse loginResponse) {
+            super.onPostExecute(loginResponse);
             mLoading.hide();
 
-            if (signupResponse.getStatus() != ServerResponse.SUCCESS) {
-                Utils.showErrorMessage(getActivity(), signupResponse.getErrorMessage());
+            if (loginResponse.getStatus() != ServerResponse.SUCCESS) {
+                Utils.showErrorMessage(getActivity(), loginResponse.getErrorMessage());
                 return;
             }
 
-            Utils.showMessage(getActivity(), "注册成功", new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                    Intent i = new Intent(getActivity(), LoginActivity.class);
-                    getActivity().startActivity(i);
-                }
-            } );
+            LoginUser loginUser = new LoginUser(loginResponse);
+            loginUser.setUserName(loginResponse.getUserId());
+            loginUser.setPassword("mobilelogin");
+
+            mLoginUserDao.save(loginUser);
+
+            mLoading.hide();
+            Intent i = new Intent(getActivity(), BottomTabLayoutActivity.class);
+            startActivity(i);
         }
     }
 

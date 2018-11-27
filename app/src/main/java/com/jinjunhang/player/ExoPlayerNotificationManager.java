@@ -9,8 +9,9 @@ import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
 //import android.support.v7.app.NotificationCompat;
 
-import com.google.android.exoplayer.ExoPlaybackException;
-import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.Player.EventListener;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.album.NewLiveSongActivity;
@@ -20,7 +21,7 @@ import com.jinjunhang.framework.lib.LogHelper;
 /**
  * Created by jjh on 2016-7-13.
  */
-public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
+public class ExoPlayerNotificationManager implements EventListener {
     public static final String ACTION_PLAY = "com.jinjunhang.onlineclass.ACTION_PLAY";
     public static final String ACTION_PREV = "com.jinjunhang.onlineclass.ACTION_PREV";
     public static final String ACTION_NEXT = "com.jinjunhang.onlineclass.ACTION_NEXT";
@@ -166,10 +167,6 @@ public class ExoPlayerNotificationManager implements ExoPlayer.Listener {
         display();
     }
 
-    @Override
-    public void onPlayWhenReadyCommitted() {
-
-    }
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {

@@ -47,7 +47,7 @@ public class UserImageDao {
             return b;
         }
         catch(Exception e){
-            LogHelper.e(TAG, e);
+            //LogHelper.e(TAG, e);
         }
         return null;
     }

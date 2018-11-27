@@ -426,7 +426,7 @@ public class Utils {
             return;
         LogHelper.d(TAG, "updateNavigationBarButton called2, alpha = " + alpha);
         MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
-        Boolean isPlay = StatusHelper.isPlayingForUI(musicPlayer);
+        Boolean isPlay = StatusHelper.isPlayingLiveSongForUI(musicPlayer);
         setImage(isPlay, activity, alpha);
     }
 
@@ -468,7 +468,7 @@ public class Utils {
                     public void onClick(View view) {
                         MusicPlayer musicPlayer = MusicPlayer.getInstance(activity.getApplicationContext());
                         Song song = musicPlayer.getCurrentPlaySong();
-                        if (song != null) {
+                        if (song != null && song.isLive()) {
                             Intent i = new Intent(activity, NewLiveSongActivity.class);
                             activity.startActivity(i);
                         }
