@@ -19,9 +19,9 @@
         <ImageView
             android:id="@+id/indexImage"
             android:layout_centerVertical="true"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/toutiao_icon"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:src="@drawable/document"
             android:layout_marginLeft="20dp"
           />
 
