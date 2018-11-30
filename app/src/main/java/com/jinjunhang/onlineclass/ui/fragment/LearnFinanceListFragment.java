@@ -22,7 +22,6 @@ import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.model.LearnFinanceItem;
-import com.jinjunhang.onlineclass.model.ZhuanLan;
 import com.jinjunhang.onlineclass.service.GetLearnFinancesRequest;
 import com.jinjunhang.onlineclass.service.GetLearnFinancesResponse;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
@@ -39,8 +38,7 @@ import java.util.List;
 public class LearnFinanceListFragment extends BaseFragment {
     private final static String TAG = LogHelper.makeLogTag(LearnFinanceListFragment.class);
 
-
-    private String mType = "";
+    
     private MyAdapter mAdapter;
     private List<ListViewCell> mCells = new ArrayList<>();
     private SmartRefreshLayout mSwipeRefreshLayout;
