@@ -228,8 +228,6 @@ public class ChatManager {
                     params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                     mCommentEditText.requestFocus();
                     imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
-                    //设置为数字键盘
-                    mCommentEditText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
                     keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
                 } else {
                     imm.hideSoftInputFromWindow(mCommentEditText.getWindowToken(), 0);
