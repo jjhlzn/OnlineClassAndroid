@@ -9,7 +9,7 @@ android {
         applicationId "com.jinjunhang.onlineclass"
         minSdkVersion 21
         targetSdkVersion 21
-        versionCode 33
+        versionCode 34
         versionName "3.4"
         multiDexEnabled true
     }

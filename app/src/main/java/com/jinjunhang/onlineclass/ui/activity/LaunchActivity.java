@@ -30,6 +30,7 @@ import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
 import com.jinjunhang.framework.lib.LogHelper;
+import com.jinjunhang.onlineclass.ui.activity.user.MobileLoginActivity;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -152,7 +153,7 @@ public class LaunchActivity extends BaseActivity {
 
 
         if (user == null) {
-            i = new Intent(this, LoginActivity.class);
+            i = new Intent(this, MobileLoginActivity.class);
         } else {
             i = new Intent(this, BottomTabLayoutActivity.class);
         }

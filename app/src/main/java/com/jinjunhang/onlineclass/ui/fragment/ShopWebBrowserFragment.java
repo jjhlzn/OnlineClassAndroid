@@ -7,7 +7,6 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -26,6 +25,8 @@ import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
+import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
+import com.jinjunhang.onlineclass.ui.lib.BrowserUtils;
 import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -33,8 +34,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-
-import org.w3c.dom.Text;
 
 //import qiu.niorgai.StatusBarCompat;
 
@@ -223,6 +222,15 @@ public class ShopWebBrowserFragment extends BaseFragment {
             if (Utils.handleWechatPay(mWXAPI, url, null)) {
                 return true;
             }
+
+            if (BrowserUtils.handleAlipayProtocol(url, getActivity())) {
+                return true;
+            }
+
+            if (BrowserUtils.handlePhoneCallProtocol(url, getActivity())) {
+                return true;
+            }
+
             view.loadUrl(url);
             if (mBackButton != null) {
                 if (view.canGoBack()) {

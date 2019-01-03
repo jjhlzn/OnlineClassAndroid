@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
@@ -49,8 +52,12 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
     private String mDeviceToken = "";
     private WeixinLoginManager mWXLoginManager;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.actionbar_text)
+    TextView mTitleView;
     @BindView(R.id.weixinBtn) ImageView mWeixinBtn;
-    //@BindView(R.id.qqBtn) ImageView mQQBtn;
+
 
     @OnClick(R.id.weixinBtn) void weixinClick() {
         mWXLoginManager.loginStep1();
@@ -62,7 +69,10 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
         startActivity(i);
     }
 
-    //@OnClick(R.id.qqBtn) void qqClick() {}
+    @OnClick(R.id.actionbar_back_button) void backClick() {
+        onBackPressed();
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -166,6 +176,10 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
                 startActivity(i);
             }
         });
+
+        mTitleView.setText("密码登陆");
+        ImmersionBar.setTitleBar(this, mToolbar);
+        ImmersionBar.with(this).statusBarDarkFont(true).init();
     }
 
 
@@ -207,10 +221,6 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        return;
-    }
 
 
     @Override

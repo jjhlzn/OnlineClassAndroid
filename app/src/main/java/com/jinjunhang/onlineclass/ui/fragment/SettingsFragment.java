@@ -22,6 +22,7 @@ import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.service.LogoutRequest;
 import com.jinjunhang.onlineclass.service.LogoutResponse;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.MobileLoginActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.SetPasswordActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.SetPhoneActivity;
 import com.jinjunhang.onlineclass.ui.lib.BaseListViewOnItemClickListener;
@@ -159,7 +160,7 @@ public class SettingsFragment extends BaseFragment  {
                 return;
             }
             mLoginUserDao.deleteAll();
-            Intent i = new Intent(getActivity(), LoginActivity.class);
+            Intent i = new Intent(getActivity(), MobileLoginActivity.class);
             startActivity(i);
             getActivity().finish();
 

@@ -3,21 +3,16 @@ package com.jinjunhang.onlineclass.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -30,36 +25,22 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.controller.BaseActivity;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
-import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
-import com.jinjunhang.onlineclass.model.Comment;
-import com.jinjunhang.onlineclass.model.LoginUser;
-import com.jinjunhang.onlineclass.service.GetFooterAdvsRequest;
-import com.jinjunhang.onlineclass.service.GetFooterAdvsResponse;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
-import com.jinjunhang.onlineclass.ui.cell.mainpage.FooterCell;
+import com.jinjunhang.onlineclass.ui.lib.BrowserUtils;
 import com.jinjunhang.onlineclass.ui.lib.ParseHtmlPageTask;
 import com.jinjunhang.onlineclass.ui.lib.ShareManager;
 import com.jinjunhang.framework.lib.LogHelper;
-import com.jinjunhang.onlineclass.ui.lib.ShareManager2;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by lzn on 16/6/20.
@@ -289,6 +270,14 @@ public class WebBrowserActivity extends BaseActivity {
             }
             //支持微信支付
             if (Utils.handleWechatPay(mWXAPI, url, mLoadingAnimation)) {
+                return true;
+            }
+
+            if (BrowserUtils.handleAlipayProtocol(url, WebBrowserActivity.this)) {
+                return true;
+            }
+
+            if (BrowserUtils.handlePhoneCallProtocol(url, WebBrowserActivity.this)) {
                 return true;
             }
 

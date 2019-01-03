@@ -70,18 +70,23 @@ public class MobileLoginFragment extends BaseFragment {
         }
     };
 
+    protected boolean isNeedTopMargin() {
+        return true;
+    }
+
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_fragment_mobile_login;
+        return R.layout.activity_fragment_login_using_code;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = super.onCreateView(inflater, container, savedInstanceState);
+        mView.setBackgroundColor( getActivity().getResources().getColor(R.color.white));
         mLoading = new LoadingAnimation(getActivity());
 
-        Button singupButton = (Button) mView.findViewById(R.id.singup_button);
+        Button singupButton = (Button) mView.findViewById(R.id.login_button);
         mGetCheckCodeButton = (Button) mView.findViewById(R.id.get_checkcode_button);
         mCheckCodeButtonMessage = (TextView) mView.findViewById(R.id.get_checkcode_message);
         final EditText phoneField = (EditText) mView.findViewById(R.id.signup_phone);

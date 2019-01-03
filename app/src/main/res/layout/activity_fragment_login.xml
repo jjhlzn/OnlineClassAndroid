@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragmentContainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -18,19 +16,19 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="135dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:orientation="vertical"
                 android:gravity="center|center_vertical">
 
-
+                <!--
                 <ImageView
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_margin="0dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/log"/>
+                    android:src="@drawable/log"/> -->
 
             </LinearLayout>
 
@@ -52,6 +50,8 @@
                     android:hint="用户名"
 
                     android:drawableLeft="@drawable/usericon"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint_color"
                     android:drawablePadding="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
@@ -79,6 +79,8 @@
                     android:hint="密码"
                     android:inputType="text"
                     android:drawableLeft="@drawable/passwordicon"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint_color"
                     android:drawablePadding="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
@@ -237,6 +239,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:text="微信登陆"
+                        android:textColor="@color/hint_color"
                         android:textSize="10dp"
                         />
                 </RelativeLayout>
@@ -263,6 +266,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:text="验证码登陆"
+                        android:textColor="@color/hint_color"
                         android:textSize="10dp"
                         />
                 </RelativeLayout>
@@ -276,8 +280,8 @@
 
         </RelativeLayout>
 
+
+        <include layout="@layout/toolbar_common_no_music_icon" />
+
     </RelativeLayout>
 
-
-
-</FrameLayout>
