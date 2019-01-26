@@ -220,7 +220,7 @@ public class ChatManager {
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) mFragment.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (mEmojiKeyBoardView.getVisibility() == View.VISIBLE) {
+                if (mEmojiKeyBoardView.getVisibility() == View.VISIBLE) { //显示文字键盘
                     //Utils.hideSoftKeyboard(getActivity());
                     LogHelper.d(TAG, "emojiboard will hide");
                     mEmojiKeyBoardView.setVisibility(View.GONE);
@@ -229,7 +229,8 @@ public class ChatManager {
                     mCommentEditText.requestFocus();
                     imm.showSoftInput(mCommentEditText, InputMethodManager.SHOW_IMPLICIT);
                     keyboardSwitchButton.setImageResource(R.drawable.keyboard_emoji);
-                } else {
+                    mCommentTip.setVisibility(View.VISIBLE);
+                } else {        //显示Emoji键盘
                     imm.hideSoftInputFromWindow(mCommentEditText.getWindowToken(), 0);
                     LogHelper.d(TAG, "emojiboard will show");
 
@@ -240,7 +241,9 @@ public class ChatManager {
                             mEmojiKeyBoardView.setVisibility(View.VISIBLE);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mCommentWindow.getLayoutParams();
                             params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            //mCommentEditText.setVisibility(View.INVISIBLE);
                             keyboardSwitchButton.setImageResource(R.drawable.keybaord_keyboard);
+                            mCommentTip.setVisibility(View.INVISIBLE);
                         }
                     }, 100);
                 }
@@ -277,6 +280,8 @@ public class ChatManager {
                 resetComment();
                 closeCommentWindow();
                 new SendLiveCommentTask( mFragment, ChatManager.this).execute(request);
+
+                mCommentTip.setVisibility(View.VISIBLE);
             }
         };
     }

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.data5tream.emojilib.EmojiParser;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
 import com.jinjunhang.framework.lib.LogHelper;
 
@@ -35,13 +36,16 @@ public class EmojiKeyboard {
 
     public View getView() {
         LinearLayout layout = new LinearLayout(mContext);
+        //layout.setBackgroundColor(mContext.getResources().getColor(R.color.gray_text));
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
 
+
         ViewGroup.LayoutParams params =  new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         // Changes the height and width to the specified *pixels*
-        params.height = 213 * 3;
+        params.height = (int)(213 * mContext.getResources().getDisplayMetrics().density);
         layout.setLayoutParams(params);
+
 
         int rows = (emojiKeys.length + 6) / 7;
         int index = 0;
@@ -59,16 +63,6 @@ public class EmojiKeyboard {
                         TextView my = (TextView)v;
                         LogHelper.d(TAG, "char = " + my.getText()+ ", length = " + my.getText().length());
 
-                        /*
-                        if (key.equals(":arrow_left:")) {
-                            if ( mEditText.getText().length() == 0) {
-                                return;
-                            }
-
-                            mEditText.setText(mEditText.getText().subSequence(0, mEditText.getText().length() - 1));
-                        } else {
-
-                        }*/
                         mEditText.setText(mEditText.getText().toString() + my.getText());
                         mEditText.setSelection(mEditText.getText().length());
                     }

@@ -46,11 +46,6 @@ public class NewCommentCell extends BaseListViewCell {
 
         final RoundedImageView image = ((RoundedImageView)v.findViewById(R.id.comment_user_image));
 
-        /*
-        image.setOval(true);
-        image.setBorderWidth(0.5f);
-        image.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600)); */
-
 
         LoginUser loginUser = LoginUserDao.getInstance(mActivity).get();
         if (loginUser.getUserName().equals(mComment.getUserId())) {
@@ -85,12 +80,6 @@ public class NewCommentCell extends BaseListViewCell {
                     });
         }
 
-
-        /*
-        if (mComment.isManager()) {
-            image.setImageResource(R.drawable.user2_0);
-            ((TextView)v.findViewById(R.id.comment_username)).setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
-        } */
 
         String nickName = mComment.getNickName();
         if ("".equals(nickName)) {
