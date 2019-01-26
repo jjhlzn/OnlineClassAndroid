@@ -171,5 +171,9 @@ public class ServiceLinkManager {
     public static String YigouUrl() {
         return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/purchased";
     }
+
+    public static String MyWalletUrl() {
+        return  "http://"+ServiceConfiguration.serverName()+":"+ServiceConfiguration.port()+"/app/mywallet";
+    }
 }
 

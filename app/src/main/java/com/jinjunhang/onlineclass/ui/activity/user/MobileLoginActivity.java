@@ -106,6 +106,8 @@ public class MobileLoginActivity extends FragmentActivity {
         mView = findViewById(R.id.fragmentContainer);
         mLoading = new LoadingAnimation(this);
 
+        mWXLoginManager = new WeixinLoginManager(this);
+
         ButterKnife.bind(this);
 
         Button loginButton = (Button) mView.findViewById(R.id.login_button);
@@ -300,5 +302,17 @@ public class MobileLoginActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         return;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogHelper.d(TAG, "onResume called");
+        if (loginType == WEIXIN_LOGIN) {
+            LogHelper.d(TAG, "code: " + code);
+            loginType = -1;
+
+            mWXLoginManager.loginStep2(code, mLoading, mDeviceToken);
+        }
     }
 }

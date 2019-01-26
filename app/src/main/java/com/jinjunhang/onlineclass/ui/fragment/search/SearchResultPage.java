@@ -51,8 +51,6 @@ public class SearchResultPage {
         mListView = (ListView) view.findViewById(R.id.listView);
         mCountTextView = (TextView)view.findViewById(R.id.totalCountText);
 
-        //mLoading = new LoadingAnimation(activity);
-
         //去掉列表的分割线
         mListView.setDividerHeight(0);
         mListView.setDivider(null);
@@ -62,6 +60,8 @@ public class SearchResultPage {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 SearchResponse.SearchResult result = (SearchResponse.SearchResult) ((SearchResultItemCell) (mSearchResultAdapter.getItem(position))).getSearchResult();
+
+
 
                 Intent i = new Intent(mActivity, WebBrowserActivity.class)
                         .putExtra(WebBrowserActivity.EXTRA_TITLE, result.getTitle())
@@ -76,8 +76,10 @@ public class SearchResultPage {
         mListView.setAdapter(mSearchResultAdapter);
     }
 
-    public void executeSearch() {
-        new SearchTask().execute();
+    public void executeSearch(String keyword) {
+        SearchRequest req = new SearchRequest();
+        req.setKeyword(keyword);
+        new SearchTask().execute(req);
     }
 
     public void showResult() {
@@ -121,11 +123,11 @@ public class SearchResultPage {
         }
     }
 
-    private class SearchTask extends AsyncTask<Void, Void, SearchResponse> {
+    private class SearchTask extends AsyncTask<SearchRequest, Void, SearchResponse> {
 
         @Override
-        protected SearchResponse doInBackground(Void... voids) {
-            SearchRequest request = new SearchRequest();
+        protected SearchResponse doInBackground(SearchRequest... requests) {
+            SearchRequest request = requests[0];
             return new BasicService().sendRequest(request);
         }
 

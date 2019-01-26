@@ -143,7 +143,11 @@ public class SearchFragment extends BaseFragment {
 
     public void performSearch() {
         showSearchView(false);
-        mSearchResultPage.executeSearch();
+        String keyword = mSearchField.getText().toString();
+        if (keyword != null) {
+            keyword = keyword.trim();
+        }
+        mSearchResultPage.executeSearch(keyword);
     }
 
     public void keywordButtonClick(String keyword) {

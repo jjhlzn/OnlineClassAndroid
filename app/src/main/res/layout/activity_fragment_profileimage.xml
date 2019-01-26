@@ -9,7 +9,8 @@
         android:id="@+id/user_image"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:src="@drawable/avril"
+        android:scaleType="fitXY"
+        android:src="@drawable/rect_placeholder"
         />
 
 </LinearLayout>

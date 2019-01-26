@@ -42,10 +42,10 @@ public class SearchResultItemCell extends BaseListViewCell {
         Glide
                 .with(mActivity)
                 .load(mSearchResult.getImage())
-                .placeholder(R.drawable.course)
+                .placeholder(R.drawable.rect_placeholder)
                 .into(image);
 
-        name.setText(mSearchResult.getContent());
+        name.setText(mSearchResult.getTitle());
         date.setText(mSearchResult.getDate());
 
 

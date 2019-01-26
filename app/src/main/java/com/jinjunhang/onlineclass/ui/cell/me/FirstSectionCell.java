@@ -16,7 +16,10 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.signature.StringSignature;
+import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.db.UserImageDao;
 import com.jinjunhang.onlineclass.model.LoginUser;
@@ -42,6 +45,7 @@ public class FirstSectionCell extends BaseListViewCell {
     private Activity mActivity;
     private MeFragment mFragment;
     private UserImageDao mUserImageDao;
+    private View mView;
 
     @Override
     public int getItemViewType() {
@@ -59,6 +63,7 @@ public class FirstSectionCell extends BaseListViewCell {
     @Override
     public ViewGroup getView() {
         View v = mActivity.getLayoutInflater().inflate(R.layout.list_item_me_first_section, null);
+        mView = v;
 
         mUserImage =  v.findViewById(R.id.user_image);
         mUserImage.setOnClickListener(new View.OnClickListener() {
@@ -68,9 +73,6 @@ public class FirstSectionCell extends BaseListViewCell {
                 mFragment.startActivityForResult(i, MainActivity.REQUEST_ME_UPDATE_USER_IAMGE);
             }
         });
-        mUserImage.setBorderColor(0x000000);
-        mUserImage.setBorderWidth(2.0f);
-        mUserImage.setOval(true);
 
         mNameLabel = (TextView) v.findViewById(R.id.name_label);
         mLevelLabel = (TextView) v.findViewById(R.id.level_label);
@@ -91,6 +93,7 @@ public class FirstSectionCell extends BaseListViewCell {
 
             LogHelper.d(TAG, url);
 
+            /*
             if (mUserImageDao.get() != null) {
                 mUserImage.setImageBitmap(mUserImageDao.get());
             } else {
@@ -103,7 +106,17 @@ public class FirstSectionCell extends BaseListViewCell {
                         mFragment.notifyListViewUpdate();
                     }
                 });
-            }
+            } */
+
+            Glide.with(mActivity).load(url).asBitmap().signature(new StringSignature(KeyValueDao.getInstance(mActivity).getUserImageVersion())).into(new BitmapImageViewTarget(mUserImage) {
+                @Override
+                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> animation) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    mUserImage.setImageDrawable(circularBitmapDrawable);
+                }
+            });
         }
     }
 }

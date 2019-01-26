@@ -25,6 +25,7 @@ public class KeyValueDao {
     public static final String KEY_USER_HAS_BIND_PHONE = "USER_HAS_BIND_PHONE";
     public static final String KEY_USER_MY_TUIJIAN = "USER_MY_TUIJIAN";
     public static final String KEY_USER_MY_ORDER = "USER_MY_ORDER";
+    public static final String KEY_USER_MY_ZHIDIAN = "KEY_USER_MY_ZHIDIAN";
     public static final String KEY_USER_MY_TEAM = "USER_MY_TEAM";
 
     public static final String SERVER_HTTP = "SERVER_HTTP";
@@ -36,6 +37,8 @@ public class KeyValueDao {
     public static final String KEY_POPUPAD_TITLE = "KEY_POPUPAD_TITLE";
     public static final String KEY_POPUPAD_CLICKURL = "KEY_POPUPAD_CLICKURL";
     public static final String KEY_POPUPAD_HASSHOW = "KEY_POPUPAD_HASSHOW";
+
+    public static final String KEY_USER_IMAGE_VERSION = "USER_IMAGE_VERSION";
 
     public static final String BOTTOM_BAR_HEIGHT = "bottom_bar_height";
 
@@ -149,5 +152,15 @@ public class KeyValueDao {
 
     public boolean hasBindPhone() {
         return getValue(KeyValueDao.KEY_USER_HAS_BIND_PHONE, "0").equals("1");
+    }
+
+    public void updateUserImageVersion() {
+        String version = getValue(KeyValueDao.KEY_USER_IMAGE_VERSION, "0");
+        int i = Integer.parseInt(version);
+        saveOrUpdate(KeyValueDao.KEY_USER_IMAGE_VERSION, (i+1) + "");
+    }
+
+    public String getUserImageVersion() {
+        return getValue(KeyValueDao.KEY_USER_IMAGE_VERSION, "0");
     }
 }

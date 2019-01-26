@@ -33,6 +33,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.gyf.barlibrary.ImmersionBar;
 import com.jinjunhang.framework.controller.SingleFragmentActivity;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
 import com.jinjunhang.onlineclass.model.ServiceLinkManager;
 import com.jinjunhang.onlineclass.model.Song;
 import com.jinjunhang.onlineclass.ui.activity.WebBrowserActivity;
@@ -68,6 +69,8 @@ public class Utils {
     public static int BOTTOM_BAR_HEIGHT = 153; //in dp
 
     public static final String WEIXIN_SHERE_APP_ID = WXConstants.APPID;
+
+
 
     public static void showMessage(Context context, String message) {
         new MaterialDialog.Builder(context)

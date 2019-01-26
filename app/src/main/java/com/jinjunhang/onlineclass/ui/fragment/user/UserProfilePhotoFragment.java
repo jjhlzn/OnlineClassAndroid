@@ -15,12 +15,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.jinjunhang.framework.lib.LoadingAnimation;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.framework.service.BasicService;
 import com.jinjunhang.framework.service.ServerResponse;
+import com.jinjunhang.framework.wx.Util;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.db.UserImageDao;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.activity.user.UserProfilePhotoActivity;
 import com.jinjunhang.onlineclass.ui.fragment.BaseFragment;
@@ -94,8 +100,15 @@ public class UserProfilePhotoFragment extends BaseFragment {
         mUserImageDao = UserImageDao.getInstance(getActivity().getApplicationContext());
         mLoading = new LoadingAnimation(getActivity());
 
-        mImageView = (ImageView) v.findViewById(R.id.user_image);
-        mImageView.setImageBitmap(mUserImageDao.get());
+        mImageView = v.findViewById(R.id.user_image);
+
+        LoginUser loginUser = LoginUserDao.getInstance(getActivity()).get();
+        Glide
+                .with(getActivity())
+                .load(ServiceConfiguration.GetUserProfileImage(loginUser.getUserName()))
+                .signature(new StringSignature(KeyValueDao.getInstance(getContext()).getUserImageVersion()))
+                .placeholder(R.drawable.rect_placeholder)
+                .into(mImageView);
 
         ImageButton rightButton  = (ImageButton) ((UserProfilePhotoActivity)getActivity()).getSupportActionBar().getCustomView().findViewById(R.id.actionbar_right_button);
         rightButton.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +166,7 @@ public class UserProfilePhotoFragment extends BaseFragment {
         protected void onPostExecute(ServerResponse serverResponse) {
             super.onPostExecute(serverResponse);
             mLoading.hide();
-
+            KeyValueDao.getInstance(getContext()).updateUserImageVersion();
             if (serverResponse.getStatus() == ServerResponse.SUCCESS) {
                 Utils.showMessage(getActivity(), "头像更新成功");
             } else {

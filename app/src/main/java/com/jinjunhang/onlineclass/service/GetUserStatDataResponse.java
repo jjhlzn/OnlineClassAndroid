@@ -16,6 +16,7 @@ public class GetUserStatDataResponse extends ServerResponse {
     private String mTeamPeople;
     private String mTuiJianPeople;
     private String mOrderCount;
+    private double mZhidian;
 
     private String mName;
     private String mNickName;
@@ -92,6 +93,12 @@ public class GetUserStatDataResponse extends ServerResponse {
         return mHasBindPhone;
     }
 
+    public double getZhidian() {
+        return mZhidian;
+    }
+
+
+
     @Override
     public void parse(ServerRequest request, JSONObject json) throws JSONException {
         mJifen = json.getString("jifen");
@@ -107,6 +114,7 @@ public class GetUserStatDataResponse extends ServerResponse {
         mSex = json.getString("sex");
         mCodeImageUrl = json.getString("codeImageUrl");
         mVipEndDate = json.getString("vipEndDate");
+        mZhidian = json.getDouble("zhidian");
 
         if (json.has("isBindWeixin")) {
             mIsBindWeixin = json.getBoolean("isBindWeixin");

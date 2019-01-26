@@ -1,6 +1,7 @@
 package com.jinjunhang.onlineclass.ui.fragment.album.player;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.jinjunhang.framework.lib.LogHelper;
@@ -43,10 +44,12 @@ public class SendLiveCommentTask extends AsyncTask<SendLiveCommentRequest, Void,
             mSocket.off();
             mSocket = null;
             mChatManager.initChat();
+            mSocket = mChatManager.getSocket();
         }
 
         mRequest = params[0];
         LogHelper.d(TAG, "send comment to socket");
+        LogHelper.d(TAG, "msocket = " + mSocket);
         mSocket.emit(ChatManager.CHAT_MESSAGE_CMD, mRequest.getRequestJson(), new Ack() {
             @Override
             public void call(Object... args) {

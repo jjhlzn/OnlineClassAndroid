@@ -6,6 +6,7 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         >
 
         <LinearLayout android:layout_width="match_parent"
@@ -166,6 +167,7 @@
 
         </LinearLayout>
 
+        <!--
         <RelativeLayout
             android:background="@color/white"
             android:layout_below="@+id/root_container"
@@ -279,6 +281,8 @@
 
 
         </RelativeLayout>
+
+        -->
 
 
         <include layout="@layout/toolbar_common_no_music_icon" />

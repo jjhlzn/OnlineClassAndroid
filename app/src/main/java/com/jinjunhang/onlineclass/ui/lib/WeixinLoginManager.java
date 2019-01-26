@@ -22,6 +22,7 @@ import com.jinjunhang.onlineclass.service.GetWeixinTokenResponse;
 import com.jinjunhang.onlineclass.service.OAuthRequest;
 import com.jinjunhang.onlineclass.service.OAuthResponse;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.MobileLoginActivity;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
@@ -67,6 +68,7 @@ public class WeixinLoginManager {
         mLoadingAnimation = loadingAnimation;
         final String url = String.format("https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code", WXConstants.APPID, WXConstants.SECRET, code);
         LogHelper.d(TAG, url);
+        MobileLoginActivity.loginType = -1;
         new GetCodeTask().execute(code, "");
     }
 

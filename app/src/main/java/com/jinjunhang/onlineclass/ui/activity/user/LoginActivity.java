@@ -56,18 +56,7 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
     Toolbar mToolbar;
     @BindView(R.id.actionbar_text)
     TextView mTitleView;
-    @BindView(R.id.weixinBtn) ImageView mWeixinBtn;
 
-
-    @OnClick(R.id.weixinBtn) void weixinClick() {
-        mWXLoginManager.loginStep1();
-    }
-
-    @BindView(R.id.mobileBtn) ImageView mMobleBtn;
-    @OnClick(R.id.mobileBtn) void mobileBtnClick() {
-        Intent i = new Intent(this, MobileLoginActivity.class);
-        startActivity(i);
-    }
 
     @OnClick(R.id.actionbar_back_button) void backClick() {
         onBackPressed();
@@ -222,16 +211,4 @@ public class LoginActivity extends android.support.v4.app.FragmentActivity {
 
 
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogHelper.d(TAG, "onResume called");
-        if (loginType == WEIXIN_LOGIN) {
-            LogHelper.d(TAG, "code: " + code);
-            loginType = -1;
-
-            mWXLoginManager.loginStep2(code, mLoading, mDeviceToken);
-        }
-    }
 }

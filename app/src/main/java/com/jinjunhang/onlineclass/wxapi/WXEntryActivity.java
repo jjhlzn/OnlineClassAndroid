@@ -15,6 +15,7 @@ import com.jinjunhang.onlineclass.service.OAuthRequest;
 import com.jinjunhang.onlineclass.service.OAuthResponse;
 import com.jinjunhang.onlineclass.ui.activity.mainpage.BottomTabLayoutActivity;
 import com.jinjunhang.onlineclass.ui.activity.user.LoginActivity;
+import com.jinjunhang.onlineclass.ui.activity.user.MobileLoginActivity;
 import com.jinjunhang.onlineclass.ui.fragment.SettingsFragment;
 import com.jinjunhang.onlineclass.ui.lib.WXConstants;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
@@ -93,6 +94,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     if (mLoginUserDao.get() == null) {
                         LoginActivity.loginType = LoginActivity.WEIXIN_LOGIN;
                         LoginActivity.code = code;
+                        MobileLoginActivity.loginType = LoginActivity.WEIXIN_LOGIN;
+                        MobileLoginActivity.code = code;
                     } else {
                         SettingsFragment.loginType = LoginActivity.WEIXIN_LOGIN;
                         SettingsFragment.code = code;

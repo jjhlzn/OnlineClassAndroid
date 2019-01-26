@@ -12,12 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.signature.StringSignature;
 import com.github.data5tream.emojilib.EmojiParser;
 import com.jinjunhang.framework.lib.LogHelper;
 import com.jinjunhang.framework.lib.Utils;
 import com.jinjunhang.onlineclass.R;
+import com.jinjunhang.onlineclass.db.KeyValueDao;
+import com.jinjunhang.onlineclass.db.LoginUserDao;
 import com.jinjunhang.onlineclass.model.Comment;
+import com.jinjunhang.onlineclass.model.LoginUser;
 import com.jinjunhang.onlineclass.service.ServiceConfiguration;
 import com.jinjunhang.onlineclass.ui.cell.BaseListViewCell;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -40,26 +45,47 @@ public class NewCommentCell extends BaseListViewCell {
         LinearLayout container = (LinearLayout)v.findViewById(R.id.container);
 
         final RoundedImageView image = ((RoundedImageView)v.findViewById(R.id.comment_user_image));
+
+        /*
         image.setOval(true);
         image.setBorderWidth(0.5f);
-        image.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600));
+        image.setBorderColor(mActivity.getResources().getColor(R.color.ccl_grey600)); */
 
 
+        LoginUser loginUser = LoginUserDao.getInstance(mActivity).get();
+        if (loginUser.getUserName().equals(mComment.getUserId())) {
 
-        Glide.with(mActivity)
-                .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
-                .asBitmap()
-                .centerCrop()
-                .placeholder(R.drawable.placeholder)
-                .into(new BitmapImageViewTarget(image) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
-                        circularBitmapDrawable.setCircular(true);
-                        image.setImageDrawable(circularBitmapDrawable);
-                    }
-                });
+            Glide.with(mActivity)
+                    .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
+                    .asBitmap()
+                    .signature(new StringSignature(KeyValueDao.getInstance(mActivity).getUserImageVersion()))
+                    .placeholder(R.drawable.placeholder)
+                    .into(new BitmapImageViewTarget(image) {
+                @Override
+                public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> animation) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    image.setImageDrawable(circularBitmapDrawable);
+                }
+            });
+        } else {
+            Glide.with(mActivity)
+                    .load(ServiceConfiguration.GetUserProfileImage(mComment.getUserId()))
+                    .asBitmap()
+                    .placeholder(R.drawable.placeholder)
+                    .into(new BitmapImageViewTarget(image) {
+                        @Override
+                        public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> animation) {
+                            RoundedBitmapDrawable circularBitmapDrawable =
+                                    RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
+                            circularBitmapDrawable.setCircular(true);
+                            image.setImageDrawable(circularBitmapDrawable);
+                        }
+                    });
+        }
+
+
         /*
         if (mComment.isManager()) {
             image.setImageResource(R.drawable.user2_0);

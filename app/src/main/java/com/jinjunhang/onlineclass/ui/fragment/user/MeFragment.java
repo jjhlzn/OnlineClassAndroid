@@ -86,6 +86,7 @@ public class MeFragment extends BaseFragment  {
 
     private void initSections() {
         if (mSeventSections.size() == 0) {
+            mSeventSections.add(new LineRecord(R.drawable.user10, "我的钱包", webBroserClickListener, ServiceLinkManager.MyWalletUrl(),  mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ZHIDIAN, "0知点")));
             mSeventSections.add(new LineRecord(R.drawable.user10, "我的服务", webBroserClickListener, ServiceLinkManager.MyServiceUrl(), ""));
         }
 
@@ -352,9 +353,13 @@ public class MeFragment extends BaseFragment  {
             cell.updateView();
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_VIP_END_DATE, resp.getVipEndDate());
             mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_AGENT_LEVEL, resp.getLevel());
+            mKeyValueDao.saveOrUpdate(KeyValueDao.KEY_USER_MY_ZHIDIAN, resp.getZhidian()+"知点");
 
-            CommonCell cell0  = (CommonCell)mCells.get(7);
-            CommonCell cell1 = (CommonCell)mCells.get(8);
+            CommonCell cell0  = (CommonCell)mCells.get(8);
+            CommonCell cell1 = (CommonCell)mCells.get(9);
+            CommonCell cell2 = (CommonCell)mCells.get(4);
+
+            cell2.getRecord().setOtherInfo(mKeyValueDao.getValue(KeyValueDao.KEY_USER_MY_ZHIDIAN, "0知点"));
 
 
             cell0.getRecord().setOtherInfo(resp.getTuiJianPeople());

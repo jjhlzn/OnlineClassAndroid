@@ -95,6 +95,8 @@ public class Util {
         if (user != null) {
             if (url.indexOf("?") == -1) {
                 url += "?";
+            } else {
+                url += "&";
             }
             url += "userid=" + user.getUserName() + "&" + "token=" + user.getToken();
         }
