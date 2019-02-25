@@ -136,6 +136,8 @@ public class QRImageFragment extends BaseFragment {
         new GetShareImagesTask().execute();
 
         mShareManager = new ShareManager2((AppCompatActivity) getActivity(), mView);
+        mShareManager.setShareTitle("识别图中二维码加入知得金融知识服务平台");
+        mShareManager.setDescription("在线学习信用卡、贷款、股票、基金、投资、理财、保险、财务等金融知识");
         ImmersionBar.setTitleBar(getActivity(), mToolbar);
         ImmersionBar.with(this).statusBarDarkFont(true).init();
         return mView;

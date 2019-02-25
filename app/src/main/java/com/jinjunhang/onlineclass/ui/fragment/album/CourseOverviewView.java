@@ -38,6 +38,7 @@ public class CourseOverviewView {
     private ChatManager mChatManager;
     private MusicPlayer mMusicPlayer;
     private Activity mActivity;
+    private Course mCourse;
 
     public void setChatManager(ChatManager chatManager) {
         mChatManager = chatManager;
@@ -73,8 +74,7 @@ public class CourseOverviewView {
         }
         mListAdapter.setCells(cells);
         mListAdapter.notifyDataSetChanged();
-        //if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
-        //    mSongFragment.resetViewPagerHeight(0);
+
     }
 
     public void newCommentHanlder(Comment comment) {
@@ -138,11 +138,10 @@ public class CourseOverviewView {
             }
 
             Course course = resp.getCourse();
+            mCourse = course;
             CourseOverViewCell cell = (CourseOverViewCell) mListView.getItemAtPosition(0);
             cell.setCourse(course);
             mListAdapter.notifyDataSetChanged();
-            //if (mSongFragment != null && mSongFragment.getCurrentSelectPage() == 0)
-              //  mSongFragment.resetViewPagerHeight(0);
         }
     }
 
